@@ -1,11 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * (c) Pyoopil EduTech 2014
  */
-
 App::uses('UsersController', 'Users.Controller');
 
 class AppUsersController extends UsersController {
@@ -16,6 +13,19 @@ class AppUsersController extends UsersController {
         parent::beforeFilter();
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
+    }
+
+    protected function _setupAuth() {
+        parent::_setupAuth();
+//        $this->Auth->loginRedirect = array(
+//            'plugin' => null,
+//            'admin' => false,
+//            'controller' => 'app_users',
+//            'action' => 'login'
+//        );
+        $this->Auth->authorize = array(
+            'Actions' => array('actionPath' => 'controllers')
+        );
     }
 
 }

@@ -3,24 +3,23 @@
 App::uses('AppModel', 'Model');
 
 /**
- * Campus Model
+ * Department Model
  *
- * @property University $University
+ * @property Campus $Campus
  * @property Classroom $Classroom
  * @property Degree $Degree
- * @property Department $Department
- * @property User $User
+ * @property UsersCampus $UsersCampus
  */
-class Campus extends AppModel {
+class Department extends AppModel {
 
     /**
      * belongsTo associations
      * @var array
      */
     public $belongsTo = array(
-        'University' => array(
-            'className' => 'University',
-            'foreignKey' => 'university_id',
+        'Campus' => array(
+            'className' => 'Campus',
+            'foreignKey' => 'campus_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
@@ -29,13 +28,12 @@ class Campus extends AppModel {
 
     /**
      * hasMany associations
-     *
      * @var array
      */
     public $hasMany = array(
         'Classroom' => array(
             'className' => 'Classroom',
-            'foreignKey' => 'campus_id',
+            'foreignKey' => 'department_id',
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
@@ -46,9 +44,9 @@ class Campus extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-        'Department' => array(
-            'className' => 'Department',
-            'foreignKey' => 'campus_id',
+        'Degree' => array(
+            'className' => 'Degree',
+            'foreignKey' => 'department_id',
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
@@ -61,26 +59,17 @@ class Campus extends AppModel {
         ),
         'UsersCampus' => array(
             'className' => 'UsersCampus',
-            'foreignKey' => 'campus_id'
+            'foreignKey' => 'department_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
         )
     );
 
-    /**
-     * Rightly converted to hasMany
-     * public $hasAndBelongsToMany = array(
-     *  'User' => array(
-     *      'className' => 'User',
-     *      'joinTable' => 'users_campuses',
-     *      'foreignKey' => 'campus_id',
-     *      'associationForeignKey' => 'user_id',
-     *      'unique' => 'keepExisting',
-     *      'conditions' => '',
-     *      'fields' => '',
-     *      'order' => '',
-     *      'limit' => '',
-     *      'offset' => '',
-     *      'finderQuery' => '',
-     *  )
-     * );
-     */
 }

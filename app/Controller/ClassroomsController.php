@@ -1,11 +1,8 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * (c) Pyoopil EduTech 2014
  */
-
 App::uses('AppController', 'Controller');
 
 /**
@@ -47,12 +44,22 @@ class ClassroomsController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
-
+            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
+                $this->Session->setFlash('Classroom sucessfully created');
+            } else {
+                $this->Session->setFlash('One or more processes failed');
+            }
 
             //populate hidden div with succeful creation
-            //redirect to index
+            //redirect to classroom successfully created popup
             //whatever
         }
+        /**
+         * TODO : Ajax populate for the context of logged in user
+         */
+        $this->set('campuses', $this->Classroom->Campus->find('list'));
+        $this->set('departments', $this->Classroom->Department->find('list'));
+        $this->set('degrees', $this->Classroom->Degree->find('list'));
         //show create form 
     }
 

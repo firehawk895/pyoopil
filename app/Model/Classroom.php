@@ -11,6 +11,12 @@ App::uses('CodeGenerator', 'Lib/Custom');
  * @property Department $Department
  */
 class Classroom extends AppModel {
+    /**
+     * db Notes:
+     * campus_id -> department_id -> degree_id is a hierarchy
+     * only 1 needs to be populated for correct information
+     * however all 3 can be populated for taking unfair advantage of this :)
+     */
 
     /**
      * No. of times to try getting unique Access Code
@@ -32,6 +38,13 @@ class Classroom extends AppModel {
         'Department' => array(
             'className' => 'Department',
             'foreignKey' => 'department_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Degree' => array(
+            'className' => 'Degree',
+            'foreignKey' => 'degree_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
@@ -116,24 +129,49 @@ class Classroom extends AppModel {
      *  );
      * 
      */
-    public function afterSave($created, $options = array()) {
-        parent::afterSave($created, $options);
-
-        //set access code for any private classroom/staffroom
-        If (isset($created) && $created == true && $this->data['is_private'] == true) {
-            $this->generateCode();
-        }
-    }
+//    public function afterSave($created, $options = array()) {
+//        parent::afterSave($created, $options);
+//
+//        //set access code for any private classroom/staffroom
+//        If (isset($created) && $created == true && $this->data['is_private'] == true) {
+//            $this->generateCode();
+//        }
+//    }
 
     /**
-     * Mostly you'll be taking $data for entire
-     * create classroom popup
-     * @param type $userId
+     * create classroom popup:
+     * @param int $userId
+     * @param mixed $data $request->data 
      */
     public function add($userId, $data) {
-        //No Initialization: 
-        //  Discussions, Announcements, People, Submissions, Reports
-        //Library needs to be Instantiated
+        /**
+         * Initialize and map Library
+         * No Initialization Required for:
+         * Discussions, Announcements, People, Submissions, Reports
+         */
+        
+        /**
+         * Possible design consideration:
+         * Methods have been broken down granularly,
+         * but ideally only 1 save should be called for operations:
+         * create access code, join classroom, create and associate library
+         * so that transactional integrity can be maintained
+         */
+        $this->create();
+        if ($this->save($data)) {
+            if ($data['Classroom']['is_private'] == '1') {
+                $this->generateCode($this->id);
+            }
+            if (!$this->UsersClassroom->joinClassroom($userId, $this->id, true)) {
+                return false;
+            }
+            if (!$this->Library->add($this->id)) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -202,7 +240,8 @@ class Classroom extends AppModel {
     }
 
     /**
-     * @param type $data
+     * @param int $classroomId
+     * @param mixed $data
      */
     public function edit($classroomId, $data) {
         //if archived return false
@@ -211,7 +250,7 @@ class Classroom extends AppModel {
     /**
      * Archive a classroom
      * TODO : auth framework should prevent any modification of archived classrooms
-     * otherwise hack editor methods if(!is_archived)
+     * otherwise hack all edit methods if(!is_archived)
      * @param type $classroomId
      */
     public function archiveIt($classroomId) {
@@ -219,18 +258,28 @@ class Classroom extends AppModel {
         $this->saveField('is_archived', true);
     }
 
+    /**
+     * Clone a classroom
+     * @param type $classroomId
+     */
     public function cloneIt($classroomId) {
+        /**
+         * All amazons3 links need to be preserved for cloning library
+         * Clone:
+         * Library, Submissions, 
+         */
         
     }
 
     /**
-     * returns access code, preventing duplicates
-     * with CODE_RETRY times retries
+     * generates and assigns access code to classroom, preventing duplicates
+     * with CODE_RETRY times retries.
+     * @param int $classroomId Classroom(pk)
      */
     private function generateCode($classroomId) {
 
         $this->id = $classroomId;
-        
+
         $newCode = CodeGenerator::accessCode('alnum', '6');
         $conditions = array(
             'access_code' => $newCode
@@ -240,20 +289,22 @@ class Classroom extends AppModel {
             if ($this->hasAny($conditions)) {
                 $conditions['access_code'] = CodeGenerator::accessCode('alnum', '6');
             } else {
-                return $newCode;
+                return $this->saveField('access_code', $newCode);
             }
         }
         //throw fatal error
-        return null;
+        return false;
     }
 
+    /**
+     * Reset Access code of classroom
+     * @param type $classroomId Classroom(pk)
+     * @return boolean success/failure
+     */
     public function resetCode($classroomId) {
         $this->id = $classroomId;
         if ($this->field('is_private')) {
-            $this->generateCode($classroomId);
-            return true;
-        } else {
-            return false;
+            return $this->generateCode($classroomId);
         }
     }
 
