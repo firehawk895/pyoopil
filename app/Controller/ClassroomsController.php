@@ -23,6 +23,7 @@ class ClassroomsController extends AppController {
      * display all classroom tiles
      */
     public function index() {
+        $this->layout = 'default';
         /**
          * call $this->Classroom->displayTiles()
          */

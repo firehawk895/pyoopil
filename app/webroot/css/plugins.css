@@ -1,0 +1,187 @@
+/************************************** 
+							custom-radio-checkbox
+
+						*********************************************/
+.checkbox, .radio { padding-left:5px; position: relative; -webkit-transition: 0.25s; -moz-transition: 0.25s; -o-transition: 0.25s; transition: 0.25s; -webkit-backface-visibility: hidden; cursor:pointer; }
+.checkbox input, .radio input { outline: none !important; opacity: 0; filter: alpha(opacity=0); zoom: 1; }
+.checkbox.checked .icon, .checkbox.white.checked .icon, .radio.checked .icon { background-position:0 -17px; opacity: 1; display: block\9; }
+.checkbox.checked .icon-to-fade, .radio.checked .icon-to-fade { opacity: 0; display: none\9; }
+.checkbox.disabled, .radio.disabled { color: #d7dddd; cursor: default; }
+.checkbox.disabled .icon, .radio.disabled .icon { opacity: 0; display: none\9; }
+.checkbox.disabled .icon-to-fade, .radio.disabled .icon-to-fade { background-position: -30px -60px; opacity: 1; display: block\9; }
+.checkbox.disabled.checked .icon, .radio.disabled.checked .icon { background-position: 0 -90px; opacity: 1; display: block\9; }
+.checkbox.disabled.checked .icon-to-fade, .radio.disabled.checked .icon-to-fade { opacity: 0; display: none\9; }
+.checkbox .icon, .checkbox .icon-to-fade, .radio .icon, .radio .icon-to-fade { display: block; height:17px; left: 0; opacity: 1; position: absolute; top: 0; width: 16px; -webkit-transition: opacity 0.1s linear; -moz-transition: opacity 0.1s linear; -o-transition: opacity 0.1s linear; transition: opacity 0.1s linear; -webkit-backface-visibility: hidden; }
+.checkbox .icon, .radio .icon { opacity: 0; top: 0; z-index: 2; display: none\9; }
+.checkbox .icon, .checkbox .icon-to-fade, .radio .icon, .radio .icon-to-fade { background: url("../images/tick-16.png") 0 0 no-repeat; width:20px; height:17px }
+.checkbox.white .icon, .checkbox.white .icon-to-fade { background: url("../images/tick-16.png") 0 -33px no-repeat; width:20px; height:17px; }
+.radio .icon, .radio .icon-to-fade { background-image: url("../images/tick-16.png"); }
+.cps-profile-actions .checkbox .icon, .journalist-actions .checkbox .icon, .tb-actions .checkbox .icon, .tb-actions .checkbox .icon-to-fade, .tb-actions .radio .icon, .tb-actions .radio .icon-to-fade, .journalist-actions .checkbox .icon-to-fade, .journalist-actions .radio .icon, .journalist-actions .radio .icon-to-fade { background: url("../images/tick-16.png") 0 -34px no-repeat; }
+.tb-actions .radio .icon, .tb-actions .radio .icon-to-fade, .journalist-actions .radio .icon, .journalist-actions .radio .icon-to-fade { background-image: url("../images/tick-16.png"); }
+.cps-profile-actions .checkbox.checked .icon, .tb-actions .checkbox.checked .icon, .tb-actions .radio.checked .icon, .journalist-actions .checkbox.checked .icon, .journalist-actions .radio.checked .icon { background-position:0 -51px; opacity: 1; display: block\9; }
+.selectactons .checkbox .icon, .selectactons .checkbox .icon-to-fade, .selectactons .radio .icon, .selectactons .radio .icon-to-fade { background: url("../images/tick-20.png") 0 0 no-repeat; width:20px; height:20px; margin-right:8px; }
+.selectactons .radio .icon, .selectactons .radio .icon-to-fade { background-image: url("../images/tick-20.png"); }
+.selectactons .checkbox.checked .icon, .selectactons .radio.checked .icon { background-position:0 -20px; opacity: 1; display: block\9; }
+.selectactons .checkbox input, .selectactons .radio input { margin-right:8px; }
+/*------------Dropdown flat ui code start here-------------------------*/
+.dk_toggle { overflow: hidden; width: 110px; padding: 0px 10px 5px; text-decoration: none; white-space: nowrap; cursor: pointer; outline: none; -webkit-backface-visibility: hidden; }
+.dk_toggle:active { background-color: none; outline: none; }
+.dk_toggle:active .select-icon { border-left-color: transparent; }
+.select-icon { background-image:url("../images/dd-arr.png"); background-repeat: no-repeat; background-position: 2px 11px; border-radius: 0; height: 100%; position: absolute; right:5px; top: 0; width: 15px; -webkit-backface-visibility: hidden; }
+.dk_open { z-index: 10; }
+.dk_open .dk_toggle { background-color: inherit; }
+.dk_open .dk_toggle .select-icon { background-color: none; border-left-color: transparent; outline: none; }
+.dk_options { padding-top:0px; }
+.dk_options:before { position: absolute; left: 15px; outline: none; width: 0px; left: auto; right: 12px; }
+.dk_options a:hover { background-color: #c4c4c4; color: #fff; }
+.dk_option_current a { background-color: none; }
+.dk_container { outline: none; position: relative; vertical-align: middle; }
+.dk_container.dk_shown { display: inline-block; zoom: 1; *display: inline;
+}
+.dk_container[class*="span"] { float: none; margin-left: 0; }
+.dk_toggle { display: block; position: relative; }
+.dk_open { position: relative; }
+.dk_open .dk_options { margin-top: -1px; opacity: 1; z-index: 10; display: block\9; }
+.dk_open .dk_label { color: inherit; }
+.dk_options { margin-top: -21px; position: absolute; left: 0; opacity: 0; outline: none; width: 130px; z-index: -100; display: none\9; -webkit-backface-visibility: hidden; }
+.dk_options a { display: block; padding:0 10px; }
+.dk_options_inner { overflow: auto; outline: none; position: relative; margin:0px !important; padding:0px; background:#D8D8D8; }
+.dk_touch .dk_options { overflow: hidden; }
+.dk_touch .dk_options_inner { max-height: none; overflow: visible; }
+/*.dk_fouc select { position: relative; top: -99999em; outline: none; visibility: hidden; }*/
+
+
+.popuplist .dk_toggle { background: #fff; color: #9e9e9e; display: block; padding:5px 10px 5px 10px; width:170px; border:1px solid #d9d9d9; }
+.popuplist .dk_options { margin-top:0px; left: 0px; width:170px; border:1px solid #d9d9d9; padding:10px; }
+.popuplist .dk_options a { display:block }
+.popuplist .dk_options a:hover { font-size:14px; font-family: 'open_sansregular'; }
+/*========== Checkbox css section ==========*/
+/*index*/
+input[type=checkbox], input[type=radio] { display: none; }
+input[type=checkbox] + label, input[type=radio] + .radio-lbl { background-position: 0 0; background-repeat: no-repeat; cursor: pointer; display: inline-block; height: 23px; line-height: 23px; padding-left: 30px; font-size:12px; font-family: 'open_sansregular'; color:#6c6b6b; }
+input[type=checkbox]:checked + label, input[type=radio]:checked + .radio-lbl { background-position: left -23px; }
+.css-label, .radio-lbl { background-image:url(../images/radio.png); }
+input[type=radio] + .radio-lbl { float: none; margin-right: 10px; }
+/******Create popup*******/
+.create-popup .css-label, .create-popup .radio-lbl { background-image:url(../images/pop-radio.png); }
+.create-popup input[type=checkbox] + label, .create-popup input[type=radio] + .radio-lbl { width:14px; height:16px; line-height:15px; margin-right: 25px; padding-left: 20px; }
+.create-popup input[type=checkbox]:checked + label, .create-popup input[type=radio]:checked + .radio-lbl { background-position: left -17px; }
+/*side checkbox*/
+.check-btn { display:inline-block; margin-left:20px; }
+.check-btn input[type="checkbox"] + label { background-image:url(../images/classroom/time-check.png); color: #363636; font-family: open_sansregular; font-size: 14px; height: 22px; line-height: 22px; }
+.check-btn input[type="checkbox"]:checked + label { background-position:left -22px; }
+
+.todo-chk.check-btn input[type="checkbox"] + label{height: 22px;}
+/*assign poopup checkbox*/
+.assign-ck input[type="checkbox"] + label,.weeks-chk input[type="checkbox"] + label { background-image:url(../images/classroom/pop-check.png); display:block; width:auto; color:#858585; }
+.assign-ck input[type=checkbox]:checked + label,.weeks-chk input[type=checkbox]:checked + label { background-position: left -14px; }
+/*time checkbox*/
+.time-check input[type="checkbox"] + label { background-image:url(../images/classroom/time-check.png); display:block; width:auto; color:#676767; font-size:18px; height:22px; padding-left:28px; line-height:21px; }
+.time-check input[type=checkbox]:checked + label { background-position: left -22px; }
+/*answer radio & check box css*/
+.create-popup .ans-radio .radio-lbl { background-image:url(../images/classroom/ans-radio.png); width:25px; height:25px !important; }
+.create-popup .ans-radio input[type=radio]:checked + .radio-lbl { background-position: left -25px; }
+.create-popup .ans-radio .check-lbl { background-image:url(../images/classroom/time-check.png); width:25px; height:22px !important; }
+.create-popup .ans-radio input[type=checkbox]:checked + label { background-position: left -22px; }
+/*quiz footer css*/
+.create-popup .ena-radio .check-lbl { background-image:url(../images/classroom/quiz-ck.png); wcolor: #D4D4D3; font-family: 'open_sansregular'; font-size: 12px; height: 20px !important; line-height: 22px; padding-left: 30px; width: auto; }
+.create-popup .ena-radio input[type=checkbox]:checked + label { background-position: left -20px; }
+/*present css*/
+.pres-chk .check-lbl { background-image:url(../images/classroom/present-chk.png); wcolor: #D4D4D3; font-family: 'open_sansregular'; font-size: 12px; height: 25px !important; line-height: 22px; padding-left: 30px; width: auto; }
+.pres-chk input[type=checkbox]:checked + label { background-position: left -25px; }
+/*========== Map icon dd css section ==========*/
+.sel-cnty #demo-htmlselect { width:60px !important; height:42px; display:inline-block; border: 3px solid #F58220; border-radius: 5px; float: left; margin-right: 5px; }
+#demo-htmlselect .dd-select { width:59px !important; background:#fff !important; border:none !important; border-right:1px solid #ccc!important; height:41px !important; }
+#demo-htmlselect .dd-selected { height: 11px; }
+#demo-htmlselect .dd-options { width:200px !important; height: 200px; }
+#demo-htmlselect .dd-option-image, #demo-htmlselect .dd-selected-image { margin:0px 12px 0 0 !important; max-width: 32px !important; max-height: 48px !important; }
+#demo-htmlselect .dd-option, .td2 .dd-option { transition:none !important; }
+#demo-htmlselect .dd-pointer, .td2 .dd-pointer { right: 3px !important; }
+#demo-htmlselect label, .td2 label { font-size: 14px !important; line-height: 20px !important; color:#6c6b6b !important; margin:0; }
+/*top country*/
+.td2 #top-cntry { width:45px !important; height:39px; display:inline-block; border-radius: 5px; float: left; margin-right: 5px; }
+#top-cntry .dd-select { width:45px !important; background:#fff !important; border:none !important; border-right:1px solid #ccc!important; height:39px !important; }
+#top-cntry .dd-selected { height: 11px; padding: 10px 5px; }
+#top-cntry .dd-options { height: 120px; width: 150px !important; }
+#top-cntry .dd-option-image, #top-cntry .dd-selected-image { margin: 2px 12px 0 0 !important; max-height: 16px !important; max-width: 25px !important; }
+/*========== University radio css section ==========*/
+.radio-toolbar input[type="radio"] { display:none; }
+.radio-toolbar label { display:inline-block; background-color:#555454; padding:4px 11px; font-family:Arial; font-size:14px; color:#fff; cursor:pointer; margin:10px 0 10px 10px; border: 3px solid #F58220; border-radius: 5px; padding: 11px 10px; font-size: 16px; }
+.radio-toolbar input[type="radio"]:checked + label { background-color:#444242; }
+/*========== Tiny editor css section ==========*/
+#tinyeditor { border:none; margin:0; padding:0; font-size:14px; height: 200px; resize:none; }
+.tinyeditor { padding:0 1px 1px; font-size:12px; }
+.tinyeditor iframe { border:none; overflow-x:hidden; }
+.tinyeditor-header { padding-top:5px }
+.tinyeditor-header select { float:left; margin-top:5px }
+.tinyeditor-font { background:#D8D8D8; border-radius: 3px; line-height: 25px; }
+.tinyeditor-size { margin:0 3px }
+.tinyeditor-style { margin-right:12px }
+.tinyeditor-divider { float:left; width:1px; height:30px; background:#ccc }
+.tinyeditor-control { background: #D8D8D8 url("../images/icons.png"); border-radius: 3px; cursor: pointer; float: left; height: 30px; margin-right: 5px; width: 34px; }
+.tinyeditor-control:hover { background-color:#fff; background-position:30px 0 }
+.tinyeditor-footer { display:none; }
+.toggle { float:left; background:url(../images/icons.png) -34px 2px no-repeat; padding:9px 13px 0 31px; height:23px; border-right:1px solid #ccc; cursor:pointer; color:#666 }
+.toggle:hover { background-color:#fff }
+.resize { float:right; height:32px; width:32px; background:url(../images/resize.gif) 15px 15px no-repeat; cursor:s-resize; resize:none; }
+.tinyeditor-header .chosen-container-single .chosen-single { border:none; width:115px; background:url(../images/dd-arr.png) no-repeat 90% center #D8D8D8; height:20px; line-height:20px; padding:5px 0; }
+.tinyeditor-header .chosen-container { display:inline-block; width:115px !important; }
+.tinyeditor-header .chosen-search { display:none; }
+.tinyeditor-header .chosen-container-single .chosen-drop { border:1px solid #ccc; }
+#editor { cursor:text; margin:10px; }
+/*==========PrettyPhoto css section==========*/
+
+div.pp_default .pp_nav, div.pp_default .pp_social, div.pp_default .pp_gallery a.pp_arrow_previous, div.pp_default .pp_gallery a.pp_arrow_next, div.pp_default .pp_gallery ul li a, div.pp_default .pp_top, div.pp_default .pp_top .pp_middle, div.pp_default .pp_top .pp_left, div.pp_default .pp_top .pp_right, div.pp_default .pp_bottom, div.pp_default .pp_bottom .pp_left, div.pp_default .pp_bottom .pp_middle, div.pp_default .pp_bottom .pp_right { display:none !important; }
+div.pp_default .pp_content, div.light_rounded .pp_content, div.pp_default .pp_bottom .pp_left, div.pp_default .pp_bottom .pp_middle, div.pp_default .pp_bottom .pp_right, div.pp_default .pp_content_container .pp_right, div.pp_default .pp_top .pp_left, div.pp_default .pp_top .pp_middle, div.pp_default .pp_top .pp_right, div.pp_default .pp_content_container .pp_left, div.pp_default .pp_expand { background:none !important; }
+a.pp_close { right:25px; top:33px; text-indent:-10000px }
+div.pp_default .pp_close { background:url(../images/prettyPhoto/close_icon.png) no-repeat !important; }
+/*========== Calender right panel radio css section ==========*/
+.accept input[type="radio"] { display:none; }
+.accept label { display:inline-block; background-color:#999; padding:4px 11px; color:#fff; cursor:pointer; margin:0 0 0 10px; border-radius: 3px; padding: 4px 10px; font-size: 10px; }
+.accept input[type="radio"]:checked + label, .accept label:hover { background-color:#f67e03; }
+.accept-conform { float: left; font-family: open_sanssemibold; font-size: 13px; line-height:20px; }
+/********************** Calender page Date picker ************************/
+
+.req-calender .ui-datepicker .ui-datepicker-header { padding: .2em 0; background-color:transparent; }
+.req-calender .ui-datepicker th { background-color:transparent; border:none; color:#545454; padding:0.5em 0.3em; font-size:15px; font-family: 'open_sanssemibold'; }
+.req-calender .ui-datepicker-calendar tbody { background-color:transparent; color:#9a9a9a; }
+.req-calender .ui-datepicker td { padding:0; }
+.req-calender .ui-datepicker td span, .ui-datepicker td a { color:#9A9A9A; font-size:10px; padding:9px; }
+.req-calender .ui-datepicker td a:hover { color:#fff; }
+.req-calender .ui-datepicker .ui-datepicker-prev, .req-calender .ui-datepicker .ui-datepicker-next { top: 2px; cursor:pointer; }
+.req-calender .ui-datepicker .ui-datepicker-prev-hover, .req-calender .ui-datepicker .ui-datepicker-next-hover { top: 2px; }
+.req-calender .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-prev-hover { background: url("../images/rgt-cal-arrow.png") no-repeat 6px center; width: 16px; right:20px; }
+.req-calender .ui-datepicker .ui-datepicker-next, .ui-datepicker .ui-datepicker-next-hover { right: 2px; background: url("../images/rgt-cal-arrow.png") no-repeat -10px center; width: 16px; }
+.req-calender .ui-datepicker .ui-datepicker-prev span, .req-calender .ui-datepicker .ui-datepicker-next span { display: block; position: absolute; left: 50%; margin-left: -8px; top: 50%; margin-top: -8px; }
+.req-calender .ui-state-highlight { border-radius:50%; background-color:#f58b1b; color:#fff; }
+.req-calender .ui-state-highlight.ui-state-active { color:#fff !important; border-radius:50%; background-color:#f58b1b; }
+.req-calender .ui-datepicker-title { text-align:left; margin:0 0 0 13px; color:#a8a8a8; }
+.selecteddate { color: #F67F04; font-size: 18px; margin-left: 5px; }
+/*** Calender pageFull Calender ***/
+
+.fc-border-separate thead { background:#fda55d; height:30px; line-height:30px; color:#fff; }
+.fc-border-separate th { border-left:none !important; }
+.fc-event { position:relative; }
+/*.fc-event:hover .eventcallout{display:block;}*/
+.eventcallout { position:absolute; top:18%; left:0;/*display:none;*/ background:#fff; padding:10px; box-shadow:0 0 3px #999; border-radius:2px; width:200px; }
+.eventcallout:after { position:absolute; content:""; background:url(../images/calender-downarrow.png) center bottom; width:13px; height:9px; bottom:-9px; left:45%; }
+.assign-title { color:#f68121; margin-bottom:15px; }
+.submittimedate { color:#6a6a6a; font-size:11px; margin-bottom:20px; }
+.del-edit { border-top:1px solid #ccc; padding:5px 0; }
+.del-edit .sub-btn { float:right; }
+.del-edit follow { float:left; }
+.del-edit .sub-btn, .del-edit .follow { width:40px; padding:2px 5px; height:20px; line-height:20px; margin:0; }
+.close { position:absolute; top:5px; right:5px; }
+.todochecklist input[type=checkbox] + label, .todochecklist input[type=radio] + .radio-lbl { background-position: 0 0; background-repeat: no-repeat; cursor: pointer; display: inline-block; height: 16px; line-height: 16px; font-size:16px; font-family: 'open_sansregular'; color:#6c6b6b; }
+input[type=checkbox]:checked + label, input[type=radio]:checked + .radio-lbl { background-position: left -17px; }
+/*** Create entity patterns radio ***/
+.reoccurencepattern .css-label, .reoccurencepattern .radio-lbl { background-image:url(../images/pop-radio.png); }
+.reoccurencepattern input[type=checkbox] + label, .reoccurencepattern input[type=radio] + .radio-lbl { width:14px; height:16px; line-height:16px; margin-right: 25px; padding:0 20px; }
+
+#reccr .radio-lbl{background-image:url(../images/calender/cal-radio.png);}
+#reccr .check-lbl{background-image:url(../images/calender/cal-check.png);}
+#reccr input[type="checkbox"]:checked + label{background-position:left -17px;}
+/****Msg inbox check****/
+.msg-chk .check-lbl{background-image:url(../images/messages/nohover-chk.png);width:15px; height:15px; padding:0;}
+.msg-chk input[type="checkbox"]:checked + label,.msginbox-lst li:hover .msg-chk input[type="checkbox"]:checked + label,.msginbox-lst li.active .msg-chk input[type="checkbox"]:checked + label{background-position:left -15px;}
+.msginbox-lst li:hover .msg-chk .check-lbl,.msginbox-lst li.active .msg-chk .check-lbl{background-image:url(../images/messages/onhover-chk.png);width:15px; height:15px;}

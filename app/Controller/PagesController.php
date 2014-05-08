@@ -37,7 +37,12 @@ class PagesController extends AppController {
  */
 	public $uses = array();
 
-/**
+        public function beforeFilter() {
+            parent::beforeFilter();
+            $this->layout = 'ajax';
+        }
+
+        /**
  * Displays a view
  *
  * @param mixed What page to display
@@ -47,7 +52,6 @@ class PagesController extends AppController {
  */
 	public function display() {
 		$path = func_get_args();
-
 		$count = count($path);
 		if (!$count) {
 			return $this->redirect('/');

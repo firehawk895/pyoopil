@@ -1,0 +1,78 @@
+/* Header */
+.header { padding:10px; }
+.notifications { position:relative; display:inline-block; margin:10px 20px; vertical-align:top; }
+.noti { background:#ff8201; border-radius: 5px; color: #FFFFFF; font-family: 'open_sansbold'; font-size: 10px; left: 25px; padding: 1px 10px; position: absolute; top: -10px; }
+.left-bg { background:url(../images/menu-bg.png) repeat top left; position:relative }
+.menu-left { float:left; width:20%; color:#fff; text-transform:uppercase; }
+.menu-left li a { display: block; line-height: 25px; padding: 20px 60px; position: relative; }
+.menu-left li:hover, .menu-left li.active { background:#f67e02; }
+.menu-left a span { background:url(../images/menu.png) 0 0 no-repeat; display: inline-block; height: 35px; left: 15px; position: absolute; top: 15px; width: 35px; }
+.menu-left a span.room-icon { background-position:0 0; }
+.menu-left a span.class-icon { background-position:0 -35px; }
+.menu-left a span.ins-icon { background-position:0 -70px; }
+.menu-left a span.grp-icon { background-position:0 -105px; }
+.menu-left a span.hub-icon { background-position:0 -140px; }
+.menu-left a span.acc-icon { background-position:0 -175px; }
+.logout { position:absolute; bottom:10px; left:15px; }
+.content-right { min-height:800px; float:left; width:80% }
+.bg-nxt { background:#e6e6e6; }
+.right-nav { background:#666666; color:#cdcdcd; }
+.right-nav li { display:inline-block; padding:18px; }
+.right-nav li.active, .right-nav li:hover { color:#fff; }
+.right-content { padding:20px; }
+.files { float:right; margin-top:60px; border-radius:2px; }
+.follow-container { margin-top:10px; }
+.follow-container li { display:inline-block; margin:5px; }
+.follow-box { box-shadow: 0 0 4px 1px #CCCCCC; width:260px; background:#fff; }
+.follow-left { color: #B2B2B2; float: left; font-size: 12px; padding: 10px; width: 75px; }
+.follow-right { float: right; padding: 10px 0; width: 165px; }
+.follow-img { border-radius:50%; max-width:62px; max-height:62px; border:3px solid #d9d9d9; }
+.online { background:url(../images/online.png) no-repeat 0 0; width:8px; height:8px; display:inline-block; margin:0 5px 0 8px; }
+.off { background-position:0 -8px; }
+.add-icon { background:url(../images/add-icon.png) no-repeat 0 0; width:23px; height:16px; display:block; position:absolute; right:5px; top:5px; }
+.follow-pep { background-position:0 -16px; }
+.cname { font-family: 'open_sanssemibold'; color:#444444; line-height:30px; }
+.cpost { font-family: 'open_sanslight'; font-size:12px; }
+.cclg { font-size:10px; line-height:30px; }
+.follow-footer { background:#666666; }
+.follow-footer a { border-right: 1px solid #7d7d7d; display: inline-block; padding: 5px 55px; }
+.follow-footer a.last { border:none; }
+/* Dialog */
+/*popup window*/
+
+
+.ui-widget-overlay.custom-overlay { background-color: black; background-image: none; opacity: 0.5; z-index: 55; }
+.fakewindowcontain .ui-widget-overlay { position: absolute; }
+.pop-wind { background:#FFFFFF; width:600px; }
+.pop-head { background:#4c4c4c; padding:5px 10px; font-size:16px; color:#fff; }
+.icon-cross { background: url(../images/dialog-cross.png) no-repeat right 5px; width:16px; height:20px; text-indent:-9999px; z-index:3; display:block; }
+.pop-content { background:#fff; height:450px; }
+/*browse*/
+.attachmentbox { padding:15px 10px; }
+.attachmentbox fileinput-button { position: relative; overflow: hidden; display:block; }
+.userimage .changepicsbtn { border:1px solid #D9D9D9; color: #fff; display: block; font-size: 12px; position: relative; width: 290px; height:38px; }
+.userimage .changepicsbtn span { background: #818181; line-height: 38px; padding: 0 10px; position: absolute; right: 0; z-index: 0; }
+#my-button { background: #818181; color: #FFFFFF; font-size: 12px; height: 38px; left: 220px; line-height: 35px; position: absolute; text-align: center; top: 0; width: 90px; z-index: 1; }
+#file-upload-cont { border: 1px solid #D9D9D9; cursor: pointer; margin: 20px; position: relative; width: 310px; }
+#overlay { border: none; cursor: pointer; height: 18px; left: 0; padding: 10px; position: absolute; width: 200px; z-index: 1; color:#9e9e9e; font-size:12px; }
+#original { cursor: pointer; height: 38px; opacity: 0; position: relative; width: 306px; z-index: 100; }
+.attach-doc { background:#fff; width:97%; margin:10px; }
+.doc-heading { background:#666666; color:#fff; font-size:16px; padding:10px; }
+.doc-list li { display:inline-block; border:1px solid #bdbdbd; color:#444444; font-size:16px; text-align:center; margin:20px; }
+.doc-top { padding:40px; }
+.doc-end { background:#e4e4e4; padding:10px; font-size:9px; }
+
+/* Quiz Popup */
+.quiz-hd{ margin:15px 0 0 0; padding:0px; display:block;}
+#quizpopup{ display:none;}
+.timer{background: url("../images/clock_icon.png") no-repeat scroll left 0 rgba(0, 0, 0, 0);color: #FFFFFF;float: right;line-height: 25px;  margin: 10px 0 0;
+  padding: 0 0 0 30px;}
+.quizcontent{ padding:15px;}
+.quizcontent h4{ font-size:24px;font-family: 'open_sanssemibold'; color:#f67e02; margin-bottom:10px;}
+.quizcontent p{ margin-bottom:15px;}
+.quizcontent .note{ width:100%; text-align:center; font-size:10px; margin:20px 0 0 0;}
+.quizcontent .buttonouter{ width:100%; margin:20px auto; text-align:center;}
+.quizpopup .pop-content{background:#fff; height:inherit;}
+
+
+

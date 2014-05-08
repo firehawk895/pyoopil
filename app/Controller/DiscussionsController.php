@@ -4,6 +4,7 @@
  * (c) Pyoopil Education Technologies
  * TODO : Add detailed licence headers
  */
+App::uses('AppController', 'Controller');
 
 class DiscussionsController extends AppController {
 

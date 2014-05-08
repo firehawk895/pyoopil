@@ -158,8 +158,8 @@ class Discussion extends AppModel {
     );
 
     /**
-     * @param type $discussion_id
-     * @return type
+     * @param int $discussion_id
+     * @return mixed
      */
     public function getDiscussion($discussion_id) {
         /**

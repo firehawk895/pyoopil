@@ -9,6 +9,12 @@ App::uses('AppModel', 'Model');
  * @property Topic $Topic
  */
 class Library extends AppModel {
+    
+    /**
+     * Notes:
+     * On addition of files, getSize() and add to fileSize db field.
+     * allow/dissallow file upload if Library->fileSize is not exceeded
+     */
 
     /**
      * belongsTo associations
@@ -65,5 +71,24 @@ class Library extends AppModel {
             return false;
         }
     }
-
+    
+    
+    /**
+     * 
+     * @param int $classroomId
+     * @return mixed topics all assorted library data
+     */
+    public function index($classroomId) {
+        
+    }
+    
+    /** 
+     * Update the topic
+     * @param int $libraryId
+     * @param int $topicId
+     * @param String $topicText
+     */
+    public function editTopic($libraryId , $topicId , $topicText) {
+        
+    }
 }

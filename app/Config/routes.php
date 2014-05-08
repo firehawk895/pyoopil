@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -20,24 +21,58 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 /**
+ * Pyoopil routes
+ */
+Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+Router::connect('/feedback', array('controller' => 'pages', 'action' => 'display', 'feedback'));
+//Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
+
+/**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+//Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
-	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
  */
-	CakePlugin::routes();
+//CakePlugin::routes();
 
+/**
+ * @overriding CakeDc Routes
+ */
+Router::connect('/users', array('controller' => 'app_users'));
+Router::connect('/users/index/*', array('controller' => 'app_users'));
+Router::connect('/users/users/:action/*', array('controller' => 'app_users'));
+Router::connect('/users/:action/*', array('controller' => 'app_users'));
+Router::connect('/login/*', array('controller' => 'app_users', 'action' => 'login'));
+Router::connect('/logout/*', array('controller' => 'app_users', 'action' => 'logout'));
+Router::connect('/register/*', array('controller' => 'app_users', 'action' => 'add'));
+
+/**
+ * CakeDc Routes - Manually
+ */
+//Router::connect('/users', array('plugin' => 'users', 'controller' => 'users'));
+//Router::connect('/users/index/*', array('plugin' => 'users', 'controller' => 'users'));
+//Router::connect('/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
+//Router::connect('/users/users/:action/*', array('plugin' => 'users', 'controller' => 'users'));
+//Router::connect('/login/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'login'));
+//Router::connect('/logout/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'logout'));
+//Router::connect('/register/*', array('plugin' => 'users', 'controller' => 'users', 'action' => 'add'));
+
+/**
+ * Classrooms
+ */
+//Router::connect('/Classrooms/*', array('controller' => 'classrooms'));
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.
  */
-	require CAKE . 'Config' . DS . 'routes.php';
+require CAKE . 'Config' . DS . 'routes.php';
+
