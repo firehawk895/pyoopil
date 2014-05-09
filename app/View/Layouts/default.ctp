@@ -66,11 +66,9 @@
         <section class="rightwrapper">
             <!-- Right Sub Navigation -->
             <section class="pagesubnav">
-                <div class="clearfix">
-                    <?php
-                    echo $this->fetch('pagesubnav');
-                    ?>
-                </div>
+                <?php
+                echo $this->fetch('pagesubnav');
+                ?>
             </section>
             <!-- Right Content -->
             <section class="pagecontent clearfix">

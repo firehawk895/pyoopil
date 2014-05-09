@@ -64,7 +64,7 @@ input[type=checkbox]:checked + label, input[type=radio]:checked + .radio-lbl { b
 input[type=radio] + .radio-lbl { float: none; margin-right: 10px; }
 /******Create popup*******/
 .create-popup .css-label, .create-popup .radio-lbl { background-image:url(../images/pop-radio.png); }
-.create-popup input[type=checkbox] + label, .create-popup input[type=radio] + .radio-lbl { width:14px; height:16px; line-height:15px; margin-right: 25px; padding-left: 20px; }
+.create-popup input[type=checkbox] + label, .create-popup input[type=radio] + .radio-lbl { width:14px; height:16px; line-height:15px; margin-right: 25px; padding-left: 25px; }
 .create-popup input[type=checkbox]:checked + label, .create-popup input[type=radio]:checked + .radio-lbl { background-position: left -17px; }
 /*side checkbox*/
 .check-btn { display:inline-block; margin-left:20px; }

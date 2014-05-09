@@ -1,3 +1,4 @@
+
 google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
 	  google.setOnLoadCallback(piechart);
@@ -47,7 +48,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 
 	//bar chart
-      function piechart() {
+      function barchart() {
          var data = google.visualization.arrayToDataTable([
 		['Answer', 'Reply'],
         ['Answer 1', 30],

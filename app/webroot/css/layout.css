@@ -8,7 +8,7 @@ body { height: 100%; max-height: 100%; background-color:#fff; font-family: 'open
 .content-wrapper { width:710px; margin:0 auto; }
 .img-wrapper { height: 122px; width: 105px; }
 .img-wrapper img { height: 122px; width: 100%; }
-.message-wrapper{width:100%;}
+.message-wrapper { width:100%; }
 /***************************************** 
 				Header Section
 ******************************************/
@@ -72,7 +72,7 @@ header { background:#fff; height:80px; position:fixed; z-index:2; width:100%;/* 
 .chat { background-position:-72px -7px; }
 .noti { background-position:-130px -7px; }
 .msg { background-position:-187px -7px; }
-.notification_details { background:  #F8F8F8; border-top: 80px solid #CCCCCC; position: absolute; right: 0; top: -31px; width: 275px; z-index: -2; min-height:100%;border-left: 1px solid #CCCCCC; }
+.notification_details { background:  #F8F8F8; border-top: 80px solid #CCCCCC; position: absolute; right: 0; top: -31px; width: 275px; z-index: -2; min-height:100%; border-left: 1px solid #CCCCCC; }
 /*Tabs*/
 
 
@@ -156,7 +156,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 .ins-head { color:#ff860a; font-family: 'open_sanssemibold'; font-size: 11px; }
 .sub-head { color:#8c8c8c; font-family: 'open_sanslight'; font-size:9px; }
 /*group sub*/
-.grp-mbox { height:95px; border-radius:50%; line-height: 22px; border:2px solid #5a5959; width:95px; margin-left:18px;}
+.grp-mbox { height:95px; border-radius:50%; line-height: 22px; border:2px solid #5a5959; width:95px; margin-left:18px; }
 .grp-mbox:hover { border:2px solid #ee7a03; }
 .grplk-icon { background:url(../images/lock-grp.png) no-repeat center; display:block; width:16px; height:19px; margin:0 auto; padding:13px; }
 .grps-icon { background:url(../images/grp-pep.png) no-repeat center; display:block; width:40px; height:23px; margin: 15px auto 0; position: relative; }
@@ -177,31 +177,27 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 .pre-contact .bx-wrapper .bx-viewport { background:none; border:none; box-shadow:none; /*height:450px!important;*/ }
 .pre-contact .bx-wrapper .bx-next, .pre-contact .bx-wrapper .bx-next:hover { background-position: -104px -32px; bottom: -25px; left: 60px; }
 .pre-contact .bx-wrapper .bx-prev, .pre-contact .bx-wrapper .bx-prev:hover { background-position: -104px 0; left: 55px; top: -20px; margin-top:-5px; }
-
 /***************************************** 
 				SCROLL in menu 
 ******************************************/
 
-.scroll-pane { float:left;overflow: auto; width:100%;margin-left:28px; min-height:120px;position:relative;display:inline-block}	
-	.scroll-content-item {margin-bottom: 5px;}
-	
-	/*Scroll Bar Style*/
-	.scroll-content {position:absolute;top:0;left:0}
-	.slider-wrap{position:absolute;right:0;top:0;background-color:lightgrey;width:1px;border-left:1px solid gray;}
-	.slider-vertical{position:relative;height:100%}
-	.ui-slider-handle{width:20px;height:10px;margin:0 auto;background-color:darkgray;display:block;position:absolute}
-	.ui-slider-handle img{border:none}
-	.scrollbar-top{position:absolute;top:0;}
-	.scrollbar-bottom{position:absolute;bottom:0;}
-	.scrollbar-grip{position:absolute;top:50%;margin-top:-6px;}
-	.ui-slider-range{position:absolute;width:100%;background-color:lightgrey}
-	
-	/*Arrows Style*/
-	.arrow_up,.arrow_down {margin-left:38%; display:inline-block;}
-	.arrow_up:hover,.arrow_down:hover {cursor:pointer;}
-	.arrow_up > img {margin-bottom: 5px;}
-	.arrow_down > img {margin-top: 10px;}
-
+.scroll-pane { float:left; overflow: auto; width:100%; margin-left:28px; min-height:120px; position:relative; display:inline-block }
+.scroll-content-item { margin-bottom: 5px; }
+/*Scroll Bar Style*/
+	.scroll-content { position:absolute; top:0; left:0 }
+.slider-wrap { position:absolute; right:0; top:0; background-color:lightgrey; width:1px; border-left:1px solid gray; }
+.slider-vertical { position:relative; height:100% }
+.ui-slider-handle { width:20px; height:10px; margin:0 auto; background-color:darkgray; display:block; position:absolute }
+.ui-slider-handle img { border:none }
+.scrollbar-top { position:absolute; top:0; }
+.scrollbar-bottom { position:absolute; bottom:0; }
+.scrollbar-grip { position:absolute; top:50%; margin-top:-6px; }
+.ui-slider-range { position:absolute; width:100%; background-color:lightgrey }
+/*Arrows Style*/
+	.arrow_up, .arrow_down { margin-left:38%; display:inline-block; }
+.arrow_up:hover, .arrow_down:hover { cursor:pointer; }
+.arrow_up > img { margin-bottom: 5px; }
+.arrow_down > img { margin-top: 10px; }
 /***************************************** 
 				Logout Btn 
 ******************************************/
@@ -251,3 +247,8 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 .pop-content { background:#fff; height:450px; }
 /*hide popup*/
 #dialog, #quizpopup, #quizpopup2, .notification_details, #upload-dialog, #assign-dialog, #rest-dialog, .doc-popup, .enga-hide, .dock-bk.lastli, .clk-tt, .contentblock, .cate, #quizdialog { display:none; }
+/***************************************** 
+				Loading
+******************************************/
+.loader { bottom: -1px; margin-left: 100px; position: relative;display:none;}
+textarea{color:#666 !important;}

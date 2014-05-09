@@ -5,6 +5,7 @@ $(document).ready(function() {
         $(".newjoin").remove();
 		$(".accessclass").show();
     });
+
 	//dropdown
 	$(".arr-dd").hide();
 	$(".dd-click").click(function () {
@@ -59,6 +60,36 @@ $(document).ready(function() {
 		$(".sel-topic").text(sel_topic);
 		$(".seltop-dd").toggle();
 	});
+
+
+	//file size test
+	$('.chk-file').click( function() {
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
+        //get the file size and file type from file input field
+        var fsize = $('.i_file')[0].files[0].size;
+        var ftype = $('.i_file')[0].files[0].type;
+        var fname = $('.i_file')[0].files[0].name;
+        
+       switch(ftype)
+        {
+            case 'image/png':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                alert("Acceptable image file!");
+                break;
+            default:
+                alert('Unsupported File!');
+        }
+
+    }else{
+        alert("Please upgrade your browser, because your current browser lacks some new features we need!");
+    }
+});
+
+
 
 	 //close dropdown
 	$(document).click(function (e) {
@@ -702,7 +733,6 @@ function scrollDown(){
 
 //Custom select
 $(".chosen-select").chosen({allow_single_deselect:true});$('select.chosen-select').customSelect();
-
 
 
 
