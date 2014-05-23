@@ -4,6 +4,7 @@
  * (c) Pyoopil EduTech 2014
  */
 App::uses('AppController', 'Controller');
+App::uses('DateConvertor', 'Lib/Custom');
 
 /**
  * Killer Notes, TODO:
@@ -16,16 +17,48 @@ App::uses('AppController', 'Controller');
  * @author useruser
  */
 class ClassroomsController extends AppController {
-    //put your code here
+//put your code here
 
     /**
      * Route : /classrooms
      * display all classroom tiles
      */
     public function index() {
-        $this->layout = 'default';
+//        $this->layout = 'default';
+        /**
+         * Better approach would be the element classroom_subnav.ctp
+         * be responsible for fetching this data.
+         * That would mean to use requestAction() - which is expensive
+         * (extra page requests). So this is why the following is here:
+         */
+//        $this->set('campuses', $this->Classroom->Campus->find('list'));
+//        $this->set('departments', $this->Classroom->Department->find('list'));
+//        $this->set('degrees', $this->Classroom->Degree->find('list'));
+//        $this->Classroom->getClassroomIdWithCode('YmU7qf');
+
+        $campuses = $this->Classroom->Campus->find('list');
+        $departments = $this->Classroom->Department->find('list');
+        $degrees = $this->Classroom->Degree->find('list');
+
+        $this->set(compact('campuses', 'departments', 'degrees'));
+        /**
+         * TODO:
+         * An ajax population of degrees based on departments, based on campus
+         * is ideal, and really cool.
+         */
         /**
          * call $this->Classroom->displayTiles()
+         */
+        $this->set('tileData', $this->Classroom->displayTiles(AuthComponent::user('id')));
+    }
+    
+    /**
+     * Render a view for a particular classroom
+     * @param type $classroomId
+     */
+    public function view($classroomId) {
+        /**
+         * Redirect to classrooms/discussions at route level
          */
     }
 
@@ -35,34 +68,82 @@ class ClassroomsController extends AppController {
      * @param type $classroomId
      */
     public function display($classroomId) {
-        //Check Authorized for classroomId
-        //of logged in user with $classroomId
-        //redirect to Classroom's Discussions
+//Check Authorized for classroomId
+//of logged in user with $classroomId
+//redirect to Classroom's Discussions
     }
 
     /**
      * Route : /classrooms/:id-:slug/create
      */
+//    public function add() {
+//        //shit don't work
+////        $this->request->allowMethod('ajax','post');
+////        $this->autoRender(false);
+////        $this->layout = 'myajax';
+//        
+//        if ($this->request->is('post')) {
+//            $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
+//            $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
+////            $this->request->data['Classroom']['is_private'] = true;
+//
+//            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
+//                $this->Session->setFlash('Classroom sucessfully created');
+//                
+//                $this->Classroom->id = $this->Classroom->getLastInsertID();
+//                
+//                $classroomName = $this->Classroom->field('title');
+//                $passCode = $this->Classroom->field('access_code');
+////                debug($classroomName);
+////                debug($passCode);
+////                die();
+//                
+//                $this->set($classroomName);
+//                $this->set($passCode);
+//                
+//            } else {
+//                $this->Session->setFlash('One or more processes failed');
+//                echo "badbad";
+//            }
+//
+//            //populate hidden div with succeful creation
+//            //redirect to classroom successfully created popup
+//            //whatever
+//        }
+//    }
     public function add() {
-        if ($this->request->is('post')) {
-            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
-                $this->Session->setFlash('Classroom sucessfully created');
-            } else {
-                $this->Session->setFlash('One or more processes failed');
-            }
+        $this->layout = 'myajax';
+//        $this->request->allowMethod('post');
+//        $this->autoRender = false;
 
-            //populate hidden div with succeful creation
-            //redirect to classroom successfully created popup
-            //whatever
+        if ($this->request->is('post')) {
+//            debug($this->request->data);
+//            die();
+            $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
+            $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
+//
+            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
+                $this->Session->setFlash('Totally Successful');
+                $this->Classroom->id = $this->Classroom->getLastInsertID();
+////                
+                $this->set('title', $this->Classroom->field('title'));
+                $this->set('passCode', $this->Classroom->field('access_code'));
+                $this->set('isPrivate', $this->Classroom->field('is_private'));
+            }
+        } else {
+            
         }
-        /**
-         * TODO : Ajax populate for the context of logged in user
-         */
-        $this->set('campuses', $this->Classroom->Campus->find('list'));
-        $this->set('departments', $this->Classroom->Department->find('list'));
-        $this->set('degrees', $this->Classroom->Degree->find('list'));
-        //show create form 
     }
+
+//    public function add() {
+//        $this->autoRender = false;
+//
+//        $test = array(
+//            'classroomName' => 'test',
+//            'classroomCode' => 'test2'
+//        );
+//        echo json_encode($test);
+//    }
 
     /**
      * Route : /classrooms/:id-:slug/create
@@ -71,18 +152,79 @@ class ClassroomsController extends AppController {
         if ($this->request->is('post')) {
 
 
-            //redirect to index or requests?
+//redirect to index or requests?
         }
-        //show invite form
+//show invite form
     }
 
-    public function testcases() {
+    public function test() {
+        $this->layout = 'ajax';
         /**
          * WORKING:
          * debug($this->Classroom->displayTiles('1'));
          * debug($this->Classroom->getTiles('1')); //protected
          * debug($this->Classroom->getEducatorName('2'));
          */
+    }
+
+    /**
+     * Join a classroom provided access code
+     */
+    public function joinWithCode() {
+        $this->layout = "myajax";
+//        $this->render('joinWithCode');
+//        $this->autoRender = false;
+//        echo "Sasdas";
+//        echo $this->modelClass;
+//                $this->render('elements/ajaxerror');
+        if ($this->request->is('post')) {
+////            echo $this->request->data['Classroom']['access_code'];
+            $classroomId = $this->Classroom->getClassroomIdWithCode($this->request->data[$this->modelClass]['access_code']);
+////            echo json_encode($classroomId);
+////            echo debug(isset($classroomId));
+////            
+//////            return json_encode($classroomId);
+            if (!isset($classroomId)) {
+                $message = array(
+                    'error' => 'Invalid Access Code'
+                );
+                $this->response->statusCode(400);
+                $this->response->body(json_encode($message));
+                return $this->response;
+            } else {
+                $response = $this->Classroom->UsersClassroom->joinClassroom(AuthComponent::user('id'), $classroomId, false);
+//                echo $response['message'];
+//                $response['status'] = true;
+                if ($response['status']) {
+                    $tilex = $this->Classroom->displayLatestTile(AuthComponent::user('id'));
+                    $this->set('tile', $tilex);
+                    /**
+                     * dont "return" otherwise dispatcher flow is messed up.
+                     */
+                } else {
+                    $message = array(
+                        'error' => 'You are already part of this classroom'
+                    );
+                    $this->response->statusCode(400);
+                    $this->response->body(json_encode($message));
+                    return $this->response;
+                }
+            }
+        }
+    }
+
+    public function testmenow() {
+//        $test = $this->Classroom->getClassroomIdWithCode('uEcr90s');
+//        debug($test);
+//        debug(isset($test));
+//        $this->Classroom->UsersClassroom->joinClassroom(AuthComponent::user('id') , '3' , false);
+//        $test = null;
+//        debug(isset($test));
+//        echo AuthComponent::user('id');
+//        die();
+//        debug($this->Classroom->getTile(AuthComponent::user('id')));
+        debug($this->Classroom->displayLatestTile(AuthComponent::user('id')));
+        die();
     }
 
 }

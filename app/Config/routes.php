@@ -21,10 +21,53 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 /**
+ * Parse Extensions
+ */
+Router::parseExtensions(array('html', 'json'));
+/**
  * Pyoopil routes
  */
 Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 Router::connect('/feedback', array('controller' => 'pages', 'action' => 'display', 'feedback'));
+Router::connect('/test', array('controller' => 'classrooms', 'action' => 'test'));
+//-------------------------Inside classroom---------------------------------------------------------------------
+Router::connect(
+    '/Classrooms/:id/:controller',
+    array('action' => 'index'),
+    array(
+        'pass' => array('id'),
+        'id' => '[0-9]+'
+    )
+);
+//Router::connect(
+//        '/classrooms/:id/Discussions', 
+//        array('controller' => 'discussions', 'action' => 'index'), 
+//        array(
+//            'pass' => array('id'),
+//            'id' => '[0-9]+'
+//        )
+//);
+//Router::connect(
+//        '/classrooms/:id', 
+//        array('controller' => 'discussions', 'action' => 'index'), 
+//        array(
+//            'pass' => array('id'),
+//            'id' => '[0-9]+'
+//        )
+//);
+//Router::connect(
+//        '/classrooms/:id/Announcements', 
+//        array('controller' => 'announcements', 'action' => 'index'),
+//        array(
+//            'pass' => array('id'),
+//            'id' => '[0-9]+'
+//        )
+//);
+//--------------------------------------------------------------------------------------------------------------
+Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
+Router::connect('/Classrooms/join', array('controller' => 'classrooms', 'action' => 'joinWithCode'));
+Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
+Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => 'index'));
 //Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
 
 /**

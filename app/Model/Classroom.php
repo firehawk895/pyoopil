@@ -140,6 +140,7 @@ class Classroom extends AppModel {
 
     /**
      * create classroom popup:
+     * $userId creates a classroom and joins it as an educator.
      * @param int $userId
      * @param mixed $data $request->data 
      */
@@ -149,7 +150,6 @@ class Classroom extends AppModel {
          * No Initialization Required for:
          * Discussions, Announcements, People, Submissions, Reports
          */
-        
         /**
          * Possible design consideration:
          * Methods have been broken down granularly,
@@ -203,6 +203,8 @@ class Classroom extends AppModel {
         $options['conditions'] = array(
             'user_id' => $userId,
         );
+        
+        $options['order'] = 'UsersClassroom.created DESC';
 
         $dump = $this->UsersClassroom->find('all', $options);
         return $dump;
@@ -215,27 +217,95 @@ class Classroom extends AppModel {
     public function displayTiles($userId) {
         /**
          * Data contract:
-         * isTeaching
-         * isPrivate
-         * isRestricted
-         * courseTitle
+         * is_teaching
+         * is_private
+         * is_restricted
+         * title
          * educatorName
          * campusName
-         * attendingCount
+         * users_classroom_count
          */
         $dumps = $this->getTiles($userId);
         $i = 0;
         $tileData = array();
         foreach ($dumps as $dump) {
-            $tileData[$i]['isTeaching'] = Hash::get($dump, 'UsersClassroom.is_teaching');
-            $tileData[$i]['isPrivate'] = Hash::get($dump, 'Classroom.is_private');
-            $tileData[$i]['isRestricted'] = Hash::get($dump, 'UsersClassroom.is_restricted');
-            $tileData[$i]['courseTitle'] = Hash::get($dump, 'Classroom.title');
+            $tileData[$i]['id'] = Hash::get($dump, 'Classroom.id');
+            $tileData[$i]['is_teaching'] = Hash::get($dump, 'UsersClassroom.is_teaching');
+            $tileData[$i]['is_private'] = Hash::get($dump, 'Classroom.is_private');
+            $tileData[$i]['is_restricted'] = Hash::get($dump, 'UsersClassroom.is_restricted');
+            $tileData[$i]['title'] = Hash::get($dump, 'Classroom.title');
             $tileData[$i]['educatorName'] = $this->getEducatorName(Hash::get($dump, 'Classroom.id'));
             $tileData[$i]['campusName'] = Hash::get($dump, 'Classroom.Campus.name');
-            $tileData[$i]['attendingCount'] = Hash::get($dump, 'Classroom.users_classroom_count');
+            $tileData[$i]['users_classroom_count'] = Hash::get($dump, 'Classroom.users_classroom_count');
             $i++;
         }
+        return $tileData;
+    }
+
+    /**
+     * TODO: Cache the query for use in both side Nav and main tiles
+     * get raw db data for all classrooms attended/taught by $userId
+     * @param int $userId 
+     */
+    protected function getLatestTile($userId) {
+
+        /**
+         * cakePhp ORM has issues:
+         * Campus fields will be ignored if specific
+         * fields are selected from UsersClassroom
+         * Analyze generated query and you'll know what I mean
+         * Can't use:
+         * $options['fields'] = array(
+         *   'is_teaching', 'is_restricted'
+         * );
+         */
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
+                'Campus' => array(
+                    'fields' => array('id', 'name')
+                )
+            ),
+        );
+
+        $options['conditions'] = array(
+            'user_id' => $userId,
+        );
+
+        $options['order'] = 'UsersClassroom.created DESC';
+
+        $dump = $this->UsersClassroom->find('first', $options);
+        return $dump;
+    }
+
+    /**
+     * Formatted data for classroom tiles
+     * @param int $userId 
+     */
+    public function displayLatestTile($userId) {
+        /**
+         * Data contract:
+         * is_teaching
+         * is_private
+         * is_restricted
+         * title
+         * educatorName
+         * campusName
+         * users_classroom_count
+         */
+        $dump = $this->getLatestTile($userId);
+//        $i = 0;
+        $tileData = array();
+//        foreach ($dumps as $dump) {
+        $tileData['is_teaching'] = Hash::get($dump, 'UsersClassroom.is_teaching');
+        $tileData['is_private'] = Hash::get($dump, 'Classroom.is_private');
+        $tileData['is_restricted'] = Hash::get($dump, 'UsersClassroom.is_restricted');
+        $tileData['title'] = Hash::get($dump, 'Classroom.title');
+        $tileData['educatorName'] = $this->getEducatorName(Hash::get($dump, 'Classroom.id'));
+        $tileData['campusName'] = Hash::get($dump, 'Classroom.Campus.name');
+        $tileData['users_classroom_count'] = Hash::get($dump, 'Classroom.users_classroom_count');
+//            $i++;
+//        }
         return $tileData;
     }
 
@@ -268,7 +338,6 @@ class Classroom extends AppModel {
          * Clone:
          * Library, Submissions, 
          */
-        
     }
 
     /**
@@ -373,7 +442,7 @@ class Classroom extends AppModel {
             )
         );
 
-        $data = $this->UsersClassroom->find('first');
+        $data = $this->UsersClassroom->find('first', $options);
 
         if (Hash::check($data, 'User')) {
             $educatorName = Hash::get($data, 'User.fname') . " " . Hash::get($data, 'User.lname');
@@ -388,4 +457,22 @@ class Classroom extends AppModel {
      * access_code can't have unique index
      * because all public classrooms have 'null' as value
      */
+    public function getClassroomIdWithCode($access_code) {
+        $access_code = trim($access_code);
+
+        $options['conditions'] = array(
+            'access_code' => $access_code
+        );
+        $options['recursive'] = -1;
+        $options['fields'] = array('Classroom.id');
+
+        $data = $this->find('first', $options);
+
+        if (isset($data['Classroom']['id'])) {
+            return $data['Classroom']['id'];
+        } else {
+            return null;
+        }
+    }
+
 }

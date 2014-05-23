@@ -38,9 +38,13 @@ class AppController extends Controller {
                 'Actions' => array('actionPath' => 'controllers')
             )
         ),
-        'Session'
+        'Session',
+        'RequestHandler'
     );
-    
+    public $helpers = array(
+        'Js' => array('Jquery')
+    );
+
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow();

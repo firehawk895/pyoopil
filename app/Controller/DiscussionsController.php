@@ -58,5 +58,18 @@ class DiscussionsController extends AppController {
         );
         return json_encode($data);
     }
-
+    
+    /**
+     * Display Discussions of a classroom
+     * @param type $classroomId
+     */
+    public function index($classroomId) {
+        
+        /**
+         * throw not found exception if classroom does not exist
+         */
+        
+        $this->set('classroomId' , $classroomId);
+        
+    }
 }
