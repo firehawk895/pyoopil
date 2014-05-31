@@ -67,8 +67,8 @@ header { background:#fff; height:80px; position:fixed; z-index:3; width:100%;/* 
 .toprightsection li span.noti-num { position:absolute; top:-8px; right:0; background:#f67e02; padding:1px 6px; font-size:10px; border-radius:5px; font-family: 'open_sansbold'; color:#fff; }
 .toprightsection li a.active .top-icon.cal { background-position: -11px -87px; border-radius:3px; }
 .toprightsection li a.active .top-icon.chat { background-position: -71px -87px;  border-radius:3px; }
-.toprightsection li a.active .top-icon.noti { background-position: -129px -87px;  border-radius:3px; }
-.toprightsection li a.active .top-icon.msg { background-position: -187px -86px;border-radius:3px; }
+.toprightsection li a.active .top-icon.noti { background-position:  -130px -89px;  border-radius:3px; }
+.toprightsection li a.active .top-icon.msg { background-position: -188px -89px;border-radius:3px; }
 .top-icon.cal.active { background-position: -11px -47px; }
 .top-icon.chat.active { background-position: -71px -46px; }
 .top-icon.noti.active { background-position: -129px -44px; }

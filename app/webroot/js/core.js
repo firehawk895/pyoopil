@@ -883,27 +883,27 @@ function scrollDown(){
 $(".slider-acc a").click(function () {
 		var simg = $(this).attr( "rel" );
 		$(".screenimg img").attr('src', simg);
-		$(".big-img img").attr('src', simg);
+		$(".enlar-txt").prop("href", simg)
 	 });
-$(".enlar-txt").click(function () {
-	
-		$(this).toggleClass('active');
-		
-		if($(this).text()=='Enlarge Image'){
-			$(".big-img").show();
-		$(".screenimg").hide();
-		$(this).text(function(i,v) {
-           return v === 'Enlarge Image' ? 'Close' : 'Enlarge Image';
-     	});
-			}
-		else if($(this).text()=='Close'){
-			$(".big-img").hide();
-		$(".screenimg").show();
-		$(this).text(function(i,v) {
-           return v === 'Enlarge Image' ? 'Close' : 'Enlarge Image';
-     	});
-			}
-	 });
+//$(".enlar-txt").click(function () {
+//	
+//		$(this).toggleClass('active');
+//		
+//		if($(this).text()=='Enlarge Image'){
+//			$(".big-img").show();
+//		$(".screenimg").hide();
+//		$(this).text(function(i,v) {
+//           return v === 'Enlarge Image' ? 'Close' : 'Enlarge Image';
+//     	});
+//			}
+//		else if($(this).text()=='Close'){
+//			$(".big-img").hide();
+//		$(".screenimg").show();
+//		$(this).text(function(i,v) {
+//           return v === 'Enlarge Image' ? 'Close' : 'Enlarge Image';
+//     	});
+//			}
+//	 });
 
 //progress bar
 $( "#progressbar" ).progressbar({

@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 /**
  * Library Model
@@ -9,12 +10,43 @@ App::uses('AppModel', 'Model');
  * @property Topic $Topic
  */
 class Library extends AppModel {
-    
+
     /**
      * Notes:
      * On addition of files, getSize() and add to fileSize db field.
      * allow/dissallow file upload if Library->fileSize is not exceeded
      */
+    public $actsAs = array(
+        'Uploader.Attachment' => array(
+            'file_path' => array(
+                'overwrite' => true,
+                'transport' => array(
+                    'class' => AttachmentBehavior::S3,
+                    'region' => Aws\Common\Enum\Region::SINGAPORE,
+                    'folder' => 'libraries/',
+                    'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
+                    'secretKey' => '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',
+                    'bucket' => 'pyoopil-files',
+                //Dynamically add 'accesskey','secretKey','bucket'
+                ),
+                'metaColumns' => array(
+//                  'ext' => 'extension',
+//                  'type' => 'mimeType',
+                    'size' => 'filesize',
+                    'name' => 'filename'
+//                  'exif.model' => 'camera'
+                )
+            )
+        ),
+//        'Uploader.FileValidation' => array(
+//            'file_path' => array(
+////                'type' => 'image',
+////                'mimeType' => array('image/gif'),
+//                'filesize' => 2097152,
+//                'required' => false
+//            )
+//        )
+    );
 
     /**
      * belongsTo associations
@@ -71,8 +103,7 @@ class Library extends AppModel {
             return false;
         }
     }
-    
-    
+
     /**
      * 
      * @param int $classroomId
@@ -81,14 +112,15 @@ class Library extends AppModel {
     public function index($classroomId) {
         
     }
-    
-    /** 
+
+    /**
      * Update the topic
      * @param int $libraryId
      * @param int $topicId
      * @param String $topicText
      */
-    public function editTopic($libraryId , $topicId , $topicText) {
+    public function editTopic($libraryId, $topicId, $topicText) {
         
     }
+
 }

@@ -139,7 +139,6 @@ class AppUser extends User {
             'className' => 'UsersSubmission',
             'foreignKey' => 'user_id',
         ),
-        
             /**
              * Already handled by plugin, perhaps:
               'UserDetail' => array(
@@ -158,5 +157,18 @@ class AppUser extends User {
              * 
              */
     );
+
+    public function getFullName($userId) {
+        $options['contain'] = array();
+        $options['fields'] = array('fname', 'lname');
+        $options['conditions'] = array(
+            'AppUser.id' => $userId
+        );
+        
+//        $this->find('first' , $options);
+        $data = $this->find('first', $options);
+        $fullName = $data['AppUser']['fname'] . " " . $data['AppUser']['lname'];
+        return $fullName;
+    }
 
 }

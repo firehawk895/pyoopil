@@ -1,0 +1,10 @@
+{
+	"config": {
+		"vendor-dir": "Vendor"
+	},
+	"require": {
+		"mjohnson/uploader": "4.*",
+		"mjohnson/decoda": "6.*",
+		"aws/aws-sdk-php": "2.*"
+	}
+}
