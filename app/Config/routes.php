@@ -91,11 +91,11 @@ Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => '
 /**
  * @overriding CakeDc Routes
  */
+Router::connect('/login/*', array('controller' => 'app_users', 'action' => 'login'));
 Router::connect('/users', array('controller' => 'app_users'));
 Router::connect('/users/index/*', array('controller' => 'app_users'));
 Router::connect('/users/users/:action/*', array('controller' => 'app_users'));
 Router::connect('/users/:action/*', array('controller' => 'app_users'));
-Router::connect('/login/*', array('controller' => 'app_users', 'action' => 'login'));
 Router::connect('/logout/*', array('controller' => 'app_users', 'action' => 'logout'));
 Router::connect('/register/*', array('controller' => 'app_users', 'action' => 'add'));
 

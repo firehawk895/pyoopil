@@ -7,6 +7,8 @@
 .sub-btn:hover { background: #ff992f; }
 .cnl-btn { background: #b2b2b2; }
 /*============= Sign up-==================*/
+/* landing page loader */
+#pageloader {	position: fixed;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	z-index: 9999;	background: url('../images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);}
 /* signup popup */
 .signup .pop-wind { background: #e5e5e5 url(../images/landing/triangles.png) no-repeat 3px top; width: 700px; border-radius: 3px; }
 .signup .icon-cross { background: url("../images/landing/cross.png") no-repeat center center #6E6E6E; display: block; height: 34px; position: absolute; right: 30px; top: 7px; width: 34px; }

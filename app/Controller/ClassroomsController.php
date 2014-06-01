@@ -112,7 +112,7 @@ class ClassroomsController extends AppController {
 //        }
 //    }
     public function add() {
-        $this->layout = 'myajax';
+        $this->layout = 'ajax';
 //        $this->request->allowMethod('post');
 //        $this->autoRender = false;
 
@@ -171,7 +171,7 @@ class ClassroomsController extends AppController {
      * Join a classroom provided access code
      */
     public function joinWithCode() {
-        $this->layout = "myajax";
+        $this->layout = "ajax";
 //        $this->render('joinWithCode');
 //        $this->autoRender = false;
 //        echo "Sasdas";

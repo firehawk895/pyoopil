@@ -24,7 +24,7 @@
         <?php endif; ?>
         <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the class. Have a great session this semester with your students. Cheers</p>
         <div class="pop-close">
-            <a href="#" class="sub-btn">Take me to my classrooms</a>
+            <a href="" id="close-create-cls" class="sub-btn">Take me to my classrooms</a>
         </div>
     </div>
 </div>

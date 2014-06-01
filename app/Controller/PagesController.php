@@ -39,7 +39,7 @@ class PagesController extends AppController {
 
         public function beforeFilter() {
             parent::beforeFilter();
-            $this->layout = 'ajax';
+            $this->layout = 'basic';
         }
 
         /**

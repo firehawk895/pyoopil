@@ -206,6 +206,6 @@
     //plugins for pyoopil front end use
     echo $this->Html->script('http://malsup.github.io/jquery.form.js');
     ?>
-    <?php echo $this->element('sql_dump'); ?>
+    <?php // echo $this->element('sql_dump'); ?>
 </body>
 </html>

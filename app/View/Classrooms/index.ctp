@@ -38,10 +38,18 @@ $this->end();
                     echo $this->Form->end();
                     $script = <<<JS
 alert("working2");
+
+function createNewTile(responseText, statusText, xhr, form) {
+    showResponse(responseText, statusText, xhr, form);
+    $('.code-class').after(responseText); 
+    $(".accessclass").hide();
+    $(".newjoinbox").append('<a class="newjoin">Join Another Classroom</a>');
+    $("#join-with-code")[0].reset();   
+}
 var options_classroom_join = { 
 //        target:        '#classroom-created-success',   // target element(s) to be updated with server response 
         beforeSubmit:  showRequest,  // pre-submit callback 
-        success:       showResponse,  // post-submit callback
+        success:       createNewTile,  // post-submit callback
         error: showError
  
         // other available options: 
