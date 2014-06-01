@@ -8,7 +8,7 @@
 .cnl-btn { background: #b2b2b2; }
 /*============= Sign up-==================*/
 /* landing page loader */
-#pageloader {	position: fixed;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	z-index: 9999;	background: url('../images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);}
+.loader {	position: fixed;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	z-index: 9999;	background: url('../images/page-loader.gif') 50% 50% no-repeat rgb(249,249,249);}
 /* signup popup */
 .signup .pop-wind { background: #e5e5e5 url(../images/landing/triangles.png) no-repeat 3px top; width: 700px; border-radius: 3px; }
 .signup .icon-cross { background: url("../images/landing/cross.png") no-repeat center center #6E6E6E; display: block; height: 34px; position: absolute; right: 30px; top: 7px; width: 34px; }
@@ -130,7 +130,7 @@ header.landing-page { position: relative; }
 .pagecontent .lock { position: absolute; right: 10px; top: 0; }
 .doc-top { height: 126px; padding: 30px 0 0; position: relative; top: -15px; vertical-align: top; }
 .class-head { background: url("../images/classroom/teacher-class.png") no-repeat 0 0; height: 25px; left: -8px; position: absolute; top: 5px; width: 74px; text-align: center; color: #a05508; font-size: 10px; line-height: 20px; }
-.doc-top .subject { color: #FF860A; font-size: 16px; margin-bottom: 5px; text-align: center; font-family: 'open_sanssemibold'; width: 70%; margin: 0 auto; height: 45px; }
+.doc-top .subject { color: #FF860A; font-size: 16px; margin-bottom: 5px; text-align: center; font-family: 'open_sanssemibold'; width: 70%; margin: 0 auto; height: 45px; word-wrap: break-word; }
 .doc-top div { color: #777675; font-size: 10px; margin: 5px 0 0; font-family: 'open_sanslight'; }
 .online, .offline { background: url(../images/classroom/online.png) no-repeat 0 0; width: 7px; height: 7px; margin-right: 5px; display: inline-block; }
 .offline { background-image: url(../images/classroom/offline.png); }
