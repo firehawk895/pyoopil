@@ -6,6 +6,7 @@
 <title>Pyoopil</title>
 <link rel="shortcut icon" href="images/favicon.ico">
 <link href="style.css" rel="stylesheet">
+<link href="css/jquery.tagit.css" rel="stylesheet">
 <!--[if lt IE 9]>
 	<link rel="stylesheet" type="text/css" href="css/ie9.css" />
      <script src="js/html5shiv.js"></script>
@@ -775,6 +776,22 @@
 <script src="js/jquery-1.8.2.min.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
 <script src="js/plugin.js"></script>
+<script type='text/javascript' src='js/tag-it.min.js'></script>
+<script>
+//tagit
+$(function(){
+	//close
+	
+	var sampleTags = ['Ahmed','Ram','Mohan','Swati','Nikhil','Manish','Gaurav','Aaliyah','Apeksha','Deepti','Parul'];
+	$('#singleFieldTags,#singleFieldTags2').tagit({
+		availableTags: sampleTags,
+		// This will make Tag-it submit a single form value, as a comma-delimited field.
+		singleField: true,
+		singleFieldNode: $('#mySingleField,#mySingleField2')
+	});
+});	
+
+</script>
 <script src="js/core.js"></script>
 </body>
 </html>

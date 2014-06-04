@@ -15134,4 +15134,4 @@ $.effects.effect.transfer = function( o, done ) {
 	}
 
 }(this, document, jQuery));
-$(function() { $('input, textarea').placeholder();});
+$(function() { $('input, textarea').placeholder();});//placeholder in ie

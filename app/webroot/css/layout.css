@@ -127,7 +127,7 @@ header { background:#fff; height:80px; position:fixed; z-index:3; width:100%;/* 
 ******************************************/
 .navigation-main { left: 0; height: 100%; min-height: 550px; opacity: 1; position: fixed; top: 80px; width:250px; z-index: 0; background-color:#232323; }
 .primary:after { content: ''; background-color:#232323; bottom: 0; height: 100%; left: 0; position: absolute; top: 0; width: 100%; z-index: 10003; }
-.primary { -webkit-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -ms-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -o-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -webkit-transition: width 0.25s; -moz-transition: width 0.25s; -ms-transition: width 0.25s; -o-transition: width 0.25s; transition: width 0.25s; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); -ms-transform: translate3d(0, 0, 0); -o-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: #232323; top:0; bottom:0px; position: absolute; width: 250px; }
+.primary { -webkit-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -ms-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -o-box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); box-shadow: 0 0 19px -1px rgba(0, 0, 0, 0.1); -webkit-transition: width 0.50s; -moz-transition: width 0.50s; -ms-transition: width 0.50s; -o-transition: width 0.50s; transition: width 0.50s; -webkit-transform: translate3d(0, 0, 0); -moz-transform: translate3d(0, 0, 0); -ms-transform: translate3d(0, 0, 0); -o-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: #232323; top:0; bottom:0px; position: absolute; width: 250px; }
 .show-sub .primary { width:60px; }
 .pdiscover { overflow:hidden; height:54px; }
 .primary > li > a.lst-a { display:block; position:relative; padding:10px 0px; width:250px; height:34px; color:#FFF; text-transform:uppercase; z-index:10004; }
@@ -148,7 +148,11 @@ header { background:#fff; height:80px; position:fixed; z-index:3; width:100%;/* 
 .flname img { width:31px; height:31px; position:absolute; border-radius:50%; }
 .pdiscover .label { position:absolute; width:190px; height:34px; line-height:34px; margin-left:0px; opacity:1; left:60px; -webkit-transition: opacity 0.50s 0.18s; -moz-transition: opacity 0.50s 0.18s; -ms-transition: opacity 0.50s 0.18s; -o-transition: opacity 0.50s 0.18s; transition: opacity 0.50s 0.18s; }
 .show-sub .pdiscover .label { -webkit-transition: opacity 0s linear 0s, margin 0s linear 0.50s; -moz-transition: opacity 0s linear 0s, margin 0s linear 0.50s; -ms-transition: opacity 0s linear 0s, margin 0s linear 0.50s; -o-transition: opacity 0s linear 0s, margin 0s linear 0.50s; transition: opacity 0s linear 0s, margin 0s linear 0.50s; margin-left: -9999px; opacity: 0; }
-.sub { -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none; -webkit-touch-callout: none; touch-callout: none; background: #3f3d3e; bottom: 0; color: #494f5b; margin-left:-9999px; height: 100%; left: 60px; padding: 0; position: absolute; top: 0; width: 190px; z-index: 1; }
+.sub {  background: #3f3d3e; bottom: 0; color: #494f5b; /*margin-left:-9999px;-moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none; -webkit-touch-callout: none; touch-callout: none;*/ height: 100%; left: 60px; padding: 0;  z-index: 1;width: 190px;position: absolute; top: 0;  -moz-transition: all 0.50s ease-out;  /* FF4+ */
+    -o-transition: all 0.50s ease-out;  /* Opera 10.5+ */
+    -webkit-transition: all 0.50s ease-out;  /* Saf3.2+, Chrome */
+    -ms-transition: all 0.50s ease-out;  /* IE10 */
+    transition: all 0.50s ease-out;   }
 .show-sub .pdiscover:hover .sub { margin-left:0px; z-index:10000; }
 /***************************************** 
 				Sub  menu 
@@ -254,7 +258,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 /*hide popup*/
 #dialog, #view-dialog, #quizpopup, #quizpopup2, .notification_details, #upload-dialog, #assign-dialog, #rest-dialog, .doc-popup, .enga-hide, .dock-bk.lastli, .clk-tt, .contentblock, .cate, #quizdialog, #msg-dialog, #rec-dialog, .submit-answer, .viewingremaining, .show-test, .big-img,#todolist { display:none; }
 /***************************************** 
-				Loading
+				Common
 ******************************************/
 .loader { bottom: -1px; margin-left: 100px; position: relative; display:none; }
-textarea { color:#666 !important; }
+textarea { color:#666 !important; overflow:auto; }
