@@ -189,7 +189,10 @@ class Discussion extends AppModel {
          *      then fetch gamification votes
          */
         $data = $this->find('all', array(
-            'contain' => $this->containing
+            'contain' => $this->containing,
+            'conditions' => array(
+                'classroom_id' => $roomId
+            )
         ));
 
         return $data;

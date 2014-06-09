@@ -11,10 +11,10 @@ class DiscussionsController extends AppController {
     public function testcases() {
         /**
          * WORKING TEST CASES:
-         * debug($this->Discussion->getDiscussion(1)); 
-         * debug($this->Discussion->getAllDiscussions()); 
+         * debug($this->Discussion->getDiscussion(1));
+         * debug($this->Discussion->getAllDiscussions());
          * debug($this->Discussion->editDiscussionText(1, 'suck my loda now, immediately')); //OK
-         * debug($this->Discussion->deleteDiscussion('1')); 
+         * debug($this->Discussion->deleteDiscussion('1'));
          *      *Cascading works on gamificationvote, other related cascades set
          * debug($this->Discussion->enum('vote'));
          * $this->Discussion->setGamificationDiscussion('5', '5', 'cu');
@@ -68,8 +68,9 @@ class DiscussionsController extends AppController {
         /**
          * throw not found exception if classroom does not exist
          */
-        
         $this->set('classroomId' , $classroomId);
-        
+
+        debug($this->Discussion->getAllDiscussions($classroomId));
+        die();
     }
 }

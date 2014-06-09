@@ -6,12 +6,23 @@
 /app/Config/email.php
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
-#/plugins
-#/vendors
+/plugins
+/vendors
 /build
 /dist
 /tags
 /nbproject
+/app/Vendor
+/app/Plugin
+Plugin/
+app/Config/aws.php
+vendor/
+
+# Composer Files #
+######################
+composer.lock
+app/composer.lock
+
 
 # OS generated files #
 ######################
@@ -23,3 +34,4 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+.idea/
