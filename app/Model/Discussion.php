@@ -75,7 +75,7 @@ class Discussion extends AppModel {
             'fields' => '',
             'order' => ''
         ),
-        'User' => array(
+        'AppUser' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
             'conditions' => '',
@@ -154,7 +154,10 @@ class Discussion extends AppModel {
         'Pollchoice' => array(
             'Pollvote'
         ),
-        'Gamificationvote'
+        'Gamificationvote',
+        'AppUser' => array(
+            'fields' => array('fname', 'lname')
+        )
     );
 
     /**

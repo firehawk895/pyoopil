@@ -125,7 +125,7 @@ class Reply extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'User' => array(
+		'AppUser' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
 			'conditions' => '',

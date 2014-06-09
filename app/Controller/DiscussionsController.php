@@ -69,8 +69,9 @@ class DiscussionsController extends AppController {
          * throw not found exception if classroom does not exist
          */
         $this->set('classroomId' , $classroomId);
-
-        debug($this->Discussion->getAllDiscussions($classroomId));
+        $data = $this->Discussion->getAllDiscussions($classroomId);
+        debug($data);
         die();
+        $this->set('discussions',$data);
     }
 }
