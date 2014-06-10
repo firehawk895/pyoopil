@@ -149,12 +149,32 @@ class Discussion extends AppModel {
      */
     private $containing = array(
         'Reply' => array(
-            'Gamificationvote'
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array(
+                    'fname',
+                    'lname'
+                )
+            )
         ),
         'Pollchoice' => array(
             'Pollvote'
         ),
-        'Gamificationvote',
+        'Gamificationvote' => array(
+            'AppUser' => array(
+                'fields' => array(
+                    'fname',
+                    'lname'
+                )
+            )
+        ),
         'AppUser' => array(
             'fields' => array('fname', 'lname')
         )

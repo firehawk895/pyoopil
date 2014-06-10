@@ -5,6 +5,8 @@ echo $this->element('classrooms/inside-classroom-subnav', array(
     'active' => 'discussions'
 ));
 $this->end();
+
+$map = array('en','in','cu','co','ed');
 ?>
 
 <section class="pagecontent clearfix">
@@ -98,7 +100,13 @@ $this->end();
                     <a href="javascript:void(0)"><img src="images/follow1.jpg" class="disc-img"></a>
                 </div>
                 <div class="arrow_box">
-<!--                    <span class="arrowbox-icon quest-icon"></span>-->
+                    <?php if($discussion['Discussion']['type'] == 'question') : ?>
+                        <span class="arrowbox-icon quest-icon"></span>
+                    <?php elseif($discussion['Discussion']['type'] == 'poll') : ?>
+                        <span class="arrowbox-icon"></span>
+                    <?php elseif($discussion['Discussion']['type'] == 'note') : ?>
+                        <span class="arrowbox-icon note-icon"></span>
+                    <?php endif; ?>
 
                     <div class="name-left">
                         <p class="tname"><?php echo $discussion['Discussion']['topic']; ?></p>
@@ -114,6 +122,19 @@ $this->end();
                     </div>
                     <div class="clear"></div>
                     <p class="ttxt"><?php echo $discussion['Discussion']['body']; ?></p>
+                    <?php if($discussion['Discussion']['type'] == 'poll') : ?>
+                        <div class="clearfix">
+                            <div class="poll-left">
+                                <a href="javascript:void(0)" class="ans-btn">Answer 1</a>
+                                <a href="javascript:void(0)" class="ans-btn">Answer 2</a>
+                                <a href="javascript:void(0)" class="ans-btn">Answer 3</a>
+                                <a href="javascript:void(0)" class="ans-btn">Answer 4</a>
+                            </div>
+                            <div class="poll-right">
+                                <div id="chart_div2"></div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="arrbox-footer clearfix">
                         <div class="f-left prs-sp">
@@ -135,69 +156,27 @@ $this->end();
                             </div>
                         </div>
                         <div class="f-right">
-                            <div class="enga">
-                                <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
-
-                                <div class="enga-tooltip">
-                                    <div class="enga-list">
-                                        <ul>
-                                            <li><p class="tt-name">Amar Verma</p></li>
-                                            <li><p class="tt-name">Akriti Singh</p></li>
-                                            <li><p class="tt-name">Deepti Singh</p></li>
-                                        </ul>
-                                    </div>
+                            <?php foreach($map as $m) : ?>
+                                <div class="enga">
+                                    <?php if($discussion['Discussion'][$m] == 0) : ?>
+                                        <a href="javascript:void(0)" class="msg-link point-icon nopoint-icon"><?php echo strtoupper($m); ?></a>
+                                    <?php else : ?>
+                                        <a href="javascript:void(0)" class="msg-link point-icon"><?php echo strtoupper($m); ?></a>
+                                    <?php endif; ?>
+                                    <?php if($discussion['Gamificationvote'] != NULL) : ?>
+                                        <div class="enga-tooltip">
+                                            <div class="enga-list">
+                                                <ul>
+                                                    <li><p class="tt-name">Amar Verma</p></li>
+                                                    <li><p class="tt-name">Akriti Singh</p></li>
+                                                    <li><p class="tt-name">Deepti Singh</p></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <span class="icon-title "><?php echo $discussion['Discussion'][$m]; ?></span>
                                 </div>
-                                <span class="icon-title"><?php echo $discussion['Discussion']['en']; ?></span>
-                            </div>
-                            <div class="enga">
-                                <a href="javascript:void(0)" class="point-icon">IN</a>
-                                <span class="icon-title"><?php echo $discussion['Discussion']['in']; ?></span>
-                            </div>
-                            <div class="enga">
-                                <a href="javascript:void(0)" class="msg-link point-icon">CU</a>
-
-                                <div class="enga-tooltip">
-                                    <div class="enga-list">
-                                        <ul>
-                                            <li><p class="tt-name">Amar Verma</p></li>
-                                            <li><p class="tt-name">Akriti Singh</p></li>
-                                            <li><p class="tt-name">Deepti Singh</p></li>
-                                            <li><p class="tt-name">Sumit Patil</p></li>
-                                            <li><p class="tt-name">Apeksha Verma</p></li>
-                                            <li><p class="tt-name">Harpreet Kaur</p></li>
-                                            <li><p class="tt-name">&amp; 15 Others</p></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <span class="icon-title"><?php echo $discussion['Discussion']['cu']; ?></span>
-                            </div>
-                            <div class="enga">
-                                <a href="javascript:void(0)" class="msg-link point-icon">CO</a>
-
-                                <div class="enga-tooltip">
-                                    <div class="enga-list">
-                                        <ul>
-                                            <li><p class="tt-name">Amar Verma</p></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <span class="icon-title"><?php echo $discussion['Discussion']['co']; ?></span>
-                            </div>
-                            <div class="enga">
-                                <a href="javascript:void(0)" class="msg-link point-icon">ED</a>
-
-                                <div class="enga-tooltip">
-                                    <div class="enga-list">
-                                        <ul>
-                                            <li><p class="tt-name">Amar Verma</p></li>
-                                            <li><p class="tt-name">Akriti Singh</p></li>
-                                            <li><p class="tt-name">Deepti Singh</p></li>
-                                            <li><p class="tt-name">Sumit Patil</p></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <span class="icon-title"><?php echo $discussion['Discussion']['ed']; ?></span>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -206,12 +185,95 @@ $this->end();
                 <a href="javascript:void(0)" class="view-more">View all 5 answers <img src="images/view-all.png"></a>
             </div>-->
         </li>
+        <!--populating replies -->
+        <?php foreach($discussion['Reply'] as $reply) : ?>
+        <li>
+            <div class="disc-box clearfix">
+                <div class="disc-left">
+                    <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
+                </div>
+                <div class="arrow_box">
+                    <div class="name-left">
+                        <p class="tname"><a href="javascript:void(0)"><?php echo $reply['AppUser']['fname']." ".$reply['AppUser']['lname'] ; ?></a></p>
+                        <p class="tby"><?php echo $this->Time->format('F jS, Y h:i A', $reply['created'], null);?></p>
+                    </div>
+                    <div class="icon-right">
+                  <span class="dd-block">
+                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
+                  <div class="arr-dd">
+                      <ul>
+                          <li><a href="javascript:void(0)">Report Abuse</a>
+                          </li>
+                          <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+                          </li>
+                      </ul>
+                  </div>
+                  </span>
+                    </div>
+                    <div class="clear"></div>
+                    <p class="ttxt"><?php echo $reply['comment']; ?></p>
+                    <div class="arrbox-footer clearfix">
+                        <div class="f-left prs-sp">
+                            <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+                            <div class="clk-tt">
+                                <ul>
+                                    <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
+                                    </li>
+                                    <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
+                                    </li>
+                                    <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="f-right">
+                            <?php foreach($map as $m) : ?>
+                                <div class="enga">
+                                    <?php if($reply[$m] == 0) : ?>
+                                        <a href="javascript:void(0)" class="msg-link point-icon nopoint-icon"><?php echo strtoupper($m); ?></a>
+                                    <?php else : ?>
+                                        <a href="javascript:void(0)" class="msg-link point-icon"><?php echo strtoupper($m); ?></a>
+                                    <?php endif; ?>
+
+                                    <!-- populate engagers-->
+
+                                    <?php if($reply['Gamificationvote'] != null) : ?>
+
+                                    <div class="enga-tooltip">
+                                        <div class="enga-list">
+                                            <ul>
+                                                <li><p class="tt-name">Amar Verma</p></li>
+                                                <li><p class="tt-name">Akriti Singh</p></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+
+
+                                    <span class="icon-title "><?php echo $reply[$m]; ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <?php endforeach; ?>
     </ul>
     <?php endforeach; ?>
+
+    <?php foreach($map as $m){
+        echo $m;
+    echo strtoupper($m);
+    }
+    ?>
+
+
 </div>
 <!--Praise people Dialog-->
 
 </section>
-
-
-<?php ?>

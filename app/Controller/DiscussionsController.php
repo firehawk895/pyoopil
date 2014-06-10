@@ -70,8 +70,12 @@ class DiscussionsController extends AppController {
          */
         $this->set('classroomId' , $classroomId);
         $data = $this->Discussion->getAllDiscussions($classroomId);
-        debug($data);
-        die();
+
+       /* debug($data);
+        die();*/
+
+        /*print_r($data);
+        die();*/
         $this->set('discussions',$data);
     }
 }
