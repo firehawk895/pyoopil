@@ -19,9 +19,7 @@ class LibrariesController extends AppController {
         );
         $topics = $this->Library->find('all',$params);
         $topic = hash::extract($topics,'{n}.Topic.{n}.name');
-//        print_r($topic);
         $this->getTopics(1);
-//        die();
     }
 
 
@@ -43,17 +41,7 @@ class LibrariesController extends AppController {
         $topics = $this->Library->Topic->find('all',$params);
         $this->set('topics',$topics);
 
-        /*foreach($topics as $topic){
-            echo $topic['Topic']['name']."<br>";
-            foreach($topic['Link'] as $Link){
-                echo $Link['linktext']."<br>";
-            }
-            foreach($topic['Pyoopilfile'] as $file){
-                debug($file);
-            }
-
-        }*/
-
-        //debug($topics);
+        /*debug($topics);
+        die();*/
     }
 }

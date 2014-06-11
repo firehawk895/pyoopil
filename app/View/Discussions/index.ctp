@@ -1,12 +1,20 @@
 <?php
-$this->start('pagesubnav');
-echo $this->element('classrooms/inside-classroom-subnav', array(
-    'classroomId' => $classroomId,
-    'active' => 'discussions'
-));
-$this->end();
+    $this->start('pagesubnav');
+    echo $this->element('classrooms/inside-classroom-subnav', array(
+        'classroomId' => $classroomId,
+        'active' => 'discussions'
+    ));
+    $this->end();
 
-$map = array('en','in','cu','co','ed');
+    $map = array('en','in','cu','co','ed');
+
+    $engagers = array(
+        'en' => array(),
+        'in' => array(),
+        'cu' => array(),
+        'co' => array(),
+        'ed' => array()
+    );
 ?>
 
 <section class="pagecontent clearfix">
@@ -163,8 +171,9 @@ $map = array('en','in','cu','co','ed');
                                     <?php else : ?>
                                         <a href="javascript:void(0)" class="msg-link point-icon"><?php echo strtoupper($m); ?></a>
                                     <?php endif; ?>
-                                    <?php if($discussion['Gamificationvote'] != NULL) : ?>
-                                        <div class="enga-tooltip">
+                                    <!--Populate engagers here-->
+                                    <?php /*if($discussion['Gamificationvote'] != NULL) : */?>
+                                        <!--<div class="enga-tooltip">
                                             <div class="enga-list">
                                                 <ul>
                                                     <li><p class="tt-name">Amar Verma</p></li>
@@ -172,8 +181,8 @@ $map = array('en','in','cu','co','ed');
                                                     <li><p class="tt-name">Deepti Singh</p></li>
                                                 </ul>
                                             </div>
-                                        </div>
-                                    <?php endif; ?>
+                                        </div>-->
+                                    <?php /*endif; */?>
                                     <span class="icon-title "><?php echo $discussion['Discussion'][$m]; ?></span>
                                 </div>
                             <?php endforeach; ?>
@@ -239,19 +248,22 @@ $map = array('en','in','cu','co','ed');
                                         <a href="javascript:void(0)" class="msg-link point-icon"><?php echo strtoupper($m); ?></a>
                                     <?php endif; ?>
 
-                                    <!-- populate engagers-->
+                                    <!--Populate engagers here-->
 
-                                    <?php if($reply['Gamificationvote'] != null) : ?>
-
-                                    <div class="enga-tooltip">
-                                        <div class="enga-list">
-                                            <ul>
-                                                <li><p class="tt-name">Amar Verma</p></li>
-                                                <li><p class="tt-name">Akriti Singh</p></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <?php endif; ?>
+                                    <?php /*if($reply['Gamificationvote'] != null) : */?>
+                                        <?php /*foreach($reply['Gamificationvote'] as $vote) : */?>
+                                            <!--<div class="enga-tooltip">
+                                                <div class="enga-list">
+                                                    <ul>
+                                                        <?php /*if($vote['vote'] == $m) : */?>
+                                                            <li><p class="tt-name">Amar Verma</p></li>
+                                                            <li><p class="tt-name">Akriti Singh</p></li>
+                                                        <?php /*endif; */?>
+                                                    </ul>
+                                                </div>
+                                            </div>-->
+                                        <?php /*endforeach; */?>
+                                    <?php /*endif; */?>
 
 
                                     <span class="icon-title "><?php echo $reply[$m]; ?></span>
@@ -265,13 +277,6 @@ $map = array('en','in','cu','co','ed');
         <?php endforeach; ?>
     </ul>
     <?php endforeach; ?>
-
-    <?php foreach($map as $m){
-        echo $m;
-    echo strtoupper($m);
-    }
-    ?>
-
 
 </div>
 <!--Praise people Dialog-->
