@@ -14,34 +14,11 @@ class LibrariesController extends AppController {
             'classroom_id' => $room_id
         );
 
-        $params['contain'] = array(
-            'Topic'
-        );
-        $topics = $this->Library->find('all',$params);
-        $topic = hash::extract($topics,'{n}.Topic.{n}.name');
-        $this->getTopics(1);
-    }
+        $params['recursive'] = -1;
 
-
-    function getTopics($libraryId){
-
-        $params['conditions'] = array(
-            'library_id' => $libraryId,
-        );
-
-        $params['contain'] = array(
-            'Link',
-            'Pyoopilfile' => array(
-                'order' => array(
-                    'Pyoopilfile.file_type ASC'
-                )
-            )
-        );
-
-        $topics = $this->Library->Topic->find('all',$params);
+        $data = $this->Library->find('first',$params);
+        $topics = $this->Library->getTopics($data['Library']['id']);
         $this->set('topics',$topics);
-
-        /*debug($topics);
-        die();*/
     }
+
 }

@@ -123,4 +123,22 @@ class Library extends AppModel {
         
     }
 
+    function getTopics($libraryId){
+
+        $params['conditions'] = array(
+            'library_id' => $libraryId,
+        );
+
+        $params['contain'] = array(
+            'Link',
+            'Pyoopilfile' => array(
+                'order' => array(
+                    'Pyoopilfile.file_type ASC'
+                )
+            )
+        );
+
+        return $topics = $this->Topic->find('all',$params);
+    }
+
 }
