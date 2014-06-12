@@ -40,6 +40,8 @@ class PagesController extends AppController {
         public function beforeFilter() {
             parent::beforeFilter();
             $this->layout = 'basic';
+            
+            $this->Auth->allow('display');
         }
 
         /**

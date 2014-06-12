@@ -34,8 +34,10 @@ class AppController extends Controller {
 
     public $components = array(
         'Auth' => array(
-            'authorize' => array(
-                'Actions' => array('actionPath' => 'controllers')
+            'authorize' => array('Controller'),
+            'loginAction' => array(
+                'controller' => 'app_users',
+                'action' => 'login',
             )
         ),
         'Session',
@@ -48,7 +50,11 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow();
+//        $this->Auth->allow();
+    }
+
+    public function isAuthorized($user) {
+        return $this->Auth->loggedIn();
     }
 
 }

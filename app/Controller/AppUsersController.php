@@ -14,6 +14,8 @@ class AppUsersController extends UsersController {
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->layout = 'ajax';
+        $this->Auth->allow('login');
+        
     }
 
     protected function _setupAuth() {
@@ -34,11 +36,19 @@ class AppUsersController extends UsersController {
             'plugin' => null,
             'admin' => false,
             'controller' => 'pages',
-            'action' => 'display', 'feedback'
+            'action' => array('display', 'feedback')
         );
 
         $this->Auth->authorize = array(
             'Actions' => array('actionPath' => 'controllers')
         );
+    }
+    
+    public function login() {
+        parent::login();
+        
+        if($this->Auth->loggedIn()){
+            $this->redirect($this->Auth->loginRedirect);
+        }
     }
 }
