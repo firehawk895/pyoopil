@@ -11,8 +11,8 @@
 /dist
 /tags
 /nbproject
-/app/Vendor
-/app/Plugin
+/app/Vendor/
+/app/Plugin/
 Plugin/
 app/Config/aws.php
 vendor/
