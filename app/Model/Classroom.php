@@ -11,6 +11,7 @@ App::uses('CodeGenerator', 'Lib/Custom');
  * @property Department $Department
  */
 class Classroom extends AppModel {
+    public $components = array('Paginator');
     /**
      * db Notes:
      * campus_id -> department_id -> degree_id is a hierarchy
@@ -177,136 +178,37 @@ class Classroom extends AppModel {
     /**
      * TODO: Cache the query for use in both side Nav and main tiles
      * get raw db data for all classrooms attended/taught by $userId
-     * @param int $userId 
+     * @param int $userId
+     * @return array $jsonData
      */
-    protected function getTiles($userId) {
+    public function getLatestTile($userId) {
 
-        /**
-         * cakePhp ORM has issues:
-         * Campus fields will be ignored if specific
-         * fields are selected from UsersClassroom
-         * Analyze generated query and you'll know what I mean
-         * Can't use:
-         * $options['fields'] = array(
-         *   'is_teaching', 'is_restricted'
-         * );
-         */
-        $options['contain'] = array(
-            'Classroom' => array(
-                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
-                'Campus' => array(
-                    'fields' => array('id', 'name')
+        $params['contain'] = array(
+            'UsersClassroom' => array(
+                'conditions' => array(
+                    'user_id' => $userId
+                ),
+                'order' => array(
+                    'UsersClassroom.created' => 'desc'
                 )
             ),
-        );
-
-        $options['conditions'] = array(
-            'user_id' => $userId,
-        );
-        
-        $options['order'] = 'UsersClassroom.created DESC';
-
-        $dump = $this->UsersClassroom->find('all', $options);
-        return $dump;
-    }
-
-    /**
-     * Formatted data for classroom tiles
-     * @param int $userId 
-     */
-    public function displayTiles($userId) {
-        /**
-         * Data contract:
-         * is_teaching
-         * is_private
-         * is_restricted
-         * title
-         * educatorName
-         * campusName
-         * users_classroom_count
-         */
-        $dumps = $this->getTiles($userId);
-        $i = 0;
-        $tileData = array();
-        foreach ($dumps as $dump) {
-            $tileData[$i]['id'] = Hash::get($dump, 'Classroom.id');
-            $tileData[$i]['is_teaching'] = Hash::get($dump, 'UsersClassroom.is_teaching');
-            $tileData[$i]['is_private'] = Hash::get($dump, 'Classroom.is_private');
-            $tileData[$i]['is_restricted'] = Hash::get($dump, 'UsersClassroom.is_restricted');
-            $tileData[$i]['title'] = Hash::get($dump, 'Classroom.title');
-            $tileData[$i]['educatorName'] = $this->getEducatorName(Hash::get($dump, 'Classroom.id'));
-            $tileData[$i]['campusName'] = Hash::get($dump, 'Classroom.Campus.name');
-            $tileData[$i]['users_classroom_count'] = Hash::get($dump, 'Classroom.users_classroom_count');
-            $i++;
-        }
-        return $tileData;
-    }
-
-    /**
-     * TODO: Cache the query for use in both side Nav and main tiles
-     * get raw db data for all classrooms attended/taught by $userId
-     * @param int $userId 
-     */
-    protected function getLatestTile($userId) {
-
-        /**
-         * cakePhp ORM has issues:
-         * Campus fields will be ignored if specific
-         * fields are selected from UsersClassroom
-         * Analyze generated query and you'll know what I mean
-         * Can't use:
-         * $options['fields'] = array(
-         *   'is_teaching', 'is_restricted'
-         * );
-         */
-        $options['contain'] = array(
-            'Classroom' => array(
-                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
-                'Campus' => array(
-                    'fields' => array('id', 'name')
+            'Campus' => array(
+                'fields' => array(
+                    'id','name'
                 )
-            ),
+            )
         );
 
-        $options['conditions'] = array(
-            'user_id' => $userId,
-        );
+        $params['fields'] = array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count');
 
-        $options['order'] = 'UsersClassroom.created DESC';
+        $data = $this->find('first',$params);
 
-        $dump = $this->UsersClassroom->find('first', $options);
-        return $dump;
-    }
+        $teacher = $this->getEducatorName($data['Classroom']['id']);
+        $data = Hash::insert($data,'Classroom.teacher',$teacher);
 
-    /**
-     * Formatted data for classroom tiles
-     * @param int $userId 
-     */
-    public function displayLatestTile($userId) {
-        /**
-         * Data contract:
-         * is_teaching
-         * is_private
-         * is_restricted
-         * title
-         * educatorName
-         * campusName
-         * users_classroom_count
-         */
-        $dump = $this->getLatestTile($userId);
-//        $i = 0;
-        $tileData = array();
-//        foreach ($dumps as $dump) {
-        $tileData['is_teaching'] = Hash::get($dump, 'UsersClassroom.is_teaching');
-        $tileData['is_private'] = Hash::get($dump, 'Classroom.is_private');
-        $tileData['is_restricted'] = Hash::get($dump, 'UsersClassroom.is_restricted');
-        $tileData['title'] = Hash::get($dump, 'Classroom.title');
-        $tileData['educatorName'] = $this->getEducatorName(Hash::get($dump, 'Classroom.id'));
-        $tileData['campusName'] = Hash::get($dump, 'Classroom.Campus.name');
-        $tileData['users_classroom_count'] = Hash::get($dump, 'Classroom.users_classroom_count');
-//            $i++;
-//        }
-        return $tileData;
+        $jsonData = json_encode($data);
+        return $jsonData;
+
     }
 
     /**
@@ -429,7 +331,7 @@ class Classroom extends AppModel {
      * Educator's full name of a classroom
      * @param int $classroomId
      */
-    protected function getEducatorName($classroomId) {
+    public function getEducatorName($classroomId) {
 
         $options['conditions'] = array(
             'classroom_id' => $classroomId,

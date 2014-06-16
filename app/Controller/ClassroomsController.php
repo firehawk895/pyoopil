@@ -17,39 +17,47 @@ App::uses('DateConvertor', 'Lib/Custom');
  * @author useruser
  */
 class ClassroomsController extends AppController {
-//put your code here
 
-    /**
-     * Route : /classrooms
-     * display all classroom tiles
-     */
+    public $components = array('Paginator');
+
     public function index() {
-//        $this->layout = 'default';
-        /**
-         * Better approach would be the element classroom_subnav.ctp
-         * be responsible for fetching this data.
-         * That would mean to use requestAction() - which is expensive
-         * (extra page requests). So this is why the following is here:
-         */
-//        $this->set('campuses', $this->Classroom->Campus->find('list'));
-//        $this->set('departments', $this->Classroom->Department->find('list'));
-//        $this->set('degrees', $this->Classroom->Degree->find('list'));
-//        $this->Classroom->getClassroomIdWithCode('YmU7qf');
 
-        $campuses = $this->Classroom->Campus->find('list');
-        $departments = $this->Classroom->Department->find('list');
-        $degrees = $this->Classroom->Degree->find('list');
+        $this->Classroom->getLatestTile(AuthComponent::user('id'));
 
-        $this->set(compact('campuses', 'departments', 'degrees'));
-        /**
-         * TODO:
-         * An ajax population of degrees based on departments, based on campus
-         * is ideal, and really cool.
-         */
-        /**
-         * call $this->Classroom->displayTiles()
-         */
-        $this->set('tileData', $this->Classroom->displayTiles(AuthComponent::user('id')));
+        App::uses('CakeNumber', 'Utility');
+        $userId = AuthComponent::user('id');
+
+        $this->Paginator->settings = array(
+            'contain' => array(
+                'UsersClassroom' => array(
+                    'conditions' => array(
+                        'user_id' => $userId
+                    ),
+                    'order' => array(
+                        'UsersClassroom.created' => 'desc'
+                    )
+                ),
+                'Campus' => array(
+                    'fields' => array(
+                        'id','name'
+                    )
+                )
+            ),
+            'limit' => 5,
+            'fields' => array(
+                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
+            )
+        );
+
+        $data = $this->Paginator->paginate('Classroom');
+
+        foreach($data as $d){
+            $teacher = $this->Classroom->getEducatorName($d['Classroom']['id']);
+            $data = Hash::insert($data,'{n}.Classroom.teacher',$teacher);
+        }
+
+        $jsonData = json_encode($data);
+        return $jsonData;
     }
     
     /**
@@ -226,5 +234,4 @@ class ClassroomsController extends AppController {
         debug($this->Classroom->displayLatestTile(AuthComponent::user('id')));
         die();
     }
-
 }
