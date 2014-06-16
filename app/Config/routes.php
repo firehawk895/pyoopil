@@ -65,6 +65,7 @@ Router::connect(
 //        )
 //);
 //--------------------------------------------------------------------------------------------------------------
+Router::connect('/Announcements/add', array('controller' => 'announcements', 'action' => 'add'));
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
 Router::connect('/Classrooms/join', array('controller' => 'classrooms', 'action' => 'joinWithCode'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));

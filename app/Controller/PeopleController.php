@@ -9,7 +9,21 @@
 class PeopleController extends AppController {
 
     public function index(){
-        echo "workin?";
+
+        $this->loadModel("UsersClassroom");
+        $params = array(
+            'contain' => array(
+                'User',
+                'Classroom' => array(
+                    'Campus'
+                )
+            )
+        );
+
+        $people = $this->UsersClassroom->find('all',$params);
+        $this->set('people',$people);
+        /*debug($people);
+        die();*/
     }
 
 } 

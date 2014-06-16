@@ -64,6 +64,8 @@ $this->end();
                 </div>
                 <?php
                 echo $this->Form->end();
+
+                $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
                 $script = <<<JS
 function progressHandlingFunction(e){
     if(e.lengthComputable){
@@ -73,8 +75,11 @@ function progressHandlingFunction(e){
 }
 $('#thebutton').click(function(){
     var formData = new FormData($('form')[0]);
+    var d = $('#AnnouncementIndexForm').serializeArray();
+
+    console.log(d);
     $.ajax({
-        url: '/pyoopil/pyoopil/announcements/add',  //Server script to process data
+        url: '$route',  //Server script to process data
         type: 'POST',
         xhr: function() {  // Custom XMLHttpRequest
             var myXhr = $.ajaxSettings.xhr();
@@ -88,7 +93,7 @@ $('#thebutton').click(function(){
         //success: completeHandler,
         //error: errorHandler,
         //Form data
-        data: formData,
+        data: d,
         //Options to tell jQuery not to process data or worry about content-type.
         cache: false,
         contentType: false,
@@ -98,7 +103,7 @@ $('#thebutton').click(function(){
 JS;
                 $this->Js->buffer($script);
                 ?>
-                <progress></progress>
+                <progress value="0" max="100"></progress>
             </div>
         </div></div>
     <!--content list-->
