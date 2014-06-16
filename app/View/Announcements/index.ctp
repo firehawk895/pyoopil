@@ -64,11 +64,49 @@ $this->end();
                 </div>
                 <?php
                 echo $this->Form->end();
+
+                $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
                 $script = <<<JS
+<<<<<<< HEAD
+=======
+function progressHandlingFunction(e){
+    if(e.lengthComputable){
+        console.log(e);               
+        $('progress').attr({value:e.loaded,max:e.total});
+    }
+}
+$('#thebutton').click(function(){
+    var formData = new FormData($('form')[0]);
+    var d = $('#AnnouncementIndexForm').serializeArray();
+
+    console.log(d);
+    $.ajax({
+        url: '$route',  //Server script to process data
+        type: 'POST',
+        xhr: function() {  // Custom XMLHttpRequest
+            var myXhr = $.ajaxSettings.xhr();
+            if(myXhr.upload){ // Check if upload property exists
+                myXhr.upload.addEventListener('progress',progressHandlingFunction, true); // For handling the progress of the upload
+            }
+            return myXhr;
+        },
+        //Ajax events
+        //beforeSend: beforeSendHandler,
+        //success: completeHandler,
+        //error: errorHandler,
+        //Form data
+        data: d,
+        //Options to tell jQuery not to process data or worry about content-type.
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+});
+>>>>>>> 247e7250db91e2cb9550504d70e093f0e1a1b88c
 JS;
                 $this->Js->buffer($script);
                 ?>
-                <progress></progress>
+                <progress value="0" max="100"></progress>
             </div>
         </div></div>
     <!--content list-->

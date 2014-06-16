@@ -76,7 +76,11 @@ Router::connect(
 //        )
 //);
 //--------------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
 Router::connect('/Announcements/add', array('controller' => 'Announcements', 'action' => 'add'));
+=======
+Router::connect('/Announcements/add', array('controller' => 'announcements', 'action' => 'add'));
+>>>>>>> 247e7250db91e2cb9550504d70e093f0e1a1b88c
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
 Router::connect('/Classrooms/join', array('controller' => 'classrooms', 'action' => 'joinWithCode'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
