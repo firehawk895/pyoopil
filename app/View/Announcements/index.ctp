@@ -65,36 +65,6 @@ $this->end();
                 <?php
                 echo $this->Form->end();
                 $script = <<<JS
-function progressHandlingFunction(e){
-    if(e.lengthComputable){
-        console.log(e);               
-        $('progress').attr({value:e.loaded,max:e.total});
-    }
-}
-$('#thebutton').click(function(){
-    var formData = new FormData($('form')[0]);
-    $.ajax({
-        url: '/pyoopil/pyoopil/announcements/add',  //Server script to process data
-        type: 'POST',
-        xhr: function() {  // Custom XMLHttpRequest
-            var myXhr = $.ajaxSettings.xhr();
-            if(myXhr.upload){ // Check if upload property exists
-                myXhr.upload.addEventListener('progress',progressHandlingFunction, true); // For handling the progress of the upload
-            }
-            return myXhr;
-        },
-        //Ajax events
-        //beforeSend: beforeSendHandler,
-        //success: completeHandler,
-        //error: errorHandler,
-        //Form data
-        data: formData,
-        //Options to tell jQuery not to process data or worry about content-type.
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-});
 JS;
                 $this->Js->buffer($script);
                 ?>
@@ -131,8 +101,9 @@ JS;
             <?php endforeach; ?>
         </div>
     </div>
+    <?php echo debug($this->Paginator->params()); ?>
     <?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
     <?php echo $this->Paginator->numbers(); ?>    
     <?php echo $this->Paginator->counter(); ?>
-    <?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?>  
+    <?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?> 
 </div>
