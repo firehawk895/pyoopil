@@ -67,6 +67,8 @@ $this->end();
 
                 $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
                 $script = <<<JS
+<<<<<<< HEAD
+=======
 function progressHandlingFunction(e){
     if(e.lengthComputable){
         console.log(e);               
@@ -100,6 +102,7 @@ $('#thebutton').click(function(){
         processData: false
     });
 });
+>>>>>>> 247e7250db91e2cb9550504d70e093f0e1a1b88c
 JS;
                 $this->Js->buffer($script);
                 ?>
@@ -136,8 +139,9 @@ JS;
             <?php endforeach; ?>
         </div>
     </div>
+    <?php echo debug($this->Paginator->params()); ?>
     <?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
     <?php echo $this->Paginator->numbers(); ?>    
     <?php echo $this->Paginator->counter(); ?>
-    <?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?>  
+    <?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?> 
 </div>

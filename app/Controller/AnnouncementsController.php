@@ -11,7 +11,7 @@ class AnnouncementsController extends AppController {
     public $components = array('Paginator');
     public $helpers = array('Time');
 
-    public function index($classroom_id) {
+    public function index($classroom_id, $page = 1) {
         App::uses('CakeNumber', 'Utility');
 
         $this->Paginator->settings = array(
@@ -27,7 +27,9 @@ class AnnouncementsController extends AppController {
                 'classroom_id' => $classroom_id
             )
         );
-
+//        $page = $this->passedArgs['page'];
+        $this->paginate = array('page' => $page);
+        debug($page);
         $tiles = $this->Paginator->paginate('Announcement');
         $this->set('tiles', $tiles);
         $this->set('classroom_id', $classroom_id);
