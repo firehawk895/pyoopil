@@ -29,9 +29,9 @@ class Announcement extends AppModel {
                 'transport' => array(
                     'class' => AttachmentBehavior::S3,
                     'region' => Aws\Common\Enum\Region::SINGAPORE,
-//                    'folder' => 'announcements/',
-//                    'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
-//                    'secretKey' => '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',
+                    'folder' => 'announcements/',
+                    'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
+                    'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
                 //Dynamically add 'accesskey','secretKey','bucket'
                 ),

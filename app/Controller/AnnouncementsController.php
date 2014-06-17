@@ -12,6 +12,8 @@ class AnnouncementsController extends AppController {
     public $helpers = array('Time');
 
     public function index($classroom_id, $page = 1) {
+
+
         App::uses('CakeNumber', 'Utility');
 
         $this->Paginator->settings = array(
@@ -29,7 +31,6 @@ class AnnouncementsController extends AppController {
         );
 //        $page = $this->passedArgs['page'];
         $this->paginate = array('page' => $page);
-        debug($page);
         $tiles = $this->Paginator->paginate('Announcement');
         $this->set('tiles', $tiles);
         $this->set('classroom_id', $classroom_id);
@@ -98,16 +99,17 @@ class AnnouncementsController extends AppController {
              * Is this good or not?
              * Debate the design decision.
              */
+
             $classroomId = $this->request->data['Announcement']['classroom_id'];
             unset($this->request->data['Announcement']['classroom_id']);
 
             if ($this->Announcement->createAnnouncement(AuthComponent::user('id'), $classroomId, $this->request->data)) {
                 //success
-                $message = array(
+                /*$message = array(
                     'shit' => 'works'
-                );
+                );*/
                 $this->response->statusCode(200);
-                $this->response->body(json_encode($message));
+                //$this->response->body(json_encode($message));
                 return $this->response;
             } else {
                 //failure

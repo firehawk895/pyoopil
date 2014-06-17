@@ -59,16 +59,16 @@ $this->end();
                 </div>
                 <div class="f-right">
                     <!--                                        <a href="javascript:void(0)" class="follow">Cancel</a> 
-                    --><a href="javascript:void(0)" class="sub-btn" id="thebutton">Create</a>
+                    --><a href="#" class="sub-btn" id="theButton">Create</a>
                     <?php // echo $this->Form->submit(); ?>
                 </div>
                 <?php
                 echo $this->Form->end();
 
                 $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
-                $script = <<<JS
-<<<<<<< HEAD
-=======
+
+                /*$script = <<<JS
+
 function progressHandlingFunction(e){
     if(e.lengthComputable){
         console.log(e);               
@@ -95,15 +95,63 @@ $('#thebutton').click(function(){
         //success: completeHandler,
         //error: errorHandler,
         //Form data
-        data: d,
+        data: $('#AnnouncementIndexForm').serializeArray(),
         //Options to tell jQuery not to process data or worry about content-type.
         cache: false,
         contentType: false,
         processData: false
     });
 });
->>>>>>> 247e7250db91e2cb9550504d70e093f0e1a1b88c
+JS;*/
+
+$script = <<<JS
+
+    function progressHandlingFunction(e){
+        if(e.lengthComputable){
+            console.log(e);
+            $('progress').attr({value:e.loaded,max:e.total});
+        }
+    }
+
+    $("#AnnouncementIndexForm").submit(function(e){
+        e.preventDefault();
+         var formData = new FormData(this);
+         var formUrl = '$route';
+
+        console.log(formData);
+
+        $.ajax({
+            url: formUrl,
+            type: 'POST',
+            /*xhr: function() {  // Custom XMLHttpRequest
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload){ // Check if upload property exists
+                    myXhr.upload.addEventListener('progress',progressHandlingFunction, true); // For handling the progress of the upload
+                }
+                return myXhr;
+            },*/
+            data: formData,
+            mimeType: "multipart/form-data",
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(){
+                $("#create-announce").val('');
+                $("#AnnouncementBody").val('');
+                $('progress').attr({value:0});
+            }
+        });
+        e.unbind();
+    });
+
+    $("#theButton").click(function() {
+        $("#AnnouncementIndexForm").submit();
+    });
+
 JS;
+
+
+
                 $this->Js->buffer($script);
                 ?>
                 <progress value="0" max="100"></progress>
@@ -139,7 +187,7 @@ JS;
             <?php endforeach; ?>
         </div>
     </div>
-    <?php echo debug($this->Paginator->params()); ?>
+    <?php /*echo debug($this->Paginator->params()); */?>
     <?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
     <?php echo $this->Paginator->numbers(); ?>    
     <?php echo $this->Paginator->counter(); ?>
