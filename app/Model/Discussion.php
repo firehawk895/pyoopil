@@ -13,7 +13,10 @@ App::uses('AppModel', 'Model');
  */
 class Discussion extends AppModel {
 
-    /**
+    public $PAGINATION_LIMIT = 15;
+
+    /**     * TODO : room wise, and filters
+
      * Common Authorization Framework:
      * Check if user is participant of room (classRoom | institutionRoom | staffRoom | groupRoom)
      * check if user is follower of myRoom's user 
@@ -30,6 +33,8 @@ class Discussion extends AppModel {
     const CO = 3;
     const EN = 4;
     const ED = 5;
+
+    const limit = 15;
 
     public $enum = array(
         'vote' => array(
@@ -181,13 +186,12 @@ class Discussion extends AppModel {
     );
 
     /**
+     * Retrieve Discussion by id
      * @param int $discussion_id
      * @return mixed
      */
     public function getDiscussion($discussion_id) {
-        /**
-         *  Tested and working
-         */
+
         $discussion = $this->find('first', array(
             'conditions' => array('Discussion.id' => $discussion_id),
             'contain' => $this->containing
@@ -196,67 +200,105 @@ class Discussion extends AppModel {
     }
 
     /**
-     * TODO : room wise, and filters
-     * @param type $roomId
-     * @return type
+     * Remove Gamification information where loggedIn user is not the owner of Discussion/Reply
+     * Keep FoldedDiscussion key when not null
+     * @param $data (all discussions)
+     * @param $userId (loggedIn user's id)
+     * @return mixed
      */
-    public function getAllDiscussions($roomId) {
-        /**
-         * Tested and working
-         * if the discussion is a poll
-         *      then if user voted OR user is owner
-         *          fetch poll options and results [mark as 'show' => true]
-         *      else
-         *          fetch poll options
-         * if user voted OR user is owner,
-         *      then fetch gamification votes
-         */
-        $data = $this->find('all', array(
-            'contain' => $this->containing,
-            'conditions' => array(
-                'classroom_id' => $roomId
-            )
-        ));
+    public function processData($data, $userId){
+
+        for($i=0;$i<count($data);$i++){
+            /*Removing Gamification information*/
+            if($data[$i]['Discussion']['user_id'] != $userId){
+                unset($data[$i]['Discussion']['real_praise']);
+                unset($data[$i]['Discussion']['display_praise']);
+                unset($data[$i]['Discussion']['cu']);
+                unset($data[$i]['Discussion']['in']);
+                unset($data[$i]['Discussion']['co']);
+                unset($data[$i]['Discussion']['en']);
+                unset($data[$i]['Discussion']['ed']);
+            }
+
+            /*Remove Key if not folded by current user*/
+            if($data[$i]['Foldeddiscussion'] == NULL){
+                unset($data[$i]['Foldeddiscussion']);
+            }
+
+            for($j=0;$j<count($data[$i]['Reply']);$j++){
+                if($data[$i]['Reply'][$j]['user_id'] != $userId){
+                    unset($data[$i]['Reply'][$j]['real_praise']);
+                    unset($data[$i]['Reply'][$j]['display_praise']);
+                    unset($data[$i]['Reply'][$j]['cu']);
+                    unset($data[$i]['Reply'][$j]['in']);
+                    unset($data[$i]['Reply'][$j]['co']);
+                    unset($data[$i]['Reply'][$j]['en']);
+                    unset($data[$i]['Reply'][$j]['ed']);
+                }
+            }
+        }
 
         return $data;
     }
 
-    /*
-     * Get folded discussions of a user for a particular room
-     * @param int $userId user's id (PK)
-     * @param int $roomId context room id (PK)
-     * TODO : Incorporate for other rooms also
-     */
+    public function getPaginatedDiscussions($roomId,$userId,$page){
 
-    public function getFoldedDiscussions($userId, $roomId) {
+        $offset = $this->PAGINATION_LIMIT*($page-1);
 
-        /**
-         * SELECT * 
-         * FROM discussions AS d
-         * INNER JOIN foldeddiscussions AS f ON d.id = f.discussion_id
-         * WHERE f.user_id =1
-         * AND d.classroom_id =1
-         */
-        $options['joins'] = array(
-            array('table' => 'foldeddiscussions',
-                'alias' => 'Foldeddiscussion',
-                'type' => 'inner',
-                'conditions' => array(
-                    'Discussion.id = Foldeddiscussion.discussion_id'
+        $contain = array(
+            'Reply' => array(
+                'Gamificationvote' => array(
+                    'AppUser' => array(
+                        'fields' => array(
+                            'fname',
+                            'lname'
+                        )
+                    )
+                ),
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
                 )
             ),
+            'Pollchoice' => array(
+                'Pollvote'
+            ),
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array('fname', 'lname')
+            ),
+            'Foldeddiscussion' => array(
+                'conditions' => array(
+                    'user_id' => $userId
+                )
+            )
         );
 
-        $options['conditions'] = array(
-            'Discussion.classroom_id' => $roomId,
-            'Foldeddiscussion.user_id' => $userId
+
+        $data = $this->find('all', array(
+                'contain' => $contain,
+                'conditions' => array(
+                    'classroom_id' => $roomId
+                ),
+                'order' => array(
+                    'created' => 'desc'
+                ),
+                'limit' => $this->PAGINATION_LIMIT,
+                'offset' => $offset
+            )
         );
-
-        $options['contain'] = $this->containing;
-
-        $discussions = $this->find('all', $options);
-        return $discussions;
+        return $data;
     }
+
 
     public function editDiscussionText($discussionId, $text) {
         $this->id = $discussionId;
@@ -268,11 +310,12 @@ class Discussion extends AppModel {
         $this->delete($discussionId);
     }
 
+
     /**
-     * User gives a gamification vote on a discussion (Q/P/N)
-     * @param type $userId User who is voting
-     * @param type $disscussionId discussion_id (pk) of the discussion
-     * @param type $type - gamification vote type ENUM('cu','in','co','en','ed')
+     * @param $userId
+     * @param $disscussionId
+     * @param $type
+     * @return bool
      */
     public function setGamificationDiscussion($userId, $disscussionId, $type) {
         /**
@@ -331,9 +374,10 @@ class Discussion extends AppModel {
 
     /**
      * User gives a gamification vote on a discussion's reply (answer/comment)
-     * @param type $userId
-     * @param type $replyId
-     * @param type $type gamification vote type ENUM('cu','in','co','en','ed')
+     * @param $userId
+     * @param $replyId
+     * @param $type
+     * gamification vote type ENUM('cu','in','co','en','ed')
      */
     public function setGamificationReply($userId, $replyId, $type) {
         /**
@@ -504,5 +548,6 @@ class Discussion extends AppModel {
 
         return false;
     }
+
 
 }

@@ -9,7 +9,6 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  * @property Classroom $Classroom
  * @property User $User
  * @property Pyoopilfile $Pyoopilfile
- * @property User $User
  */
 class Announcement extends AppModel {
 
@@ -102,10 +101,10 @@ class Announcement extends AppModel {
 //        )
 //    );
 
+
     /**
-     * Retrieve all annoucnements for a classroom
-     * @param type $room_id
-     * @return type
+     * @param $classroomId
+     * @return array
      */
     protected function getAnnouncements($classroomId) {
 

@@ -67,43 +67,6 @@ $this->end();
 
                 $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
 
-                /*$script = <<<JS
-
-function progressHandlingFunction(e){
-    if(e.lengthComputable){
-        console.log(e);               
-        $('progress').attr({value:e.loaded,max:e.total});
-    }
-}
-$('#thebutton').click(function(){
-    var formData = new FormData($('form')[0]);
-    var d = $('#AnnouncementIndexForm').serializeArray();
-
-    console.log(d);
-    $.ajax({
-        url: '$route',  //Server script to process data
-        type: 'POST',
-        xhr: function() {  // Custom XMLHttpRequest
-            var myXhr = $.ajaxSettings.xhr();
-            if(myXhr.upload){ // Check if upload property exists
-                myXhr.upload.addEventListener('progress',progressHandlingFunction, true); // For handling the progress of the upload
-            }
-            return myXhr;
-        },
-        //Ajax events
-        //beforeSend: beforeSendHandler,
-        //success: completeHandler,
-        //error: errorHandler,
-        //Form data
-        data: $('#AnnouncementIndexForm').serializeArray(),
-        //Options to tell jQuery not to process data or worry about content-type.
-        cache: false,
-        contentType: false,
-        processData: false
-    });
-});
-JS;*/
-
 $script = <<<JS
 
     function progressHandlingFunction(e){
@@ -141,7 +104,6 @@ $script = <<<JS
                 $('progress').attr({value:0});
             }
         });
-        e.unbind();
     });
 
     $("#theButton").click(function() {
@@ -167,7 +129,7 @@ JS;
                         <a href="javascript:void(0)">
                             <img src="images/follow1.jpg" /><!-- user profile photo who posts announcement --> 
                         </a>
-                    </div>q
+                    </div>
                     <div class="userinfo">
                         <h4><?php echo $tile['Announcement']['subject'] ?> 
                             <span>
