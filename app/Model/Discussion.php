@@ -200,7 +200,7 @@ class Discussion extends AppModel {
     }
 
     /**
-     * Remove Gamification information where loggedIn user is not the owner of Discussion/Reply
+     * Remove Gamification information where loggedIn user is not the owner of Discussion/Reply and he hasn't voted
      * Keep FoldedDiscussion key when not null
      * @param $data (all discussions)
      * @param $userId (loggedIn user's id)
@@ -210,7 +210,9 @@ class Discussion extends AppModel {
 
         for($i=0;$i<count($data);$i++){
             /*Removing Gamification information*/
-            if($data[$i]['Discussion']['user_id'] != $userId){
+            $hasVoted = ($this->hasVoted('Reply',$data[$i]['Discussion']['id'],$userId));
+            $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
+            if((!$isOwner && !$hasVoted) || !$isOwner){
                 unset($data[$i]['Discussion']['real_praise']);
                 unset($data[$i]['Discussion']['display_praise']);
                 unset($data[$i]['Discussion']['cu']);
@@ -224,9 +226,11 @@ class Discussion extends AppModel {
             if($data[$i]['Foldeddiscussion'] == NULL){
                 unset($data[$i]['Foldeddiscussion']);
             }
-
+            /*Removing Gamification information for Reply*/
             for($j=0;$j<count($data[$i]['Reply']);$j++){
-                if($data[$i]['Reply'][$j]['user_id'] != $userId){
+                $hasVoted = ($this->hasVoted('Reply',$data[$i]['Reply'][$j]['id'],$userId));
+                $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
+                if((!$isOwner && !$hasVoted) || !$isOwner){
                     unset($data[$i]['Reply'][$j]['real_praise']);
                     unset($data[$i]['Reply'][$j]['display_praise']);
                     unset($data[$i]['Reply'][$j]['cu']);
@@ -241,7 +245,7 @@ class Discussion extends AppModel {
         return $data;
     }
 
-    public function getPaginatedDiscussions($roomId,$userId,$page){
+    public function getPaginatedDiscussions($roomId,$userId,$page=1){
 
         $offset = $this->PAGINATION_LIMIT*($page-1);
 
@@ -299,145 +303,125 @@ class Discussion extends AppModel {
         return $data;
     }
 
-
-    public function editDiscussionText($discussionId, $text) {
-        $this->id = $discussionId;
-        $this->saveField('body', $text);
-    }
-
     public function deleteDiscussion($discussionId) {
         //Ensure ON DELETE CASCADE in Discussion table
         $this->delete($discussionId);
     }
 
-
     /**
+     * Checks if a user has voted on a reply or discussion
+     * @param $type (Discussion,Reply)
+     * @param $id
      * @param $userId
-     * @param $disscussionId
-     * @param $type
-     * @return bool
+     * @return boolean
      */
-    public function setGamificationDiscussion($userId, $disscussionId, $type) {
-        /**
-         * If exists (already voted), don't allow insert
-         * allowing 'ed' vote to only to educator
-         * insert gamification vote
-         * update gamification scores for discussion
-         */
-        $conditions = array(
-            'user_id' => $userId,
-            'discussion_id' => $disscussionId
+    public function hasVoted($type,$id,$userId){
+        $conditions= array(
+                'user_id' => $userId
         );
 
-        //make sure its a valid type to prevent database errors
+        if($type == 'Discussion'){
+            $conditions = Hash::insert($conditions,'discussion_id',$id);
+        }elseif($type == 'Reply'){
+            $conditions = Hash::insert($conditions,'reply_id',$id);
+        }
+
+        return $this->Gamificationvote->hasAny($conditions);
+    }
+
+    /**
+     * Vote on a particular Discussion or Reply
+     * @param $type
+     * @param $id
+     * @param $vote
+     * @param $userId
+     * @return boolean
+     */
+    public function setGamificationVote($type,$id,$vote,$userId){
+
+        $params = array(
+            'contain' => array(
+                'Gamificationvote'
+            ),
+            'conditions' => array(
+                'id' => $id
+            ),
+        );
+
         $voteTypes = Hash::combine($this->enum, 'vote.{n}');
-        $validVote = array_key_exists($type, $voteTypes);
+        $validVote = array_key_exists($vote, $voteTypes);
 
-        //TODO : also make sure vote NOT already cast
-        //        if ($type == self::ED)
-        if ($validVote && !$this->Gamificationvote->hasAny($conditions)) {
-            $this->id = $disscussionId;
-            $displayPraise = $this->field('display_praise') + 1;
+        if($type == 'Discussion'){
+            $this->id = $id;
+            $data = $this->find('first',$params);
+        }elseif($type == 'Reply'){
+            $this->Reply->id = $id;
+            $data = $this->Reply->find('first',$params);
+        }
 
-            if ($type == $this->enumMap[self::ED]) {
-                $realPraise = $this->field('real_praise') + 10;
-            } else {
-                $realPraise = $this->field('real_praise') + 1;
+        /*Ensuring no self vote*/
+        if($data[$type]['user_id'] != $userId){
+            /*Ensuring no duplicate voting and valid voting*/
+            if(!$this->hasVoted($type,$id,$userId) && $validVote){
+
+                $displayPraise = $data[$type]['display_praise'] + 1;
+
+                if($vote == $this->enumMap[self::ED]){
+                    $realPraise = $data[$type]['real_praise'] + 10;
+                }else{
+                    $realPraise = $data[$type]['real_praise'] + 1;
+                }
+
+                $voteValue = $data[$type][$vote] + 1;
+
+                $record = array(
+                    $type => array(
+                        'id' => $id,
+                        'display_praise' => $displayPraise,
+                        'real_praise' => $realPraise,
+                        $vote => $voteValue
+                    ),
+                    'Gamificationvote' => array(
+                        'vote' => $vote,
+                        'user_id' => $userId
+                    )
+                );
+
+                return $this->Gamificationvote->saveAssociated($record);
             }
-
-            $vote = $this->field($type) + 1;
-
-            $this->Gamificationvote->create();
-            $data = array(
-                'User' => array(
-                    'id' => $userId
-                ),
-                'Discussion' => array(
-                    'id' => $disscussionId,
-                    'display_praise' => $displayPraise,
-                    'real_praise' => $realPraise,
-                    $type => $vote
-                ),
-                'Gamificationvote' => array(
-                    'vote' => $type
-                )
-            );
-            if ($this->Gamificationvote->saveAssociated($data)) {
-                return true;
-            } else {
+            else{
+                /*duplicate vote error message*/
                 return false;
             }
-        } else {
+        }else{
+            /*voting on own discussion/reply*/
             return false;
         }
     }
 
     /**
-     * User gives a gamification vote on a discussion's reply (answer/comment)
-     * @param $userId
-     * @param $replyId
+     * Retrieve Gamification information and engagers for a Discussion or Reply
      * @param $type
-     * gamification vote type ENUM('cu','in','co','en','ed')
+     * @param $id
+     * @param int $page
+     * @return array
      */
-    public function setGamificationReply($userId, $replyId, $type) {
-        /**
-         * If exists (already voted), don't allow insert
-         * allowing 'ed' vote to only to educator
-         * insert gamification vote
-         * update gamification scores for discussion
-         */
-        $conditions = array(
-            'user_id' => $userId,
-            'reply_id' => $replyId
-        );
+    public function getGamificationInfo($type,$id,$page=1){
+        $offset = $this->PAGINATION_LIMIT*($page-1);
 
-        //make sure its a valid type to prevent database errors
-        $voteTypes = Hash::combine($this->enum, 'vote.{n}');
-        $validVote = array_key_exists($type, $voteTypes);
-
-        //TODO : also make sure vote NOT already cast
-        //        if ($type == self::ED)
-        if ($validVote && !$this->Gamificationvote->hasAny($conditions)) {
-            $this->id = $replyId;
-            $displayPraise = $this->field('display_praise') + 1;
-
-            if ($type == $this->enumMap[self::ED]) {
-                $realPraise = $this->field('real_praise') + 10;
-            } else {
-                $realPraise = $this->field('real_praise') + 1;
-            }
-
-            $vote = $this->field($type) + 1;
-
-            $this->Gamificationvote->create();
-            $data = array(
-                'User' => array(
-                    'id' => $userId
-                ),
-                'Reply' => array(
-                    'id' => $replyId,
-                    'display_praise' => $displayPraise,
-                    'real_praise' => $realPraise,
-                    $type => $vote
-                ),
+        $params = array(
+            'contain' => array(
                 'Gamificationvote' => array(
-                    'vote' => $type
+                    'AppUser' => array(
+                        'fields' => array(
+                            'fname',
+                            'lname'
+                        )
+                    )
                 )
-            );
-            if ($this->Gamificationvote->saveAssociated($data)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    public function getGamificationDiscussion($discussionId) {
-        $discussion = $this->find('first', array(
-            'conditions' => array('Discussion.id' => $discussionId),
+            ),
             'fields' => array(
+                'id',
                 'display_praise',
                 $this->enumMap[self::CU],
                 $this->enumMap[self::IN],
@@ -445,25 +429,56 @@ class Discussion extends AppModel {
                 $this->enumMap[self::EN],
                 $this->enumMap[self::ED]
             ),
-            'recursive' => -1
-        ));
-        return $discussion;
+            'conditions' => array(
+                'id' => $id
+            ),
+            'offset' => $offset,
+            'limit' => $this->PAGINATION_LIMIT
+        );
+
+        if($type == 'Discussion'){
+            $data = $this->find('first',$params);
+        }elseif($type == 'Reply'){
+            $data = $this->Reply->find('first',$params);
+        }
+
+        return $data;
     }
 
-    public function getGamificationReply($replyId) {
-        $reply = $this->Reply->find('first', array(
-            'conditions' => array('Reply.id' => $replyId),
-            'fields' => array(
-                'display_praise',
-                $this->enumMap[self::CU],
-                $this->enumMap[self::IN],
-                $this->enumMap[self::CO],
-                $this->enumMap[self::EN],
-                $this->enumMap[self::ED]
+    /**
+     * Toggle fold on discussion
+     * @param $discussionId
+     * @param $userId
+     * @param bool $fold
+     * @return bool|mixed
+     */
+    public function toggleFold($discussionId, $userId, $fold=true){
+
+        $conditions = array(
+            'user_id' => $userId,
+            'discussion_id' => $discussionId
+        );
+
+        $data = array(
+            'User' => array(
+                'id' => $userId
             ),
-            'recursive' => -1
-        ));
-        return $reply;
+            'Discussion' => array(
+                'id' => $discussionId
+            )
+        );
+
+        if($fold){
+            $this->Foldeddiscussion->create();
+            return $this->Foldeddiscussion->saveAssociated($data);
+        }else{
+            $id = $this->Foldeddiscussion->find('first',array(
+                'conditions' => $conditions,
+                'recursive' => -1
+            ));
+
+            return $this->Foldeddiscussion->delete($id);
+        }
     }
 
     /**
@@ -503,51 +518,5 @@ class Discussion extends AppModel {
         }
         return false;
     }
-
-    public function foldDiscussion($userId, $discussionId) {
-        //If already folded then ignore
-
-        $conditions = array(
-            'user_id' => $userId,
-            'discussion_id' => $discussionId
-        );
-
-        $data = array(
-            'User' => array('id' => $userId),
-            'Discussion' => array('id' => $discussionId)
-        );
-
-        if (!$this->Foldeddiscussion->hasAny($conditions)) {
-            $this->Foldeddiscussion->create();
-            if ($this->Foldeddiscussion->saveAssociated($data)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function unfoldDiscussion($userId, $discussionId) {
-
-        //Sadness : User.id notation translated to joins!
-        //will not work with recursive -1
-        //this is a sweeter approach
-        $conditions = array(
-            'user_id' => $userId,
-            'discussion_id' => $discussionId
-        );
-
-        $foldedDiscussion = $this->Foldeddiscussion->find('first', array(
-            'conditions' => $conditions,
-            'recursive' => -1
-        ));
-
-        if ($foldedDiscussion) {
-            $this->Foldeddiscussion->delete($foldedDiscussion[Foldeddiscussion][id]);
-            return true;
-        }
-
-        return false;
-    }
-
 
 }

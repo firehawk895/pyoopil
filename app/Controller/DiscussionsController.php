@@ -30,26 +30,27 @@ class DiscussionsController extends AppController {
      * @param type $classroomId
      */
     public function index($classroomId) {
-
-        /**
-         * throw not found exception if classroom does not exist
-         */
-
         $this->set('classroomId' , $classroomId);
 
         $userId = AuthComponent::user('id');
 
-        if(isset($this->params['url']['page'])){
-            $data = $this->Discussion->getPaginatedDiscussions(1,$userId,$this->params['url']['page']);
-            $data = $this->Discussion->processData($data,$userId);
-        }
-        else{
-            $data = $this->Discussion->getPaginatedDiscussions(1,$userId,1);
-            $data = $this->Discussion->processData($data,$userId);
-        }
+        $data = $this->Discussion->getPaginatedDiscussions($classroomId,$userId,1);
+        $data = $this->Discussion->processData($data,$userId);
+
+        debug($data);
+        die();
 
         $this->set('data',json_encode($data));
 
+    }
+
+    public function getDiscussions($classroomId){
+        $userId = AuthComponent::user('id');
+
+        if(isset($this->params['url']['page'])){
+            $data = $this->Discussion->getPaginatedDiscussions($classroomId,$userId,$this->params['url']['page']);
+            $data = $this->Discussion->processData($data,$userId);
+        }
     }
 
 }
