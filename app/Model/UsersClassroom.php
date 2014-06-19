@@ -23,8 +23,8 @@ class UsersClassroom extends AppModel {
             'order' => '',
             'counterCache' => true
         ),
-        'User' => array(
-            'className' => 'User',
+        'AppUser' => array(
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',

@@ -149,13 +149,11 @@
                         ?>
                     </a>
                     <ul class="logout-lst">
-                        <li class="lastli"><a href="logout.htm">Logout</a>
+                        <li class="lastli"><a href="<?php echo Router::url(array('controller' => 'app_users', 'action' => 'logout')); ?>">Logout</a>
                         </li>
                     </ul>
 
                 </li>        </ul>
-            </li>
-            </ul>
         </nav>
         <!-- Right side Content  -->
         <section class="rightwrapper">

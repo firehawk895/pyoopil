@@ -11,7 +11,9 @@ App::uses('CodeGenerator', 'Lib/Custom');
  * @property Department $Department
  */
 class Classroom extends AppModel {
+
     public $components = array('Paginator');
+
     /**
      * db Notes:
      * campus_id -> department_id -> degree_id is a hierarchy
@@ -183,32 +185,33 @@ class Classroom extends AppModel {
      */
     public function getLatestTile($userId) {
 
-        $params['contain'] = array(
-            'UsersClassroom' => array(
-                'conditions' => array(
-                    'user_id' => $userId
-                ),
-                'order' => array(
-                    'UsersClassroom.created' => 'desc'
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
+                'Campus' => array(
+                    'fields' => array(
+                        'id', 'name'
+                    )
                 )
             ),
-            'Campus' => array(
-                'fields' => array(
-                    'id','name'
-                )
-            )
         );
 
-        $params['fields'] = array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count');
+        $options['conditions'] = array('user_id' => $userId);
+        $options['order'] = array('UsersClassroom.created' => 'desc');
+        /**
+         * Magic:
+         * Campus fields won't come if you uncomment the follwing line.
+         * I'm watching you in git.
+         */
+//        $options['fields'] = array('is_restricted', 'is_teaching', 'created', 'modified');
 
-        $data = $this->find('first',$params);
 
-        $teacher = $this->getEducatorName($data['Classroom']['id']);
-        $data = Hash::insert($data,'Classroom.teacher',$teacher);
+        $data = $this->UsersClassroom->find('first', $options);
 
-        $jsonData = json_encode($data);
-        return $jsonData;
+        $educator = $this->getEducatorName($data['Classroom']['id']);
+        $data = Hash::insert($data, 'Classroom.Educator', $educator);
 
+        return $data;
     }
 
     /**
@@ -339,7 +342,7 @@ class Classroom extends AppModel {
         );
 
         $options['contain'] = array(
-            'User' => array(
+            'AppUser' => array(
                 'fields' => array('fname', 'lname')
             )
         );
@@ -375,6 +378,91 @@ class Classroom extends AppModel {
         } else {
             return null;
         }
+    }
+
+    /**
+     * get paginated classroom tile details
+     * @param type $user_id
+     * @param type $page
+     */
+    public function getPaginatedClassrooms($user_id, $page) {
+
+        //sanity check
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $offset = $this->PAGINATION_LIMIT * ($page - 1);
+
+        $options = array(
+            'contain' => array(
+                'UsersClassroom' => array(
+                    'conditions' => array(
+                        'user_id' => $user_id
+                    ),
+                    'order' => array(
+                        'UsersClassroom.created' => 'desc'
+                    ),
+                    'fields' => array('is_restricted', 'is_teaching')
+                ),
+                'Campus' => array(
+                    'fields' => array(
+                        'id', 'name'
+                    )
+                )
+            ),
+            'limit' => $this->PAGINATION_LIMIT,
+            'offset' => $offset,
+            'fields' => array(
+                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        for ($i = 0; $i < count($data); $i++) {
+            $educator_name = $this->getEducatorName($data[$i]['Classroom']['id']);
+            $path = $i . '.Classroom.Educator';
+            $data = Hash::insert($data, $path, $educator_name);
+        }
+        return $data;
+    }
+
+    /**
+     * TODO: Cache the query for use in both side Nav and main tiles
+     * get raw db data for all classrooms attended/taught by $userId
+     * @param int $userId
+     * @return array $jsonData
+     */
+    public function getLatestTile2($user_id) {
+        $options = array(
+            'contain' => array(
+                'UsersClassroom' => array(
+                    'conditions' => array(
+                        'user_id' => $user_id
+                    ),
+                    'order' => array(
+                        'UsersClassroom.created' => 'desc'
+                    ),
+                    'fields' => array('is_restricted', 'is_teaching')
+                ),
+                'Campus' => array(
+                    'fields' => array(
+                        'id', 'name'
+                    )
+                )
+            ),
+            'fields' => array(
+                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
+            )
+        );
+
+        $data = $this->find('first', $options);
+
+        $educatior = $this->getEducatorName($data['Classroom']['id']);
+        $data = Hash::insert($data, 'Classroom.Educator', $educatior);
+
+        return $data;
     }
 
 }
