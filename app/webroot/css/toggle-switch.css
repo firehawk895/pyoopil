@@ -186,7 +186,7 @@ box-shadow:inset 0 0 5px 3px #c45301;
     .switch-android a {
       background-color: #e6e6e6;
       border-radius: 1px;
-      box-shadow: inset rgba(255, 255, 255, 0.2) 0 1px 0, inset rgba(0, 0, 0, 0.3) 0 -1px 0; border-radius:40px;color:#}
+      box-shadow: inset rgba(255, 255, 255, 0.2) 0 1px 0, inset rgba(0, 0, 0, 0.3) 0 -1px 0; border-radius:40px;}
     .switch-android.switch-light input:checked ~ a {
       background-color: #0e88b1; }
     .switch-android.switch-light input:checked ~ span span:first-of-type {
