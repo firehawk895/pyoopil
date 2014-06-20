@@ -141,7 +141,6 @@
                     ));
                     echo $this->Form->end();
                     $script = <<<JS
-alert("working");
 var options = { 
         target:        '#classroom-created-success',   // target element(s) to be updated with server response 
         beforeSubmit:  showRequest,  // pre-submit callback 

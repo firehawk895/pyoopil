@@ -65,8 +65,8 @@ header.landing-page { position: relative; }
 .countryflags { position: relative; float: left; background: #fff; padding: 6px; border: 3px solid #f58220; border-radius: 5px; margin-right: 5px; }
 .seledctedcountry img { vertical-align: middle; margin-right: 5px; }
 .selectflag { cursor: pointer; padding: 3px; }
-.allcountries { display: none; background: #fff; right: -3px; padding: 10px 0; position: absolute; top: 49px; width: 80px; z-index: 10000; border: 3px solid #f58220; border-radius: 5px; -moz- border-radius:5px;
--webkit- border-radius:5px;
+.allcountries { display: none; background: #fff; right: -3px; padding: 10px 0; position: absolute; top: 49px; width: 80px; z-index: 10000; border: 3px solid #f58220; border-radius: 5px; -moz-border-radius:5px;
+-webkit-border-radius:5px;
 }
 .allcountries li { margin-bottom: 10px; text-align: center; }
 /**** University Information ***/
@@ -366,7 +366,7 @@ header.landing-page { position: relative; }
 /*=============Classroom People==============*/
 .people .topbuttons { width: 86%; }
 .all-dd { float: left; background-color: transparent; position: relative; }
-.all-dd .sel-topic { border: none; background-color: transparent; color: ##525151; font-size: 18px; line-height: 20px; }
+.all-dd .sel-topic { border: none; background-color: transparent; color: #525151; font-size: 18px; line-height: 20px; }
 .all-dd .seltop-dd { height: 60px; width: 120px; position: absolute; top: 35px; }
 .pep-right { float: right; }
 .assign-icon, .rest-icon { background: #bebebe url(../images/classroom/assign-icon.png) no-repeat center; width: 32px; height: 32px; border-radius: 3px; display: inline-block; }
@@ -535,8 +535,7 @@ header.landing-page { position: relative; }
 .img-lst li.active img{border-color:#F67E03;-webkit-box-shadow: -1px 0px 10px 3px #F67E03;-moz-box-shadow: -1px 0px 10px 3px #F67E03;box-shadow: -1px 0px 10px 3px #F67E03;}
 .img-lst li img { width: 60px; height: 60px; border-radius: 3px; border:2px solid transparent; }
 .lst-name { font-size: 10px; color: #4b4949; width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.enga-link { border: 1px dashed; background-color:
- display: inline-block;
+.enga-link { border: 1px dashed; display: inline-block;
 height: 60px; vertical-align: top; width: 60px; display: inline-block; width: 60px; height: 60px; }
 .view-icon { background: url(../images/classroom/view-icon.png) no-repeat 0 -18px; display: block; height: 18px; left: 20px; position: relative; top: 16px; width: 18px; }
 .enga-link.active .view-icon { background-position: 0 0; }
@@ -1009,7 +1008,6 @@ height: 60px; vertical-align: top; width: 60px; display: inline-block; width: 60
 .accsettingtabsinfo { padding:40px 0; }
 .pwd-tbl input[type="password"]{width:50%;}
 .pwd-tbl .passStrengthify span{color:#666666 !important;}
-.
 /*.association{box-shadow:0 0 2px #999;}*/
 .association h3 { color:#fff; font-size:18px; font-weight:normal; background:#c3c3c3; padding:10px; border-top-left-radius:3px; border-top-right-radius:3px; }
 .institution-details { background:#fff; padding:10px; border-bottom-left-radius:3px; border-bottom-right-radius:3px; }
@@ -1218,9 +1216,10 @@ body.fixedheader .mainnav li a { padding:18px 10px 4px; }
 .logoutconform ul { padding:20px 0; }
 .logoutconform li { float:left; display:inline-block; margin-right:20px; }
 .logoutconform li a { display:block; padding:10px 30px; border:2px solid #f67e02; color:#f67e02; font-size:18px; border-radius:6px; }
-.logoutconform li:last-child, .help-right li:last-child, .mainnav li:last-child, {
-margin-right:0;
-}
+.logoutconform li:last-child, .help-right li:last-child, 
+//.mainnav li: { last-child, 
+//margin-right:0;
+//}
 .logoutconform li a:hover { border:2px solid #fff; transition:ease-in-out 1s; color:#fff; }
 /****** Help Section ******/
 .helpussection { background:#e4e4e4; width:100%; padding:65px 0; }

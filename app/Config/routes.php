@@ -1,6 +1,4 @@
-<?php
-
-/**
+<?php /**
  * Routes configuration
  *
  * In this file, you set up routes to your controllers and their actions.
@@ -24,6 +22,7 @@
  * Parse Extensions
  */
 Router::parseExtensions(array('html', 'json'));
+
 /**
  * Pyoopil routes
  */
@@ -39,7 +38,6 @@ Router::connect(
         'id' => '[0-9]+'
     )
 );
-
 Router::connect(
     '/Classrooms/:id/:controller/:action',
     array(),
@@ -55,8 +53,7 @@ Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action'
 Router::connect('/Classrooms/join', array('controller' => 'classrooms', 'action' => 'joinWithCode'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
 Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => 'index'));
-//Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
-
+Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file
@@ -78,11 +75,11 @@ Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => '
  * @overriding CakeDc Routes
  */
 Router::connect('/login/*', array('controller' => 'app_users', 'action' => 'login'));
+Router::connect('/logout/*', array('controller' => 'app_users', 'action' => 'logout'));
 Router::connect('/users', array('controller' => 'app_users'));
 Router::connect('/users/index/*', array('controller' => 'app_users'));
 Router::connect('/users/users/:action/*', array('controller' => 'app_users'));
 Router::connect('/users/:action/*', array('controller' => 'app_users'));
-Router::connect('/logout/*', array('controller' => 'app_users', 'action' => 'logout'));
 Router::connect('/register/*', array('controller' => 'app_users', 'action' => 'add'));
 
 /**
