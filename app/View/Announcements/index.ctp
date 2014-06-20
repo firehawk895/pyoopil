@@ -1,7 +1,7 @@
 <?php
 $this->start('pagesubnav');
 echo $this->element('classrooms/inside-classroom-subnav', array(
-    'classroomId' => $classroom_id,
+    'classroomId' => $classroomId,
     'active' => 'Announcements'
 ));
 $this->end();
@@ -10,8 +10,7 @@ $this->end();
     <!--content top-->
     <div class="top-div announcement">
         <span class="txt-count">(
-            <span id="rem_count">200</span>/200 characters left)</span> 
-<!--        <input class="add-topic" type="text" placeholder="Subject" maxlength="200" />-->
+            <span id="rem_count">200</span>/200 characters left)</span>
         <?php
         echo $this->Form->create('Announcement', array(
             'url' => array('controller' => 'announcements', 'action' => 'add'),
@@ -36,7 +35,6 @@ $this->end();
                 'label' => false
             ));
             ?>
-            <!--<textarea class="txt-area" placeholder="Type announcement text here…"></textarea>-->
             <div class="att-box clearfix">
                 <div class="disc-room f-left">
                     <div class="attachmentbox">
@@ -52,15 +50,12 @@ $this->end();
                                 'div' => false
                             ));
                             ?>
-                            <!--<input id="fileupload" type="file" name="files[]" class="i_file" />-->
                         </span>
                         <div id="files" class="files"></div>
                     </div>
                 </div>
                 <div class="f-right">
-                    <!--                                        <a href="javascript:void(0)" class="follow">Cancel</a> 
-                    --><a href="#" class="sub-btn" id="theButton">Create</a>
-                    <?php // echo $this->Form->submit(); ?>
+                    <a href="#" class="sub-btn" id="theButton">Create</a>
                 </div>
                 <?php
                 echo $this->Form->end();
@@ -111,47 +106,10 @@ $script = <<<JS
     });
 
 JS;
-
-
-
-                $this->Js->buffer($script);
+                    $this->Js->buffer($script);
                 ?>
                 <progress value="0" max="100"></progress>
             </div>
-        </div></div>
-    <!--content list-->
-    <div class="announcement-outer">
-        <div class="middivouter">
-            <?php foreach ($tiles as $tile) : ?>
-                <div class="listbox">
-                    <!-- unread announcement with attachment example -->
-                    <div class="imgbox">
-                        <a href="javascript:void(0)">
-                            <img src="images/follow1.jpg" /><!-- user profile photo who posts announcement --> 
-                        </a>
-                    </div>
-                    <div class="userinfo">
-                        <h4><?php echo $tile['Announcement']['subject'] ?> 
-                            <span>
-                                <a href="profile-view.htm">by <?php echo $tile['AppUser']['fname'] . " " . $tile['AppUser']['lname'] ?></a>
-                            </span></h4>
-                        <div class="datetime clearfix"><!-- if there is an attachment --><span class="attach-icon"></span><?php
-                            echo $this->Time->format(
-                                    'F jS, Y h:i A', $tile['Announcement']['created'], null
-                            );
-                            ?></div>
-                    </div>
-                    <p><?php echo $tile['Announcement']['body'] ?></p>
-                    <p class="cl">
-                        <a class="dlfile" href="javascript:void(0)"><?php echo $tile['Announcement']['filename'] ?><?php echo CakeNumber::toReadableSize($tile['Announcement']['filesize']) ?></a> 
-                        <a class="down-icon" href="<?php echo $tile['Announcement']['file_path'] ?>"></a></p>
-                </div>
-            <?php endforeach; ?>
         </div>
     </div>
-    <?php /*echo debug($this->Paginator->params()); */?>
-    <?php echo $this->Paginator->prev('« Previous', null, null, array('class' => 'disabled')); ?>
-    <?php echo $this->Paginator->numbers(); ?>    
-    <?php echo $this->Paginator->counter(); ?>
-    <?php echo $this->Paginator->next('Next »', null, null, array('class' => 'disabled')); ?> 
 </div>

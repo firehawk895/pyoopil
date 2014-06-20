@@ -12,6 +12,8 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  */
 class Announcement extends AppModel {
 
+    public $PAGINATION_LIMIT = 15;
+
 //    public function beforeUpload($options) {
 //
 //        $options['transport']['accessKey'] = getenv('S3_ACCESS_KEY');
@@ -103,92 +105,69 @@ class Announcement extends AppModel {
 
 
     /**
-     * @param $classroomId
+     * Get announcement by ID
+     * @param $announcementId
      * @return array
      */
-    protected function getAnnouncements($classroomId) {
-
-        $options['contain'] = array();
-        $options['conditions'] = array(
-            'classroom_id' => $classroomId
+    public function getAnnouncementById($announcementId) {
+        $params = array(
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array('fname', 'lname')
+                )
+            ),
+            'conditions' => array(
+                'Announcement.id' => $announcementId
+            )
         );
-        $data = $this->find('all', $options);
-// public $actsAs = array(
-//        'Uploader.Attachment' => array(
-//            'file_path' => array(
-//                'overwrite' => true,
-//                'transport' => array(
-//                    'class' => AttachmentBehavior::S3,
-//                    'accessKey' => ,
-//                    'secretKey' => getenv('S3_SECRET_KEY'),
-//                    'bucket' => 'pyoopil-files',
-//                    'region' => Aws\Common\Enum\Region::SINGAPORE,
-//                    'folder' => 'announcements/'
-//                ),
-//            )
-//        ),
-//        'Uploader.FileValidation' => array(
-//            'file_path' => array(
-//                'type' => 'image',
-//                'mimeType' => array('image/gif'),
-//                'filesize' => 2097152,
-//                'required' => false
-//            )
-//        )
-//    );
-//        $event = new CakeEvent('Model.Order.getAnnouncements', $this, array(
-//            'data' => $data
-//        ));
-//        $this->getEventManager()->dispatch($event);
 
+        return $this->find('first',$params);
+    }
+
+    /**
+     * Retrieve paginated announcements
+     * @param $classroomId
+     * @param int $page
+     * @return array
+     */
+    public function getPaginatedAnnouncements($classroomId,$page = 1){
+        $offset = $this->PAGINATION_LIMIT*($page-1);
+
+        $params = array(
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array('fname', 'lname')
+                )
+            ),
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            ),
+            'limit' => $this->PAGINATION_LIMIT,
+            'offset' => $offset,
+            'order' => array(
+                'Announcement.created' => 'desc'
+            )
+        );
+
+        $data = $this->find('all',$params);
         return $data;
     }
 
-    public function getAnnouncementTiles($classroomId) {
-        $datadump = $this->getAnnouncements($classroomId);
-
-        $i = 0;
-        foreach ($datadump as $data) {
-            $tiles[$i]['subject'] = $data['Announcement']['subject'];
-            $tiles[$i]['name'] = $this->AppUser->getFullName($data['Announcement']['user_id']);
-            $tiles[$i]['body'] = $data['Announcement']['body'];
-            $tiles[$i]['created'] = $data['Announcement']['created'];
-            $tiles[$i]['file_path'] = $data['Announcement']['file_path'];
-            $tiles[$i]['filename'] = $data['Announcement']['filename'];
-            $tiles[$i]['filesize'] = $data['Announcement']['filesize'];
-            $i++;
-        }
-//        debug($tile);
-//        die();
-        return $tiles;
-    }
-
     /**
-     * 
+     * Creates a new announcement
+     * @param $userId
+     * @param $classroomId
+     * @param $data
+     * @return bool
      */
+    public function createAnnouncement($classroomId,$data,$userId) {
 
-    /**
-     * Create Announcement by user, for a particular classroom
-     * @param type $userId
-     * @param type $classroomId
-     */
-    public function createAnnouncement($userId, $classroomId, $data) {
-        /**
-         * $data = array(
-         *      'Announcement' => array(
-         *          'subject' => ...
-         *          'body' => ...
-         *      );
-         * );
-         */
         $data['Announcement']['classroom_id'] = $classroomId;
         $data['Announcement']['user_id'] = $userId;
 
-//        debug($data);
-
-        if ($this->save($data)) {
+        if ($this->save($data)){
             return true;
-        } else {
+        }else{
             return false;
         }
     }
