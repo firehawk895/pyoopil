@@ -202,6 +202,7 @@
 //    echo $this->Html->script('toastr.js');
     echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js');
     echo $this->Html->script('core.js');
+    echo $this->Html->script('ck/ckeditor');
 
     //plugins for pyoopil front end use
     echo $this->Html->script('http://malsup.github.io/jquery.form.js');

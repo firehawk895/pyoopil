@@ -37,14 +37,12 @@ class DiscussionsController extends AppController {
         $data = $this->Discussion->getPaginatedDiscussions($classroomId,$userId,1);
         $data = $this->Discussion->processData($data,$userId);
 
-        debug($data);
-        die();
-
         $this->set('data',json_encode($data));
 
     }
 
     public function getDiscussions($classroomId){
+        //do not render view
         $userId = AuthComponent::user('id');
 
         if(isset($this->params['url']['page'])){

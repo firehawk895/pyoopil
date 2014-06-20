@@ -41,40 +41,14 @@ Router::connect(
 );
 
 Router::connect(
-    '/Classrooms/:id/:controller/:page',
-    array('action' => 'index'),
+    '/Classrooms/:id/:controller/:action',
+    array(),
     array(
-        'pass' => array('id','page'),
-        'id' => '[0-9]+',
-        'page' => '[0-9]+'
+        'pass' => array('id'),
+        'id' => '[0-9]+'
     )
 );
 
-
-//Router::connect(
-//        '/classrooms/:id/Discussions', 
-//        array('controller' => 'discussions', 'action' => 'index'), 
-//        array(
-//            'pass' => array('id'),
-//            'id' => '[0-9]+'
-//        )
-//);
-//Router::connect(
-//        '/classrooms/:id', 
-//        array('controller' => 'discussions', 'action' => 'index'), 
-//        array(
-//            'pass' => array('id'),
-//            'id' => '[0-9]+'
-//        )
-//);
-//Router::connect(
-//        '/classrooms/:id/Announcements', 
-//        array('controller' => 'announcements', 'action' => 'index'),
-//        array(
-//            'pass' => array('id'),
-//            'id' => '[0-9]+'
-//        )
-//);
 //--------------------------------------------------------------------------------------------------------------
 Router::connect('/Announcements/add', array('controller' => 'announcements', 'action' => 'add'));
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));

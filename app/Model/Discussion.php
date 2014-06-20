@@ -487,7 +487,7 @@ class Discussion extends AppModel {
      * @param type $discussionid discussion_id (pk) of the poll type discussion
      * @param type $pollChoiceId pollchoice_id of the choice on poll voted for
      */
-    public function setVoteOnPoll($userId, $pollChoiceId) {
+    public function setPollVote($userId, $pollChoiceId) {
 
         $conditions = array(
             'user_id' => $userId,
@@ -517,6 +517,26 @@ class Discussion extends AppModel {
             }
         }
         return false;
+    }
+
+    public function postReply($discussionId,$comment,$userId){
+        $data = array(
+            'AppUser' => array(
+                'id' => $userId
+            ),
+            'Discussion' => array(
+                'id' => $discussionId
+            ),
+            'Reply' => array(
+                'comment' => $comment
+            )
+        );
+
+        return $this->Reply->saveAssociated($data);
+    }
+
+    public function addDiscussion($data){
+
     }
 
 }
