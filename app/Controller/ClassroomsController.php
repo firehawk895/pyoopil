@@ -145,13 +145,14 @@ class ClassroomsController extends AppController {
             $status = true;
             $message = "Successfully created classroom";
 //            $the_great_id = $this->Classroom->getLastInsertId();
+            $this->log('getting latest tile');
             $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
         } else {
             $status = true;
             $message = "Successfully created classroom";
         }
         $this->set(compact('status', 'message'));
-        $this->set('data');
+        $this->set('data' , $data);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
