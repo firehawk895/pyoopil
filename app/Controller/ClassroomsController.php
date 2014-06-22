@@ -134,23 +134,25 @@ class ClassroomsController extends AppController {
 //        }
 //    }
     public function add() {
-        $this->autoRender = false;
+//        $this->autoRender = false;
+        $this->request->onlyAllow('post');
+        $data = array();
 
-        if ($this->request->is('post')) {
-            $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
-            $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
+        $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
+        $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
 
-            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
-                $the_great_id = $this->Classroom->getLastInsertId();
-                $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
-                return json_encode(compact('data', 'the_great_id'));
-            } else {
-                $error = "Could not create a new classroom";
-                return json_encode(compact('error'));
-            }
+        if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
+            $status = true;
+            $message = "Successfully created classroom";
+//            $the_great_id = $this->Classroom->getLastInsertId();
+            $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
+        } else {
+            $status = true;
+            $message = "Successfully created classroom";
         }
-
-        return json_encode($test);
+        $this->set(compact('status', 'message'));
+        $this->set('data');
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
 //    public function add() {
@@ -178,36 +180,52 @@ class ClassroomsController extends AppController {
     /**
      * Join a classroom provided access code
      */
-    public function joinWithCode() {
-        $this->autoRender = false;
-        if ($this->request->is('post')) {
-            $classroomId = $this->Classroom->getClassroomIdWithCode($this->request->data[$this->modelClass]['access_code']);
-            if (!isset($classroomId)) {
-                $error = 'Invalid Access Code';
-                $this->response->statusCode(400);
-                $this->response->body(json_encode(compact($error)));
-                return $this->response;
-            } else {
-                $message = $this->Classroom->UsersClassroom->joinClassroom(AuthComponent::user('id'), $classroomId, false);
+    public function join() {
 
-                if ($message['status'] === false) {
-                    return json_encode($message);
-                } else {
-                    $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
-                    return json_encode($message + $data);
-                }
+        $this->request->onlyAllow('post'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
+        $this->response->type('json');
+
+        /**
+         * initialization : make sure json response is atleast empty
+         */
+        $status = false;
+        $message = "";
+        $data = array();
+
+        $classroomId = $this->Classroom->getClassroomIdWithCode($this->request->data[$this->modelClass]['access_code']);
+        if (!isset($classroomId)) {
+            $status = false;
+            $message = 'Invalid Access Code';
+        } else {
+            $returned = $this->Classroom->UsersClassroom->joinClassroom(AuthComponent::user('id'), $classroomId, false);
+            $status = $returned['status'];
+            $message = $returned['message'];
+
+            if ($status === true) {
+                $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
             }
         }
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
-    public function getClassrooms() {
+    public function getclassrooms() {
+        $this->response->type('json');
         $page = 1;
 
         if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
         }
-
-        $this->set('data', json_encode($this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page)));
+        $status = true;
+        $message = "";
+        $this->set(compact('status', 'message'));
+        $this->set('data', $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
 }

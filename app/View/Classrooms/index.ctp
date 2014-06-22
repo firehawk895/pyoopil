@@ -45,7 +45,6 @@ JS;
                 </div>
             </div>
         </li>
-        <?php debug($data); ?>
         <?php
         $this->Js->buffer($script);
         ?>
