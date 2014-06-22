@@ -12,7 +12,7 @@ App::uses('CodeGenerator', 'Lib/Custom');
  */
 class Classroom extends AppModel {
 
-    public $components = array('Paginator');
+    const PAGINATION_LIMIT = 20;
 
     /**
      * db Notes:
@@ -143,11 +143,11 @@ class Classroom extends AppModel {
 
     /**
      * create classroom popup:
-     * $userId creates a classroom and joins it as an educator.
-     * @param int $userId
+     * $user_id creates a classroom and joins it as an educator.
+     * @param int $user_id
      * @param mixed $data $request->data 
      */
-    public function add($userId, $data) {
+    public function add($user_id, $data) {
         /**
          * Initialize and map Library
          * No Initialization Required for:
@@ -165,7 +165,7 @@ class Classroom extends AppModel {
             if ($data['Classroom']['is_private'] == '1') {
                 $this->generateCode($this->id);
             }
-            if (!$this->UsersClassroom->joinClassroom($userId, $this->id, true)) {
+            if (!$this->UsersClassroom->joinClassroom($user_id, $this->id, true)) {
                 return false;
             }
             if (!$this->Library->add($this->id)) {
@@ -180,14 +180,14 @@ class Classroom extends AppModel {
     /**
      * TODO: Cache the query for use in both side Nav and main tiles
      * get raw db data for all classrooms attended/taught by $userId
-     * @param int $userId
+     * @param int $user_id
      * @return array $jsonData
      */
-    public function getLatestTile($userId) {
+    public function getLatestTile($user_id) {
 
         $options['contain'] = array(
             'Classroom' => array(
-                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
+                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count', 'access_code'),
                 'Campus' => array(
                     'fields' => array(
                         'id', 'name'
@@ -196,7 +196,7 @@ class Classroom extends AppModel {
             ),
         );
 
-        $options['conditions'] = array('user_id' => $userId);
+        $options['conditions'] = array('user_id' => $user_id);
         $options['order'] = array('UsersClassroom.created' => 'desc');
         /**
          * Magic:
@@ -215,10 +215,10 @@ class Classroom extends AppModel {
     }
 
     /**
-     * @param int $classroomId
+     * @param int $classroom_id
      * @param mixed $data
      */
-    public function edit($classroomId, $data) {
+    public function edit($classroom_id, $data) {
         //if archived return false
     }
 
@@ -226,18 +226,18 @@ class Classroom extends AppModel {
      * Archive a classroom
      * TODO : auth framework should prevent any modification of archived classrooms
      * otherwise hack all edit methods if(!is_archived)
-     * @param type $classroomId
+     * @param type $classroom_id
      */
-    public function archiveIt($classroomId) {
-        $this->id = $classroomId;
+    public function archiveIt($classroom_id) {
+        $this->id = $classroom_id;
         $this->saveField('is_archived', true);
     }
 
     /**
      * Clone a classroom
-     * @param type $classroomId
+     * @param type $classroom_id
      */
-    public function cloneIt($classroomId) {
+    public function cloneIt($classroom_id) {
         /**
          * All amazons3 links need to be preserved for cloning library
          * Clone:
@@ -248,11 +248,11 @@ class Classroom extends AppModel {
     /**
      * generates and assigns access code to classroom, preventing duplicates
      * with CODE_RETRY times retries.
-     * @param int $classroomId Classroom(pk)
+     * @param int $classroom_id Classroom(pk)
      */
-    private function generateCode($classroomId) {
+    private function generateCode($classroom_id) {
 
-        $this->id = $classroomId;
+        $this->id = $classroom_id;
 
         $newCode = CodeGenerator::accessCode('alnum', '6');
         $conditions = array(
@@ -272,13 +272,13 @@ class Classroom extends AppModel {
 
     /**
      * Reset Access code of classroom
-     * @param type $classroomId Classroom(pk)
+     * @param type $classroom_id Classroom(pk)
      * @return boolean success/failure
      */
-    public function resetCode($classroomId) {
-        $this->id = $classroomId;
+    public function resetCode($classroom_id) {
+        $this->id = $classroom_id;
         if ($this->field('is_private')) {
-            return $this->generateCode($classroomId);
+            return $this->generateCode($classroom_id);
         }
     }
 
@@ -349,8 +349,8 @@ class Classroom extends AppModel {
 
         $data = $this->UsersClassroom->find('first', $options);
 
-        if (Hash::check($data, 'User')) {
-            $educatorName = Hash::get($data, 'User.fname') . " " . Hash::get($data, 'User.lname');
+        if (Hash::check($data, 'AppUser')) {
+            $educatorName = Hash::get($data, 'AppUser.fname') . " " . Hash::get($data, 'AppUser.lname');
         } else {
             $educatorName = "Unknown Teacher";
         }
@@ -386,81 +386,58 @@ class Classroom extends AppModel {
      * @param type $page
      */
     public function getPaginatedClassrooms($user_id, $page) {
-
         //sanity check
         if ($page < 1) {
             $page = 1;
         }
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
 
-        $offset = $this->PAGINATION_LIMIT * ($page - 1);
-
-        $options = array(
-            'contain' => array(
-                'UsersClassroom' => array(
-                    'conditions' => array(
-                        'user_id' => $user_id
-                    ),
-                    'order' => array(
-                        'UsersClassroom.created' => 'desc'
-                    ),
-                    'fields' => array('is_restricted', 'is_teaching')
-                ),
+        /**
+         * cakePhp ORM has issues:
+         * Campus fields will be ignored if specific
+         * fields are selected from UsersClassroom
+         * Analyze generated query and you'll know what I mean
+         * Can't use:
+         * $options['fields'] = array(
+         *   'is_teaching', 'is_restricted'
+         * );
+         * 
+         * This code has been attempted to be refactored 2 times.
+         * Increment this number, once you refactor and it failes the test cases
+         * to warn the next developer
+         * 
+         * Changing the entry point to Classroom, solves the issue but returns
+         * classrooms that the user is not part of
+         */
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id', 'campus_id', 'is_private', 'title', 'users_classroom_count'),
                 'Campus' => array(
-                    'fields' => array(
-                        'id', 'name'
-                    )
+                    'fields' => array('id', 'name')
                 )
             ),
-            'limit' => $this->PAGINATION_LIMIT,
-            'offset' => $offset,
-            'fields' => array(
-                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
-            )
         );
+        $options['conditions'] = array(
+            'user_id' => $user_id,
+        );
+        $options['order'] = 'UsersClassroom.created DESC';
+        $options['limit'] = self::PAGINATION_LIMIT;
+        $options['offset'] = $offset;
 
-        $data = $this->find('all', $options);
+        $data = $this->UsersClassroom->find('all', $options);
 
-        for ($i = 0; $i < count($data); $i++) {
+        for ($i = 0; $i < count($data); $i ++) {
             $educator_name = $this->getEducatorName($data[$i]['Classroom']['id']);
             $path = $i . '.Classroom.Educator';
             $data = Hash::insert($data, $path, $educator_name);
+
+            $path2 = $i . '.Classroom.Url';
+            $data = Hash::insert($data, $path2, Router ::url(array(
+                                'controller' => 'Discussions',
+                                'action' => 'index',
+                                'id' => $data[$i]['Classroom']['id']
+            )));
         }
-        return $data;
-    }
-
-    /**
-     * TODO: Cache the query for use in both side Nav and main tiles
-     * get raw db data for all classrooms attended/taught by $userId
-     * @param int $userId
-     * @return array $jsonData
-     */
-    public function getLatestTile2($user_id) {
-        $options = array(
-            'contain' => array(
-                'UsersClassroom' => array(
-                    'conditions' => array(
-                        'user_id' => $user_id
-                    ),
-                    'order' => array(
-                        'UsersClassroom.created' => 'desc'
-                    ),
-                    'fields' => array('is_restricted', 'is_teaching')
-                ),
-                'Campus' => array(
-                    'fields' => array(
-                        'id', 'name'
-                    )
-                )
-            ),
-            'fields' => array(
-                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
-            )
-        );
-
-        $data = $this->find('first', $options);
-
-        $educatior = $this->getEducatorName($data['Classroom']['id']);
-        $data = Hash::insert($data, 'Classroom.Educator', $educatior);
 
         return $data;
     }

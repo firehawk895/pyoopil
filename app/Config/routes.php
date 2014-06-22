@@ -1,4 +1,6 @@
-<?php /**
+<?php
+
+/**
  * Routes configuration
  *
  * In this file, you set up routes to your controllers and their actions.
@@ -21,7 +23,7 @@
 /**
  * Parse Extensions
  */
-Router::parseExtensions(array('html', 'json'));
+Router::parseExtensions('json');
 
 /**
  * Pyoopil routes
@@ -31,29 +33,27 @@ Router::connect('/feedback', array('controller' => 'pages', 'action' => 'display
 Router::connect('/test', array('controller' => 'classrooms', 'action' => 'test'));
 //-------------------------Inside classroom---------------------------------------------------------------------
 Router::connect(
-    '/Classrooms/:id/:controller',
-    array('action' => 'index'),
-    array(
-        'pass' => array('id'),
-        'id' => '[0-9]+'
-    )
+        '/Classrooms/:id/:controller', array('action' => 'index'), array(
+    'pass' => array('id'),
+    'id' => '[0-9]+'
+        )
 );
 Router::connect(
-    '/Classrooms/:id/:controller/:action',
-    array(),
-    array(
-        'pass' => array('id'),
-        'id' => '[0-9]+'
-    )
+        '/Classrooms/:id/:controller/:action', array(), array(
+    'pass' => array('id'),
+    'id' => '[0-9]+'
+        )
 );
 
 //--------------------------------------------------------------------------------------------------------------
 Router::connect('/Announcements/add', array('controller' => 'announcements', 'action' => 'add'));
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
-Router::connect('/Classrooms/join', array('controller' => 'classrooms', 'action' => 'joinWithCode'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
 Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => 'index'));
 Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
+//--------------------------------------------------------------------------------------------------------------
+Router::connect(
+        '/Classrooms/:action', array('controller' => 'classrooms'));
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file

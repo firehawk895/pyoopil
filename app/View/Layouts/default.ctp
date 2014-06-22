@@ -112,7 +112,7 @@
                         <!--Classroom sub nav-->
                         <ul class="menu-coll">
                             <li class="sub-menu pre-contact">
-                                <a href="javascript:void(0);">
+                                <a href="<?php echo Router::url(array('controller' => 'classrooms' , 'action' => 'index'))?>">
                                     <p class="submenu-heading">All<br />
                                         Classrooms</p>
                                 </a>
