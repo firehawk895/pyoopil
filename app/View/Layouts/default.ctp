@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
 <head>
     <meta charset="utf-8">
@@ -175,16 +175,14 @@
     </div>
     <?php
     //core library
-//    echo $this->Html->script('jquery-1.8.2.min.js');
+    // echo $this->Html->script('jquery-1.8.2.min.js');
     echo $this->Html->script('https://code.jquery.com/jquery-1.11.1.js');
     echo $this->Html->script('jquery-ui-1.10.3.custom.js');
+    echo $this->Html->script("vendors/underscore.js");
+    echo $this->Html->script("vendors/handlebars.js");
 
-    //Buffer from cakephp
-    echo $this->Js->writeBuffer();
-
-    //plugins that should have never been there
+    // TO BE Removed
     echo $this->Html->script('jquery.autosize.min.js');
-//    echo $this->Html->script('charts.js');
     echo $this->Html->script('jquery.passstrength.js');
     echo $this->Html->script('jquery.bxslider.min.js');
     echo $this->Html->script('jquery.slimscroll.min.js');
@@ -193,17 +191,51 @@
     echo $this->Html->script('chosen.jquery.min.js');
     echo $this->Html->script('jquery.ddslick.min.js');
     echo $this->Html->script('tag-it.min.js');
-//    echo $this->Html->script('tiny.editor.packed.js');
     echo $this->Html->script('fullcalendar.min.js');
     echo $this->Html->script('jquery.mousewheel.min.js');
     echo $this->Html->script('vertical.slider.standard.js');
-//    echo $this->Html->script('toastr.js');
-    echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js');
-    echo $this->Html->script('core.js');
-    echo $this->Html->script('ck/ckeditor');
 
-    //plugins for pyoopil front end use
-    echo $this->Html->script('http://malsup.github.io/jquery.form.js');
+//     Buffer from cakephp
+//     This should always be on top of custom JS files
+    echo $this->Js->writeBuffer();
+
+    // APP LEFT NAV SCROLL JS Files
+    echo $this->Html->script("app/LeftNavScroll/services/services.js");
+    echo $this->Html->script("app/LeftNavScroll/services/templates.js");
+    echo $this->Html->script("app/LeftNavScroll/views/views.js");
+    echo $this->Html->script("app/LeftNavScroll/app.js");
+
+    // APP CLASSROOMS JS Files
+    echo $this->Html->script("app/Classrooms/configs/configs.js");
+    echo $this->Html->script("app/Classrooms/services/services.js");
+    echo $this->Html->script("app/Classrooms/services/handlebarHelpers.js");
+    echo $this->Html->script("app/Classrooms/services/templates.js");
+    echo $this->Html->script("app/Classrooms/views/views.js");
+    echo $this->Html->script("app/Classrooms/app.js");
+
+
+//     //plugins that should have never been there
+    // echo $this->Html->script('jquery.autosize.min.js');
+//    echo $this->Html->script('charts.js');
+    // echo $this->Html->script('jquery.passstrength.js');
+    // echo $this->Html->script('jquery.bxslider.min.js');
+    // echo $this->Html->script('jquery.slimscroll.min.js');
+    // echo $this->Html->script('tooltip.min.js');
+    // echo $this->Html->script('jquery.prettyPhoto.js');
+    // echo $this->Html->script('chosen.jquery.min.js');
+    // echo $this->Html->script('jquery.ddslick.min.js');
+    // echo $this->Html->script('tag-it.min.js');
+//    echo $this->Html->script('tiny.editor.packed.js');
+    // echo $this->Html->script('fullcalendar.min.js');
+    // echo $this->Html->script('jquery.mousewheel.min.js');
+    // echo $this->Html->script('vertical.slider.standard.js');
+//    echo $this->Html->script('toastr.js');
+//     echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js');
+    echo $this->Html->script('core.js');
+//     echo $this->Html->script('ck/ckeditor');
+
+//     //plugins for pyoopil front end use
+//     echo $this->Html->script('http://malsup.github.io/jquery.form.js');
     ?>
     <?php // echo $this->element('sql_dump'); ?>
 </body>

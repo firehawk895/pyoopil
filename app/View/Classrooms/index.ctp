@@ -30,23 +30,28 @@ $this->end();
                         'placeholder' => 'Enter Access Code',
 //                    'label' => 'false'
                     ));
-//                echo $this->Form->submit('Join Classroom', array(
-//                    'div' => false,
-//                    'class' => 'sub-btn',
-//                    'value' => 'Join Classroom',
-//                ));
+               echo $this->Form->submit('Join', array(
+                   'div' => false,
+                   'class' => 'sub-btn',
+                   'value' => 'Join',
+               ));
                     echo $this->Form->end();
-                    $script = <<<JS
-                            var data = $data;
-JS;
                     ?>
                     <!--<input type="text" class="access" name="search" placeholder="Enter Access Code" id="join-with-code-submit">-->
-                    <a href="#" class="sub-btn" id="join-with-code-submit">Join Classroom</a>
+                    <!-- <a href="#" class="sub-btn" id="join-with-code-submit">Join Classroom</a> -->
                 </div>
             </div>
         </li>
-        <?php
-        $this->Js->buffer($script);
-        ?>
+        <div id="classrooms">
+            
+        </div>
+        <script type="text/javascript">
+
+            var App = window.App || {};
+                App.classrooms = App.classrooms || {};
+
+                App.classrooms.data = <?php echo $data ?>;
+
+        </script>   
     </ul>
 </div>

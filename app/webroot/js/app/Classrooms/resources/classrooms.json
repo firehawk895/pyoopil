@@ -1,0 +1,86 @@
+[
+    {
+        "Classroom": {
+            "id": "1",
+            "campus_id": null,
+            "is_private": true,
+            "title": "Test-a",
+            "users_classroom_count": "1",
+            "Educator": "Aaron Bmoit"
+        },
+        "Campus": {
+            "id": "1",
+            "name": "MLCU Campus"
+        },
+        "UsersClassroom": [
+            {
+                "is_restricted": false,
+                "is_teaching": true,
+                "classroom_id": "1"
+            }
+        ]
+    },
+    {
+        "Classroom": {
+            "id": "2",
+            "campus_id": null,
+            "is_private": true,
+            "title": "test3",
+            "users_classroom_count": "1",
+            "Educator": "Aaron Bmoit"
+        },
+        "Campus": {
+            "id": "1",
+            "name": "MLCU Campus"
+        },
+        "UsersClassroom": [
+            {
+                "is_restricted": false,
+                "is_teaching": true,
+                "classroom_id": "2"
+            }
+        ]
+    },
+    {
+        "Classroom": {
+            "id": "3",
+            "campus_id": null,
+            "is_private": false,
+            "title": "",
+            "users_classroom_count": "1",
+            "Educator": "Aaron Bmoit"
+        },
+        "Campus": {
+            "id": "1",
+            "name": "MLCU Campus"
+        },
+        "UsersClassroom": [
+            {
+                "is_restricted": false,
+                "is_teaching": true,
+                "classroom_id": "3"
+            }
+        ]
+    },
+    {
+        "Classroom": {
+            "id": "4",
+            "campus_id": null,
+            "is_private": true,
+            "title": "Test",
+            "users_classroom_count": "1",
+            "Educator": "Aaron Bmoit"
+        },
+        "Campus": {
+            "id": "1",
+            "name": "MLCU Campus"
+        },
+        "UsersClassroom": [
+            {
+                "is_restricted": false,
+                "is_teaching": true,
+                "classroom_id": "4"
+            }
+        ]
+    }
+]
