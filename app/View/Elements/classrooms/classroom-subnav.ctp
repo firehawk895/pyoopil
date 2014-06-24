@@ -138,6 +138,7 @@
                         'div' => false,
                         'class' => 'sub-btn',
                         'value' => 'Create',
+                        'id' => 'quiz-link'
                     ));
                     echo $this->Form->end();
                     ?>

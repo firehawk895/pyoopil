@@ -30,7 +30,7 @@ $this->end();
                         'placeholder' => 'Enter Access Code',
 //                    'label' => 'false'
                     ));
-               echo $this->Form->submit('Join', array(
+               echo $this->Form->submit('Join Classroom', array(
                    'div' => false,
                    'class' => 'sub-btn',
                    'value' => 'Join',

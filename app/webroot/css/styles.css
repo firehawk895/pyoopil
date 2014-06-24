@@ -196,7 +196,7 @@ header.landing-page { position: relative; }
 .note-box.main-box:after, .note-box.main-box:before { left: 22%; }
 .txt-area { border: none; color: #000; height: 90px; padding: 10px; resize: none; width: 97%; background: #f1f1f1; font-family: 'open_sansregular'; font-size: 14px; border-radius: 3px; }
 .h235 { height:235px; }
-.sub-btn { background: #F67E02; border-radius: 2px; color: #FFFFFF; display: inline-block; font-size: 12px; height: 30px; line-height: 31px; margin: 10px 5px; text-align: center; width: 85px; }
+.sub-btn { background: #F67E02; border-radius: 2px; color: #FFFFFF; display: inline-block; font-size: 12px; height: 30px; line-height: 31px; margin: 10px 5px; text-align: center; width: 105px; }
 .cnl-btn { background: #b2b2b2; }
 .disc-room .attachmentbox { border: none; display: block; float: left; height: 20px; width: auto; }
 .att-box { border-top: 1px solid #d7d7d7; }

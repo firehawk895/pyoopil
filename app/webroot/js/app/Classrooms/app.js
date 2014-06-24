@@ -55,12 +55,17 @@ App.classrooms = App.classrooms || {};
       e.preventDefault();
       ajax = $.ajax({
         type: 'POST',
-        url: 'join.json',
+        url: 'Classrooms/join.json',
         data: $(this).serialize()
       });
       return ajax.done(function(data) {
-        $document.trigger('Classrooms.newJoin', [data]);
-        return $document.trigger('Classrooms.dataReceived', [[data]]);
+          if(data.status){
+              $document.trigger('Classrooms.newJoin', [data]);
+              return $document.trigger('Classrooms.dataReceived', [[data]]);
+          }
+          else{
+              //throw toast with message = data.message
+          }
       });
     };
 

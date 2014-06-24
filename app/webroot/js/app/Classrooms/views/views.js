@@ -24,6 +24,7 @@ App.classrooms = App.classrooms || {};
       var classroom, _i, _len, _results;
       if (classrooms != null) {
         _results = [];
+          classrooms = classrooms.reverse();
         for (_i = 0, _len = classrooms.length; _i < _len; _i++) {
           classroom = classrooms[_i];
           _results.push(this.renderClassroom(classroom));
