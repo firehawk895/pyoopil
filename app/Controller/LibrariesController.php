@@ -8,17 +8,20 @@ App::uses('AppController', 'Controller');
 
 class LibrariesController extends AppController {
 
-    public function index($room_id) {
+    public function index($classroomId) {
 
-        $params['conditions'] = array(
-            'classroom_id' => $room_id
-        );
-
-        $params['recursive'] = -1;
-
-        $data = $this->Library->find('first',$params);
-        $topics = $this->Library->getTopics($data['Library']['id']);
+        $libraryId = $this->Library->getLibraryId($classroomId);
+        $topics = $this->Library->getPaginatedTopics($libraryId,1);
         $this->set('topics',$topics);
+    }
+
+    public function getTopics($classroomId){
+        //do not render view
+
+        if(isset($this->params['url']['page'])){
+            $libraryId = $this->Library->getLibraryId($classroomId);
+            $data = $this->Discussion->getPaginatedTopics($classroomId,$this->params['url']['page']);
+        }
     }
 
 }
