@@ -60,7 +60,8 @@ $this->end();
                 <?php
                 echo $this->Form->end();
 
-                $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
+                $route = $_SERVER['REQUEST_URI'].'/add';
+                echo $route;
 
 $script = <<<JS
 

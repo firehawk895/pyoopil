@@ -19,33 +19,44 @@ class AnnouncementsController extends AppController {
     }
 
     public function getAnnouncements($classroomId){
-        //do not render view
+        $this->response->type('json');
+        $status = false;
+        $message = "";
         if(isset($this->params['url']['page'])){
-            $data = $this->Announcement->getPaginatedAnnouncements($classroomId,1);
+            $page = $this->params['url']['page'];
+            $data = $this->Announcement->getPaginatedAnnouncements($classroomId,$page);
         }
 
+        if($data!=NULL){
+            $status = true;
+        }
+
+        $this->set(compact('status', 'message', 'data'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
 
     public function add($classroomId) {
-        $this->autoRender = false;
-        if ($this->request->is('post')){
-            $userId = AuthComponent::user('id');
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
 
-            unset($this->request->data['Announcement']['classroom_id']);
-            $data = $this->request->data;
+        $status = false;
+        $message = "";
+        $userId =  AuthComponent::user('id');
 
-            if($this->Announcement->createAnnouncement($classroomId,$data,$userId)){
-                $announcement = $this->Announcement->getAnnouncementById($this->Announcement->getLastInsertID());
-                $message = "Announcement created";
-                $status = true;
-                $this->response->body(json_encode($announcement + compact('message','status')));
-                return $this->response;
-            }else{
-                $message = "Could not create announcement";
-                $status = false;
-                $this->response->body(json_encode(compact('message','status')));
-                return $this->response;
-            }
+        unset($this->request->data['Announcement']['classroom_id']);
+        $data = $this->request->data;
+
+        if($this->Announcement->createAnnouncement($classroomId,$data,$userId)){
+            $data = $this->Announcement->getAnnouncementById($this->Announcement->getLastInsertID());
+            $message = "Announcement created";
+            $status = true;
+            $this->set(compact('status', 'message', 'data'));
+            $this->set('_serialize', array('status', 'message', 'data'));
+        }else{
+            $message = "Could not create announcement";
+            $status = false;
+            $this->set(compact('status', 'message'));
+            $this->set('_serialize', array('status', 'message'));
         }
     }
 
