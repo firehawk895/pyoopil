@@ -206,8 +206,9 @@ class Discussion extends AppModel {
     }
 
     /**
-     * Remove Gamification information where loggedIn user is not the owner of 
-     * Discussion/Reply and he hasn't voted
+     * show gamification vote info only to owners or people who have voted.
+     * show poll vote info only to owners or people who have voted.
+     * mark folded Discussions of $userId
      * Keep FoldedDiscussion key when not null
      * @param $data (all discussions)
      * @param $userId (loggedIn user's id)
@@ -248,7 +249,19 @@ class Discussion extends AppModel {
                 $data[$i]['Discussion']['showGamification'] = false;
             }
 
-
+            if ($data[$i]['Discussion']['type'] == 'poll') {
+                $data[$i]['Pollchoice']['showPollVote'] = false;
+                if ($isOwner) {
+                    $data[$i]['Pollchoice']['showPollVote'] = true;
+                } else {
+                    for ($k = 0; $k < count($data[$i]['Discussion']['Pollchoice']); $k++) {
+                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Discussion']['Pollchoice'][$k]['id'], $userId)) {
+                            $data[$i]['Pollchoice']['showPollVote'] = true;
+                            break;
+                        }
+                    }
+                }
+            }
             /* Remove Key if not folded by current user */
             if ($data[$i]['Foldeddiscussion'] == NULL) {
                 $data[$i]['Discussion']['isFolded'] = false;
@@ -261,7 +274,22 @@ class Discussion extends AppModel {
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
                 $hasVoted = ($this->hasVoted('Reply', $data[$i]['Reply'][$j]['id'], $userId));
                 $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
-                if ((!$isOwner && !$hasVoted) || !$isOwner) {
+//                if ((!$isOwner && !$hasVoted) || !$isOwner) {
+//                    unset($data[$i]['Reply'][$j]['real_praise']);
+////                unset($data[$i]['Reply'][$j]['display_praise']);
+//                    unset($data[$i]['Reply'][$j]['cu']);
+//                    unset($data[$i]['Reply'][$j]['in']);
+//                    unset($data[$i]['Reply'][$j]['co']);
+//                    unset($data[$i]['Reply'][$j]['en']);
+//                    unset($data[$i]['Reply'][$j]['ed']);
+//                    $data[$i]['Reply'][$j]['showGamification'] = false;
+//                } else {
+//                    $data[$i]['Reply'][$j]['showGamification'] = true;
+//                }
+
+                if ($isOwner || $hasVoted) {
+                    $data[$i]['Reply'][$j]['showGamification'] = true;
+                } else {
                     unset($data[$i]['Reply'][$j]['real_praise']);
 //                unset($data[$i]['Reply'][$j]['display_praise']);
                     unset($data[$i]['Reply'][$j]['cu']);
@@ -270,8 +298,6 @@ class Discussion extends AppModel {
                     unset($data[$i]['Reply'][$j]['en']);
                     unset($data[$i]['Reply'][$j]['ed']);
                     $data[$i]['Reply'][$j]['showGamification'] = false;
-                } else {
-                    $data[$i]['Reply'][$j]['showGamification'] = true;
                 }
             }
         }
