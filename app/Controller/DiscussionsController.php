@@ -246,4 +246,36 @@ class DiscussionsController extends AppController {
         $this->set('_serialize', array('status', 'message', 'data'));
     }
 
+    /**
+     * 
+     */
+    public function setPollVote() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $userId = AuthComponent::user('id');
+        $message = "something";
+        $status = true;
+
+        if (isset($this->request->data['pollchoice_id'])) {
+            if ($this->Discussion->setPollVote($userId, $this->request->data['pollchoice_id'])) {
+                $status = true;
+            } else {
+                $status = false;
+                $message = "Failed to vote on this poll.";
+            }
+        } else {
+            $status = false;
+            $message = "Missing poll information";
+        }
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
 }

@@ -590,7 +590,7 @@ class Discussion extends AppModel {
     }
 
     /**
-     * User votes on a poll type discussion
+     * User votes on a pollChoice for a poll type Discussion
      * @param type $userId Voter's user ID
      * @param type $discussionid discussion_id (pk) of the poll type discussion
      * @param type $pollChoiceId pollchoice_id of the choice on poll voted for
@@ -602,7 +602,12 @@ class Discussion extends AppModel {
             'pollchoice_id' => $pollChoiceId
         );
 
-        //TODO : check if its a valid poll choice
+        //check if its a valid poll choice
+        if (!$this->Pollchoice->findById($pollChoiceId)) {
+            return false;
+        }
+
+        //checks if already voted
         if (!$this->Pollchoice->Pollvote->hasAny($conditions)) {
             $this->Pollchoice->id = $pollChoiceId;
             $newVotes = $this->Pollchoice->field('votes') + 1;
