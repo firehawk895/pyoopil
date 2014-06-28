@@ -1,5 +1,7 @@
 <?php
+
 App::uses('AppModel', 'Model');
+
 /**
  * Reply Model
  *
@@ -9,157 +11,94 @@ App::uses('AppModel', 'Model');
  */
 class Reply extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array(
-		'user_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'discussion_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'comment' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'real_praise' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'display_praise' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'cu' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'in' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'co' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'en' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-		'ed' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+    /**
+     * belongsTo associations
+     * @var array
+     */
+    public $belongsTo = array(
+        'AppUser' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Discussion' => array(
+            'className' => 'Discussion',
+            'foreignKey' => 'discussion_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    /**
+     * hasMany associations
+     * @var array
+     */
+    public $hasMany = array(
+        'Gamificationvote' => array(
+            'className' => 'Gamificationvote',
+            'foreignKey' => 'reply_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        )
+    );
 
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'AppUser' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Discussion' => array(
-			'className' => 'Discussion',
-			'foreignKey' => 'discussion_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    public function postReply($discussionId, $comment, $userId) {
+        $data = array(
+            'AppUser' => array(
+                'id' => $userId
+            ),
+            'Discussion' => array(
+                'id' => $discussionId
+            ),
+            'Reply' => array(
+                'comment' => $comment
+            )
+        );
 
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'Gamificationvote' => array(
-			'className' => 'Gamificationvote',
-			'foreignKey' => 'reply_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
+        return $this->saveAssociated($data);
+    }
+
+    public function deleteReply($replyId, $userId) {
+        $reply = $this->findById($replyId);
+
+        if ($reply) {
+            if ($reply['Reply']['user_id'] == $userId) {
+                return $this->delete($replyId);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public function processReplies($data, $userId) {
+        for ($i = 0; $i < count($data); $i++) {
+            $hasVoted = $this->Discussion->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
+            $isOwner = ($data[$i]['Reply']['user_id'] == $userId);
+
+            if ($hasVoted || $isOwner) {
+                $data[$i]['Reply']['showGamification'] = true;
+            } else {
+                unset($data[$i]['Reply']['real_praise']);
+                unset($data[$i]['Reply']['cu']);
+                unset($data[$i]['Reply']['in']);
+                unset($data[$i]['Reply']['co']);
+                unset($data[$i]['Reply']['en']);
+                unset($data[$i]['Reply']['ed']);
+                $data[$i]['Reply']['showGamification'] = false;
+            }
+        }
+
+        return $data;
+    }
 
 }
