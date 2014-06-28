@@ -318,7 +318,7 @@
 		
 	});
 	// Link to Close the dialog
-	$(".close-link").click(function (event) {
+	$(".ui-dialog").on('click', '.close-link', function (event) {
 		$("#dialog,#signup-popup,#view-dialog,#clone-dialog,#upload-dialog,#assign-dialog,#rest-dialog,.doc-popup,#quizdialog,#msg-dialog,#rec-dialog").dialog("close");
 	});
 	//message dialog

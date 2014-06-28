@@ -14,7 +14,7 @@ App.LeftNavScroll = App.LeftNavScroll || {};
     }
 
     LeftNav.prototype.setEventHandlers = function() {
-      return $document.on('Classrooms.dataReceived', App.LeftNavScroll.views.renderClassrooms);
+      return $document.on('Classrooms.UPDATE', App.LeftNavScroll.views.renderClassrooms);
     };
 
     return LeftNav;

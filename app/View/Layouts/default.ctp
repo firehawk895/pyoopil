@@ -20,6 +20,7 @@
     echo $this->Html->css('prettyPhoto.css');
     echo $this->Html->css('fullcalendar.css');
     echo $this->Html->css('toggle-switch.css');
+    echo $this->Html->css('tinyscrollbar.css');
     ?>
     <link rel="shortcut icon" href="images/favicon.ico">
     <!--[if lt IE 9]>
@@ -175,11 +176,13 @@
     </div>
     <?php
     //core library
-    // echo $this->Html->script('jquery-1.8.2.min.js');
-    echo $this->Html->script('https://code.jquery.com/jquery-1.11.1.js');
+    echo $this->Html->script('jquery-1.8.2.min.js');
+    // echo $this->Html->script('https://code.jquery.com/jquery-1.11.1.js');
     echo $this->Html->script('jquery-ui-1.10.3.custom.js');
     echo $this->Html->script("vendors/underscore.js");
     echo $this->Html->script("vendors/handlebars.js");
+    echo $this->Html->script("vendors/tinyscrollbar.js");
+    echo $this->Html->script("vendors/toastr.js");
 
     // TO BE Removed
     echo $this->Html->script('jquery.autosize.min.js');
@@ -198,6 +201,9 @@
 //     Buffer from cakephp
 //     This should always be on top of custom JS files
     echo $this->Js->writeBuffer();
+
+    // COMMON UTILITIES
+    echo $this->Html->script("app/Common/notification.js");
 
     // APP LEFT NAV SCROLL JS Files
     echo $this->Html->script("app/LeftNavScroll/services/services.js");
@@ -230,7 +236,7 @@
     // echo $this->Html->script('jquery.mousewheel.min.js');
     // echo $this->Html->script('vertical.slider.standard.js');
 //    echo $this->Html->script('toastr.js');
-//     echo $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js');
+
     echo $this->Html->script('core.js');
 //     echo $this->Html->script('ck/ckeditor');
 

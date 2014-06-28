@@ -13,26 +13,33 @@ App.classrooms = App.classrooms || {};
       this.newJoin = __bind(this.newJoin, this);
       this.newClassroom = __bind(this.newClassroom, this);
       this.renderClassrooms = __bind(this.renderClassrooms, this);
-      this.$elem = $(elem);
+      this.init = __bind(this.init, this);
+      this.$elem = elem;
       this.$createForm = $("#create-assign");
       this.$quizDialog = $('#quizdialog');
-      this.classroomTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('classroomTile'));
-      this.quizDialogTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('quizTmpl'));
+      this.init();
     }
 
+    Views.prototype.init = function() {
+      this.classroomTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('classroomTile'));
+      return this.quizDialogTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('quizTmpl'));
+    };
+
     Views.prototype.renderClassrooms = function(e, classrooms) {
-      var classroom, _i, _len, _results;
-      if (classrooms != null) {
-        _results = [];
-          classrooms = classrooms.reverse();
-        for (_i = 0, _len = classrooms.length; _i < _len; _i++) {
-          classroom = classrooms[_i];
-          _results.push(this.renderClassroom(classroom));
+      var classroom, classroomsHtml;
+      classroomsHtml = (function() {
+        var _i, _len, _results;
+        if (classrooms != null) {
+          _results = [];
+          for (_i = 0, _len = classrooms.length; _i < _len; _i++) {
+            classroom = classrooms[_i];
+            _results.push(this.renderClassroom(classroom));
+          }
+          return _results;
         }
-        return _results;
-      } else {
-        return 'No Classroom Data';
-      }
+      }).call(this);
+      this.$elem.append(classroomsHtml);
+      return this.$elem.trigger('Classrooms.RENDER', true);
     };
 
     Views.prototype.renderClassroom = function(classroom) {
@@ -42,7 +49,7 @@ App.classrooms = App.classrooms || {};
       } else {
         classroomHtml = this.classroomTemplate(classroom);
       }
-      return this.$elem.prepend(classroomHtml);
+      return classroomHtml;
     };
 
     Views.prototype.newClassroom = function(e, classroom) {
@@ -51,16 +58,20 @@ App.classrooms = App.classrooms || {};
       quizDialog = this.quizDialogTemplate(classroom.data);
       this.$quizDialog.html(quizDialog);
       $('.ui-widget-overlay').addClass('custom-overlay');
-      return this.$quizDialog.dialog("open");
+      this.$quizDialog.dialog("open");
+      this.$elem.prepend(this.renderClassroom(classroom));
+      return this.$elem.trigger('Classrooms.RENDER', false);
     };
 
     Views.prototype.newJoin = function(e, classroom) {
       $(".newjoin").show();
-      return $(".accessclass").hide();
+      $(".accessclass").hide();
+      this.$elem.prepend(this.renderClassroom(classroom));
+      return this.$elem.trigger('Classrooms.RENDER', false);
     };
 
     return Views;
 
   })();
-  return App.classrooms.views = new Views('#classrooms');
+  return App.classrooms.views = Views;
 })($, window, document);

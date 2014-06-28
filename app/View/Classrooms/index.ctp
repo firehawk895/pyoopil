@@ -42,9 +42,22 @@ $this->end();
                 </div>
             </div>
         </li>
-        <div id="classrooms">
-            
+        <div class="tinyscrollbar">
+            <div class="viewport">
+                <div class="overview">
+                    <div id="classrooms">
+                    
+                    </div>
+                </div>
+                <div class="scrollbar">
+                    <div class="track">
+                        <div class="thumb">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         <script type="text/javascript">
 
             var App = window.App || {};
