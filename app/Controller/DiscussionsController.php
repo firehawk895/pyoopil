@@ -39,6 +39,7 @@ class DiscussionsController extends AppController {
     public function getdiscussions($classroomId) {
         $this->response->type('json');
         $page = 1;
+        $userId = AuthComponent::user('id');
 
         if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
@@ -46,8 +47,12 @@ class DiscussionsController extends AppController {
         $status = true;
         $message = "";
 
-        $data = $this->Discussion->getPaginatedDiscussions($classroomId, AuthComponent::user('id'), $page);
-        $data = $this->Discussion->processData($data, AuthComponent::user('id'));
+        if (isset($this->params['url']['folded'])) {
+            $data = $this->Discussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
+        } else {
+            $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, $page);
+        }
+        $data = $this->Discussion->processData($data, $userId);
 
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
@@ -62,14 +67,20 @@ class DiscussionsController extends AppController {
         $this->response->type('json');
         $page = 1;
 
-        if (isset($this->params['url']['page'])) {
-            $page = $this->params['url']['page'];
-        }
+        $data = array();
         $status = true;
         $message = "";
 
-        $data = $this->Discussion->getPaginatedDiscussions($classroomId, AuthComponent::user('id'), $page);
-        $data = $this->Discussion->processData($data, AuthComponent::user('id'));
+        if (isset($this->params['url']['page'])) {
+            $page = $this->params['url']['page'];
+
+            if (isset($this->params['url']['discussion_id'])) {
+                $discussionId = $this->params['url']['discussion_id'];
+
+                $data = $this->Discussion->getPaginatedReplies($discussionId, $page);
+                $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
+            }
+        }
 
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
@@ -102,7 +113,7 @@ class DiscussionsController extends AppController {
         if ($status) {
             $message = "{$type} deleted successfully";
         } else {
-            $message = "Could not delete or find the discussion";
+            $message = "Could not delete or find the {$type}";
         }
         $this->set(compact('status', 'message'));
         $this->set('_serialize', array('status', 'message'));
@@ -175,6 +186,32 @@ class DiscussionsController extends AppController {
             $message = "The Discussion could not be posted";
             $data = array(); //required for json consistency
         }
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    public function addReply() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $discussionId = $this->request->data['discussion_id'];
+        $comment = $this->request->data['comment'];
+
+        if ($this->Discussion->Reply->postReply($discussionId, $comment, AuthComponent::user('id'))) {
+            $status = true;
+            $message = "";
+            $data = $this->Discussion->getPaginatedReplies($discussionId, 1, true);
+            $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
+        } else {
+            $status = false;
+            $message = "Could not post the reply";
+        }
+
         /**
          * finalize and set the response for the json view
          */

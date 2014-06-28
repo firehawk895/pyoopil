@@ -354,7 +354,7 @@ class Discussion extends AppModel {
         return $data;
     }
 
-    public function getPaginatedReplies($discussionId, $page) {
+    public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
 
         $offset = self::PAGINATION_LIMIT * ($page - 1 );
 
@@ -375,7 +375,7 @@ class Discussion extends AppModel {
             ),
         );
 
-        $data = $this->Reply->find('all', array(
+        $options = array(
             'contain' => $contain,
             'conditions' => array(
                 'discussion_id' => $discussionId
@@ -386,7 +386,14 @@ class Discussion extends AppModel {
             'limit' => self::PAGINATION_LIMIT,
             'offset' => $offset,
             'limit' => self::MAX_REPLIES,
-        ));
+        );
+
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->Reply->find('all', $options);
         return $data;
     }
 
@@ -619,8 +626,81 @@ class Discussion extends AppModel {
         return false;
     }
 
-    public function getLatestDiscussion() {
-        
+    public function getPaginatedFoldedDiscussions($roomId, $userId, $page = 1) {
+
+        /**
+         * SELECT *
+         * FROM discussions AS d
+         * INNER JOIN foldeddiscussions AS f ON d.id = f.discussion_id
+         * WHERE f.user_id =1
+         * AND d.classroom_id =1
+         */
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+
+        $options['joins'] = array(
+            array('table' => 'foldeddiscussions',
+                'alias' => 'Foldeddiscussion',
+                'type' => 'inner',
+                'conditions' => array(
+                    'Discussion.id = Foldeddiscussion.discussion_id'
+                )
+            ),
+        );
+
+        $options['conditions'] = array(
+            'Discussion.classroom_id' => $roomId,
+            'Foldeddiscussion.user_id' => $userId
+        );
+
+        $options['offset'] = $offset;
+        $options['limit'] = self::PAGINATION_LIMIT;
+
+        $contain = array(
+            'Reply' => array(
+                'Gamificationvote' => array(
+                    'AppUser' => array(
+                        'fields' => array(
+                            'fname',
+                            'lname'
+                        )
+                    )
+                ),
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                ),
+                'limit' => self::MAX_REPLIES,
+                'order' => array(
+                    'created' => 'desc'
+                )
+            ),
+            'Pollchoice' => array(
+                'Pollvote'
+            ),
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array('fname', 'lname')
+            ),
+            'Foldeddiscussion' => array(
+                'conditions' => array(
+                    'user_id' => $userId
+                )
+            )
+        );
+
+        $options['contain'] = $contain;
+
+        $data = $this->find('all', $options);
+        return $data;
     }
 
 }

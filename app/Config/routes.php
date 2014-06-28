@@ -39,10 +39,13 @@ Router::connect(
         )
 );
 Router::connect(
-        '/Classrooms/:id/:controller/:action', array(), array(
+        '/Classrooms/:id/:controller/:action', array('action' => 'index'), array(
     'pass' => array('id'),
     'id' => '[0-9]+'
         )
+);
+Router::connect(
+        '/Classrooms/:controller/:action', array(), array()
 );
 
 //--------------------------------------------------------------------------------------------------------------

@@ -65,14 +65,40 @@ class Reply extends AppModel {
             )
         );
 
-        return $this->Reply->saveAssociated($data);
+        return $this->saveAssociated($data);
     }
 
     public function deleteReply($replyId, $userId) {
         $reply = $this->findById($replyId);
-        if ($reply['Reply']['user_id'] == $userId) {
-            return $this->delete($replyId);
+
+        if ($reply) {
+            if ($reply['Reply']['user_id'] == $userId) {
+                return $this->delete($replyId);
+            }
+        } else {
+            return false;
         }
+    }
+
+    public function processReplies($data, $userId) {
+        for ($i = 0; $i < count($data); $i++) {
+            $hasVoted = $this->Discussion->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
+            $isOwner = ($data[$i]['Reply']['user_id'] == $userId);
+
+            if ($hasVoted || $isOwner) {
+                $data[$i]['Reply']['showGamification'] = true;
+            } else {
+                unset($data[$i]['Reply']['real_praise']);
+                unset($data[$i]['Reply']['cu']);
+                unset($data[$i]['Reply']['in']);
+                unset($data[$i]['Reply']['co']);
+                unset($data[$i]['Reply']['en']);
+                unset($data[$i]['Reply']['ed']);
+                $data[$i]['Reply']['showGamification'] = false;
+            }
+        }
+
+        return $data;
     }
 
 }
