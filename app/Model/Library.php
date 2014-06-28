@@ -11,6 +11,8 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  */
 class Library extends AppModel {
 
+    protected $PAGINATION_LIMIT = 15;
+
     /**
      * Notes:
      * On addition of files, getSize() and add to fileSize db field.
@@ -105,15 +107,6 @@ class Library extends AppModel {
     }
 
     /**
-     * 
-     * @param int $classroomId
-     * @return mixed topics all assorted library data
-     */
-    public function index($classroomId) {
-        
-    }
-
-    /**
      * Update the topic
      * @param int $libraryId
      * @param int $topicId
@@ -123,19 +116,63 @@ class Library extends AppModel {
         
     }
 
-    function getTopics($libraryId){
+    public function deleteTopic($topicId){
+        $this->Topic->delete($topicId);
+    }
 
-        $params['conditions'] = array(
-            'library_id' => $libraryId,
+    public function createTopic($libraryId,$topicText){
+        $data = array(
+            'Library' => array(
+                'id' => $libraryId
+            ),
+            'Topic' => array(
+                'name' => $topicText
+            )
         );
 
-        $params['contain'] = array(
-            'Link',
-            'Pyoopilfile' => array(
-                'order' => array(
-                    'Pyoopilfile.file_type ASC'
+        return $this->Topic->saveAssociated($data);
+    }
+
+    /**
+     * Returns library id for a classroom
+     * @param $classroomId
+     * @return mixed
+     */
+    public function getLibraryId($classroomId){
+        $params['conditions'] = array(
+            'classroom_id' => $classroomId
+        );
+
+        $params['recursive'] = -1;
+
+        $data = $this->find('first',$params);
+        return $data['Library']['id'];
+    }
+
+    /**
+     * Retrieves topics in the library
+     * @param $libraryId
+     * @param int $page
+     * @return array
+     */
+    function getPaginatedTopics($libraryId,$page=1){
+
+        $offset = $this->PAGINATION_LIMIT*($page-1);
+
+        $params = array(
+            'conditions' => array(
+                'library_id' => $libraryId,
+            ),
+            'contain' => array(
+                'Link',
+                'Pyoopilfile' => array(
+                    'order' => array(
+                        'Pyoopilfile.file_type ASC'
+                    )
                 )
-            )
+            ),
+            'limit' => $this->PAGINATION_LIMIT,
+            'offset' => $offset
         );
 
         return $topics = $this->Topic->find('all',$params);
