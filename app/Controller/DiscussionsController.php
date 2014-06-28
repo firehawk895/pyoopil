@@ -54,6 +54,9 @@ class DiscussionsController extends AppController {
         }
         $data = $this->Discussion->processData($data, $userId);
 
+        /**
+         * finalize and set the response for the json view
+         */
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));

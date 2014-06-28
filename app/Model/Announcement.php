@@ -12,7 +12,10 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  */
 class Announcement extends AppModel {
 
-    public $PAGINATION_LIMIT = 15;
+    /**
+     * pagination limit for announcements
+     */
+    const PAGINATION_LIMIT = 15;
 
 //    public function beforeUpload($options) {
 //
@@ -30,7 +33,7 @@ class Announcement extends AppModel {
                 'transport' => array(
                     'class' => AttachmentBehavior::S3,
                     'region' => Aws\Common\Enum\Region::SINGAPORE,
-                    'folder' => 'announcements/',
+//                    'folder' => 'announcements/',
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
@@ -103,7 +106,6 @@ class Announcement extends AppModel {
 //        )
 //    );
 
-
     /**
      * Get announcement by ID
      * @param $announcementId
@@ -121,7 +123,7 @@ class Announcement extends AppModel {
             )
         );
 
-        return $this->find('first',$params);
+        return $this->find('first', $params);
     }
 
     /**
@@ -130,10 +132,16 @@ class Announcement extends AppModel {
      * @param int $page
      * @return array
      */
-    public function getPaginatedAnnouncements($classroomId,$page = 1){
-        $offset = $this->PAGINATION_LIMIT*($page-1);
+    public function getPaginatedAnnouncements($classroomId, $page = 1, $onlylatest = false) {
 
-        $params = array(
+        //sanity check
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+
+        $options = array(
             'contain' => array(
                 'AppUser' => array(
                     'fields' => array('fname', 'lname')
@@ -142,14 +150,19 @@ class Announcement extends AppModel {
             'conditions' => array(
                 'classroom_id' => $classroomId
             ),
-            'limit' => $this->PAGINATION_LIMIT,
+            'limit' => self::PAGINATION_LIMIT,
             'offset' => $offset,
             'order' => array(
                 'Announcement.created' => 'desc'
             )
         );
 
-        $data = $this->find('all',$params);
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->find('all', $options);
         return $data;
     }
 
@@ -160,14 +173,14 @@ class Announcement extends AppModel {
      * @param $data
      * @return bool
      */
-    public function createAnnouncement($classroomId,$data,$userId) {
+    public function createAnnouncement($classroomId, $data, $userId) {
 
         $data['Announcement']['classroom_id'] = $classroomId;
         $data['Announcement']['user_id'] = $userId;
 
-        if ($this->save($data)){
+        if ($this->save($data)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
