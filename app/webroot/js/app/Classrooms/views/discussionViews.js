@@ -5,6 +5,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   var DiscussionViews;
   DiscussionViews = (function() {
     function DiscussionViews(elem) {
+      this.renderReplies = __bind(this.renderReplies, this);
+      this.renderGamification = __bind(this.renderGamification, this);
       this.newReply = __bind(this.newReply, this);
       this.newDiscussion = __bind(this.newDiscussion, this);
       this.renderDiscussions = __bind(this.renderDiscussions, this);
@@ -73,17 +75,33 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       return $parent.prepend(this.renderReply(reply.data[0]));
     };
 
-    DiscussionViews.prototype.renderGamification = function(type, gamification) {
+    DiscussionViews.prototype.renderGamification = function(e, gamification) {
       var gamificationHtml;
-      switch (type) {
-        case 'discussion':
-          gamificationHtml = this.gamificationDiscussionTemplate(gamification);
+      switch (gamification.type) {
+        case 'Discussion':
+          gamificationHtml = this.gamificationDiscussionTemplate(gamification.data);
           break;
-        case 'reply':
-          gamificationHtml = this.gamificationReplyTemplate(gamification);
+        case 'Reply':
+          gamificationHtml = this.gamificationReplyTemplate(gamification.data);
       }
-      console.log(gamificationHtml);
-      return gamificationHtml;
+      return $(gamification.container).html(gamificationHtml);
+    };
+
+    DiscussionViews.prototype.renderReplies = function(e, replies) {
+      var repliesHtml, reply;
+      repliesHtml = (function() {
+        var _i, _len, _ref, _results;
+        if (replies.data != null) {
+          _ref = replies.data;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            reply = _ref[_i];
+            _results.push(this.renderReply(reply));
+          }
+          return _results;
+        }
+      }).call(this);
+      return replies.container.append(repliesHtml);
     };
 
     return DiscussionViews;

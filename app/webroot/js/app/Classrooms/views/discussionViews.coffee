@@ -51,15 +51,20 @@
 
 			$parent.prepend(@renderReply(reply.data[0]))
 
-		renderGamification : (type, gamification) ->
+		renderGamification : (e, gamification) =>
 
-			switch type
-				when 'discussion' then gamificationHtml = @gamificationDiscussionTemplate gamification
-				when 'reply' then gamificationHtml = @gamificationReplyTemplate gamification
+			switch gamification.type
+				when 'Discussion' then gamificationHtml = @gamificationDiscussionTemplate gamification.data
+				when 'Reply' then gamificationHtml = @gamificationReplyTemplate gamification.data
 
-			console.log gamificationHtml
+			$(gamification.container).html(gamificationHtml)
 
-			gamificationHtml
+		renderReplies : (e,replies) =>
+
+			repliesHtml = if replies.data?
+				@renderReply reply for reply in replies.data
+
+			replies.container.append repliesHtml
 	
 
 	App.classrooms.discussionViews = DiscussionViews

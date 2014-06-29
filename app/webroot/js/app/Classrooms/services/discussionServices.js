@@ -19,7 +19,7 @@
     DiscussionServices.prototype.getData = function(url) {
       var ajax;
       ajax = $.ajax({
-        url: url,
+        url: this.baseUrl + "/" + url,
         method: 'GET'
       });
       return ajax;
@@ -37,7 +37,6 @@
 
     DiscussionServices.prototype.newDiscussion = function(data) {
       var formData, url;
-      console.log(data);
       formData = $(data).serialize();
       url = 'add.json';
       return this.postData(url, formData);
@@ -54,6 +53,12 @@
       formData = data.serialize();
       url = 'addReply.json';
       return this.postData(url, formData);
+    };
+
+    DiscussionServices.prototype.getReplies = function(data) {
+      var url;
+      url = 'getreplies.json?page=' + data.page + "&discussion_id=" + data.discussion_id;
+      return this.getData(url);
     };
 
     DiscussionServices.prototype.isValid = function(data) {

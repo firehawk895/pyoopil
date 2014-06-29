@@ -1,35 +1,36 @@
 Handlebars.registerHelper("displayGamification", (data)->
 
-  '<div class="enga">
-    <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
-    <div class="enga-tooltip" style="display: none;">
-      <div class="enga-list">
-        <ul>
-          <li><p class="tt-name">Amar Verma</p></li>
-          <li><p class="tt-name">Akriti Singh</p></li>
-          <li><p class="tt-name">Deepti Singh</p></li>
-        </ul>
-      </div>
-    </div>
-    <span class="icon-title">17</span>
-  </div>'
+  tmpl = ''
 
-  ''
+  for d of data
 
-)
+    praisers = ''
 
+    _.each data[d], (d) ->
+      praisers += "<li>" + d + "</li>"
 
+    if data[d].length > 0
+      tmpl += '<div class="enga">
+                <a href="javascript:void(0)" class="msg-link point-icon">'+d+'</a>
+                <div class="enga-tooltip" style="display: none;">
+                  <div class="enga-list">
+                    <ul>'+praisers+'</ul>
+                  </div>
+                </div>
+                <span class="icon-title">'+data[d].length+'</span>
+              </div>'
+    else
+      tmpl += '<div class="enga">
+                <a href="javascript:void(0)" class="msg-link point-icon">'+d+'</a>
+                <span class="icon-title">'+data[d].length+'</span>
+              </div>'
 
-Handlebars.registerHelper("Replies", (data)->
+  new Handlebars.SafeString(tmpl)
 
   
 
-  '<div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
-                        </div>'
-
-  ''
-
 )
+
 
 Handlebars.registerHelper('Poll', (choices)->
 
@@ -41,6 +42,14 @@ Handlebars.registerHelper('Poll', (choices)->
 
   displayChoice choice for choice in choices
 
-  tmpl
+  new Handlebars.SafeString(tmpl)
+
+)
+
+Handlebars.registerHelper('safehtml', (data)->
+
+  data = '<div class="ttxt">' + data + '</div>'
+
+  new Handlebars.SafeString(data)
 
 )

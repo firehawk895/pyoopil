@@ -257,6 +257,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 .pop-content { background:#fff; height:450px; }
 /*hide popup*/
 #dialog, #view-dialog, #quizpopup, #quizpopup2, .notification_details, #upload-dialog, #assign-dialog, #rest-dialog, .doc-popup, .enga-hide, .dock-bk.lastli, .clk-tt, .contentblock, .cate, #quizdialog, #msg-dialog, #rec-dialog, .submit-answer, .viewingremaining, .show-test, .big-img,#todolist { display:none; }
+.point-icon{text-transform: uppercase;}
 /***************************************** 
 				Common
 ******************************************/

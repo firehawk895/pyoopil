@@ -57,41 +57,39 @@ App.classrooms = App.classrooms or {}
 						                <div class="clear"></div>
 						                <p class="ttxt"> {{ Discussion.body }} </p>
 						                <div class="arrbox-footer gamification clearfix">
-							                {{#if Discussion}}
-												<div class="f-left prs-sp">
-													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
-													<div class="clk-tt" style="display: none;">
-													  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
-													    <li><a href="javascript:void(0)" data-praise-type="eh"><span>EH</span>Engagement</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
-													    </li>
-													    <li class="lastli"><a href="javascript:void(0)" data-praise-type="en"><span>EN</span> Endorsement</a>
-													    </li>
-													  </ul>
-													</div>
+											<div class="f-left prs-sp">
+												{{#if Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/if}}
+												{{#unless Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/unless}}
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
 												</div>
-											{{/if}}
+											</div>
 											{{#if Discussion.showGamification}}
 												<div class="f-right">
-													{{displayGamification this}}
+													{{#displayGamification Gamificationvote}}
+													{{/displayGamification}}
 												</div>
 							                {{/if}}
 						                </div>
 						              </div>
 						            </div>
-						            {{#if Reply}}
-							            <div class="bor-rep"><a href="javascript:void(0)" class="view-more">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
-				                        </div>
-			                        {{/if}}
-			                        {{#unless Reply}}
-			                        	<div class="bor-rep"><a href="javascript:void(0)" class="view-more">Be the first to Reply</a>
-				                        </div>
-				                    {{/unless}}
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+			                        </div>
 						          </li>
 						          <ul class="replies">
   					            	{{#each Reply}}
@@ -121,17 +119,44 @@ App.classrooms = App.classrooms or {}
 								                <div class="clear"></div>
 								                <p class="ttxt">{{ comment }}</p>
 								                <div class="arrbox-footer gamification clearfix">
-
+													<div class="f-left prs-sp">
+														{{#if showGamification}}
+															<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ display_praise }}</span>Praise</a>
+														{{/if}}
+														{{#unless showGamification}}
+															<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ display_praise }}</span>Praise</a>
+														{{/unless}}
+														<div class="clk-tt" style="display: none;">
+														  <ul data-type="Reply" data-reply-id="{{ id }}" class="praise">
+														    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+														    </li>
+														    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+														    </li>
+														  </ul>
+														</div>
+													</div>
+													{{#if showGamification}}
+														<div class="f-right">
+															{{#displayGamification Gamificationvote}}
+															{{/displayGamification}}
+														</div>
+									                {{/if}}
 								                </div>
 								              </div>
 								            </div>
 								          </li>
 					            	{{/each}}
-					            	<form method="post" class="reply">
-						            	<input class="add-ans" name="comment" type="text" placeholder="Add your answer...">
-						            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
-					            	</form>
 						        </ul>
+						        <form method="post" class="reply">
+					            	<input class="add-ans" name="comment" type="text" placeholder="Add your answer...">
+					            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
+				            	</form>
 					          </ul>',
 				'pollTmpl' : '<ul class="disc-list">
 						          <li>
@@ -171,46 +196,42 @@ App.classrooms = App.classrooms or {}
 						                   	</div>
 						                </div>
 						                
-						                <div class="arrbox-footer clearfix">
-						                  <div class="f-left prs-sp">
-						                    <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">{{Discussion.display_praise}}</span>Praise</a>
-						                    <div class="clk-tt" style="display: none;">
-						                      <ul>
-						                        <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-						                        </li>
-						                        <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-						                        </li>
-						                        <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-						                        </li>
-						                        <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-						                        </li>
-						                        <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-						                        </li>
-						                      </ul>
-						                    </div>
-						                  </div>
-						                  <div class="f-right">
-						                    <div class="enga">
-						                      <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
-						                      <div class="enga-tooltip" style="display: none;">
-						                        <div class="enga-list">
-						                          <ul>
-						                            <li><p class="tt-name">Amar Verma</p></li>
-						                            <li><p class="tt-name">Akriti Singh</p></li>
-						                            <li><p class="tt-name">Deepti Singh</p></li>
-						                          </ul>
-						                        </div>
-						                      </div>
-						                      <span class="icon-title">17</span>
-						                    </div>
-						                  </div>
+						                <div class="arrbox-footer gamification clearfix">
+											<div class="f-left prs-sp">
+												{{#if Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/if}}
+												{{#unless Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/unless}}
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
+												</div>
+											</div>
+											{{#if Discussion.showGamification}}
+												<div class="f-right">
+													{{#displayGamification Gamificationvote}}
+													{{/displayGamification}}
+												</div>
+							                {{/if}}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View all 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
 						            </div>
 						          </li>
-						          					            	{{#each Reply}}
+						      		{{#each Reply}}
 					            		<li>
 								            <div class="disc-box clearfix">
 								              <div class="disc-left">
@@ -236,39 +257,35 @@ App.classrooms = App.classrooms or {}
 								                </div>
 								                <div class="clear"></div>
 								                <p class="ttxt">{{ comment }}</p>
-								                <div class="arrbox-footer clearfix">
-								                  <div class="f-left prs-sp">
-								                    <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
-								                    <div class="clk-tt" style="display: none;">
-								                      <ul data-type="Reply" data-discussion-id="{{ ../Discussion.id }}" class="praise" data-reply-id={{ id }}>
-								                        <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-								                        </li>
-								                        <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-								                        </li>
-								                        <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-								                        </li>
-								                        <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-								                        </li>
-								                        <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-								                        </li>
-								                      </ul>
-								                    </div>
-								                  </div>
-								                  <div class="f-right">
-								                  	{{#if showGamification}}
-								                    <div class="enga">
-								                      <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
-								                      <div class="enga-tooltip" style="display: none;">
-								                        <div class="enga-list">
-								                          <ul>
-								                            <li><p class="tt-name">Amar Verma</p></li>
-								                          </ul>
-								                        </div>
-								                      </div>
-								                      <span class="icon-title">17</span>
-								                    </div>
-								                    {{/if}}
-								                  </div>
+								                <div class="arrbox-footer gamification clearfix">
+													<div class="f-left prs-sp">
+														{{#if showGamification}}
+															<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ display_praise }}</span>Praise</a>
+														{{/if}}
+														{{#unless showGamification}}
+															<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ display_praise }}</span>Praise</a>
+														{{/unless}}
+														<div class="clk-tt" style="display: none;">
+														  <ul data-type="Reply" data-reply-id="{{ id }}" class="praise">
+														    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+														    </li>
+														    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+														    </li>
+														  </ul>
+														</div>
+													</div>
+													{{#if showGamification}}
+														<div class="f-right">
+															{{#displayGamification Gamificationvote}}
+															{{/displayGamification}}
+														</div>
+									                {{/if}}
 								                </div>
 								              </div>
 								            </div>
@@ -294,43 +311,43 @@ App.classrooms = App.classrooms or {}
 						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
 						                </div>
 						                <div class="clear"></div>
-						                <p class="ttxt"> {{ Discussion.body }} </p>
+						                {{#safehtml Discussion.body }}
+						                	
+						                {{/safehtml}}
 						                <div class="arrbox-footer gamification clearfix">
-							                {{#if Discussion}}
-												<div class="f-left prs-sp">
-													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
-													<div class="clk-tt" style="display: none;">
-													  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
-													    <li><a href="javascript:void(0)" data-praise-type="eh"><span>EH</span>Engagement</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
-													    </li>
-													    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
-													    </li>
-													    <li class="lastli"><a href="javascript:void(0)" data-praise-type="en"><span>EN</span> Endorsement</a>
-													    </li>
-													  </ul>
-													</div>
+											<div class="f-left prs-sp">
+												{{#if Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/if}}
+												{{#unless Discussion.showGamification}}
+													<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
+												{{/unless}}
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
 												</div>
-											{{/if}}
+											</div>
 											{{#if Discussion.showGamification}}
 												<div class="f-right">
-													{{displayGamification this}}
+													{{#displayGamification Gamificationvote}}
+													{{/displayGamification}}
 												</div>
 							                {{/if}}
 						                </div>
 						              </div>
 						            </div>
-						            {{#if Reply}}
-							            <div class="bor-rep"><a href="javascript:void(0)" class="view-more">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
-				                        </div>
-			                        {{/if}}
-			                        {{#unless Reply}}
-			                        	<div class="bor-rep"><a href="javascript:void(0)" class="view-more">Be the first to Reply</a>
-				                        </div>
-				                    {{/unless}}
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+			                        </div>
 						          </li>
 						          <ul class="replies">
   					            	{{#each Reply}}
@@ -360,17 +377,44 @@ App.classrooms = App.classrooms or {}
 								                <div class="clear"></div>
 								                <p class="ttxt">{{ comment }}</p>
 								                <div class="arrbox-footer gamification clearfix">
-
+													<div class="f-left prs-sp">
+														{{#if showGamification}}
+															<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ display_praise }}</span>Praise</a>
+														{{/if}}
+														{{#unless showGamification}}
+															<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ display_praise }}</span>Praise</a>
+														{{/unless}}
+														<div class="clk-tt" style="display: none;">
+														  <ul data-type="Reply" data-reply-id="{{ id }}" class="praise">
+														    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+														    </li>
+														    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+														    </li>
+														    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+														    </li>
+														  </ul>
+														</div>
+													</div>
+													{{#if showGamification}}
+														<div class="f-right">
+															{{#displayGamification Gamificationvote}}
+															{{/displayGamification}}
+														</div>
+									                {{/if}}
 								                </div>
 								              </div>
 								            </div>
 								          </li>
 					            	{{/each}}
-					            	<form method="post" class="reply">
-						            	<input class="add-ans" name="comment" type="text" placeholder="Add your answer...">
-						            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
-					            	</form>
 						        </ul>
+						        <form method="post" class="reply">
+					            	<input class="add-ans" name="comment" type="text" placeholder="Add your answer...">
+					            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
+				            	</form>
 					          </ul>',
 				'replyTmpl' : '<li>
 						            <div class="disc-box clearfix">
@@ -398,59 +442,80 @@ App.classrooms = App.classrooms or {}
 						                <div class="clear"></div>
 						                <p class="ttxt">{{ Reply.comment }}</p>
 						                <div class="arrbox-footer gamification clearfix">
-						                  
+											<div class="f-left prs-sp">
+												{{#if Reply.showGamification}}
+													<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Reply.display_praise }}</span>Praise</a>
+												{{/if}}
+												{{#unless Reply.showGamification}}
+													<a href="javascript:void(0)" class="icon-title addPraise"><span class="praise-icon">{{ Reply.display_praise }}</span>Praise</a>
+												{{/unless}}
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Reply" data-reply-id="{{ Reply.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
+												</div>
+											</div>
+											{{#if Reply.showGamification}}
+												<div class="f-right">
+													{{#displayGamification Gamificationvote}}
+													{{/displayGamification}}
+												</div>
+							                {{/if}}
 						                </div>
 						              </div>
 						            </div>
 					          	</li>',
-				'gamificationDiscussionTmpl' : '{{#if Discussion}}
-										<div class="f-left prs-sp">
-											<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">{{ Discussion.display_praise }}</span>Praise</a>
-											<div class="clk-tt" style="display: none;">
-											  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
-											    <li><a href="javascript:void(0)" data-praise-type="eh"><span>EH</span>Engagement</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
-											    </li>
-											    <li class="lastli"><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Endorsement</a>
-											    </li>
-											  </ul>
+				'gamificationDiscussionTmpl' : '<div class="f-left prs-sp">
+												<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Discussion.display_praise }}</span>Praise</a>
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Discussion" data-discussion-id="{{ Discussion.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
+												</div>
 											</div>
-										</div>
-										{{/if}}
-										{{#if Discussion.showGamification}}
 											<div class="f-right">
-												{{displayGamification this}}
+												{{#displayGamification Gamificationvote}}
+												{{/displayGamification}}
+											</div>',
+				'gamificationReplyTmpl' : '<div class="f-left prs-sp">
+												<a href="javascript:void(0)" class="icon-title"><span class="praise-icon nopraise">{{ Reply.display_praise }}</span>Praise</a>
+												<div class="clk-tt" style="display: none;">
+												  <ul data-type="Reply" data-reply-id="{{ Reply.id }}" class="praise">
+												    <li><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Engagement</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
+												    </li>
+												    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
+												    </li>
+												    <li class="lastli"><a href="javascript:void(0)" data-praise-type="ed"><span>ED</span> Endorsement</a>
+												    </li>
+												  </ul>
+												</div>
 											</div>
-						                {{/if}}',
-				'gamificationReplyTmpl' : '{{#if Discussion}}
-										<div class="f-left prs-sp">
-											<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">{{ Reply.display_praise }}</span>Praise</a>
-											<div class="clk-tt" style="display: none;">
-											  <ul data-type="Reply" data-discussion-id="{{ discussion_id }}" data-reply-id="{{ Reply.id }}" class="praise">
-											    <li><a href="javascript:void(0)" data-praise-type="eh"><span>EH</span>Engagement</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="in"><span>IN</span>Intelligence</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="cu"><span>CU</span>Curiosity</a>
-											    </li>
-											    <li><a href="javascript:void(0)" data-praise-type="co"><span>CO</span>Contribution</a>
-											    </li>
-											    <li class="lastli"><a href="javascript:void(0)" data-praise-type="en"><span>EN</span>Endorsement</a>
-											    </li>
-											  </ul>
-											</div>
-										</div>
-										{{/if}}
-										{{#if Discussion.showGamification}}
 											<div class="f-right">
-												{{displayGamification this}}
-											</div>
-						                {{/if}}',
+												{{#displayGamification Gamificationvote}}
+												{{/displayGamification}}
+											</div>',
 				'default' : '<p>No template Available'
 			}
 		

@@ -43,6 +43,8 @@ App.classrooms = App.classrooms || {};
       $document.on('Discussions.UPDATE', this.views.renderDiscussions);
       $document.on('Discussions.CREATE', this.views.newDiscussion);
       $document.on('Discussions.REPLY', this.views.newReply);
+      $document.on('Discussions.GAMIFICATION', this.views.renderGamification);
+      $document.on('Discussions.REPLIES', this.views.renderReplies);
       $('#fileupload').on('change', this.handleFileUpload);
       $("#DiscussionAddForm, #DiscussionAddFormPoll, #DiscussionAddFormNote").on('submit', this.newDiscussion);
       this.$elem.on('submit', '.reply', this.newReply);
@@ -56,13 +58,16 @@ App.classrooms = App.classrooms || {};
         CKEDITOR.instances.editor1.updateElement();
         return $("#DiscussionAddFormNote").submit();
       });
-      return this.$elem.on('click', '.praise li a', function(e) {
-        var $parent, $that, id, praise, promise, that;
+      this.$elem.on('click', '.praise li a', function(e) {
+        var $gamification, $parent, $that, id, praise, promise, that, type, vote;
         that = this;
         $that = $(this);
         $parent = $that.closest('.praise');
+        $gamification = $parent.closest('.gamification');
         id = '';
-        switch ($parent.data('type')) {
+        type = $parent.data('type');
+        vote = $that.data('praise-type');
+        switch (type) {
           case 'Discussion':
             id = $parent.data('discussion-id');
             break;
@@ -70,9 +75,9 @@ App.classrooms = App.classrooms || {};
             id = $parent.data('reply-id');
         }
         praise = {
-          type: $parent.data('type'),
-          id: id,
-          vote: $that.data('praise-type')
+          "type": type,
+          "id": id,
+          "vote": vote
         };
         promise = App.classrooms.discussionServices.setGamification(praise);
         promise.then(function(data) {
@@ -81,7 +86,12 @@ App.classrooms = App.classrooms || {};
             return;
           }
           if (App.classrooms.services.isValid([data]) === true) {
-            return App.common.notifier.notify('success', 'Your have successfully Voted');
+            App.common.notifier.notify('success', 'Your have successfully Voted');
+            return $document.trigger('Discussions.GAMIFICATION', {
+              "type": type,
+              "data": data.data,
+              "container": $gamification
+            });
           } else {
             return App.common.notifier.notify('error', 'Voting failed');
           }
@@ -90,6 +100,7 @@ App.classrooms = App.classrooms || {};
         });
         return false;
       });
+      return this.$elem.on('click', '.discussion .view-more', this.loadMoreReplies);
     };
 
     Discussion.prototype.handleFileUpload = function(e) {
@@ -150,6 +161,36 @@ App.classrooms = App.classrooms || {};
           });
         } else {
           return App.common.notifier.notify('error', 'Reply failed');
+        }
+      });
+    };
+
+    Discussion.prototype.loadMoreReplies = function(e) {
+      var $discussion, $replies, $target, currentPage, discussionId, nextPage, promise;
+      $target = $(e.target);
+      $discussion = $target.closest('.discussion');
+      $replies = $discussion.find('.replies');
+      discussionId = $discussion.data('discussion-id');
+      currentPage = $target.data('current-page');
+      nextPage = currentPage + 1;
+      promise = App.classrooms.discussionServices.getReplies({
+        "page": nextPage,
+        "discussion_id": discussionId
+      });
+      return promise.then(function(data) {
+        if (data.status === false) {
+          App.common.notifier.notify('error', data.message);
+          return;
+        }
+        if (App.classrooms.services.isValid(data.data) === true) {
+          $target.data('current-page', nextPage);
+          App.common.notifier.notify('success', 'More Replies Loaded');
+          return $document.trigger('Discussions.REPLIES', {
+            "container": $replies,
+            "data": data.data
+          });
+        } else {
+          return App.common.notifier.notify('error', 'No More Replies');
         }
       });
     };

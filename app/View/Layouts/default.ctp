@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 
 <head>
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
     <!-- styles -->
     <?php
     echo $this->Html->css('reset.css');
-    echo $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css');
+    echo $this->Html->css('toastr.css');
     echo $this->Html->css('layout.css');
     echo $this->Html->css('styles.css');
     echo $this->Html->css('jquery-ui-latest.css');

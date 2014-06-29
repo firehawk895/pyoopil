@@ -439,7 +439,7 @@
 	
 	//praise tooltip
 	$(".clk-tt").hide();
-	$(".icon-title").click(function () {
+	$(".icon-title.addPraise").click(function () {
 		var $div = $(this).next('.clk-tt');
 		$(".clk-tt").not($div).hide();
 		$div.toggle();

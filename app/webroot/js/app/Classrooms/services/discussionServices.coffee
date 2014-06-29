@@ -20,7 +20,7 @@
 		getData : (url)->
 
 			ajax = $.ajax({
-				url : url,
+				url : @baseUrl + "/" + url,
 				method : 'GET'
 			})
 
@@ -39,8 +39,6 @@
 
 
 		newDiscussion : (data) ->
-
-			console.log data
 
 			formData = $(data).serialize()
 
@@ -63,6 +61,11 @@
 
 			@postData(url, formData)
 
+		getReplies : (data)->
+
+			url = 'getreplies.json?page=' + data.page + "&discussion_id=" + data.discussion_id
+
+			@getData(url)
 
 		isValid : (data) ->
 
