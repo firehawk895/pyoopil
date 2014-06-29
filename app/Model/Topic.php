@@ -11,6 +11,8 @@ App::uses('AppModel', 'Model');
  */
 class Topic extends AppModel {
 
+    public $displayField = 'name';
+
     /**
      * belongsTo associations
      * @var array

@@ -11,7 +11,7 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  */
 class Library extends AppModel {
 
-    protected $PAGINATION_LIMIT = 15;
+    const PAGINATION_LIMIT = 15;
 
     /**
      * Notes:
@@ -108,19 +108,41 @@ class Library extends AppModel {
 
     /**
      * Update the topic
-     * @param int $libraryId
-     * @param int $topicId
-     * @param String $topicText
+     * @param $topicId
+     * @param $topicText
+     * @return bool
      */
-    public function editTopic($libraryId, $topicId, $topicText) {
-        
+    public function editTopic($topicId, $topicText) {
+
+        $data = array(
+            'name' => $topicText
+        );
+
+        $conditions = array(
+            'Topic.id' => $topicId
+        );
+
+        return $this->Topic->updateAll($data, $conditions);
     }
 
-    public function deleteTopic($topicId){
-        $this->Topic->delete($topicId);
+    public function getLibraryId($classroomId) {
+
+        $params['conditions'] = array(
+            'classroom_id' => $classroomId
+        );
+
+        $params['recursive'] = -1;
+
+        $data = $this->find('first', $params);
+
+        return $data['Library']['id'];
     }
 
-    public function createTopic($libraryId,$topicText){
+    public function deleteTopic($topicId) {
+        return $this->Topic->delete($topicId);
+    }
+
+    public function createTopic($libraryId, $topicText) {
         $data = array(
             'Library' => array(
                 'id' => $libraryId
@@ -129,53 +151,61 @@ class Library extends AppModel {
                 'name' => $topicText
             )
         );
-
-        return $this->Topic->saveAssociated($data);
     }
 
-    /**
-     * Returns library id for a classroom
-     * @param $classroomId
-     * @return mixed
-     */
-    public function getLibraryId($classroomId){
+    public function getPaginatedTopics($libraryId, $page = 1) {
+
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+
         $params['conditions'] = array(
-            'classroom_id' => $classroomId
+            'library_id' => $libraryId,
         );
 
-        $params['recursive'] = -1;
+        $params['contain'] = array(
+            'Link',
+            'Pyoopilfile' => array(
+                'order' => array(
+                    'Pyoopilfile.file_type ASC'
+                )
+            )
+        );
 
-        $data = $this->find('first',$params);
-        return $data['Library']['id'];
+        $params['limit'] = self::PAGINATION_LIMIT;
+        $params['offset'] = $offset;
+
+        return $topics = $this->Topic->find('all', $params);
     }
 
-    /**
-     * Retrieves topics in the library
-     * @param $libraryId
-     * @param int $page
-     * @return array
-     */
-    function getPaginatedTopics($libraryId,$page=1){
+    public function deleteItem($type, $id) {
 
-        $offset = $this->PAGINATION_LIMIT*($page-1);
+        if ($type == 'File') {
+            return $this->Topic->Pyoopilfile->delete($id);
+        } elseif ($type == 'Link') {
+            return $this->Topic->Link->delete($id);
+        }
+    }
 
-        $params = array(
-            'conditions' => array(
-                'library_id' => $libraryId,
-            ),
-            'contain' => array(
-                'Link',
-                'Pyoopilfile' => array(
-                    'order' => array(
-                        'Pyoopilfile.file_type ASC'
-                    )
-                )
-            ),
-            'limit' => $this->PAGINATION_LIMIT,
-            'offset' => $offset
-        );
-
-        return $topics = $this->Topic->find('all',$params);
+    public function processData($data) {
+        $pattern = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
+        for ($i = 0; $i < count($data); $i++) {
+            $data[$i]['Video'] = array();
+            for ($j = 0; $j < count($data[$i]['Link']); $j++) {
+                $linkText = $data[$i]['Link'][$j]['linktext'];
+                if (preg_match($pattern, $linkText)) {
+                    $youtubeLink = array(
+                        'id' => $data[$i]['Link'][$j]['id'],
+                        'topic_id' => $data[$i]['Link'][$j]['topic_id'],
+                        'linktext' => $data[$i]['Link'][$j]['linktext'],
+                        'created' => $data[$i]['Link'][$j]['created']
+                    );
+                    array_push($data[$i]['Video'], $youtubeLink);
+                    unset($data[$i]['Link'][$j]);
+                }
+            }
+            $data[$i]['Link'] = array_values($data[$i]['Link']);
+            $data[$i]['Video'] = array_values($data[$i]['Video']);
+        }
+        return $data;
     }
 
 }

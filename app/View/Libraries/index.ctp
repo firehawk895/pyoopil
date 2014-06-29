@@ -1,103 +1,149 @@
-<?php
-    $map = array(
-        'document',
-        'image',
-        'presentation',
-    );
-
-    $type = array(
-        'link',
-        'video'
-    );
-?>
-
-<?php foreach($topics as $topic) : ?>
-    <div class="attach-doc classlibrary stud-pnl">
-        <div class="doc-heading clearfix">
-            <input type="text" class="doc-input" value="<?php echo $topic['Topic']['name']; ?>"  maxlength="70" readonly>
-            <div class="lib-right">
-                <a href="javascript:void(0)" class="lib-edit tooltip" title="Edit Topic"></a>
-                <a href="javascript:void(0)" class="lib-delete tooltip" title="Delete"></a>
-                <a href="javascript:void(0)" class="lib-download tooltip" title="Download"></a>
-                <div class="click-lib click-icon tooltip" title="Click to slide"></div>
+<div class="library-wrapper library">
+    <div class="topbuttons">
+        <a href="javascript:void(0)" class="follow" id="upload-dlink">Upload</a>
+        <!--popup-->
+        <div id="upload-dialog" class="create-popup">
+            <div class="pop-wind clearfix">
+                <div class="pop-head clearfix">
+                    <span>Upload</span>
+                    <a class="close-link" href="#">
+                        <span class="icon-cross"></span></a>
+                </div>
+                <div class="pop-content clearfix">
+                    <!--<form class="form-data">-->
+                    <?php
+                    echo $this->Form->create('Topic', array(
+                        'type' => 'file',
+                        'url' => array(
+                            'controller' => 'libraries',
+                            'action' => 'add'
+                        )
+                    ));
+                    ?>
+                    <div class="upload-form clearfix">
+                        <!-- form 1 -->
+                        <div id="form1">
+                            <p class="up-heading"> Step 1 of 2: Select a topic</p>
+                            <div class="select-topic">
+                                <!-- <a href="javascript:void(0)" class="sel-topic">Select Topic</a>
+                                 <div class="seltop-dd">
+                                   <a href="javascript:void(0)" class="new-topic">Create New Topic</a>
+                                   <ul>
+                                     <li><a href="javascript:void(0)">Topic 1</a>
+                                     </li>
+                                     <li><a href="javascript:void(0)">Topic 2</a>
+                                     </li>
+                                     <li><a href="javascript:void(0)">Topic 3</a>
+                                     </li>
+                                     <li><a href="javascript:void(0)">Topic 4</a>
+                                     </li>
+                                   </ul>
+                                 </div> -->
+                                <?php
+//                                echo $this->Form->input('topic_id', array(
+////                                    'type' => 'select',
+////                                    'options' => $topics,
+//                                    'empty' => 'Create new topic',
+//                                    'class' => 'chosen-select select_option',
+//                                    'id' => 'topic-dd',
+//                                    'hidden'
+//                                ));
+                                ?>
+                                <?php
+                                echo $this->Form->input('id', array(
+                                    'type' => 'select',
+                                    'options' => $topics,
+                                    'empty' => 'Create new topic',
+                                    'class' => 'chosen-select select_option',
+                                    'id' => 'topic-dd',
+                                    'div' => false,
+                                    'label' => false
+                                ));
+                                ?>
+<!--                                <select class="chosen-select select_option" id="topic-dd">
+                                    <option class="new-topic">Create New Topic</option>
+                                    <option>Topic 2</option>
+                                    <option>Topic 3</option>
+                                    <option>Topic 4</option>
+                                </select>-->
+                                <input type="text" class="pop-input" id="enter-topic" placeholder="Enter Topic Name" name="data[Topic][name]"/>
+                                <div class="nav-btn">
+                                    <input type="button" class="follow active goto2" value="Next">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- form 2 -->
+                        <div id="form2">
+                            <p class="up-heading">Step 2 of 2</p>
+                            <div class="select-topic">
+                                <p class="sub-sel">Topic Name:<span> Topic 1</span></p>
+                                <div class="tabpages">
+                                    <ul class="upload-tab">
+                                        <li><a href="#file1" class="tab active">Upload file</a>
+                                        </li>
+                                        <li><a href="#link1" class="tab">Upload link</a>
+                                        </li>
+                                    </ul>
+                                    <div id="file1" class="tab-contt">
+                                        <p>Select file to upload</p>
+                                        <div class="upload-files">
+                                            <div class="add-upload clearfix">
+                                                <div class="custom-upload" id="test0">
+                                                    <input type="file" name="data[Pyoopilfile][0][file_path]">
+                                                    <div class="file-upload">
+                                                        <span class="file-txt">Select file</span>
+                                                        <input disabled="disabled" value="No File Chosen">
+                                                    </div>
+                                                    <div class="size-txt">(Max. 2 mb)</div>
+                                                </div>
+                                                <div class="custom-upload" id="test0">
+                                                    <input type="file" name="data[Pyoopilfile][1][file_path]">
+                                                    <div class="file-upload">
+                                                        <span class="file-txt">Select file</span>
+                                                        <input disabled="disabled" value="No File Chosen">
+                                                    </div>
+                                                    <div class="size-txt">(Max. 2 mb)</div>
+                                                </div>
+                                            </div>
+                                            <span class="add-more tooltip" title="Add File"></span>
+                                        </div>
+                                        <div class="error-txt">
+                                            <p>! File exceeded max. limit. </p>
+                                            <p>Select another file or reduce size and upload again</p>
+                                        </div>
+                                    </div>
+                                    <div id="link1" class="tab-contt">
+                                        <p>Paste link here</p>
+                                        <div class="upload-links">
+                                            <div class="add-links">
+                                                <input type="text" class="pop-input" placeholder="Upload links" name="data[Link][0][linktext]">
+                                            </div>
+                                        </div>
+                                        <div class="upload-links">
+                                            <div class="add-links">
+                                                <input type="text" class="pop-input" placeholder="Upload links" name="data[Link][1][linktext]">
+                                            </div>
+                                        </div>
+                                        <span class="add-link tooltip" title="Add Link"></span>
+                                    </div>
+                                </div>
+                                <div class="nav-btn">
+                                    <input type="button" class="follow backto1" value="Oops !">
+                                    <input type="button" class="follow active" value="Save">
+                                    <?php echo $this->Form->submit(); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--</form>-->
+                    <?php echo $this->Form->end(); ?>
+                </div>
             </div>
         </div>
 
-        <div class="contentblock">
-            <?php foreach($map as $m) : ?>
-                <p class="classlibraryhd"><?php echo Inflector::camelize(Inflector::pluralize($m)); ?> </p>
-                <?php if($m == 'document' || $m == 'presentation') : ?>
-                    <ul class="doc-list">
-                <?php elseif($m == 'image') : ?>
-                    <ul class="doc-list img-list">
-                <?php endif; ?>
-
-                    <?php foreach($topic['Pyoopilfile'] as $file) : ?>
-                        <?php if($file['file_type'] == $m) : ?>
-                            <li>
-                                <?php if($m == 'document' || $m == 'presentation') : ?>
-                                    <a href="javascript:void(0)" class="del-lib"></a>
-                                    <a href="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]">
-                                        <div class="doc-top">
-                                            <p><?php echo $file['filename']?></p>
-                                        </div> </a>
-                                    <div class="doc-end clearfix">
-                                        <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"></a>
-                                        <p class="f-right">Posted<br><?php echo $this->Time->format('F jS, Y h:i A', $file['created'], null);?></p>
-                                    </div>
-                                <?php elseif($m == 'image') : ?>
-                                    <div class="img-wrapper">
-                                        <a href="javascript:void(0)" class="del-lib"></a>
-                                        <a href="images/classroom/big.png" rel="prettyPhoto[pp_gal]">
-                                            <img src="images/classroom/big.png">
-                                            <div class="piccaption clearfix">Posted <br><?php echo $this->Time->format('F jS, Y h:i A', $file['created'], null);?></div>
-                                        </a>
-                                    </div>
-                                <?php endif; ?>
-                            </li>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </ul>
-            <? endforeach; ?>
-
-            <?php foreach($type as $m) : ?>
-                <p class="classlibraryhd"><?php echo Inflector::camelize(Inflector::pluralize($m)); ?> </p>
-                <?php if($m == 'video') : ?>
-                    <ul class="doc-list img-list">
-                <?php elseif($m == 'link') : ?>
-                    <ul class="doc-list link-list">
-                <?php endif; ?>
-
-                <?php foreach($topic['Link'] as $file) : ?>
-                    <li>
-                        <?php if($m == 'link') : ?>
-                            <a href="javascript:void(0)" class="del-lib"></a>
-                            <a href="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]">
-                                <div class="doc-top">
-                                    <p><?php echo $file['linktext']?></p>
-                                </div> </a>
-                            <div class="doc-end clearfix">
-                                <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"></a>
-                                <p class="f-right">Posted<br><?php echo $this->Time->format('F jS, Y h:i A', $file['created'], null);?></p>
-                            </div>
-                         <!--figure out condition to check if it is a vid-->
-                        <?php /*elseif($m == 'video') : */?><!--
-                            <div class="img-wrapper">
-                                <a href="javascript:void(0)" class="del-lib"></a>
-                                <a href="images/classroom/big.png" rel="prettyPhoto[pp_gal]">
-                                    <img src="images/classroom/big.png">
-                                    <div class="piccaption clearfix">Posted <br><?php /*echo $this->Time->format('F jS, Y h:i A', $file['created'], null);*/?></div>
-                                </a>
-                            </div>-->
-                        <?php endif; ?>
-                    </li>
-
-                    <?php endforeach; ?>
-                    </ul>
-                <? endforeach; ?>
-
-
-        </div>
     </div>
-<?php endforeach; ?>
+    <div class="clear"></div>
+    <div class="attach-doc classlibrary stud-pnl">
+        <!-- fill topics here -->
+    </div>
 </div>
