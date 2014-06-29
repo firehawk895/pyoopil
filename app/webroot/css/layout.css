@@ -268,3 +268,5 @@ Ram's Styles
  */
 
 #classrooms{ display: inline;}
+
+.disc-list > .replies > li:last-child{ background: none };

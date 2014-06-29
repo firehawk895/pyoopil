@@ -17,7 +17,7 @@ App.classrooms = App.classrooms or {}
 
 			@classroomTemplate = Handlebars.compile App.classrooms.templates.getTemplate('classroomTile')
 			@quizDialogTemplate = Handlebars.compile App.classrooms.templates.getTemplate('quizTmpl')
-
+			''
 
 		renderClassrooms : (e, classrooms) =>
 

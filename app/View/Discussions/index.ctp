@@ -59,7 +59,7 @@ $this->end();
                                 <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
-                            <div id="files" class="files"></div>
+                            <div class="files" class="files"></div>
                         </div>
                     </div>
                     <div class="f-right">
@@ -194,7 +194,7 @@ $this->end();
                                 <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
-                            <div id="files" class="files"></div>
+                            <div class="files" class="files"></div>
                         </div>
                     </div>
                     <div class="f-right">
@@ -257,7 +257,7 @@ $this->end();
                                 <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
-                            <div id="files" class="files"></div>
+                            <div class="files" class="files"></div>
                         </div>
                     </div>
                     <div class="f-right">
@@ -273,10 +273,20 @@ $this->end();
             <!--</form>-->
 
         </div>
-
+        <div id="discussions">
+            
+        </div>
         <!--populate discussions here-->
         <!--Praise people Dialog-->
     </div>
+    <script type="text/javascript">
+
+        var App = window.App || {};
+            App.classrooms = App.classrooms || {};
+            App.classrooms.discussions = App.classrooms.discussions || {};
+            App.classrooms.discussions.data = <?php echo $data ?>;
+
+    </script> 
 </section>
 <?php
 //echo $this->Form->create('Discussion', array(
@@ -350,5 +360,5 @@ $script = <<<JS
     });
 
 JS;
-$this->Js->buffer($script);
+// $this->Js->buffer($script);
 ?>

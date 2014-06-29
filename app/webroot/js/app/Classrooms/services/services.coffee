@@ -60,6 +60,12 @@ App.classrooms = App.classrooms or {}
 
 			return data? and data.length > 0
 
+		getCurrentPage : ->
+
+			url = window.location.href.split("/")
+
+			_.last url
+
 	App.classrooms.services = new Services()
 
 )($, window, document)

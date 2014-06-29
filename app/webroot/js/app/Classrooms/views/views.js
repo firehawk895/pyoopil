@@ -22,7 +22,8 @@ App.classrooms = App.classrooms || {};
 
     Views.prototype.init = function() {
       this.classroomTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('classroomTile'));
-      return this.quizDialogTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('quizTmpl'));
+      this.quizDialogTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('quizTmpl'));
+      return '';
     };
 
     Views.prototype.renderClassrooms = function(e, classrooms) {

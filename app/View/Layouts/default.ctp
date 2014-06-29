@@ -197,7 +197,7 @@
     echo $this->Html->script('fullcalendar.min.js');
     echo $this->Html->script('jquery.mousewheel.min.js');
     echo $this->Html->script('vertical.slider.standard.js');
-
+    echo $this->Html->script('ck/ckeditor');
 //     Buffer from cakephp
 //     This should always be on top of custom JS files
     echo $this->Js->writeBuffer();
@@ -214,9 +214,14 @@
     // APP CLASSROOMS JS Files
     echo $this->Html->script("app/Classrooms/configs/configs.js");
     echo $this->Html->script("app/Classrooms/services/services.js");
+    echo $this->Html->script("app/Classrooms/services/discussionServices.js");
     echo $this->Html->script("app/Classrooms/services/handlebarHelpers.js");
     echo $this->Html->script("app/Classrooms/services/templates.js");
     echo $this->Html->script("app/Classrooms/views/views.js");
+    echo $this->Html->script("app/Classrooms/views/discussionViews.js");
+    echo $this->Html->script("app/Classrooms/modules/base.js");
+    echo $this->Html->script("app/Classrooms/modules/landing.js");
+    echo $this->Html->script("app/Classrooms/modules/discussions.js");
     echo $this->Html->script("app/Classrooms/app.js");
 
 
