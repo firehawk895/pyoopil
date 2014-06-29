@@ -4,7 +4,6 @@ App::uses('AppModel', 'Model');
 
 /**
  * Pollvote Model
- *
  * @property User $User
  * @property Pollchoice $Pollchoice
  */
@@ -12,7 +11,6 @@ class Pollvote extends AppModel {
 
     /**
      * belongsTo associations
-     *
      * @var array
      */
     public $belongsTo = array(
@@ -31,5 +29,13 @@ class Pollvote extends AppModel {
             'order' => ''
         )
     );
+
+    public function hasVoted($pollChoiceId, $userId) {
+        $conditions = array(
+            'user_id' => $userId,
+            'pollchoice_id' => $pollChoiceId
+        );
+        return $this->hasAny($conditions);
+    }
 
 }

@@ -185,7 +185,7 @@ class Library extends AppModel {
         }
     }
 
-    public function processData($data) {
+    public function parseVideoLinks($data) {
         $pattern = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Video'] = array();
@@ -206,6 +206,13 @@ class Library extends AppModel {
             $data[$i]['Video'] = array_values($data[$i]['Video']);
         }
         return $data;
+    }
+
+    public function parsePyoopilfiles($data) {
+        $this->log($data);
+        for ($i = 0; $i < count($data); $i++) {
+            $this->log($data[$i]);
+        }
     }
 
 }

@@ -29,15 +29,18 @@ class LibrariesController extends AppController {
     public function getTopics($classroomId) {
         $this->response->type('json');
 
+        $page = 1;
         $status = false;
         $message = "";
 
-        if (isset($this->params['url']['page'])) {
+        if (!isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
-            $libraryId = $this->Library->getLibraryId($classroomId);
-            $data = $this->Library->getPaginatedTopics($libraryId, $page);
-            $status = true;
         }
+        $libraryId = $this->Library->getLibraryId($classroomId);
+        $data = $this->Library->getPaginatedTopics($libraryId, $page);
+        $data = $this->Library->parseVideoLinks($data);
+//            $data = $this->Library->parsePyoopilfiles($data);
+        $status = true;
 
         $this->set(compact('status', 'message', 'data'));
         $this->set('_serialize', array('data', 'status', 'message'));

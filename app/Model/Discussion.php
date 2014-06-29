@@ -224,18 +224,6 @@ class Discussion extends AppModel {
             $this->log($data[$i]['Discussion']['id']);
 
             $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
-//            if ((!$isOwner && !$hasVoted) || !$isOwner) {
-//                unset($data[$i]['Discussion']['real_praise']);
-////            unset($data[$i]['Discussion']['display_praise']);
-//                unset($data[$i]['Discussion']['cu']);
-//                unset($data[$i]['Discussion']['in']);
-//                unset($data[$i]['Discussion']['co']);
-//                unset($data[$i]['Discussion']['en']);
-//                unset($data[$i]['Discussion']['ed']);
-//                $data[$i]['Discussion']['showGamification'] = false;
-//            } else {
-//                $data[$i]['Discussion']['showGamification'] = true;
-//            }
             if ($hasVoted || $isOwner) {
                 $data[$i]['Discussion']['showGamification'] = true;
             } else {
@@ -249,6 +237,7 @@ class Discussion extends AppModel {
                 $data[$i]['Discussion']['showGamification'] = false;
             }
 
+            /* Decide to show votes of a poll */
             if ($data[$i]['Discussion']['type'] == 'poll') {
                 $data[$i]['Pollchoice']['showPollVote'] = false;
                 if ($isOwner) {
@@ -274,18 +263,6 @@ class Discussion extends AppModel {
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
                 $hasVoted = ($this->hasVoted('Reply', $data[$i]['Reply'][$j]['id'], $userId));
                 $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
-//                if ((!$isOwner && !$hasVoted) || !$isOwner) {
-//                    unset($data[$i]['Reply'][$j]['real_praise']);
-////                unset($data[$i]['Reply'][$j]['display_praise']);
-//                    unset($data[$i]['Reply'][$j]['cu']);
-//                    unset($data[$i]['Reply'][$j]['in']);
-//                    unset($data[$i]['Reply'][$j]['co']);
-//                    unset($data[$i]['Reply'][$j]['en']);
-//                    unset($data[$i]['Reply'][$j]['ed']);
-//                    $data[$i]['Reply'][$j]['showGamification'] = false;
-//                } else {
-//                    $data[$i]['Reply'][$j]['showGamification'] = true;
-//                }
 
                 if ($isOwner || $hasVoted) {
                     $data[$i]['Reply'][$j]['showGamification'] = true;
@@ -301,7 +278,6 @@ class Discussion extends AppModel {
                 }
             }
         }
-
         return $data;
     }
 
