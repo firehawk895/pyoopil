@@ -96,6 +96,13 @@ class Reply extends AppModel {
                 unset($data[$i]['Reply']['ed']);
                 $data[$i]['Reply']['showGamification'] = false;
             }
+            
+            if($hasVoted) {
+                $data[$i]['allowGamificationvote'] = true;
+            } else {
+                $data[$i]['allowGamificationvote'] = false;
+            }
+            $data[$i]['Gamificationvote'] = $this->Discussion->convertGamificationVoteArray($data[$i]['Gamificationvote']);
         }
 
         return $data;

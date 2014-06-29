@@ -215,13 +215,14 @@ class Discussion extends AppModel {
      * @return mixed
      */
     public function processData($data, $userId) {
+//        $this->log($data);
 
         for ($i = 0; $i < count($data); $i++) {
-            /* Removing Gamification information */
+            /* Removing Gamification information if required */
             $hasVoted = ($this->hasVoted('Discussion', $data[$i]['Discussion']['id'], $userId));
 
-            $this->log($hasVoted);
-            $this->log($data[$i]['Discussion']['id']);
+//            $this->log($hasVoted);
+//            $this->log($data[$i]['Discussion']['id']);
 
             $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
             if ($hasVoted || $isOwner) {
@@ -236,6 +237,9 @@ class Discussion extends AppModel {
                 unset($data[$i]['Discussion']['ed']);
                 $data[$i]['Discussion']['showGamification'] = false;
             }
+
+            /* Converting Gamification information to friendly form */
+            $data[$i]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Gamificationvote']);
 
             /* Decide to show votes of a poll */
             if ($data[$i]['Discussion']['type'] == 'poll') {
@@ -276,6 +280,42 @@ class Discussion extends AppModel {
                     unset($data[$i]['Reply'][$j]['ed']);
                     $data[$i]['Reply'][$j]['showGamification'] = false;
                 }
+                /* Converting Gamification information to friendly form */
+                $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Given the $data['GamificationVote'] array, converts it to a grouped form
+     * for the front end
+     * @param array $gamificationVote $data['GamificationVote']
+     * @return array assign to $data['GamificationVote']
+     */
+    public function convertGamificationVoteArray($gamificationVote = array()) {
+
+        $data['en'] = array();
+        $data['in'] = array();
+        $data['cu'] = array();
+        $data['co'] = array();
+        $data['ed'] = array();
+
+        for ($k = 0; $k < count($gamificationVote); $k++) {
+            $vote = $gamificationVote[$k]['vote'];
+            $name = $gamificationVote[$k]['AppUser']['fname'] . ' ' . $gamificationVote[$k]['AppUser']['lname'];
+
+            switch ($vote) {
+                case 'en': array_push($data['en'], $name);
+                    break;
+                case 'in': array_push($data['in'], $name);
+                    break;
+                case 'cu': array_push($data['cu'], $name);
+                    break;
+                case 'co': array_push($data['co'], $name);
+                    break;
+                case 'ed': array_push($data['ed'], $name);
+                    break;
             }
         }
         return $data;
