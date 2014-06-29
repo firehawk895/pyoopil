@@ -151,9 +151,10 @@ class ClassroomsController extends AppController {
             $status = true;
             $message = "Successfully created classroom";
         }
-        $this->set(compact('status', 'message'));
-        $this->set('data' , $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $webroot = $this->webroot;
+        $this->set(compact('status', 'message', 'webroot'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
 //    public function add() {
@@ -210,9 +211,10 @@ class ClassroomsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $webroot = $this->webroot;
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     public function getclassrooms() {
@@ -224,9 +226,11 @@ class ClassroomsController extends AppController {
         }
         $status = true;
         $message = "";
-        $this->set(compact('status', 'message'));
+
+        $webroot = $this->webroot;
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page));
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
 }

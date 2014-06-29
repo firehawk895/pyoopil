@@ -49,9 +49,10 @@ class AnnouncementsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     public function add($classroomId) {
@@ -73,8 +74,9 @@ class AnnouncementsController extends AppController {
             $message = "Could not create announcement";
             $status = false;
         }
-        $this->set(compact('status', 'message'));
-        $this->set('_serialize', array('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
+        $this->set('_serialize', array('status', 'message', 'webroot'));
     }
 
 //    public function add_($classroomId) {

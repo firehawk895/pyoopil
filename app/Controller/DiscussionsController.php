@@ -57,9 +57,10 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     /**
@@ -84,10 +85,10 @@ class DiscussionsController extends AppController {
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
             }
         }
-
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     /**
@@ -118,8 +119,9 @@ class DiscussionsController extends AppController {
         } else {
             $message = "Could not delete or find the {$type}";
         }
-        $this->set(compact('status', 'message'));
-        $this->set('_serialize', array('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
+        $this->set('_serialize', array('status', 'message', 'webroot'));
     }
 
     /**
@@ -141,9 +143,9 @@ class DiscussionsController extends AppController {
                 $message = "";
             }
         }
-
-        $this->set(compact('status', 'message'));
-        $this->set('_serialize', array('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
+        $this->set('_serialize', array('status', 'message', 'webroot'));
     }
 
     public function test() {
@@ -192,9 +194,10 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     public function addReply() {
@@ -218,9 +221,10 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
     /**
@@ -244,9 +248,9 @@ class DiscussionsController extends AppController {
                 $data = $this->Discussion->getGamificationInfo($type, $id);
             }
         }
-
-        $this->set(compact('status', 'message', 'data'));
-        $this->set('_serialize', array('status', 'message', 'data'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'data', 'webroot'));
+        $this->set('_serialize', array('status', 'message', 'data', 'webroot'));
     }
 
     /**
@@ -276,9 +280,10 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set(compact('status', 'message'));
+        $this->set('webroot', $this->webroot);
+        $this->set(compact('status', 'message', 'webroot'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
 }
