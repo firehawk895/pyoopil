@@ -243,12 +243,13 @@ class Discussion extends AppModel {
 
             /* Decide to show votes of a poll */
             if ($data[$i]['Discussion']['type'] == 'poll') {
+                $this->log($data[$i]);
                 $data[$i]['Pollchoice']['showPollVote'] = false;
                 if ($isOwner) {
                     $data[$i]['Pollchoice']['showPollVote'] = true;
                 } else {
-                    for ($k = 0; $k < count($data[$i]['Discussion']['Pollchoice']); $k++) {
-                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Discussion']['Pollchoice'][$k]['id'], $userId)) {
+                    for ($k = 0; $k < count($data[$i]['Pollchoice']) - 1; $k++) {
+                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Pollchoice'][$k]['id'], $userId)) {
                             $data[$i]['Pollchoice']['showPollVote'] = true;
                             break;
                         }
@@ -319,6 +320,10 @@ class Discussion extends AppModel {
             }
         }
         return $data;
+    }
+
+    public function getClassroom($discussionId) {
+        
     }
 
     /**
@@ -504,6 +509,10 @@ class Discussion extends AppModel {
             $data = $this->Reply->find('first', $params);
         }
 
+        /* Check if the discussion/reply exists */
+        if (!$data) {
+            return false;
+        }
         /* Ensuring no self vote */
         if ($data[$type]['user_id'] != $userId) {
             /* Ensuring no duplicate voting and valid voting */
@@ -585,6 +594,7 @@ class Discussion extends AppModel {
         } elseif ($type == 'Reply') {
             $data = $this->Reply->find('first', $params);
         }
+        $data['Gamificationvote'] = $this->convertGamificationVoteArray($data['Gamificationvote']);
 
         return $data;
     }

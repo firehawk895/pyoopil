@@ -9,21 +9,18 @@ App::uses('AppController', 'Controller');
 class LibrariesController extends AppController {
 
     public function index($classroomId) {
-//        $options['conditions'] = array('classroom_id' => $classroomId);
-//        $options['contain'] = array('Topic');
-//        $topicDump = $this->Library->find('all', $options);
-//        $topics = hash::extract($topicDump, '{n}.Topic.{n}.name');
 
         $libraryId = $this->Library->getLibraryId($classroomId);
         $topics = $this->Library->Topic->find('list', array(
             'library_id' => $libraryId
         ));
 
+        $data = $this->Library->getPaginatedTopics($libraryId, 1);
+        $data = $this->Library->parseVideoLinks($data);
+        $data = $this->Library->parsePyoopilfiles($data);
+
         $this->set('topics', $topics);
-//        $this->set(compact('topics'));
-//        $this->log($topics);
-//        $data = $this->Library->getPaginatedTopics($this->Library->getLibraryId($classroomId));
-//        $this->set('data', json_encode($topics));
+        $this->set('data', json_encode($data));
     }
 
     public function getTopics($classroomId) {
@@ -33,13 +30,13 @@ class LibrariesController extends AppController {
         $status = false;
         $message = "";
 
-        if (!isset($this->params['url']['page'])) {
+        if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
         }
         $libraryId = $this->Library->getLibraryId($classroomId);
         $data = $this->Library->getPaginatedTopics($libraryId, $page);
         $data = $this->Library->parseVideoLinks($data);
-//            $data = $this->Library->parsePyoopilfiles($data);
+        $data = $this->Library->parsePyoopilfiles($data);
         $status = true;
 
         $this->set(compact('status', 'message', 'data'));
