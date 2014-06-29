@@ -206,8 +206,9 @@ class Discussion extends AppModel {
     }
 
     /**
-     * Remove Gamification information where loggedIn user is not the owner of 
-     * Discussion/Reply and he hasn't voted
+     * show gamification vote info only to owners or people who have voted.
+     * show poll vote info only to owners or people who have voted.
+     * mark folded Discussions of $userId
      * Keep FoldedDiscussion key when not null
      * @param $data (all discussions)
      * @param $userId (loggedIn user's id)
@@ -223,18 +224,6 @@ class Discussion extends AppModel {
             $this->log($data[$i]['Discussion']['id']);
 
             $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
-//            if ((!$isOwner && !$hasVoted) || !$isOwner) {
-//                unset($data[$i]['Discussion']['real_praise']);
-////            unset($data[$i]['Discussion']['display_praise']);
-//                unset($data[$i]['Discussion']['cu']);
-//                unset($data[$i]['Discussion']['in']);
-//                unset($data[$i]['Discussion']['co']);
-//                unset($data[$i]['Discussion']['en']);
-//                unset($data[$i]['Discussion']['ed']);
-//                $data[$i]['Discussion']['showGamification'] = false;
-//            } else {
-//                $data[$i]['Discussion']['showGamification'] = true;
-//            }
             if ($hasVoted || $isOwner) {
                 $data[$i]['Discussion']['showGamification'] = true;
             } else {
@@ -248,7 +237,20 @@ class Discussion extends AppModel {
                 $data[$i]['Discussion']['showGamification'] = false;
             }
 
-
+            /* Decide to show votes of a poll */
+            if ($data[$i]['Discussion']['type'] == 'poll') {
+                $data[$i]['Pollchoice']['showPollVote'] = false;
+                if ($isOwner) {
+                    $data[$i]['Pollchoice']['showPollVote'] = true;
+                } else {
+                    for ($k = 0; $k < count($data[$i]['Discussion']['Pollchoice']); $k++) {
+                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Discussion']['Pollchoice'][$k]['id'], $userId)) {
+                            $data[$i]['Pollchoice']['showPollVote'] = true;
+                            break;
+                        }
+                    }
+                }
+            }
             /* Remove Key if not folded by current user */
             if ($data[$i]['Foldeddiscussion'] == NULL) {
                 $data[$i]['Discussion']['isFolded'] = false;
@@ -261,7 +263,10 @@ class Discussion extends AppModel {
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
                 $hasVoted = ($this->hasVoted('Reply', $data[$i]['Reply'][$j]['id'], $userId));
                 $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
-                if ((!$isOwner && !$hasVoted) || !$isOwner) {
+
+                if ($isOwner || $hasVoted) {
+                    $data[$i]['Reply'][$j]['showGamification'] = true;
+                } else {
                     unset($data[$i]['Reply'][$j]['real_praise']);
 //                unset($data[$i]['Reply'][$j]['display_praise']);
                     unset($data[$i]['Reply'][$j]['cu']);
@@ -270,12 +275,9 @@ class Discussion extends AppModel {
                     unset($data[$i]['Reply'][$j]['en']);
                     unset($data[$i]['Reply'][$j]['ed']);
                     $data[$i]['Reply'][$j]['showGamification'] = false;
-                } else {
-                    $data[$i]['Reply'][$j]['showGamification'] = true;
                 }
             }
         }
-
         return $data;
     }
 
@@ -590,7 +592,7 @@ class Discussion extends AppModel {
     }
 
     /**
-     * User votes on a poll type discussion
+     * User votes on a pollChoice for a poll type Discussion
      * @param type $userId Voter's user ID
      * @param type $discussionid discussion_id (pk) of the poll type discussion
      * @param type $pollChoiceId pollchoice_id of the choice on poll voted for
@@ -602,7 +604,12 @@ class Discussion extends AppModel {
             'pollchoice_id' => $pollChoiceId
         );
 
-        //TODO : check if its a valid poll choice
+        //check if its a valid poll choice
+        if (!$this->Pollchoice->findById($pollChoiceId)) {
+            return false;
+        }
+
+        //checks if already voted
         if (!$this->Pollchoice->Pollvote->hasAny($conditions)) {
             $this->Pollchoice->id = $pollChoiceId;
             $newVotes = $this->Pollchoice->field('votes') + 1;

@@ -18,7 +18,7 @@ $this->end();
         ));
         ?>
         <?php
-        echo $this->Form->hidden('classroom_id', array('value' => $classroom_id));
+//        echo $this->Form->hidden('classroom_id', array('value' => $classroomId));
         echo $this->Form->input('subject', array(
             'class' => 'add-topic',
             'type' => 'text',
@@ -60,9 +60,16 @@ $this->end();
                 <?php
                 echo $this->Form->end();
 
-                $route = $this->Html->url(array('controller' => 'announcements', 'action' => 'add'));
-
-$script = <<<JS
+//                $test = Router::url(array(
+//                    'controller' => 'Announcements',
+//                    'action' => 'add',
+//                    'pass' 
+//                ));
+                $url = '/Classrooms/' . $classroomId . '/Announcements/add';
+                $route = Router::url($url);
+//                $route = $_SERVER['REQUEST_URI'] . '/add';
+//                echo $route;
+                $script = <<<JS
 
     function progressHandlingFunction(e){
         if(e.lengthComputable){
@@ -106,7 +113,7 @@ $script = <<<JS
     });
 
 JS;
-                    $this->Js->buffer($script);
+                $this->Js->buffer($script);
                 ?>
                 <progress value="0" max="100"></progress>
             </div>

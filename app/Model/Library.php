@@ -11,6 +11,8 @@ App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
  */
 class Library extends AppModel {
 
+    const PAGINATION_LIMIT = 15;
+
     /**
      * Notes:
      * On addition of files, getSize() and add to fileSize db field.
@@ -105,25 +107,55 @@ class Library extends AppModel {
     }
 
     /**
-     * 
-     * @param int $classroomId
-     * @return mixed topics all assorted library data
-     */
-    public function index($classroomId) {
-        
-    }
-
-    /**
      * Update the topic
-     * @param int $libraryId
-     * @param int $topicId
-     * @param String $topicText
+     * @param $topicId
+     * @param $topicText
+     * @return bool
      */
-    public function editTopic($libraryId, $topicId, $topicText) {
-        
+    public function editTopic($topicId, $topicText) {
+
+        $data = array(
+            'name' => $topicText
+        );
+
+        $conditions = array(
+            'Topic.id' => $topicId
+        );
+
+        return $this->Topic->updateAll($data, $conditions);
     }
 
-    function getTopics($libraryId){
+    public function getLibraryId($classroomId) {
+
+        $params['conditions'] = array(
+            'classroom_id' => $classroomId
+        );
+
+        $params['recursive'] = -1;
+
+        $data = $this->find('first', $params);
+
+        return $data['Library']['id'];
+    }
+
+    public function deleteTopic($topicId) {
+        return $this->Topic->delete($topicId);
+    }
+
+    public function createTopic($libraryId, $topicText) {
+        $data = array(
+            'Library' => array(
+                'id' => $libraryId
+            ),
+            'Topic' => array(
+                'name' => $topicText
+            )
+        );
+    }
+
+    public function getPaginatedTopics($libraryId, $page = 1) {
+
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
 
         $params['conditions'] = array(
             'library_id' => $libraryId,
@@ -138,7 +170,49 @@ class Library extends AppModel {
             )
         );
 
-        return $topics = $this->Topic->find('all',$params);
+        $params['limit'] = self::PAGINATION_LIMIT;
+        $params['offset'] = $offset;
+
+        return $topics = $this->Topic->find('all', $params);
+    }
+
+    public function deleteItem($type, $id) {
+
+        if ($type == 'File') {
+            return $this->Topic->Pyoopilfile->delete($id);
+        } elseif ($type == 'Link') {
+            return $this->Topic->Link->delete($id);
+        }
+    }
+
+    public function parseVideoLinks($data) {
+        $pattern = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
+        for ($i = 0; $i < count($data); $i++) {
+            $data[$i]['Video'] = array();
+            for ($j = 0; $j < count($data[$i]['Link']); $j++) {
+                $linkText = $data[$i]['Link'][$j]['linktext'];
+                if (preg_match($pattern, $linkText)) {
+                    $youtubeLink = array(
+                        'id' => $data[$i]['Link'][$j]['id'],
+                        'topic_id' => $data[$i]['Link'][$j]['topic_id'],
+                        'linktext' => $data[$i]['Link'][$j]['linktext'],
+                        'created' => $data[$i]['Link'][$j]['created']
+                    );
+                    array_push($data[$i]['Video'], $youtubeLink);
+                    unset($data[$i]['Link'][$j]);
+                }
+            }
+            $data[$i]['Link'] = array_values($data[$i]['Link']);
+            $data[$i]['Video'] = array_values($data[$i]['Video']);
+        }
+        return $data;
+    }
+
+    public function parsePyoopilfiles($data) {
+        $this->log($data);
+        for ($i = 0; $i < count($data); $i++) {
+            $this->log($data[$i]);
+        }
     }
 
 }

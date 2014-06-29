@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 /**
  * Pyoopilfile Model
@@ -84,6 +85,8 @@ class Pyoopilfile extends AppModel {
         'Uploader.Attachment' => array(
             'file_path' => array(
                 'overwrite' => true,
+//                'tempDir' => 'tmp',
+//                'uploadDir' => 'uploads',
                 'transport' => array(
                     'class' => AttachmentBehavior::S3,
                     'region' => Aws\Common\Enum\Region::SINGAPORE,
@@ -99,6 +102,18 @@ class Pyoopilfile extends AppModel {
                     'size' => 'filesize',
                     'name' => 'filename'
 //                  'exif.model' => 'camera'
+                ),
+                'transforms' => array(
+                    'thumbnail_path' => array(
+                        'class' => 'resize',
+//                        'append' => '-chota',
+//                        'height' => 200,
+                        'width' => 200,
+//                        'height' => 400,
+                        'aspect' => true,
+                        'modes' => 'width',
+                        'expand' => 'false'
+                    )
                 )
             )
         ),
@@ -111,5 +126,33 @@ class Pyoopilfile extends AppModel {
 //            )
 //        )
     );
+
+    public function beforeUpload($options) {
+//        debug($options);
+//        debug($this->data);
+//        die();
+        if ($this->data['Pyoopilfile']['file_path']['type'] == 'image/jpeg') {
+            $this->log("transformation detected");
+//            debug($options);
+//            $options['transforms'] = array(
+//                'thumbnail_path' => array(
+//                    'class' => 'resize',
+////                        'append' => '-chota',
+////                        'height' => 200,
+//                    'width' => 200,
+////                        'height' => 400,
+//                    'aspect' => true,
+//                    'mode' => 'width',
+//                    'expand' => 'false'
+//                )
+//            );
+        } else {
+            $this->log("Removing transformation");
+            unset($options['transforms']);
+            //no transformation
+//            unset($options['t'])
+        }
+        return $options;
+    }
 
 }
