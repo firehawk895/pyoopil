@@ -209,10 +209,63 @@ class Library extends AppModel {
     }
 
     public function parsePyoopilfiles($data) {
-        $this->log($data);
-        for ($i = 0; $i < count($data); $i++) {
-            $this->log($data[$i]);
+
+        /* MIME types supported
+         * images: image/jpeg, image/png, image/gif, image/tiff, image/tiff-fx, image/bmp, image/x-bmp
+         * documents: application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/msword, text/plain, application/pdf, application/x-pdf, application/x-bzpdf, application/x-gzpdf
+         * presentations: application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation
+        */
+
+
+        for($i = 0; $i < count($data); $i++){
+            $data[$i]['Documents'] = array();
+            $data[$i]['Pictures'] = array();
+            $data[$i]['Presentations'] = array();
+
+            for($j = 0; $j < count($data[$i]['Pyoopilfile']); $j++){
+                $mimeType = $data[$i]['Pyoopilfile'][$j]['mime_type'];
+                $file = array(
+                    'id' => $data[$i]['Pyoopilfile'][$j]['id'],
+                    'topic_id' => $data[$i]['Pyoopilfile'][$j]['topic_id'],
+                    'file_path' => $data[$i]['Pyoopilfile'][$j]['file_path'],
+                    'filename' => $data[$i]['Pyoopilfile'][$j]['filename'],
+                    'filesize' => $data[$i]['Pyoopilfile'][$j]['filesize'],
+                    'mime_type' => $data[$i]['Pyoopilfile'][$j]['mime_type'],
+                    'thumbnail_path' => $data[$i]['Pyoopilfile'][$j]['thumbnail_path'],
+                    'created' => $data[$i]['Pyoopilfile'][$j]['created']
+                );
+
+                switch($mimeType){
+                    case 'image/jpeg':
+                    case 'image/png':
+                    case 'image/gif':
+                    case 'image/tiff':
+                    case 'image/tiff-fx':
+                    case 'image/bmp':
+                    case 'image/x-bmp':
+                        array_push($data[$i]['Pictures'],$file);
+                        break;
+                    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                    case 'application/vnd.ms-excel':
+                    case 'application/msword':
+                    case 'text/plain':
+                    case 'application/pdf':
+                    case 'application/x-pdf':
+                    case 'application/x-bzpdf':
+                    case 'application/x-gzpdf':
+                        array_push($data[$i]['Documents'],$file);
+                        break;
+                    case 'application/vnd.ms-powerpoint':
+                    case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                        array_push($data[$i]['Presentations'],$file);
+                        break;
+                }
+            }
+            unset($data[$i]['Pyoopilfile']);
         }
+
+        return $data;
     }
 
 }
