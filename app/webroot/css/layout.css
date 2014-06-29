@@ -270,4 +270,8 @@ Ram's Styles
 
 #classrooms{ display: inline;}
 
-.disc-list > .replies > li:last-child{ background: none };
+.disc-list > .replies > li:last-child{ background: none; }
+
+.announcement-outer > .tinyscrollbar{ width: 710px;}
+
+.announcement-outer .tinyscrollbar .viewport{ height: 500px;}

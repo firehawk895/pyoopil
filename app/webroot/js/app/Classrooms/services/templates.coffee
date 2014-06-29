@@ -516,6 +516,24 @@ App.classrooms = App.classrooms or {}
 												{{#displayGamification Gamificationvote}}
 												{{/displayGamification}}
 											</div>',
+				'announcementTmpl' : '<div class="listbox">
+							              <div class="imgbox">
+							                <a href="javascript:void(0)">
+							                  <img src="images/follow1.jpg">
+							                </a>
+							              </div>
+							              <div class="userinfo">
+							                <h4>Announcement subject line 
+							                <span>
+							                  <a href="profile-view.htm">by Abhimanyu Singh</a>
+							                </span></h4>
+							                <div class="datetime clearfix"><span class="attach-icon"></span>Oct 1, 2013 at 7:45am</div>
+							              </div>
+							              <p></p>
+							              <p class="cl">
+							              <a class="dlfile" href="javascript:void(0)">bill1.pptx.42kb</a> 
+							              <a class="down-icon" href="javascript:void(0)"></a></p>
+						              </div>',
 				'default' : '<p>No template Available'
 			}
 		

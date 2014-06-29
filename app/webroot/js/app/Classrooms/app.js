@@ -10,11 +10,23 @@
         case 'Classrooms':
           new App.classrooms.landing('#classrooms');
           break;
+        case 'Classrooms#':
+          new App.classrooms.landing('#classrooms');
+          break;
         case 'index':
           new App.classrooms.landing('#classrooms');
           break;
         case 'Discussions':
-          new App.classrooms.discussion.init('#discussions');
+          App.classrooms.discussion.init('#discussions');
+          break;
+        case 'Discussions#':
+          App.classrooms.discussion.init('#discussions');
+          break;
+        case 'Announcements':
+          App.classrooms.announcement.init('#announcements');
+          break;
+        case 'Announcements#':
+          App.classrooms.announcement.init('#announcements');
           break;
         default:
           new App.classrooms.landing('#classrooms');

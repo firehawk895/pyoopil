@@ -6,7 +6,7 @@ echo $this->element('classrooms/inside-classroom-subnav', array(
 ));
 $this->end();
 ?>
-<div class="content-wrapper">
+<div class="content-wrapper" id="announcements">
     <!--content top-->
     <div class="top-div announcement">
         <span class="txt-count">(
@@ -65,7 +65,7 @@ $this->end();
 //                    'action' => 'add',
 //                    'pass' 
 //                ));
-                $url = '/Classrooms/' . $classroomId . '/Announcements/add';
+                $url = '/Classrooms/' . $classroomId . '/Announcements/add.json';
                 $route = Router::url($url);
 //                $route = $_SERVER['REQUEST_URI'] . '/add';
 //                echo $route;
@@ -119,4 +119,29 @@ JS;
             </div>
         </div>
     </div>
+    <div class="announcement-outer">
+        <div class="tinyscrollbar">
+            <div class="viewport">
+                <div class="overview">
+                    <div class="middivouter announcements" >
+            
+                    </div>
+                </div>
+                <div class="scrollbar">
+                    <div class="track">
+                        <div class="thumb">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        var App = window.App || {};
+            App.classrooms = App.classrooms || {};
+            App.classrooms.announcements = App.classrooms.announcements || {};
+            App.classrooms.announcements.data = <?php echo $data ?>;
+
+    </script> 
 </div>
