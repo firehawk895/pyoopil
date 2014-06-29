@@ -44,9 +44,6 @@ Router::connect(
     'id' => '[0-9]+'
         )
 );
-Router::connect(
-        '/Classrooms/:controller/:action', array(), array()
-);
 
 //--------------------------------------------------------------------------------------------------------------
 Router::connect('/Announcements/add', array('controller' => 'announcements', 'action' => 'add'));
@@ -104,5 +101,10 @@ Router::connect('/register/*', array('controller' => 'app_users', 'action' => 'a
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.
  */
+
+Router::connect(
+    '/Classrooms/:controller/:action', array(), array()
+);
+
 require CAKE . 'Config' . DS . 'routes.php';
 
