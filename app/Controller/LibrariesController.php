@@ -10,6 +10,21 @@ class LibrariesController extends AppController {
 
     public function index($classroomId) {
 
+        if ($this->request->is('post')) {
+            $savedData = $this->request->data;
+            if ($savedData['Topic']['id'] == "") {
+                unset($savedData['Topic']['id']);
+                $savedData['Library']['id'] = 13;
+            } else {
+                unset($savedData['Topic']['name']);
+            }
+            if (@$this->Library->Topic->saveAssociated($savedData)) {
+                $status = true;
+            } else {
+                $status = false;
+            }
+        }
+
         $libraryId = $this->Library->getLibraryId($classroomId);
         $topics = $this->Library->Topic->find('list', array(
             'library_id' => $libraryId
@@ -20,7 +35,7 @@ class LibrariesController extends AppController {
         $data = $this->Library->parsePyoopilfiles($data);
 
         $this->set('topics', $topics);
-        $this->set('classroomId',$classroomId);
+        $this->set('classroomId', $classroomId);
         $this->set('data', json_encode($data));
     }
 
@@ -132,7 +147,7 @@ class LibrariesController extends AppController {
             $data = array();
         } else {
             $status = false;
-            $message = "Saving links/files for the topic faield";
+            $message = "Saving links/files for the topic failed";
             $data = array();
         }
 
