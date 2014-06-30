@@ -14,8 +14,19 @@ $this->end();
 <section class="pagecontent clearfix">
     <div class="content-wrapper">
         <div class="topbuttons">
-            <a href="<?php echo Router::url(array('controller' => 'discussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow active">All</a>
-            <a href="<?php echo Router::url(array('controller' => 'foldeddiscussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow">Folded</a>
+            <a href="<?php echo Router::url(array('controller' => 'discussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow ">All</a>
+            <a href="<?php echo Router::url(array('controller' => 'foldeddiscussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow active">Folded</a>
+        </div>
+        <div id="discussions">
+        	
         </div>
     </div>
 </section>
+<script type="text/javascript">
+
+    var App = window.App || {};
+    App.classrooms = App.classrooms || {};
+    App.classrooms.discussions = App.classrooms.discussions || {};
+    App.classrooms.discussions.data = <?php echo $data ?>;
+
+</script> 

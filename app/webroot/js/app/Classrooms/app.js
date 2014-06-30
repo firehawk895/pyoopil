@@ -22,6 +22,18 @@
         case 'Discussions#':
           App.classrooms.discussion.init('#discussions');
           break;
+        case 'discussions':
+          App.classrooms.discussion.init('#discussions');
+          break;
+        case 'discussions#':
+          App.classrooms.discussion.init('#discussions');
+          break;
+        case 'foldeddiscussions':
+          App.classrooms.discussion.init('#discussions');
+          break;
+        case 'foldeddiscussions#':
+          App.classrooms.discussion.init('#discussions');
+          break;
         case 'Announcements':
           App.classrooms.announcement.init('#announcements');
           break;

@@ -178,6 +178,7 @@
 
         var App = window.App || {}
             App.rootPath = "<?php echo $this->webroot; ?>";
+            App.basePath = "<?php echo Router::fullBaseUrl(); ?>";
 
     </script>
     <?php

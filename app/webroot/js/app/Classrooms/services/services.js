@@ -10,7 +10,7 @@ App.classrooms = App.classrooms || {};
   Services = (function() {
     function Services() {
       this.isInitial = true;
-      this.baseUrl = '/PDD/pyoopil/Classrooms/';
+      this.baseUrl = window.location.pathname;
     }
 
     Services.prototype.getClassrooms = function() {

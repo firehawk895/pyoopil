@@ -42,8 +42,16 @@ App.classrooms = App.classrooms or {}
 
 			$('#fileupload').on('change', @handleFileUpload)
 			$("#DiscussionAddForm, #DiscussionAddFormPoll, #DiscussionAddFormNote").on('submit', @newDiscussion)
+
+			@$elem.on('click', '.sharePost', =>
+				@notifier.notify 'success', 'Discussion successfully Added to your Room !'
+			)
+
+			@$elem.on('click', '.deletePost', @deleteDiscussion)
 			
 			@$elem.on('submit', '.reply', @newReply)
+
+			@$elem.on('click', '.foldPost', @handleFold)
 
 			$(".disc-submit-btn").click(()->
 		        $("#DiscussionAddForm").submit()
@@ -102,6 +110,26 @@ App.classrooms = App.classrooms or {}
 
 			@$elem.on('click', '.discussion .view-more', @loadMoreReplies)
 
+		deleteDiscussion : (e) ->
+
+			$target = $(e.target)
+			$discussion = $target.closest('.discussion')
+			discussionId = $discussion.data('discussion-id')
+
+			promise = App.classrooms.discussionServices.deleteDiscussion(discussionId)
+
+			promise.then((data)->
+
+				if data.status is false
+					App.common.notifier.notify 'error', data.message
+					return
+				else
+					App.common.notifier.notify 'success', data.message
+					$discussion.remove()
+
+			)
+
+
 		handleFileUpload : (e) =>
 
 			@uploadedFiles = e.target.files
@@ -126,8 +154,6 @@ App.classrooms = App.classrooms or {}
 			ajax = App.classrooms.discussionServices.newDiscussion form
 
 			ajax.done((data)->
-
-				console.log data
 
 				form.reset()
 				$form.find('.cnl-btn').click()
@@ -193,6 +219,27 @@ App.classrooms = App.classrooms or {}
 					$document.trigger('Discussions.REPLIES', {"container" : $replies, "data" : data.data})
 				else
 					App.common.notifier.notify 'error', 'No More Replies'
+
+			)
+
+		handleFold : (e) ->
+
+			target = e.target
+			$target = $(target)
+			$discussion = $target.closest('.discussion')
+			discussionId = $discussion.data('discussion-id')
+
+			$target.toggleClass('folded-icon')
+
+			promise = App.classrooms.discussionServices.toggleFold(discussionId)
+
+			promise.then((data)->
+
+				if data.status is false
+					App.common.notifier.notify 'error', data.message
+					return
+				else
+					App.common.notifier.notify 'success', 'Discussion Fold State changed !'
 
 			)
 
