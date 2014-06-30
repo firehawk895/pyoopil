@@ -39,7 +39,10 @@ App.classrooms = App.classrooms || {};
 
     Library.prototype.setEventListeners = function() {
       $document.on('Libraries.UPDATE', this.views.renderLibraries);
-      return $document.on('Libraries.CREATE', this.views.newAnnouncement);
+      $document.on('Libraries.CREATE', this.views.newAnnouncement);
+      return $document.on('click', '#upload', function() {
+        return $('#TopicIndexForm').submit();
+      });
     };
 
     Library.prototype.newAnnouncement = function(e) {

@@ -36,6 +36,12 @@ App.classrooms = App.classrooms or {}
 			$document.on('Libraries.UPDATE', @views.renderLibraries)
 			$document.on('Libraries.CREATE', @views.newAnnouncement)
 
+			$document.on('click', '#upload', ()->
+
+				$('#TopicIndexForm').submit()
+
+			)
+
 		newAnnouncement : (e) ->
 
 			e.preventDefault()
