@@ -14,7 +14,7 @@ class LibrariesController extends AppController {
             $savedData = $this->request->data;
             if ($savedData['Topic']['id'] == "") {
                 unset($savedData['Topic']['id']);
-                $savedData['Library']['id'] = 13;
+                $savedData['Library']['id'] = $this->Library->getLibraryId($classroomId);
             } else {
                 unset($savedData['Topic']['name']);
             }
@@ -27,7 +27,9 @@ class LibrariesController extends AppController {
 
         $libraryId = $this->Library->getLibraryId($classroomId);
         $topics = $this->Library->Topic->find('list', array(
-            'library_id' => $libraryId
+            'conditions' => array(
+                'library_id' => $libraryId
+            )
         ));
 
         $data = $this->Library->getPaginatedTopics($libraryId, 1);
