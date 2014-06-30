@@ -1,3 +1,12 @@
+<?php
+$this->start('pagesubnav');
+echo $this->element('classrooms/inside-classroom-subnav', array(
+    'classroomId' => $classroomId,
+    'active' => 'Libraries'
+));
+$this->end();
+?>
+
 <div class="library-wrapper library" id="libraries">
     <div class="topbuttons">
         <a href="javascript:void(0)" class="follow" id="upload-dlink">Upload</a>
@@ -143,15 +152,7 @@
 
     </div>
     <div class="clear"></div>
-    <div id="library">
-        
+    <div class="attach-doc classlibrary stud-pnl">
+        <!-- fill topics here -->
     </div>
 </div>
-<script type="text/javascript">
-
-        var App = window.App || {};
-            App.classrooms = App.classrooms || {};
-            App.classrooms.libraries = App.classrooms.libraries || {};
-            App.classrooms.libraries.data = <?php echo $data ?>;
-
-    </script> 

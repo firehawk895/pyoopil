@@ -21,6 +21,16 @@ $addClass[$active] = array(
     <ul class="left-subnav clearfix">
         <li>
             <?php
+            echo $this->Html->link('Discussions', array(
+                    'controller' => 'Discussions',
+                    'action' => 'index',
+                    'id' => $classroomId
+                ), $addClass['Discussions']
+            );
+            ?>
+        </li>
+        <li>
+            <?php
             echo $this->Html->link('Announcements', array(
                 'controller' => 'Announcements',
                 'action' => 'index',
@@ -28,7 +38,16 @@ $addClass[$active] = array(
                     ), $addClass['Announcements']
             );
             ?>
-            <!--<a  href="classroom-discussion.htm" >Discussions</a>-->
+        </li>
+        <li>
+            <?php
+            echo $this->Html->link('Library', array(
+                    'controller' => 'Libraries',
+                    'action' => 'index',
+                    'id' => $classroomId
+                ), $addClass['Libraries']
+            );
+            ?>
         </li>
         <li>
             <div class="loader"><img src="<?php echo $this->webroot; ?>/images/loading/ajax-loader.gif" alt="loading">
