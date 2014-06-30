@@ -325,6 +325,8 @@ class Discussion extends AppModel {
                 /* Converting Gamification information to friendly form */
                 $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
             }
+
+            $data[$i]['Reply'] = $this->Reply->setMoreRepliesFlag($data[$i]['Reply'],1,$data[$i]['Discussion']['id']);
         }
         return $data;
     }
@@ -444,7 +446,7 @@ class Discussion extends AppModel {
 
     public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
 
-        $offset = self::PAGINATION_LIMIT * ($page - 1 );
+        $offset = self::MAX_REPLIES * ($page - 1 );
 
         $contain = array(
             'Gamificationvote' => array(
@@ -471,7 +473,6 @@ class Discussion extends AppModel {
             'order' => array(
                 'created' => 'desc'
             ),
-            'limit' => self::PAGINATION_LIMIT,
             'offset' => $offset,
             'limit' => self::MAX_REPLIES,
         );

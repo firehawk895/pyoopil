@@ -11,6 +11,8 @@ App::uses('AppModel', 'Model');
  */
 class Reply extends AppModel {
 
+    const MAX_REPLIES = 5;
+
     /**
      * belongsTo associations
      * @var array
@@ -107,5 +109,26 @@ class Reply extends AppModel {
 
         return $data;
     }
+
+    public function setMoreRepliesFlag($replies = array(), $page, $discussionId){
+
+        $params = array(
+            'conditions' => array(
+                'discussion_id' => $discussionId
+            )
+        );
+
+        $count = count($this->find('all',$params));
+        $left = $count - ($page * 5);
+
+        if($left>0){
+            array_push($replies, array('moreReplies' => true));
+        }else{
+            array_push($replies, array('moreReplies' => false));
+        }
+
+        return $replies;
+    }
+
 
 }
