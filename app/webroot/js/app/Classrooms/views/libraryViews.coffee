@@ -8,8 +8,6 @@ App.classrooms = App.classrooms or {}
 		constructor : (elem) ->
 
 			@$elem = elem.find('#library')
-
-			console.log @$elem
 			
 			@init()
 

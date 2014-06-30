@@ -14,7 +14,6 @@ App.classrooms = App.classrooms || {};
       this.renderLibraries = __bind(this.renderLibraries, this);
       this.init = __bind(this.init, this);
       this.$elem = elem.find('#library');
-      console.log(this.$elem);
       this.init();
     }
 

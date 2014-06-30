@@ -149,18 +149,17 @@
 
 	//Toggle for creating new topic	 
 	//Add a comment to this line
-	    $("#topic-dd") .change(function(){
-	        $( "select option:selected" ).each(function() {
-	            //check if create new topic is selected
-	            if(($(this).text()).localeCompare("Create New Topic") === 0) {
-	                //apppend a new form element input
-	                $("#enter-topic").show();
-	            } else {
-	                //remove the newly created form element
-	                $("#enter-topic").hide();
-	            }
-	        });
-	    }).trigger( "change" );
+	$("#enter-topic").show();
+	    $("#upload-dialog").on('change', '#topic-dd' ,function(){
+	    	var option = $("#topic-dd option:selected").text().localeCompare("Create new topic");
+	    	if( option == 0){
+                //apppend a new form element input
+                $("#enter-topic").show();
+            } else {
+                //remove the newly created form element
+                $("#enter-topic").hide();
+            }
+	    });
 
 	//test
 	$('.show-test').hide();

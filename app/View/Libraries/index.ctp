@@ -152,7 +152,15 @@ $this->end();
 
     </div>
     <div class="clear"></div>
-    <div class="attach-doc classlibrary stud-pnl">
+    <div id="library">
         <!-- fill topics here -->
     </div>
 </div>
+<script type="text/javascript">
+
+    var App = window.App || {};
+        App.classrooms = App.classrooms || {};
+        App.classrooms.libraries = App.classrooms.libraries || {};
+        App.classrooms.libraries.data = <?php echo $data ?>;
+
+</script> 
