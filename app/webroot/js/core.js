@@ -604,8 +604,8 @@
 	var count = 0;
 	$(".add-more").click(function(){
 		var count = $('.custom-upload').length;
-		if(count < 8) {
-			$(".add-upload").append('<div class="custom-upload" id="test'+count+'"><input type="file" name="files[]"><div class="file-upload"><span class="file-txt">Select file</span><input disabled="disabled" value="No File Chosen"></div><div class="size-txt">(Max. 00 mb)</div></div>');
+		if(count < 6) {
+			$(".add-upload").append('<div class="custom-upload" id="file'+count+'"><input type="file" name="data[Pyoopilfile]['+ count +'][file_path]"><div class="file-upload"><span class="file-txt">Select file</span><input disabled="disabled" value="No File Chosen"></div><div class="size-txt">(Max. 00 mb)</div></div>');
 			$('.custom-upload input[type=file]').change(function(){
     	$(this).next().find('input').val($(this).val());
 	});
@@ -660,7 +660,7 @@
 	$(".add-link").click(function(){
 		var count = $('.add-links').length;
 		if(count < 8) {
-			$(".upload-links").append('<div class="add-links"><input type="text" class="pop-input" placeholder="Upload links"></div>');
+			$(".upload-links").append('<div class="add-links"><input type="text" class="pop-input" placeholder="Upload links" name="data[Link]['+ count +'][linktext]"></div>');
 	        count++;
     	}
 	});

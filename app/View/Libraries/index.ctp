@@ -105,20 +105,8 @@ $this->end();
                                                     </div>
                                                     <div class="size-txt">(Max. 2 mb)</div>
                                                 </div>
-                                                <div class="custom-upload" id="test0">
-                                                    <input type="file" name="data[Pyoopilfile][1][file_path]">
-                                                    <div class="file-upload">
-                                                        <span class="file-txt">Select file</span>
-                                                        <input disabled="disabled" value="No File Chosen">
-                                                    </div>
-                                                    <div class="size-txt">(Max. 2 mb)</div>
-                                                </div>
                                             </div>
                                             <span class="add-more tooltip" title="Add File"></span>
-                                        </div>
-                                        <div class="error-txt">
-                                            <p>! File exceeded max. limit. </p>
-                                            <p>Select another file or reduce size and upload again</p>
                                         </div>
                                     </div>
                                     <div id="link1" class="tab-contt">
@@ -128,18 +116,12 @@ $this->end();
                                                 <input type="text" class="pop-input" placeholder="Upload links" name="data[Link][0][linktext]">
                                             </div>
                                         </div>
-                                        <div class="upload-links">
-                                            <div class="add-links">
-                                                <input type="text" class="pop-input" placeholder="Upload links" name="data[Link][1][linktext]">
-                                            </div>
-                                        </div>
                                         <span class="add-link tooltip" title="Add Link"></span>
                                     </div>
                                 </div>
                                 <div class="nav-btn">
                                     <input type="button" class="follow backto1" value="Oops !">
-                                    <input type="button" class="follow active" value="Save">
-                                    <?php echo $this->Form->submit(); ?>
+                                    <input type="button" class="follow active" value="Save" id="upload">
                                 </div>
                             </div>
                         </div>
