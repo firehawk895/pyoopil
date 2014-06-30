@@ -11,18 +11,18 @@ App.classrooms = App.classrooms || {};
   $document = $(document);
   Announcement = (function() {
     function Announcement() {
-      this.classroomsRendered = __bind(this.classroomsRendered, this);
+      this.announcementsRendered = __bind(this.announcementsRendered, this);
     }
 
     Announcement.prototype.init = function(elem) {
       var $tinyscrollbar;
       this.$elem = $(elem);
       this.$createClassroomForm = $('#AnnouncementIndexForm');
-      this.$viewport = this.$elem.closest('.tinyscrollbar').find('.viewport');
+      this.$viewport = this.$elem.find('.tinyscrollbar').find('.viewport');
       this.currentPage = 1;
       this.hasScrollReached = false;
       this.services = App.classrooms.announcementServices;
-      this.views = new App.classrooms.announcementViews(this.$elem.find('.announcements'));
+      this.views = new App.classrooms.announcementViews(this.$elem);
       this.notifier = App.common.notifier;
       $tinyscrollbar = $('.tinyscrollbar');
       $tinyscrollbar.tinyscrollbar({
@@ -49,8 +49,8 @@ App.classrooms = App.classrooms || {};
 
     Announcement.prototype.setEventListeners = function() {
       $document.on('Announcements.UPDATE', this.views.renderAnnouncements);
-      $document.on('Announcements.CREATE', this.views.newClassroom);
-      $document.on('Announcements.RENDER', this.classroomsRendered);
+      $document.on('Announcements.CREATE', this.views.newAnnouncement);
+      $document.on('Announcements.RENDER', this.announcementsRendered);
       this.$createClassroomForm.on('submit', this.newClassroomSubmit);
       return this.$viewport.on('endOfScroll', (function(_this) {
         return function() {
@@ -58,7 +58,7 @@ App.classrooms = App.classrooms || {};
           if (_this.hasScrollReached === false) {
             _this.hasScrollReached = true;
             _this.currentPage += 1;
-            ajax = _this.services.getClassroomsByPage(_this.currentPage);
+            ajax = _this.services.getAnnouncementsByPage(_this.currentPage);
             return ajax.done(function(data) {
               if (data.data && data.data.length > 0) {
                 $document.trigger('Announcements.UPDATE', [[data.data]]);
@@ -89,7 +89,7 @@ App.classrooms = App.classrooms || {};
       });
     };
 
-    Announcement.prototype.classroomsRendered = function(e, isInitial) {
+    Announcement.prototype.announcementsRendered = function(e, isInitial) {
       if (isInitial === true) {
         return this.$tinyscrollbar.update('relative');
       } else {

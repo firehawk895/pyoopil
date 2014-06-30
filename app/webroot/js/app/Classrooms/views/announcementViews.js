@@ -13,7 +13,7 @@ App.classrooms = App.classrooms || {};
       this.newAnnouncement = __bind(this.newAnnouncement, this);
       this.renderAnnouncements = __bind(this.renderAnnouncements, this);
       this.init = __bind(this.init, this);
-      this.$elem = elem;
+      this.$elem = elem.find('.middivouter');
       this.init();
     }
 
@@ -50,14 +50,9 @@ App.classrooms = App.classrooms || {};
     };
 
     AnnouncementViews.prototype.newAnnouncement = function(e, announcement) {
-      var quizDialog;
-      this.$createForm.dialog("close");
-      quizDialog = this.quizDialogTemplate(classroom.data);
-      this.$quizDialog.html(quizDialog);
-      $('.ui-widget-overlay').addClass('custom-overlay');
-      this.$quizDialog.dialog("open");
-      this.$elem.prepend(this.renderClassroom(classroom));
-      return this.$elem.trigger('Classrooms.RENDER', false);
+      announcement = JSON.parse(announcement);
+      this.$elem.prepend(this.renderAnnouncement(announcement));
+      return this.$elem.trigger('Announcements.RENDER', false);
     };
 
     return AnnouncementViews;

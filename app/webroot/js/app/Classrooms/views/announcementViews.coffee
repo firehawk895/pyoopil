@@ -7,7 +7,7 @@ App.classrooms = App.classrooms or {}
 
 		constructor : (elem) ->
 
-			@$elem = elem
+			@$elem = elem.find('.middivouter')
 			
 			@init()
 
@@ -31,18 +31,15 @@ App.classrooms = App.classrooms or {}
 			else
 				announcementHtml = @announcementTemplate announcement
 			
+
 			announcementHtml
 
 		newAnnouncement : (e, announcement)=>
 
-			@$createForm.dialog("close");
-			quizDialog = @quizDialogTemplate classroom.data
-			@$quizDialog.html(quizDialog)
-			$('.ui-widget-overlay').addClass('custom-overlay')
-			@$quizDialog.dialog("open")
+			announcement = JSON.parse(announcement)
 
-			@$elem.prepend @renderClassroom classroom
-			@$elem.trigger 'Classrooms.RENDER', false
+			@$elem.prepend(@renderAnnouncement(announcement))
+			@$elem.trigger 'Announcements.RENDER', false
 	
 
 	App.classrooms.announcementViews = AnnouncementViews

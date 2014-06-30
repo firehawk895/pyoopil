@@ -8,7 +8,7 @@ App.classrooms = App.classrooms or {}
 		constructor : ->
 
 			@isInitial = true
-			@baseUrl = '/PDD/pyoopil/Classrooms/'
+			@baseUrl = window.location.pathname
 
 		getAnnouncements : ->
 
@@ -43,17 +43,12 @@ App.classrooms = App.classrooms or {}
 
 		newClassroom : (data) ->
 
-			@postData @baseUrl + 'add.json' , data
-
-
-		newJoinClassroom : (data) ->
-			
-			@postData @baseUrl + 'join.json' , data			
+			@postData @baseUrl + '/add.json' , data		
 
 		
-		getClassroomsByPage : (page)->
+		getAnnouncementsByPage : (page)->
 
-			@getData @baseUrl + 'getclassrooms.json?page=' + page
+			@getData @baseUrl + '/getannouncements.json?page=' + page
 
 
 		isValid : (data) ->

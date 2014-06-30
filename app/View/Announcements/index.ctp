@@ -83,8 +83,6 @@ $this->end();
          var formData = new FormData(this);
          var formUrl = '$route';
 
-        console.log(formData);
-
         $.ajax({
             url: formUrl,
             type: 'POST',
@@ -100,10 +98,12 @@ $this->end();
             contentType: false,
             cache: false,
             processData: false,
-            success: function(){
+            success: function(data){
                 $("#create-announce").val('');
                 $("#AnnouncementBody").val('');
                 $('progress').attr({value:0});
+                App.common.notifier.notify('success', 'New Announcement Created')
+                $(document).trigger('Announcements.CREATE', data)
             }
         });
     });
@@ -119,18 +119,16 @@ JS;
             </div>
         </div>
     </div>
-    <div class="announcement-outer">
-        <div class="tinyscrollbar">
-            <div class="viewport">
-                <div class="overview">
-                    <div class="middivouter announcements" >
-            
-                    </div>
+    <div class="announcement-outer tinyscrollbar">
+        <div class="viewport">
+            <div class="overview">
+                <div class="middivouter">
+                    
                 </div>
-                <div class="scrollbar">
-                    <div class="track">
-                        <div class="thumb">
-                        </div>
+            </div>
+            <div class="scrollbar">
+                <div class="track">
+                    <div class="thumb">
                     </div>
                 </div>
             </div>

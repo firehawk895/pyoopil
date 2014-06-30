@@ -10,7 +10,7 @@ App.classrooms = App.classrooms || {};
   AnnouncementServices = (function() {
     function AnnouncementServices() {
       this.isInitial = true;
-      this.baseUrl = '/PDD/pyoopil/Classrooms/';
+      this.baseUrl = window.location.pathname;
     }
 
     AnnouncementServices.prototype.getAnnouncements = function() {
@@ -42,15 +42,11 @@ App.classrooms = App.classrooms || {};
     };
 
     AnnouncementServices.prototype.newClassroom = function(data) {
-      return this.postData(this.baseUrl + 'add.json', data);
+      return this.postData(this.baseUrl + '/add.json', data);
     };
 
-    AnnouncementServices.prototype.newJoinClassroom = function(data) {
-      return this.postData(this.baseUrl + 'join.json', data);
-    };
-
-    AnnouncementServices.prototype.getClassroomsByPage = function(page) {
-      return this.getData(this.baseUrl + 'getclassrooms.json?page=' + page);
+    AnnouncementServices.prototype.getAnnouncementsByPage = function(page) {
+      return this.getData(this.baseUrl + '/getannouncements.json?page=' + page);
     };
 
     AnnouncementServices.prototype.isValid = function(data) {

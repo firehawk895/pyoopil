@@ -11,12 +11,12 @@ App.classrooms = App.classrooms or {}
 			@$elem = $(elem)
 
 			@$createClassroomForm = $('#AnnouncementIndexForm')
-			@$viewport = @$elem.closest('.tinyscrollbar').find('.viewport')
+			@$viewport = @$elem.find('.tinyscrollbar').find('.viewport')
 			@currentPage = 1
 			@hasScrollReached = false
 
 			@services = App.classrooms.announcementServices
-			@views = new App.classrooms.announcementViews(@$elem.find('.announcements'))
+			@views = new App.classrooms.announcementViews(@$elem)
 			
 			@notifier = App.common.notifier
 
@@ -44,19 +44,21 @@ App.classrooms = App.classrooms or {}
 		setEventListeners : ->
 
 			$document.on('Announcements.UPDATE', @views.renderAnnouncements)
-			$document.on('Announcements.CREATE', @views.newClassroom)
-			$document.on('Announcements.RENDER', @classroomsRendered)
+			$document.on('Announcements.CREATE', @views.newAnnouncement)
+			$document.on('Announcements.RENDER', @announcementsRendered)
 
 			@$createClassroomForm.on('submit', @newClassroomSubmit)
 
 			@$viewport.on('endOfScroll', =>
+
 				if @hasScrollReached is false
 					@hasScrollReached = true
 					@currentPage += 1
 
-					ajax = @services.getClassroomsByPage @currentPage
+					ajax = @services.getAnnouncementsByPage @currentPage
 
 					ajax.done((data) =>
+
 						if data.data and data.data.length > 0
 							$document.trigger('Announcements.UPDATE', [[data.data]])
 						else
@@ -84,7 +86,7 @@ App.classrooms = App.classrooms or {}
 					App.common.notifier.notify 'error', 'New Classroom Creation failed'
 			)
 
-		classroomsRendered : (e, isInitial) =>
+		announcementsRendered : (e, isInitial) =>
 
 			if isInitial is true
 				@$tinyscrollbar.update('relative')

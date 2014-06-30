@@ -272,6 +272,9 @@ Ram's Styles
 
 .disc-list > .replies > li:last-child{ background: none; }
 
-.announcement-outer > .tinyscrollbar{ width: 710px;}
+.announcement-outer.tinyscrollbar{ width: 710px;}
 
-.announcement-outer .tinyscrollbar .viewport{ height: 500px;}
+.announcement-outer.tinyscrollbar .viewport{ height: 500px;}
+
+.announcement-outer.tinyscrollbar .viewport .middivouter .listbox{width: 98%;}
+.announcement-outer.tinyscrollbar .viewport .middivouter .listbox .userinfo{width: 564px;}

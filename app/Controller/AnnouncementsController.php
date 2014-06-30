@@ -75,8 +75,9 @@ class AnnouncementsController extends AppController {
             $status = false;
         }
         $this->set('webroot', $this->webroot);
+        $this->set('data', $data);
         $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot'));
+        $this->set('_serialize', array('status', 'message', 'webroot', 'data'));
     }
 
 //    public function add_($classroomId) {

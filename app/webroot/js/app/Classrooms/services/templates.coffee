@@ -519,20 +519,23 @@ App.classrooms = App.classrooms or {}
 				'announcementTmpl' : '<div class="listbox">
 							              <div class="imgbox">
 							                <a href="javascript:void(0)">
-							                  <img src="images/follow1.jpg">
+							                  <img src="http://localhost/PDD/pyoopil/images/follow1.jpg">
 							                </a>
 							              </div>
 							              <div class="userinfo">
-							                <h4>Announcement subject line 
+							                <h4>{{ Announcement.subject }}
 							                <span>
-							                  <a href="profile-view.htm">by Abhimanyu Singh</a>
+							                  <a href="profile-view.htm">by {{AppUser.fname}} {{AppUser.lname}}</a>
 							                </span></h4>
-							                <div class="datetime clearfix"><span class="attach-icon"></span>Oct 1, 2013 at 7:45am</div>
+							                <div class="datetime clearfix"><span class="attach-icon"></span>{{ Announcement.created }}</div>
 							              </div>
-							              <p></p>
+							              <p>{{ Announcement.body }}</p>
+							              {{#if Announcement.file_path}}
 							              <p class="cl">
-							              <a class="dlfile" href="javascript:void(0)">bill1.pptx.42kb</a> 
-							              <a class="down-icon" href="javascript:void(0)"></a></p>
+								              <a class="dlfile" href="{{Announcement.file_path}}" target="_blank">{{Announcement.filename}}</a> 
+								              <a class="down-icon" href="javascript:void(0)"></a>
+							              </p>
+							              {{/if}}
 						              </div>',
 				'default' : '<p>No template Available'
 			}

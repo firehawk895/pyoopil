@@ -517,13 +517,15 @@
 	$('.tooltip').tooltipster();
 	
 	//Discussion tooltip
-	$(".point-icon").hover(function () {
+	$(".gamification").on('mouseover', '.point-icon', function () {
 		var $div = $(this).next('.enga-tooltip');
 		$(".enga-tooltip").not($div).hide();
 		$div.show();
-	 },function(){
-    	$(".enga-tooltip").hide();
-  });
+	 });
+
+	$(".gamification").on('mouseout', '.point-icon', function () {
+		$(".enga-tooltip").hide();
+	 });
 	 
 
 	//Top right section
