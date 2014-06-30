@@ -47,7 +47,14 @@ App.classrooms = App.classrooms || {};
       $document.on('Discussions.REPLIES', this.views.renderReplies);
       $('#fileupload').on('change', this.handleFileUpload);
       $("#DiscussionAddForm, #DiscussionAddFormPoll, #DiscussionAddFormNote").on('submit', this.newDiscussion);
+      this.$elem.on('click', '.sharePost', (function(_this) {
+        return function() {
+          return _this.notifier.notify('success', 'Discussion successfully Added to your Room !');
+        };
+      })(this));
+      this.$elem.on('click', '.deletePost', this.deleteDiscussion);
       this.$elem.on('submit', '.reply', this.newReply);
+      this.$elem.on('click', '.foldPost', this.handleFold);
       $(".disc-submit-btn").click(function() {
         return $("#DiscussionAddForm").submit();
       });
@@ -103,6 +110,22 @@ App.classrooms = App.classrooms || {};
       return this.$elem.on('click', '.discussion .view-more', this.loadMoreReplies);
     };
 
+    Discussion.prototype.deleteDiscussion = function(e) {
+      var $discussion, $target, discussionId, promise;
+      $target = $(e.target);
+      $discussion = $target.closest('.discussion');
+      discussionId = $discussion.data('discussion-id');
+      promise = App.classrooms.discussionServices.deleteDiscussion(discussionId);
+      return promise.then(function(data) {
+        if (data.status === false) {
+          App.common.notifier.notify('error', data.message);
+        } else {
+          App.common.notifier.notify('success', data.message);
+          return $discussion.remove();
+        }
+      });
+    };
+
     Discussion.prototype.handleFileUpload = function(e) {
       this.uploadedFiles = e.target.files;
       return $('.files').html(this.uploadedFiles[0].name);
@@ -122,7 +145,6 @@ App.classrooms = App.classrooms || {};
       }
       ajax = App.classrooms.discussionServices.newDiscussion(form);
       return ajax.done(function(data) {
-        console.log(data);
         form.reset();
         $form.find('.cnl-btn').click();
         if (data.status === false) {
@@ -191,6 +213,23 @@ App.classrooms = App.classrooms || {};
           });
         } else {
           return App.common.notifier.notify('error', 'No More Replies');
+        }
+      });
+    };
+
+    Discussion.prototype.handleFold = function(e) {
+      var $discussion, $target, discussionId, promise, target;
+      target = e.target;
+      $target = $(target);
+      $discussion = $target.closest('.discussion');
+      discussionId = $discussion.data('discussion-id');
+      $target.toggleClass('folded-icon');
+      promise = App.classrooms.discussionServices.toggleFold(discussionId);
+      return promise.then(function(data) {
+        if (data.status === false) {
+          App.common.notifier.notify('error', data.message);
+        } else {
+          return App.common.notifier.notify('success', 'Discussion Fold State changed !');
         }
       });
     };

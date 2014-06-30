@@ -56,7 +56,7 @@ $this->end();
                     <div class="disc-room f-left">
                         <div class="attachmentbox">
                             <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                                <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
+                                <span class="att-txt">Add files <span class="att-size">(Max 2 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
                             <div class="files" class="files"></div>

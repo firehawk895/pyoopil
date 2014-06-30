@@ -8,7 +8,7 @@ App.classrooms = App.classrooms or {}
 		constructor : ->
 
 			@isInitial = true
-			@baseUrl = '/PDD/pyoopil/Classrooms/'
+			@baseUrl = window.location.pathname
 
 		getClassrooms : ->
 

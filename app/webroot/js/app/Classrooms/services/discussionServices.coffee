@@ -5,7 +5,12 @@
 		constructor : ->
 
 			@isInitial = true
-			@baseUrl = window.location.pathname
+			path = window.location.pathname.split('/')
+			if _.last(path) is 'foldeddiscussions'
+				path[path.length - 1] = 'Discussions'
+				@baseUrl = path.join('/')
+			else
+				@baseUrl = window.location.pathname
 
 		getDiscussions : ->
 
@@ -46,6 +51,11 @@
 
 			@postData(url, formData)
 
+		deleteDiscussion : (id) ->
+
+			url = 'delete.json'
+
+			@postData(url, { "id" : id , "type" : "Discussion"} )
 
 		setGamification : (data)->
 
@@ -66,6 +76,12 @@
 			url = 'getreplies.json?page=' + data.page + "&discussion_id=" + data.discussion_id
 
 			@getData(url)
+
+		toggleFold : (id) ->
+
+			url = 'togglefold.json'
+
+			@postData(url, {"id" : id})
 
 		isValid : (data) ->
 

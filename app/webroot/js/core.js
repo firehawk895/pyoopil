@@ -423,18 +423,18 @@
 
 	
 	//fold interaction
-	$('a.fold-icon').click(function() {
-            $(this).toggleClass('folded-icon')
-     });
+	// $('a.fold-icon').click(function() {
+ //            $(this).toggleClass('folded-icon')
+ //     });
 	 
-	 $('a.folded-icon').click(function() {
-            $(this).addClass('fold-icon');
-			$(this).attr('title','Fold Discussion')
-			$(this).removeClass('folded-icon')
-			$('a.fold-icon').click(function() {
-            $(this).toggleClass('folded-icon')
-     });
-     });
+	 // $('a.folded-icon').click(function() {
+  //           $(this).addClass('fold-icon');
+		// 	$(this).attr('title','Fold Discussion')
+		// 	$(this).removeClass('folded-icon')
+		// 	$('a.fold-icon').click(function() {
+  //           $(this).toggleClass('folded-icon')
+  //    });
+  //    });
 	
 	//praise tooltip
 	$(".clk-tt").hide();

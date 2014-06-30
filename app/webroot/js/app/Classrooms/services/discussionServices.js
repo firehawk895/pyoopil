@@ -3,8 +3,15 @@
   var DiscussionServices;
   DiscussionServices = (function() {
     function DiscussionServices() {
+      var path;
       this.isInitial = true;
-      this.baseUrl = window.location.pathname;
+      path = window.location.pathname.split('/');
+      if (_.last(path) === 'foldeddiscussions') {
+        path[path.length - 1] = 'Discussions';
+        this.baseUrl = path.join('/');
+      } else {
+        this.baseUrl = window.location.pathname;
+      }
     }
 
     DiscussionServices.prototype.getDiscussions = function() {
@@ -42,6 +49,15 @@
       return this.postData(url, formData);
     };
 
+    DiscussionServices.prototype.deleteDiscussion = function(id) {
+      var url;
+      url = 'delete.json';
+      return this.postData(url, {
+        "id": id,
+        "type": "Discussion"
+      });
+    };
+
     DiscussionServices.prototype.setGamification = function(data) {
       var url;
       url = 'setGamificationVote.json';
@@ -59,6 +75,14 @@
       var url;
       url = 'getreplies.json?page=' + data.page + "&discussion_id=" + data.discussion_id;
       return this.getData(url);
+    };
+
+    DiscussionServices.prototype.toggleFold = function(id) {
+      var url;
+      url = 'togglefold.json';
+      return this.postData(url, {
+        "id": id
+      });
     };
 
     DiscussionServices.prototype.isValid = function(data) {
