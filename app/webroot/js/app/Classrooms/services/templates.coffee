@@ -50,9 +50,9 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-close.png"}}"></a>
-						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="{{image "disc-share.png"}}"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip" title="Delete"><img src="{{image "disc-close.png"}}"></a>
+						                  <a class="fold-icon tooltip" href="javascript:void(0)" title="Fold/Unfold"></a>
 						                </div>
 						                <div class="clear"></div>
 						                <p class="ttxt"> {{ Discussion.body }} </p>

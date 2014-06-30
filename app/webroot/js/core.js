@@ -134,7 +134,7 @@
 
 	//dropdown
 	$(".arr-dd").hide();
-	$(".dd-click").click(function () {
+	$("#discussions").on('click', '.dd-click' , function () {
 		var $div = $(this).next('.arr-dd');
 		$(".arr-dd").not($div).hide();
 		$div.toggle();
