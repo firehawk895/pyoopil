@@ -15,9 +15,13 @@ App.LeftNavScroll = App.LeftNavScroll or {}
 
 			if @isInitial is true
 
-				defer.resolve(App.classrooms.data)
+				defer.resolve(App.leftNavData)
 
 			return defer.promise()
+
+		isValid : (data) ->
+
+			return data? and data.length > 0
 	
 
 	App.LeftNavScroll.services = new Services()

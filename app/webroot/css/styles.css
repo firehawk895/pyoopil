@@ -1385,3 +1385,6 @@ svg { width:100%; }
 .tot-txt { font-size:12px; }
 .cat-name { font-size:18px; font-family: 'open_sanssemibold'; }
 .cat-num { bottom: -71px; color: #F67E02; float: right; font-family: 'open_sanssemibold'; font-size: 30px; overflow: hidden; position: relative; text-align: right; text-overflow: ellipsis; white-space: nowrap; width: 200px; }
+
+.library-wrapper .tinyscrollbar .viewport{height: 450px; margin-top: 40px;}
+.tile-lst li{margin-top: 0; margin-bottom: 20px;}

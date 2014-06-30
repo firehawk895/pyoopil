@@ -30,7 +30,7 @@ App.classrooms = App.classrooms || {};
       this.notifier = App.common.notifier;
       $tinyscrollbar = $('.tinyscrollbar');
       $tinyscrollbar.tinyscrollbar({
-        thumbSize: 9
+        thumbSize: 34
       });
       return this.$tinyscrollbar = $tinyscrollbar.data("plugin_tinyscrollbar");
     };

@@ -77,3 +77,9 @@ Handlebars.registerHelper('image', (image)->
   return imagePath + image
 
 )
+
+Handlebars.registerHelper('link', (link)->
+
+  return baseUrl + link
+
+)

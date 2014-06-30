@@ -33,6 +33,8 @@ App.LeftNavScroll = App.LeftNavScroll or {}
 
 		renderClassrooms : (e, classrooms) =>
 
+			classrooms = classrooms.reverse()
+
 			if classrooms?
 				@classrooms = _.union @classrooms, classrooms
 				@$classroomsContainer.empty()

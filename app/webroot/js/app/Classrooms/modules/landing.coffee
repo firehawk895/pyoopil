@@ -29,7 +29,7 @@ App.classrooms = App.classrooms or {}
 			@notifier = App.common.notifier
 
 			$tinyscrollbar = $('.tinyscrollbar')
-			$tinyscrollbar.tinyscrollbar({thumbSize: 9})
+			$tinyscrollbar.tinyscrollbar({thumbSize: 34})
 
 			@$tinyscrollbar = $tinyscrollbar.data("plugin_tinyscrollbar")
 

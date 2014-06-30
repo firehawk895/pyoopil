@@ -5,7 +5,10 @@ $this->end();
 ?>
 <div class="library-wrapper">
     <ul class="tile-lst" id="class-tile-list">
-        <li class="code-class">
+        <div class="tinyscrollbar">
+            <div class="viewport">
+                <div class="overview">
+                    <li class="code-class">
             <div class="newjoinbox">
                 <a class="newjoin">Join New Classroom</a>
                 <div class="accessclass">
@@ -41,17 +44,17 @@ $this->end();
                     <!-- <a href="#" class="sub-btn" id="join-with-code-submit">Join Classroom</a> -->
                 </div>
             </div>
-        </li>
-        <div class="tinyscrollbar">
-            <div class="viewport">
-                <div class="overview">
-                    <div id="classrooms">
+        </li
+>                    <div id="classrooms">
                     
                     </div>
                 </div>
                 <div class="scrollbar">
                     <div class="track">
                         <div class="thumb">
+                            <div class="end">
+                                
+                            </div>
                         </div>
                     </div>
                 </div>

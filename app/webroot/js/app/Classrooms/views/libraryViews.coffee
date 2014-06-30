@@ -21,6 +21,7 @@ App.classrooms = App.classrooms or {}
 			librariesHtml = if libraries?
 				@renderLibrary library for library in libraries
 
+			
 			@$elem.append librariesHtml
 			$("a[rel^='prettyPhoto']").prettyPhoto({
 	            deeplinking: false

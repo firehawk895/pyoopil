@@ -10,11 +10,30 @@ App.LeftNavScroll = App.LeftNavScroll || {};
   $document = $(document);
   LeftNav = (function() {
     function LeftNav() {
+      this.init();
       this.setEventHandlers();
+      this.getClassroomsData();
     }
 
+    LeftNav.prototype.init = function() {
+      return this.services = App.LeftNavScroll.services;
+    };
+
+    LeftNav.prototype.getClassroomsData = function() {
+      var promise;
+      promise = this.services.getClassrooms();
+      return promise.then((function(_this) {
+        return function(data) {
+          console.log(data.data);
+          if (_this.services.isValid(data.data) === true) {
+            return $document.trigger('LeftNavScroll.UPDATE', [data.data]);
+          }
+        };
+      })(this));
+    };
+
     LeftNav.prototype.setEventHandlers = function() {
-      return $document.on('Classrooms.UPDATE', App.LeftNavScroll.views.renderClassrooms);
+      return $document.on('LeftNavScroll.UPDATE', App.LeftNavScroll.views.renderClassrooms);
     };
 
     return LeftNav;

@@ -13,7 +13,7 @@ App.LeftNavScroll = App.LeftNavScroll or {}
 
 			@templates = {
 				'classroomTile' : '<div class="scroll-content-item">
-						            <a href="{{ Classroom.Campus.Url }}">
+						            <a href="{{ Classroom.Url }}">
 						                <div class="classouter">
 						                    <div class="doc-list">
 						                        <div class="doc-top">

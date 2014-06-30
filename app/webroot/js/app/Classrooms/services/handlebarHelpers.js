@@ -59,3 +59,7 @@ Handlebars.registerHelper('icon', function(data) {
 Handlebars.registerHelper('image', function(image) {
   return imagePath + image;
 });
+
+Handlebars.registerHelper('link', function(link) {
+  return baseUrl + link;
+});

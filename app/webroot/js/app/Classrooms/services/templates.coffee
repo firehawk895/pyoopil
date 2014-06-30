@@ -31,7 +31,7 @@ App.classrooms = App.classrooms or {}
 					                {{/if}}
 					                <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the class. Have a great session this semester with your students. Cheers!!</p>
 					                <div class="pop-close">
-					                  <a href="classroom.htm" class="sub-btn">Take me to my classrooms</a>
+					                  <a href="{{link "Classrooms"}}" class="sub-btn">Take me to my classrooms</a>
 					                </div>
 					              </div>
 					            </div>

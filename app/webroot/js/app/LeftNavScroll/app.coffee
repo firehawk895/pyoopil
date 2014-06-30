@@ -9,12 +9,30 @@ App.LeftNavScroll = App.LeftNavScroll or {}
 
 		constructor : ->
 
+			@init()
 			@setEventHandlers()
+			@getClassroomsData()
+
+		init : ->
+
+			@services = App.LeftNavScroll.services
+
+		getClassroomsData : ->
+
+			promise = @services.getClassrooms()
+
+			promise.then((data)=>
+				console.log data.data
+				if @services.isValid(data.data) is true
+					$document.trigger('LeftNavScroll.UPDATE', [data.data])
+
+			)
 
 
 		setEventHandlers : ->
 			
-			$document.on('Classrooms.UPDATE', App.LeftNavScroll.views.renderClassrooms)
+			$document.on('LeftNavScroll.UPDATE', App.LeftNavScroll.views.renderClassrooms)
+			# $document.on('Classrooms.UPDATE', App.LeftNavScroll.views.renderClassrooms)
 
 
 	App.LeftNavScroll.leftNav = new LeftNav()
