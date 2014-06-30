@@ -115,14 +115,23 @@ class Library extends AppModel {
     public function editTopic($topicId, $topicText) {
 
         $data = array(
-            'name' => $topicText
+            'Topic' => array(
+                'id' => $topicId,
+                'name' => $topicText
+            )
         );
+        
+        return $this->Topic->save($data);
 
-        $conditions = array(
-            'Topic.id' => $topicId
-        );
-
-        return $this->Topic->updateAll($data, $conditions);
+//        $data = array(
+//            'name' => $topicText
+//        );
+//
+//        $conditions = array(
+//            'Topic.id' => $topicId
+//        );
+//
+//        return $this->Topic->updateAll($data, $conditions);
     }
 
     public function getLibraryId($classroomId) {
@@ -179,9 +188,9 @@ class Library extends AppModel {
     public function deleteItem($type, $id) {
 
         if ($type == 'File') {
-            return $this->Topic->Pyoopilfile->delete($id);
+            return @$this->Topic->Pyoopilfile->delete($id);
         } elseif ($type == 'Link') {
-            return $this->Topic->Link->delete($id);
+            return @$this->Topic->Link->delete($id);
         }
     }
 
