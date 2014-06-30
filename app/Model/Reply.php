@@ -110,7 +110,7 @@ class Reply extends AppModel {
         return $data;
     }
 
-    public function setMoreRepliesFlag($replies = array(), $page, $discussionId){
+    public function setMoreRepliesFlag($page, $discussionId){
 
         $params = array(
             'conditions' => array(
@@ -122,12 +122,11 @@ class Reply extends AppModel {
         $left = $count - ($page * 5);
 
         if($left>0){
-            array_push($replies, array('moreReplies' => true));
+            return true;
         }else{
-            array_push($replies, array('moreReplies' => false));
+            return false;
         }
 
-        return $replies;
     }
 
 

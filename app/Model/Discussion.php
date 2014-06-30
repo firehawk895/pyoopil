@@ -326,7 +326,7 @@ class Discussion extends AppModel {
                 $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
             }
 
-            $data[$i]['Reply'] = $this->Reply->setMoreRepliesFlag($data[$i]['Reply'],1,$data[$i]['Discussion']['id']);
+            $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1,$data[$i]['Discussion']['id']);
         }
         return $data;
     }

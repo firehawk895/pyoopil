@@ -83,7 +83,7 @@ class DiscussionsController extends AppController {
 
                 $data = $this->Discussion->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
-                $data = $this->Discussion->Reply->setMoreRepliesFlag($data, $page, $discussionId);
+                $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page,$discussionId);
             }
         }
         $this->set('webroot', $this->webroot);
