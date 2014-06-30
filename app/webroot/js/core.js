@@ -596,7 +596,7 @@
 		var count = $('.add-choice').length;
 		if(pollCount < 5) { 
 			pollCount++;
-			$(".add-here").append('<div class="add-choice"><input name="data[Pollchoice]['+pollCount+'][choice]" class="ans-txtbx" placeholder="add a choice for your poll" maxlength="450" type="text" ><a href="javascript:void(0)" class="close-btn"></a></div>');
+			$(".add-here").append('<div class="add-choice"><input name="data[Pollchoice]['+pollCount+'][choice]" class="ans-txtbx" placeholder="add a choice for your poll" maxlength="450" type="text" ></div>');
     	}
 	});
 	

@@ -5,6 +5,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
   var DiscussionViews;
   DiscussionViews = (function() {
     function DiscussionViews(elem) {
+      this.renderPoll = __bind(this.renderPoll, this);
       this.renderReplies = __bind(this.renderReplies, this);
       this.renderGamification = __bind(this.renderGamification, this);
       this.newReply = __bind(this.newReply, this);
@@ -22,6 +23,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       this.replyTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('replyTmpl'));
       this.gamificationDiscussionTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('gamificationDiscussionTmpl'));
       this.gamificationReplyTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('gamificationReplyTmpl'));
+      this.pollingTemplate = Handlebars.compile(App.classrooms.templates.getTemplate('pollingTmpl'));
       return '';
     };
 
@@ -61,7 +63,10 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
     };
 
     DiscussionViews.prototype.newDiscussion = function(e, discussion) {
-      return this.$elem.prepend(this.renderDiscussion(discussion));
+      var discussionHtml;
+      discussionHtml = this.renderDiscussion(discussion);
+      this.$elem.prepend(discussionHtml);
+      return this.renderChart(discussion.Discussion.id);
     };
 
     DiscussionViews.prototype.renderReply = function(reply) {
@@ -109,10 +114,20 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       var $chartElems;
       $chartElems = $('div.chart');
       return $.each($chartElems, function(i, elem) {
-        var $elem, chart, chartData, data, options;
+        var $elem, chart, chartDataJson, chartsData, data, options;
         $elem = $(elem);
-        chartData = $elem.data('chart');
-        data = google.visualization.arrayToDataTable([['Answer', 'Reply'], ['Answer 1', 30], ['Answer 2', 50], ['Answer 3', 10], ['Answer 4', 10]]);
+        chartDataJson = $elem.data('chart');
+        chartsData = [['Answer', 'Reply']];
+        $.each(chartDataJson, function(i, data) {
+          var chart;
+          if (data.choice) {
+            chart = [];
+            chart.push(data.choice);
+            chart.push(parseInt(data.votes));
+            return chartsData.push(chart);
+          }
+        });
+        data = google.visualization.arrayToDataTable(chartsData);
         options = {};
         chart = new google.visualization.BarChart(elem);
         return chart.draw(data, {
@@ -122,7 +137,40 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       });
     };
 
-    DiscussionViews.prototype.renderChart = function(elem) {};
+    DiscussionViews.prototype.renderChart = function(id) {
+      var $elem, chart, chartDataJson, chartsData, data, discussionId, options;
+      discussionId = '.discussion_' + id;
+      $elem = this.$elem.find(discussionId).find('.chart');
+      chartDataJson = $elem.data('chart');
+      chartsData = [['Answer', 'Reply']];
+      $.each(chartDataJson, function(i, data) {
+        var chart;
+        if (data.choice) {
+          chart = [];
+          chart.push(data.choice);
+          chart.push(parseInt(data.votes));
+          return chartsData.push(chart);
+        }
+      });
+      data = google.visualization.arrayToDataTable(chartsData);
+      options = {};
+      chart = new google.visualization.BarChart($elem[0]);
+      return chart.draw(data, {
+        colors: ['#ee6d05', '#f78928', '#f79f57', '#f9b785'],
+        is3D: true
+      });
+    };
+
+    DiscussionViews.prototype.renderPolling = function(data) {
+      return this.pollingTemplate(data);
+    };
+
+    DiscussionViews.prototype.renderPoll = function(e, data) {
+      var pollData;
+      pollData = data.data;
+      data.polling.html(this.renderPolling(pollData[0]));
+      return this.renderChart(data.discussionId);
+    };
 
     return DiscussionViews;
 

@@ -46,9 +46,9 @@ Handlebars.registerHelper('Poll', (choices)->
   displayChoice = (choice)->
     if _.isObject(choice) and (choice.choice? and choice.choice isnt '')
       if showPolling is true
-        tmpl += '<a href="javascript:void(0)" class="ans-btn choice poll" data-poll-id="'+choice.id+'">'+choice.choice+'</a>'
-      else
         tmpl += '<a href="javascript:void(0)" class="ans-btn choice nopoll" data-poll-id="'+choice.id+'">'+choice.choice+'</a>'
+      else
+        tmpl += '<a href="javascript:void(0)" class="ans-btn choice canpoll" data-poll-id="'+choice.id+'">'+choice.choice+'</a>'
 
   choices = _.toArray(choices)
 

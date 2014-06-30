@@ -45,6 +45,7 @@ App.classrooms = App.classrooms || {};
       $document.on('Discussions.REPLY', this.views.newReply);
       $document.on('Discussions.GAMIFICATION', this.views.renderGamification);
       $document.on('Discussions.REPLIES', this.views.renderReplies);
+      $document.on('Discussions.POLLING', this.views.renderPoll);
       $('#fileupload').on('change', this.handleFileUpload);
       $("#DiscussionAddForm, #DiscussionAddFormPoll, #DiscussionAddFormNote").on('submit', this.newDiscussion);
       this.$elem.on('click', '.sharePost', (function(_this) {
@@ -117,7 +118,7 @@ App.classrooms = App.classrooms || {};
         });
         return false;
       });
-      this.$elem.on('click', 'a.poll', this.handlePoll);
+      this.$elem.on('click', 'a.canpoll', this.handlePoll);
       return this.$elem.on('click', '.discussion .view-more', this.loadMoreReplies);
     };
 
@@ -246,10 +247,26 @@ App.classrooms = App.classrooms || {};
     };
 
     Discussion.prototype.handlePoll = function(e) {
-      var $target, target;
+      var $discussion, $polling, $target, discussionId, pollId, promise, target;
       target = e.target;
       $target = $(target);
-      return console.log($target.data('poll-id'));
+      pollId = $target.data('poll-id');
+      $polling = $target.closest('.polling');
+      $discussion = $polling.closest('.discussion');
+      discussionId = $discussion.data('discussion-id');
+      promise = App.classrooms.discussionServices.setPoll(pollId);
+      return promise.then(function(data) {
+        if (data.status === false) {
+          App.common.notifier.notify('error', data.message);
+        } else {
+          $document.trigger('Discussions.POLLING', {
+            "data": data.data,
+            "polling": $polling,
+            "discussionId": discussionId
+          });
+          return App.common.notifier.notify('success', 'You have Successfully Voted !');
+        }
+      });
     };
 
     return Discussion;

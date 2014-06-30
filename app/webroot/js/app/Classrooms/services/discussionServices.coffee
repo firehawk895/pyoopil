@@ -83,6 +83,12 @@
 
 			@postData(url, {"id" : id})
 
+		setPoll : (id) ->
+
+			url = 'setPollVote.json'
+
+			@postData(url, {"pollchoice_id" : id})
+
 		isValid : (data) ->
 
 			return data? and data.length > 0

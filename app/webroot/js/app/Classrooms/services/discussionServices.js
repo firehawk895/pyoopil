@@ -85,6 +85,14 @@
       });
     };
 
+    DiscussionServices.prototype.setPoll = function(id) {
+      var url;
+      url = 'setPollVote.json';
+      return this.postData(url, {
+        "pollchoice_id": id
+      });
+    };
+
     DiscussionServices.prototype.isValid = function(data) {
       return (data != null) && data.length > 0;
     };

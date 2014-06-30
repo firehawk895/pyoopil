@@ -39,6 +39,7 @@ App.classrooms = App.classrooms or {}
 			$document.on('Discussions.REPLY', @views.newReply)
 			$document.on('Discussions.GAMIFICATION', @views.renderGamification)
 			$document.on('Discussions.REPLIES', @views.renderReplies)
+			$document.on('Discussions.POLLING', @views.renderPoll)
 
 			$('#fileupload').on('change', @handleFileUpload)
 			$("#DiscussionAddForm, #DiscussionAddFormPoll, #DiscussionAddFormNote").on('submit', @newDiscussion)
@@ -116,7 +117,7 @@ App.classrooms = App.classrooms or {}
 				false
 			)
 
-			@$elem.on('click', 'a.poll', @handlePoll)
+			@$elem.on('click', 'a.canpoll', @handlePoll)
 
 			@$elem.on('click', '.discussion .view-more', @loadMoreReplies)
 
@@ -257,10 +258,23 @@ App.classrooms = App.classrooms or {}
 
 			target = e.target
 			$target = $(target)
+			pollId = $target.data('poll-id')
+			$polling = $target.closest('.polling')
+			$discussion = $polling.closest('.discussion')
+			discussionId = $discussion.data('discussion-id')
 
-			console.log $target.data('poll-id')
+			promise = App.classrooms.discussionServices.setPoll(pollId)
 
-		
+			promise.then((data)->
+
+				if data.status is false
+					App.common.notifier.notify 'error', data.message
+					return
+				else
+					$document.trigger('Discussions.POLLING', { "data" : data.data, "polling" : $polling, "discussionId" : discussionId})
+					App.common.notifier.notify 'success', 'You have Successfully Voted !'
+
+			)
 
 	App.classrooms.discussion = new Discussion()
 

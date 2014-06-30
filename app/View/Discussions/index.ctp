@@ -122,7 +122,7 @@ $this->end();
                         ));
                         ?>
                         <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
+                        <!-- <a href="javascript:void(0)" class="close-btn"></a> -->
                     </div>
                     
                 </div>

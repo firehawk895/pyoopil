@@ -34,9 +34,9 @@ Handlebars.registerHelper('Poll', function(choices) {
   displayChoice = function(choice) {
     if (_.isObject(choice) && ((choice.choice != null) && choice.choice !== '')) {
       if (showPolling === true) {
-        return tmpl += '<a href="javascript:void(0)" class="ans-btn choice poll" data-poll-id="' + choice.id + '">' + choice.choice + '</a>';
-      } else {
         return tmpl += '<a href="javascript:void(0)" class="ans-btn choice nopoll" data-poll-id="' + choice.id + '">' + choice.choice + '</a>';
+      } else {
+        return tmpl += '<a href="javascript:void(0)" class="ans-btn choice canpoll" data-poll-id="' + choice.id + '">' + choice.choice + '</a>';
       }
     }
   };

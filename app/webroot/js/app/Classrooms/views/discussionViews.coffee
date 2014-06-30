@@ -16,6 +16,7 @@
 			@replyTemplate = Handlebars.compile App.classrooms.templates.getTemplate('replyTmpl')
 			@gamificationDiscussionTemplate = Handlebars.compile App.classrooms.templates.getTemplate('gamificationDiscussionTmpl')
 			@gamificationReplyTemplate = Handlebars.compile App.classrooms.templates.getTemplate('gamificationReplyTmpl')
+			@pollingTemplate = Handlebars.compile App.classrooms.templates.getTemplate('pollingTmpl')
 			''
 
 		renderDiscussions : (e, discussions) =>
@@ -38,7 +39,9 @@
 			discussionHtml
 
 		newDiscussion : (e, discussion)=>
-			@$elem.prepend @renderDiscussion discussion
+			discussionHtml = @renderDiscussion discussion
+			@$elem.prepend discussionHtml
+			@renderChart(discussion.Discussion.id)
 
 		renderReply : (reply) ->
 
@@ -73,15 +76,19 @@
 
 			$.each($chartElems, (i, elem)->
 				$elem = $(elem)
-				chartData = $elem.data('chart')
+				chartDataJson = $elem.data('chart')
+				chartsData = [['Answer', 'Reply']]
 
-				data = google.visualization.arrayToDataTable([
-				  ['Answer', 'Reply'],
-				  ['Answer 1', 30],
-				  ['Answer 2', 50],
-				  ['Answer 3', 10],
-				  ['Answer 4', 10]
-				])
+				$.each(chartDataJson, (i, data)->
+					if data.choice
+						chart = []
+						chart.push(data.choice)
+						chart.push(parseInt(data.votes))
+
+						chartsData.push chart
+				)
+
+				data = google.visualization.arrayToDataTable(chartsData)
 				options = {};
 				chart = new google.visualization.BarChart(elem);
 				chart.draw(data, {
@@ -90,7 +97,41 @@
 				})
 			)
 
-		renderChart : (elem)->
+		renderChart : (id)->
+
+			discussionId = '.discussion_' + id
+
+			$elem = @$elem.find(discussionId).find('.chart')
+
+			chartDataJson = $elem.data('chart')
+			chartsData = [['Answer', 'Reply']]
+
+			$.each(chartDataJson, (i, data)->
+				if data.choice
+					chart = []
+					chart.push(data.choice)
+					chart.push(parseInt(data.votes))
+
+					chartsData.push chart
+			)
+			data = google.visualization.arrayToDataTable(chartsData)
+			options = {};
+			chart = new google.visualization.BarChart($elem[0]);
+			chart.draw(data, {
+			  colors: ['#ee6d05', '#f78928', '#f79f57', '#f9b785'],
+			  is3D: true
+			})
+
+		renderPolling : (data) ->
+
+			@pollingTemplate data
+
+		renderPoll : (e, data) =>
+
+			pollData = data.data
+
+			data.polling.html(@renderPolling(pollData[0]))
+			@renderChart(data.discussionId)
 
 
 	App.classrooms.discussionViews = DiscussionViews

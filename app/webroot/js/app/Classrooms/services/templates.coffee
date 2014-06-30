@@ -93,7 +93,7 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="{{image "view-all.png"}}"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next answers <img src="{{image "view-all.png"}}"></a>
 			                        </div>
 						          </li>
 						          <ul class="replies">
@@ -194,9 +194,9 @@ App.classrooms = App.classrooms or {}
 					                        	{{/Poll}}
 					                        </div>
 						               		<div class="poll-right">
-						               			{{#unless Pollchoice.showPollVote}}
+						               			{{#if Pollchoice.showPollVote}}
 							                   		<div class="chart" data-chart="{{Chart Pollchoice }}"></div>
-							                   	{{/unless}}
+							                   	{{/if}}
 						                   	</div>
 						                </div>
 						                
@@ -232,7 +232,7 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View all 5 answers <img src="{{image "view-all.png"}}"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next answers <img src="{{image "view-all.png"}}"></a>
 						            </div>
 						          </li>
 						          <ul class="replies">
@@ -361,7 +361,7 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="{{image "view-all.png"}}"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next answers <img src="{{image "view-all.png"}}"></a>
 			                        </div>
 						          </li>
 						          <ul class="replies">
@@ -660,8 +660,9 @@ App.classrooms = App.classrooms or {}
 		                        	{{/Poll}}
 		                        </div>
 			               		<div class="poll-right">
-			               			{{#Chart PollChoice}}
-			               			{{/Chart}}
+			               			{{#if Pollchoice.showPollVote}}
+				                   		<div class="chart" data-chart="{{Chart Pollchoice }}"></div>
+				                   	{{/if}}
 			                   	</div>',
 				'default' : '<p>No template Available'
 			}
