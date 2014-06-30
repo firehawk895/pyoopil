@@ -190,6 +190,7 @@
     echo $this->Html->script("vendors/handlebars.js");
     echo $this->Html->script("vendors/tinyscrollbar.js");
     echo $this->Html->script("vendors/toastr.js");
+    echo $this->Html->script("vendors/googleCharts.js");
 
     // TO BE Removed
     echo $this->Html->script('jquery.autosize.min.js');
@@ -230,7 +231,6 @@
     echo $this->Html->script("app/Classrooms/views/discussionViews.js");
     echo $this->Html->script("app/Classrooms/views/announcementViews.js");
     echo $this->Html->script("app/Classrooms/views/libraryViews.js");
-    echo $this->Html->script("app/Classrooms/modules/base.js");
     echo $this->Html->script("app/Classrooms/modules/landing.js");
     echo $this->Html->script("app/Classrooms/modules/discussions.js");
     echo $this->Html->script("app/Classrooms/modules/announcements.js");

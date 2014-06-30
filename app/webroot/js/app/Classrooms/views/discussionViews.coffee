@@ -24,6 +24,7 @@
 				@renderDiscussion discussion for discussion in discussions
 
 			@$elem.append discussionsHtml
+			@renderCharts()
 
 		renderDiscussion : (discussion) ->
 
@@ -65,7 +66,32 @@
 				@renderReply reply for reply in replies.data
 
 			replies.container.append repliesHtml
-	
+
+		renderCharts : () ->
+
+			$chartElems = $('div.chart')
+
+			$.each($chartElems, (i, elem)->
+				$elem = $(elem)
+				chartData = $elem.data('chart')
+
+				data = google.visualization.arrayToDataTable([
+				  ['Answer', 'Reply'],
+				  ['Answer 1', 30],
+				  ['Answer 2', 50],
+				  ['Answer 3', 10],
+				  ['Answer 4', 10]
+				])
+				options = {};
+				chart = new google.visualization.BarChart(elem);
+				chart.draw(data, {
+				  colors: ['#ee6d05', '#f78928', '#f79f57', '#f9b785'],
+				  is3D: true
+				})
+			)
+
+		renderChart : (elem)->
+
 
 	App.classrooms.discussionViews = DiscussionViews
 

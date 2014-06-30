@@ -113,9 +113,9 @@ App.classrooms = App.classrooms or {}
 								                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
 								                  <div class="arr-dd" style="display: none;">
 								                    <ul>
-								                      <li><a href="javascript:void(0)">Report Abuse</a>
+								                      <li><a href="javascript:void(0)" class="reportAbuse">Report Abuse</a>
 								                      </li>
-								                      <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+								                      <li class="lastli"><a href="javascript:void(0)" class="deleteComment">Delete Comment</a>
 								                      </li>
 								                    </ul>
 								                  </div>
@@ -163,7 +163,7 @@ App.classrooms = App.classrooms or {}
 					            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
 				            	</form>
 					          </ul>',
-				'pollTmpl' : '<ul class="disc-list">
+				'pollTmpl' : '<ul class="disc-list discussion discussion_{{Discussion.id}}" data-discussion-id="{{ Discussion.id }}">
 						          <li>
 						            <div class="disc-box clearfix">
 						              <div class="disc-left">
@@ -177,27 +177,26 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
-						                  <span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"></a>
-						                  <div class="arr-dd" style="display: none;">
-						                    <ul>
-						                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-						                      </li>
-						                    </ul>
-						                  </div>
-						                  </span>
-						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip sharePost" title="Share to My Room"><img src="{{image "disc-share.png"}}"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip deletePost" title="Delete"><img src="{{image "disc-close.png"}}"></a>
+						                  {{#if Discussion.isFolded}}
+						                  <a class="fold-icon tooltip foldPost folded-icon" href="javascript:void(0)" title="Fold/Unfold"></a>
+						                  {{/if}}
+						                  {{#unless Discussion.isFolded}}
+						                  <a class="fold-icon tooltip foldPost" href="javascript:void(0)" title="Fold/Unfold"></a>
+						                  {{/unless}}
 						                </div>
 						                <div class="clear"></div>
 						                <p class="ttxt">{{ Discussion.body }}</p>
-						                <div class="clearfix">
+						                <div class="clearfix polling">
 						                    <div class="poll-left">
 						                    	{{#Poll Pollchoice}}
 					                        	{{/Poll}}
 					                        </div>
 						               		<div class="poll-right">
-						                   		<div id="chart_div2" style="position: relative;">
-						                   		</div>
+						               			{{#unless Pollchoice.showPollVote}}
+							                   		<div class="chart" data-chart="{{Chart Pollchoice }}"></div>
+							                   	{{/unless}}
 						                   	</div>
 						                </div>
 						                
@@ -236,6 +235,7 @@ App.classrooms = App.classrooms or {}
 						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View all 5 answers <img src="{{image "view-all.png"}}"></a>
 						            </div>
 						          </li>
+						          <ul class="replies">
 						      		{{#each Reply}}
 					            		<li>
 								            <div class="disc-box clearfix">
@@ -252,9 +252,9 @@ App.classrooms = App.classrooms or {}
 								                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
 								                  <div class="arr-dd" style="display: none;">
 								                    <ul>
-								                      <li><a href="javascript:void(0)">Report Abuse</a>
+								                      <li><a href="javascript:void(0)" class="reportAbuse">Report Abuse</a>
 								                      </li>
-								                      <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+								                      <li class="lastli"><a href="javascript:void(0)" class="deleteComment">Delete Comment</a>
 								                      </li>
 								                    </ul>
 								                  </div>
@@ -296,6 +296,11 @@ App.classrooms = App.classrooms or {}
 								            </div>
 								          </li>
 					            	{{/each}}
+					            	</ul>
+					            	<form method="post" class="reply">
+						            	<input class="add-ans" name="comment" type="text" placeholder="Add your answer...">
+						            	<input type="hidden" name="discussion_id" value="{{Discussion.id}}">
+					            	</form>
 						        </ul>',
 				'noteTmpl' : '<ul class="disc-list discussion discussion_{{Discussion.id}}" data-discussion-id="{{ Discussion.id }}">
 						          <li>
@@ -311,9 +316,14 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-close.png"}}"></a>
-						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip sharePost" title="Share to My Room"><img src="{{image "disc-share.png"}}"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip deletePost" title="Delete"><img src="{{image "disc-close.png"}}"></a>
+						                  {{#if Discussion.isFolded}}
+						                  <a class="fold-icon tooltip foldPost folded-icon" href="javascript:void(0)" title="Fold/Unfold"></a>
+						                  {{/if}}
+						                  {{#unless Discussion.isFolded}}
+						                  <a class="fold-icon tooltip foldPost" href="javascript:void(0)" title="Fold/Unfold"></a>
+						                  {{/unless}}
 						                </div>
 						                <div class="clear"></div>
 						                {{#safehtml Discussion.body }}
@@ -371,9 +381,9 @@ App.classrooms = App.classrooms or {}
 								                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
 								                  <div class="arr-dd" style="display: none;">
 								                    <ul>
-								                      <li><a href="javascript:void(0)">Report Abuse</a>
+								                      <li><a href="javascript:void(0)" class="reportAbuse">Report Abuse</a>
 								                      </li>
-								                      <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+								                      <li class="lastli"><a href="javascript:void(0)" class="deleteComment">Delete Comment</a>
 								                      </li>
 								                    </ul>
 								                  </div>
@@ -429,16 +439,16 @@ App.classrooms = App.classrooms or {}
 						              <div class="arrow_box">
 						                <div class="name-left">
 						                  <p class="tname"><a href="javascript:void(0)">{{AppUser.fname}} {{AppUser.lname}}</a></p>
-						                  <p class="tby">Today at 11:20 am</p>
+						                  <p class="tby">Today at {{Reply.created}}</p>
 						                </div>
 						                <div class="icon-right">
 						                  <span class="dd-block">
 						                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
 						                  <div class="arr-dd" style="display: none;">
 						                    <ul>
-						                      <li><a href="javascript:void(0)">Report Abuse</a>
+						                      <li><a href="javascript:void(0)" class="reportAbuse">Report Abuse</a>
 						                      </li>
-						                      <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+						                      <li class="lastli"><a href="javascript:void(0)" class="deleteComment">Delete Comment</a>
 						                      </li>
 						                    </ul>
 						                  </div>
@@ -645,6 +655,14 @@ App.classrooms = App.classrooms or {}
 						          </div>
 						        </div>
 							    ',
+				'pollingTmpl' : '<div class="poll-left">
+			                    	{{#Poll Pollchoice}}
+		                        	{{/Poll}}
+		                        </div>
+			               		<div class="poll-right">
+			               			{{#Chart PollChoice}}
+			               			{{/Chart}}
+			                   	</div>',
 				'default' : '<p>No template Available'
 			}
 		

@@ -8,7 +8,7 @@ App.classrooms = App.classrooms or {}
 		constructor : ->
 
 			@isInitial = true
-			@baseUrl = window.location.pathname
+			@baseUrl = window.location.pathname + "/"
 
 		getClassrooms : ->
 

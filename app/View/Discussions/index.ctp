@@ -124,66 +124,7 @@ $this->end();
                         <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
                         <a href="javascript:void(0)" class="close-btn"></a>
                     </div>
-                    <div class="add-choice">
-                        <?php
-                        echo $this->Form->input('Pollchoice.1.choice', array(
-                            'class' => 'ans-txtbx',
-                            'placeholder' => 'add a choice for your poll',
-                            'label' => false,
-                            'div' => false
-                        ));
-                        ?>
-                        <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
-                    </div>
-                    <div class="add-choice">
-                        <?php
-                        echo $this->Form->input('Pollchoice.2.choice', array(
-                            'class' => 'ans-txtbx',
-                            'placeholder' => 'add a choice for your poll',
-                            'label' => false,
-                            'div' => false
-                        ));
-                        ?>
-                        <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
-                    </div>
-                    <div class="add-choice">
-                        <?php
-                        echo $this->Form->input('Pollchoice.3.choice', array(
-                            'class' => 'ans-txtbx',
-                            'placeholder' => 'add a choice for your poll',
-                            'label' => false,
-                            'div' => false
-                        ));
-                        ?>
-                        <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
-                    </div>
-                    <div class="add-choice">
-                        <?php
-                        echo $this->Form->input('Pollchoice.4.choice', array(
-                            'class' => 'ans-txtbx',
-                            'placeholder' => 'add a choice for your poll',
-                            'label' => false,
-                            'div' => false
-                        ));
-                        ?>
-                        <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
-                    </div>
-                    <div class="add-choice">
-                        <?php
-                        echo $this->Form->input('Pollchoice.5.choice', array(
-                            'class' => 'ans-txtbx',
-                            'placeholder' => 'add a choice for your poll',
-                            'label' => false,
-                            'div' => false
-                        ));
-                        ?>
-                        <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly>-->
-                        <a href="javascript:void(0)" class="close-btn"></a>
-                    </div>
+                    
                 </div>
                 <div class="add-choice"><a href="javascript:void(0)" class="add-div"> + Add answer choice</a>
                 </div>
@@ -191,7 +132,7 @@ $this->end();
                     <div class="disc-room f-left">
                         <div class="attachmentbox">
                             <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                                <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
+                                <span class="att-txt">Add files <span class="att-size">(Max 2 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
                             <div class="files" class="files"></div>
@@ -254,7 +195,7 @@ $this->end();
                     <div class="disc-room f-left">
                         <div class="attachmentbox">
                             <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                                <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
+                                <span class="att-txt">Add files <span class="att-size">(Max 2 mb)</span></span>
                                 <input id="fileupload" type="file" name="files[]">
                             </span>
                             <div class="files" class="files"></div>

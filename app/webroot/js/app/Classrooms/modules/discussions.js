@@ -52,6 +52,16 @@ App.classrooms = App.classrooms || {};
           return _this.notifier.notify('success', 'Discussion successfully Added to your Room !');
         };
       })(this));
+      this.$elem.on('click', '.reportAbuse', (function(_this) {
+        return function() {
+          return _this.notifier.notify('success', 'Abuse Reported !');
+        };
+      })(this));
+      this.$elem.on('click', '.deleteComment', (function(_this) {
+        return function(e) {
+          return _this.notifier.notify('success', 'Successfully deleted the Comment !');
+        };
+      })(this));
       this.$elem.on('click', '.deletePost', this.deleteDiscussion);
       this.$elem.on('submit', '.reply', this.newReply);
       this.$elem.on('click', '.foldPost', this.handleFold);
@@ -107,6 +117,7 @@ App.classrooms = App.classrooms || {};
         });
         return false;
       });
+      this.$elem.on('click', 'a.poll', this.handlePoll);
       return this.$elem.on('click', '.discussion .view-more', this.loadMoreReplies);
     };
 
@@ -232,6 +243,13 @@ App.classrooms = App.classrooms || {};
           return App.common.notifier.notify('success', 'Discussion Fold State changed !');
         }
       });
+    };
+
+    Discussion.prototype.handlePoll = function(e) {
+      var $target, target;
+      target = e.target;
+      $target = $(target);
+      return console.log($target.data('poll-id'));
     };
 
     return Discussion;

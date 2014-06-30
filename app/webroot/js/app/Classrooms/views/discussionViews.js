@@ -38,7 +38,8 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
           return _results;
         }
       }).call(this);
-      return this.$elem.append(discussionsHtml);
+      this.$elem.append(discussionsHtml);
+      return this.renderCharts();
     };
 
     DiscussionViews.prototype.renderDiscussion = function(discussion) {
@@ -103,6 +104,25 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
       }).call(this);
       return replies.container.append(repliesHtml);
     };
+
+    DiscussionViews.prototype.renderCharts = function() {
+      var $chartElems;
+      $chartElems = $('div.chart');
+      return $.each($chartElems, function(i, elem) {
+        var $elem, chart, chartData, data, options;
+        $elem = $(elem);
+        chartData = $elem.data('chart');
+        data = google.visualization.arrayToDataTable([['Answer', 'Reply'], ['Answer 1', 30], ['Answer 2', 50], ['Answer 3', 10], ['Answer 4', 10]]);
+        options = {};
+        chart = new google.visualization.BarChart(elem);
+        return chart.draw(data, {
+          colors: ['#ee6d05', '#f78928', '#f79f57', '#f9b785'],
+          is3D: true
+        });
+      });
+    };
+
+    DiscussionViews.prototype.renderChart = function(elem) {};
 
     return DiscussionViews;
 

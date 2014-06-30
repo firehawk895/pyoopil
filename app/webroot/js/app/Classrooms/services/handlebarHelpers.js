@@ -7,6 +7,10 @@ baseUrl = App.rootPath;
 
 imagePath = baseUrl + "images/";
 
+google.load("visualization", "1", {
+  packages: ["corechart"]
+});
+
 Handlebars.registerHelper("displayGamification", function(data) {
   var d, praisers, tmpl;
   tmpl = '';
@@ -25,19 +29,28 @@ Handlebars.registerHelper("displayGamification", function(data) {
 });
 
 Handlebars.registerHelper('Poll', function(choices) {
-  var choice, displayChoice, tmpl, _i, _len;
+  var choice, displayChoice, showPolling, tmpl, _i, _len;
   tmpl = '';
   displayChoice = function(choice) {
-    return tmpl += '<a href="javascript:void(0)" class="ans-btn choice" data-choice-id="' + choice.id + '">' + choice.choice + '</a>';
+    if (_.isObject(choice) && ((choice.choice != null) && choice.choice !== '')) {
+      if (showPolling === true) {
+        return tmpl += '<a href="javascript:void(0)" class="ans-btn choice poll" data-poll-id="' + choice.id + '">' + choice.choice + '</a>';
+      } else {
+        return tmpl += '<a href="javascript:void(0)" class="ans-btn choice nopoll" data-poll-id="' + choice.id + '">' + choice.choice + '</a>';
+      }
+    }
   };
-  choices = _.reject(choices, function(choice) {
-    return choice.choice === '';
-  });
+  choices = _.toArray(choices);
+  showPolling = _.last(choices);
   for (_i = 0, _len = choices.length; _i < _len; _i++) {
     choice = choices[_i];
     displayChoice(choice);
   }
   return new Handlebars.SafeString(tmpl);
+});
+
+Handlebars.registerHelper('Chart', function(pollData) {
+  return JSON.stringify(pollData);
 });
 
 Handlebars.registerHelper('safehtml', function(data) {

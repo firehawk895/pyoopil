@@ -47,6 +47,14 @@ App.classrooms = App.classrooms or {}
 				@notifier.notify 'success', 'Discussion successfully Added to your Room !'
 			)
 
+			@$elem.on('click', '.reportAbuse', =>
+				@notifier.notify 'success', 'Abuse Reported !'
+			)
+
+			@$elem.on('click', '.deleteComment', (e)=>
+				@notifier.notify 'success', 'Successfully deleted the Comment !'
+			)
+
 			@$elem.on('click', '.deletePost', @deleteDiscussion)
 			
 			@$elem.on('submit', '.reply', @newReply)
@@ -107,6 +115,8 @@ App.classrooms = App.classrooms or {}
 
 				false
 			)
+
+			@$elem.on('click', 'a.poll', @handlePoll)
 
 			@$elem.on('click', '.discussion .view-more', @loadMoreReplies)
 
@@ -242,6 +252,15 @@ App.classrooms = App.classrooms or {}
 					App.common.notifier.notify 'success', 'Discussion Fold State changed !'
 
 			)
+
+		handlePoll : (e) ->
+
+			target = e.target
+			$target = $(target)
+
+			console.log $target.data('poll-id')
+
+		
 
 	App.classrooms.discussion = new Discussion()
 

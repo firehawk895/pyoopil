@@ -591,12 +591,12 @@
 	});
 	
 	//add new div
-	var count = 0;
+	var pollCount = 0;
 	$(".add-div").click(function(){
 		var count = $('.add-choice').length;
-		if(count < 7) {
-			$(".add-here").append("<div class='add-choice'><input type='text' class='ans-txtbx' placeholder='Type your answer here...'><a href='javascript:void(0)' class='close-btn'></a></div>");
-	        count++;
+		if(pollCount < 5) { 
+			pollCount++;
+			$(".add-here").append('<div class="add-choice"><input name="data[Pollchoice]['+pollCount+'][choice]" class="ans-txtbx" placeholder="add a choice for your poll" maxlength="450" type="text" ><a href="javascript:void(0)" class="close-btn"></a></div>');
     	}
 	});
 	

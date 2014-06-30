@@ -3,6 +3,8 @@ App = window.App || {}
 baseUrl = App.rootPath
 imagePath = baseUrl + "images/"
 
+google.load("visualization", "1", {packages:["corechart"]});
+
 Handlebars.registerHelper("displayGamification", (data)->
 
   tmpl = ''
@@ -42,12 +44,25 @@ Handlebars.registerHelper('Poll', (choices)->
   tmpl = ''
 
   displayChoice = (choice)->
-    tmpl += '<a href="javascript:void(0)" class="ans-btn choice" data-choice-id="'+choice.id+'">'+choice.choice+'</a>'
-  choices = _.reject(choices, (choice)-> choice.choice is '')
+    if _.isObject(choice) and (choice.choice? and choice.choice isnt '')
+      if showPolling is true
+        tmpl += '<a href="javascript:void(0)" class="ans-btn choice poll" data-poll-id="'+choice.id+'">'+choice.choice+'</a>'
+      else
+        tmpl += '<a href="javascript:void(0)" class="ans-btn choice nopoll" data-poll-id="'+choice.id+'">'+choice.choice+'</a>'
+
+  choices = _.toArray(choices)
+
+  showPolling = _.last choices
 
   displayChoice choice for choice in choices
 
   new Handlebars.SafeString(tmpl)
+
+)
+
+Handlebars.registerHelper('Chart', (pollData)->
+
+  JSON.stringify pollData
 
 )
 
