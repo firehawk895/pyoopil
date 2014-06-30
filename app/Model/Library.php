@@ -267,37 +267,4 @@ class Library extends AppModel {
 
         return $data;
     }
-    
-    /**
-     * Given the $data['GamificationVote'] array, converts it to a grouped form
-     * for the front end
-     * @param array $gamificationVote $data['GamificationVote']
-     * @return array assign to $data['GamificationVote']
-     */
-    public function convertPyoopilfilesArray($pyoopilfiles = array()) {
-
-        $data['Documents'] = array();
-        $data['Pictures'] = array();
-        $data['Presentations'] = array();
-
-        for ($k = 0; $k < count($gamificationVote); $k++) {
-            $vote = $gamificationVote[$k]['vote'];
-            $name = $gamificationVote[$k]['AppUser']['fname'] . ' ' . $gamificationVote[$k]['AppUser']['lname'];
-
-            switch ($vote) {
-                case 'en': array_push($data['en'], $name);
-                    break;
-                case 'in': array_push($data['in'], $name);
-                    break;
-                case 'cu': array_push($data['cu'], $name);
-                    break;
-                case 'co': array_push($data['co'], $name);
-                    break;
-                case 'ed': array_push($data['ed'], $name);
-                    break;
-            }
-        }
-        return $data;
-    }
-
 }

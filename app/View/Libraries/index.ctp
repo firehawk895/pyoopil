@@ -23,10 +23,11 @@ $this->end();
                     <?php
                     echo $this->Form->create('Topic', array(
                         'type' => 'file',
-                        'url' => array(
-                            'controller' => 'libraries',
-                            'action' => 'add'
-                        )
+//                        'url' => array(
+//                            'controller' => 'libraries',
+//                            'action' => 'index',
+//                            'id' => $classroomId
+//                        )
                     ));
                     ?>
                     <div class="upload-form clearfix">
@@ -141,8 +142,8 @@ $this->end();
 <script type="text/javascript">
 
     var App = window.App || {};
-        App.classrooms = App.classrooms || {};
-        App.classrooms.libraries = App.classrooms.libraries || {};
-        App.classrooms.libraries.data = <?php echo $data ?>;
+    App.classrooms = App.classrooms || {};
+    App.classrooms.libraries = App.classrooms.libraries || {};
+    App.classrooms.libraries.data = <?php echo $data ?>;
 
 </script> 
