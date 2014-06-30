@@ -10,8 +10,8 @@ $this->end();
 <section class="pagecontent clearfix">
     <div class="content-wrapper">
         <div class="topbuttons">
-            <a href="classroom-discussion.htm" class="follow active">All</a>
-            <a href="classroom-discussion-fold.htm" class="follow">Folded</a>
+            <a href="<?php echo Router::url(array('controller' => 'discussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow active">All</a>
+            <a href="<?php echo Router::url(array('controller' => 'foldeddiscussions', 'action' => 'index', 'id' => $classroomId)); ?>" class="follow">Folded</a>
         </div>
         <div class="clear"></div>
         <div class="top-div">
@@ -274,7 +274,7 @@ $this->end();
 
         </div>
         <div id="discussions">
-            
+
         </div>
         <!--populate discussions here-->
         <!--Praise people Dialog-->
@@ -282,9 +282,9 @@ $this->end();
     <script type="text/javascript">
 
         var App = window.App || {};
-            App.classrooms = App.classrooms || {};
-            App.classrooms.discussions = App.classrooms.discussions || {};
-            App.classrooms.discussions.data = <?php echo $data ?>;
+        App.classrooms = App.classrooms || {};
+        App.classrooms.discussions = App.classrooms.discussions || {};
+        App.classrooms.discussions.data = <?php echo $data ?>;
 
     </script> 
 </section>

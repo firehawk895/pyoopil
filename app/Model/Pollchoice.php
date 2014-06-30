@@ -44,4 +44,9 @@ class Pollchoice extends AppModel {
         )
     );
 
+    public function getDiscussionId($pollChoiceId) {
+        $choice = $this->findById($pollChoiceId);
+        return $choice['Pollchoice']['discussion_id'];
+    }
+
 }

@@ -191,16 +191,57 @@ class Discussion extends AppModel {
         )
     );
 
-    /**
-     * Retrieve Discussion by id
-     * @param int $discussion_id
-     * @return mixed
-     */
-    public function getDiscussion($discussion_id) {
+    public function getDiscussionById($discussion_id) {
 
-        $discussion = $this->find('first', array(
+        $contain = array(
+            'Reply' => array(
+                'Gamificationvote' => array(
+                    'AppUser' => array(
+                        'fields' => array(
+                            'fname',
+                            'lname'
+                        )
+                    )
+                ),
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                ),
+                'limit' => self::MAX_REPLIES,
+                'order' => array(
+                    'created' => 'desc'
+                )
+            ),
+            'Pollchoice' => array(
+                'Pollvote'
+            ),
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array('fname', 'lname')
+            ),
+            'Foldeddiscussion'
+        );
+
+        $options = array(
+            'contain' => $contain,
+            'conditions' => array(
+                'Discussion.id' => $discussion_id
+            ),
+            'limit' => 1
+        );
+
+        $discussion = $this->find('all', array(
             'conditions' => array('Discussion.id' => $discussion_id),
-            'contain' => $this->containing
+            'contain' => $contain
         ));
         return $discussion;
     }
@@ -659,7 +700,7 @@ class Discussion extends AppModel {
             return false;
         }
 
-        //checks if already voted
+        //does not check if already voted
         if (!$this->Pollchoice->Pollvote->hasAny($conditions)) {
             $this->Pollchoice->id = $pollChoiceId;
             $newVotes = $this->Pollchoice->field('votes') + 1;
