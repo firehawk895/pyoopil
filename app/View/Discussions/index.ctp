@@ -2,7 +2,7 @@
 $this->start('pagesubnav');
 echo $this->element('classrooms/inside-classroom-subnav', array(
     'classroomId' => $classroomId,
-    'active' => 'discussions'
+    'active' => 'Discussions'
 ));
 $this->end();
 ?>

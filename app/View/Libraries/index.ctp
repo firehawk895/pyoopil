@@ -1,3 +1,12 @@
+<?php
+$this->start('pagesubnav');
+echo $this->element('classrooms/inside-classroom-subnav', array(
+    'classroomId' => $classroomId,
+    'active' => 'Libraries'
+));
+$this->end();
+?>
+
 <div class="library-wrapper library">
     <div class="topbuttons">
         <a href="javascript:void(0)" class="follow" id="upload-dlink">Upload</a>

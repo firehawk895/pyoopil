@@ -20,6 +20,7 @@ class LibrariesController extends AppController {
         $data = $this->Library->parsePyoopilfiles($data);
 
         $this->set('topics', $topics);
+        $this->set('classroomId',$classroomId);
         $this->set('data', json_encode($data));
     }
 
