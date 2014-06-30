@@ -316,7 +316,7 @@ header.landing-page { position: relative; }
 .library .topbuttons { width: 97.5%; }
 .library .follow { background: url("../images/upload-icon.png") no-repeat 25px center #B2B2B2; padding-left: 15px; float: right; }
 .classlibrary { background: #fff; width: 97%; margin: 10px; }
-.classlibrary .doc-list li { display: inline-block; border: 1px solid #bdbdbd; color: #444444; font-size: 16px; text-align: center; margin: 20px 0 10px 20px; position: relative; }
+.classlibrary .doc-list li { display: inline-block; border: 1px solid #bdbdbd; color: #444444; font-size: 16px; text-align: center; margin: 20px 0 10px 22px; position: relative; }
 .classlibrary .doc-top { font-size: 12px; margin: 0; padding: 18px 0; height: 30px; width:103px;top:1px;}
 .classlibrary .doc-end { background-color: #E4E4E4; color: #666666; font-size: 9px; padding: 5px 10px; position: relative; text-align: right; width: 83px; }
 .classlibrary .doc-end img, .doc-list img { float: left; }

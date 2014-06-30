@@ -1,3 +1,8 @@
+App = window.App || {}
+
+baseUrl = App.rootPath
+imagePath = baseUrl + "images/"
+
 Handlebars.registerHelper("displayGamification", (data)->
 
   tmpl = ''
@@ -51,5 +56,24 @@ Handlebars.registerHelper('safehtml', (data)->
   data = '<div class="ttxt">' + data + '</div>'
 
   new Handlebars.SafeString(data)
+
+)
+
+Handlebars.registerHelper('icon', (data)->
+
+  image = ''
+
+  if data.mime_type is "application/pdf"
+    image = imagePath + "doc-icon.png"
+  else
+    image = imagePath + "word_icon.png"
+
+  return image
+
+)
+
+Handlebars.registerHelper('image', (image)->
+
+  return imagePath + image
 
 )

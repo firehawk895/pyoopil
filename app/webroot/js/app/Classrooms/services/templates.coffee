@@ -40,7 +40,7 @@ App.classrooms = App.classrooms or {}
 						          <li>
 						            <div class="disc-box clearfix">
 						              <div class="disc-left">
-						                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/follow1.jpg" class="disc-img"></a>
+						                <a href="javascript:void(0)"><img src="{{image "follow1.jpg"}}" class="disc-img"></a>
 						              </div>
 						              <div class="arrow_box">
 						                <span class="arrowbox-icon quest-icon"></span>
@@ -50,8 +50,8 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="http://localhost/PDD/pyoopil/images/disc-share.png"></a>
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="http://localhost/PDD/pyoopil/images/disc-close.png"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-close.png"}}"></a>
 						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
 						                </div>
 						                <div class="clear"></div>
@@ -88,7 +88,7 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="{{image "view-all.png"}}"></a>
 			                        </div>
 						          </li>
 						          <ul class="replies">
@@ -96,7 +96,7 @@ App.classrooms = App.classrooms or {}
 					            		<li>
 								            <div class="disc-box clearfix">
 								              <div class="disc-left">
-								                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/chat2.png" class="disc-img"></a>
+								                <a href="javascript:void(0)"><img src="{{image "chat2.png"}}" class="disc-img"></a>
 								              </div>
 								              <div class="arrow_box">
 								                <div class="name-left">
@@ -162,7 +162,7 @@ App.classrooms = App.classrooms or {}
 						          <li>
 						            <div class="disc-box clearfix">
 						              <div class="disc-left">
-						                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/follow4.jpg" class="disc-img"></a>
+						                <a href="javascript:void(0)"><img src="{{image "follow4.jpg"}}" class="disc-img"></a>
 						              </div>
 						              <div class="arrow_box">
 						                <span class="arrowbox-icon"></span>
@@ -172,7 +172,7 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="http://localhost/PDD/pyoopil/images/disc-share.png"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
 						                  <span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"></a>
 						                  <div class="arr-dd" style="display: none;">
 						                    <ul>
@@ -228,14 +228,14 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View all 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View all 5 answers <img src="{{image "view-all.png"}}"></a>
 						            </div>
 						          </li>
 						      		{{#each Reply}}
 					            		<li>
 								            <div class="disc-box clearfix">
 								              <div class="disc-left">
-								                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/chat2.png" class="disc-img"></a>
+								                <a href="javascript:void(0)"><img src="{{image "chat2.png"}}" class="disc-img"></a>
 								              </div>
 								              <div class="arrow_box">
 								                <div class="name-left">
@@ -296,7 +296,7 @@ App.classrooms = App.classrooms or {}
 						          <li>
 						            <div class="disc-box clearfix">
 						              <div class="disc-left">
-						                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/follow1.jpg" class="disc-img"></a>
+						                <a href="javascript:void(0)"><img src="{{image "follow1.jpg"}}" class="disc-img"></a>
 						              </div>
 						              <div class="arrow_box">
 						                <span class="arrowbox-icon note-icon"></span>
@@ -306,8 +306,8 @@ App.classrooms = App.classrooms or {}
 						                  <p class="tby">{{ Discussion.created }}</p>
 						                </div>
 						                <div class="icon-right">
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="http://localhost/PDD/pyoopil/images/disc-share.png"></a>
-						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="http://localhost/PDD/pyoopil/images/disc-close.png"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-share.png"}}"></a>
+						                  <a href="javascript:void(0)" class="vl-t tooltip"><img src="{{image "disc-close.png"}}"></a>
 						                  <a class="fold-icon tooltip" href="javascript:void(0)"></a>
 						                </div>
 						                <div class="clear"></div>
@@ -346,7 +346,7 @@ App.classrooms = App.classrooms or {}
 						                </div>
 						              </div>
 						            </div>
-						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="http://localhost/PDD/pyoopil/images/view-all.png"></a>
+						            <div class="bor-rep"><a href="javascript:void(0)" class="view-more" data-current-page="1">View next 5 answers <img src="{{image "view-all.png"}}"></a>
 			                        </div>
 						          </li>
 						          <ul class="replies">
@@ -354,7 +354,7 @@ App.classrooms = App.classrooms or {}
 					            		<li>
 								            <div class="disc-box clearfix">
 								              <div class="disc-left">
-								                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/chat2.png" class="disc-img"></a>
+								                <a href="javascript:void(0)"><img src="{{image "chat2.png"}}" class="disc-img"></a>
 								              </div>
 								              <div class="arrow_box">
 								                <div class="name-left">
@@ -419,7 +419,7 @@ App.classrooms = App.classrooms or {}
 				'replyTmpl' : '<li>
 						            <div class="disc-box clearfix">
 						              <div class="disc-left">
-						                <a href="javascript:void(0)"><img src="http://localhost/PDD/pyoopil/images/chat2.png" class="disc-img"></a>
+						                <a href="javascript:void(0)"><img src="{{image "chat2.png"}}" class="disc-img"></a>
 						              </div>
 						              <div class="arrow_box">
 						                <div class="name-left">
@@ -519,7 +519,7 @@ App.classrooms = App.classrooms or {}
 				'announcementTmpl' : '<div class="listbox">
 							              <div class="imgbox">
 							                <a href="javascript:void(0)">
-							                  <img src="http://localhost/PDD/pyoopil/images/follow1.jpg">
+							                  <img src="{{image "follow1.jpg"}}">
 							                </a>
 							              </div>
 							              <div class="userinfo">
@@ -537,6 +537,104 @@ App.classrooms = App.classrooms or {}
 							              </p>
 							              {{/if}}
 						              </div>',
+				'libraryTmpl' : '
+							    <div class="attach-doc classlibrary stud-pnl">
+						          <div class="doc-heading clearfix">
+						            <input type="text" class="doc-input" value="{{ Topic.name }}" maxlength="70" readonly="readonly">
+						            <div class="lib-right">
+						              <a href="javascript:void(0)" class="lib-edit tooltip"></a>
+						              <a href="javascript:void(0)" class="lib-delete tooltip"></a>
+						              <a href="javascript:void(0)" class="lib-download tooltip"></a>
+						              <div class="click-lib click-icon tooltip"></div>
+						            </div>
+						          </div>
+						          <div class="contentblock" style="display: none;">
+						            <p class="classlibraryhd">Documents </p>
+						            <ul class="doc-list">
+						            	{{#each Documents}}
+						              <li>
+						                <a href="javascript:void(0)" class="del-lib"></a>
+						                 <a href="http://docs.google.com/viewer?url={{ file_path }}&embedded=true?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]">
+						                 <div class="doc-top">
+						                 
+						                  <p>{{filename}}</p>
+						                  <p>Subject</p>
+						                 
+						                </div> </a>
+						                <div class="doc-end clearfix">
+					                	<a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="{{icon this}}" class="m3-0"></a>
+						                  <p class="f-right">Posted<br>
+						                    {{created}}</p>
+						                </div>
+						              </li>
+						              {{/each}}
+						            </ul>
+						            <p class="classlibraryhd">Links</p>
+						            <ul class="doc-list link-lst">
+						            	{{#each Link}}
+							              <li>
+							                <a href="javascript:void(0)" class="del-lib"></a>
+							                <a href="{{linktext}}" target="_blank">
+								                <div class="doc-top">
+								                  <p>Go To Link</p>
+								                </div>
+								                <div class="doc-end clearfix">
+								                  <img src="{{image "link-icon.png"}}" class="m3-0">
+								                  <p class="f-right">Posted<br>
+								                    {{ created }}</p>
+								                </div>
+							                </a>
+							              </li>
+							            {{/each}}
+						            </ul>
+						            <p class="classlibraryhd">Video</p>
+						            <ul class="doc-list imglist">
+						            	{{#each Video}}
+							              <li>
+							                <div class="img-wrapper">
+							                  <a href="javascript:void(0)" class="del-lib"></a>
+							                  <a href="{{linktext}}" rel="prettyPhoto[pp_gal]">
+							                  <img src="{{image "classroom/library-video1.jpg"}}">
+							                  <div class="piccaption clearfix">Posted <br>
+							                    {{ created }}</div>
+							                  </a>
+							                </div>
+							              </li>
+							            {{/each}}
+						            </ul>
+						            <p class="classlibraryhd">Pictures</p>
+						            <ul class="doc-list imglist">
+						            	{{#each Pictures}}
+							              <li>
+							                <div class="img-wrapper">
+							                  <a href="javascript:void(0)" class="del-lib"></a>
+							                  <a href="{{file_path}}" rel="prettyPhoto[pp_gal]">
+							                  <img src="{{thumbnail_path}}">
+							                  <div class="piccaption clearfix">Posted <br>
+							                    {{ created }}</div>
+							                  </a>
+							                </div>
+							              </li>
+							            {{/each}}
+						            </ul>
+						            <p class="classlibraryhd">Presentation</p>
+						            <ul class="doc-list">
+						              <li>
+						                <a href="javascript:void(0)" class="del-lib"></a>
+						                <div class="doc-top">
+						                  <p>{{filename}}</p>
+						                  <p>Subject</p>
+						                </div>
+						                <div class="doc-end clearfix">
+						                  <img src="{{image "ppt_icon.png"}}" class="m3-0">
+						                  <p class="f-right">Posted<br>
+						                    {{ created }}</p>
+						                </div>
+						              </li>
+						            </ul>
+						          </div>
+						        </div>
+							    ',
 				'default' : '<p>No template Available'
 			}
 		

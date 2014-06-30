@@ -28,6 +28,12 @@
         case 'Announcements#':
           App.classrooms.announcement.init('#announcements');
           break;
+        case 'Libraries':
+          App.classrooms.library.init('#libraries');
+          break;
+        case 'Libraries#':
+          App.classrooms.library.init('#libraries');
+          break;
         default:
           new App.classrooms.landing('#classrooms');
       }

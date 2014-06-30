@@ -174,6 +174,12 @@
             </section>
         </section>
     </div>
+    <script type="text/javascript">
+
+        var App = window.App || {}
+            App.rootPath = "<?php echo $this->webroot; ?>";
+
+    </script>
     <?php
     //core library
     echo $this->Html->script('jquery-1.8.2.min.js');
@@ -216,15 +222,18 @@
     echo $this->Html->script("app/Classrooms/services/services.js");
     echo $this->Html->script("app/Classrooms/services/discussionServices.js");
     echo $this->Html->script("app/Classrooms/services/announcementServices.js");
+    echo $this->Html->script("app/Classrooms/services/libraryServices.js");
     echo $this->Html->script("app/Classrooms/services/handlebarHelpers.js");
     echo $this->Html->script("app/Classrooms/services/templates.js");
     echo $this->Html->script("app/Classrooms/views/views.js");
     echo $this->Html->script("app/Classrooms/views/discussionViews.js");
     echo $this->Html->script("app/Classrooms/views/announcementViews.js");
+    echo $this->Html->script("app/Classrooms/views/libraryViews.js");
     echo $this->Html->script("app/Classrooms/modules/base.js");
     echo $this->Html->script("app/Classrooms/modules/landing.js");
     echo $this->Html->script("app/Classrooms/modules/discussions.js");
     echo $this->Html->script("app/Classrooms/modules/announcements.js");
+    echo $this->Html->script("app/Classrooms/modules/library.js");
     echo $this->Html->script("app/Classrooms/app.js");
 
 

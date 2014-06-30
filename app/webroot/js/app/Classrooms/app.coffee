@@ -19,6 +19,8 @@
 				when 'Discussions#' then App.classrooms.discussion.init('#discussions')
 				when 'Announcements' then App.classrooms.announcement.init('#announcements')
 				when 'Announcements#' then App.classrooms.announcement.init('#announcements')
+				when 'Libraries' then App.classrooms.library.init('#libraries')
+				when 'Libraries#' then App.classrooms.library.init('#libraries')
 				else
 					new App.classrooms.landing('#classrooms')
 		

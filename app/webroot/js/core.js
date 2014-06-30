@@ -264,7 +264,7 @@
 	});
 	 //My classroom acordian	
 		$(".contentblock").hide();	
-		$(".click-icon").click(function () {
+		$("#classrooms .click-icon").click(function () {
 		var $div = $(this).parents().next(".contentblock");
 		$(".contentblock").not($div).hide();
 		$(this).toggleClass("active");
@@ -568,10 +568,20 @@
 	});
 	
 	//announcement edit topic
-	$(".lib-edit").click(function(){
+	$("#library").on('click', '.lib-edit', function(){
 		$(this).parent().prev('.doc-input').removeAttr("readonly");
 		$(this).parents().prev('.doc-input').focus();
 	});
+
+	$("#library .contentblock").hide();
+	$("#library").on('click', '.click-icon', function (e) {
+		var $div = $(this).parents().next(".contentblock");
+		$(".contentblock").not($div).hide();
+		$(this).toggleClass("active");
+		$('#library .click-icon').not($(this)).removeClass('active');
+		$div.slideToggle(300);
+	});
+
 	$(".doc-input").blur(function(){
 		 $(this).attr('readonly', 'readonly');
     });
