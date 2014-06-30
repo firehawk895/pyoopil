@@ -40,7 +40,7 @@ $this->end();
                     <div class="attachmentbox">
                         <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
                             <span class="att-txt">Add files 
-                                <span class="att-size">(Max 100 mb)</span></span> 
+                                <span class="att-size">(Max 2 mb)</span></span> 
                             <?php
                             echo $this->Form->input('file_path', array(
                                 'type' => 'file',
@@ -115,7 +115,6 @@ $this->end();
 JS;
                 $this->Js->buffer($script);
                 ?>
-                <progress value="0" max="100"></progress>
             </div>
         </div>
     </div>
@@ -129,6 +128,9 @@ JS;
             <div class="scrollbar">
                 <div class="track">
                     <div class="thumb">
+                        <div class="end">
+                            
+                        </div>
                     </div>
                 </div>
             </div>

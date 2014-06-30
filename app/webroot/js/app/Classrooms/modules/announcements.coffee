@@ -21,7 +21,7 @@ App.classrooms = App.classrooms or {}
 			@notifier = App.common.notifier
 
 			$tinyscrollbar = $('.tinyscrollbar')
-			$tinyscrollbar.tinyscrollbar({thumbSize: 9})
+			$tinyscrollbar.tinyscrollbar({thumbSize: 34})
 
 			@$tinyscrollbar = $tinyscrollbar.data("plugin_tinyscrollbar")
 
@@ -48,6 +48,7 @@ App.classrooms = App.classrooms or {}
 			$document.on('Announcements.RENDER', @announcementsRendered)
 
 			@$createClassroomForm.on('submit', @newClassroomSubmit)
+			$('#fileupload').on('change', @handleFileUpload)
 
 			@$viewport.on('endOfScroll', =>
 
@@ -67,6 +68,12 @@ App.classrooms = App.classrooms or {}
 						@hasScrollReached = false
 					)
 			)
+
+		handleFileUpload : (e) =>
+
+			@uploadedFiles = e.target.files
+
+			$('.files').html(@uploadedFiles[0].name)
 
 		newAnnouncement : (e) ->
 

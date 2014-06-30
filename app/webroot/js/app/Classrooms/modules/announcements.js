@@ -12,6 +12,7 @@ App.classrooms = App.classrooms || {};
   Announcement = (function() {
     function Announcement() {
       this.announcementsRendered = __bind(this.announcementsRendered, this);
+      this.handleFileUpload = __bind(this.handleFileUpload, this);
     }
 
     Announcement.prototype.init = function(elem) {
@@ -26,7 +27,7 @@ App.classrooms = App.classrooms || {};
       this.notifier = App.common.notifier;
       $tinyscrollbar = $('.tinyscrollbar');
       $tinyscrollbar.tinyscrollbar({
-        thumbSize: 9
+        thumbSize: 34
       });
       this.$tinyscrollbar = $tinyscrollbar.data("plugin_tinyscrollbar");
       this.setEventListeners();
@@ -52,6 +53,7 @@ App.classrooms = App.classrooms || {};
       $document.on('Announcements.CREATE', this.views.newAnnouncement);
       $document.on('Announcements.RENDER', this.announcementsRendered);
       this.$createClassroomForm.on('submit', this.newClassroomSubmit);
+      $('#fileupload').on('change', this.handleFileUpload);
       return this.$viewport.on('endOfScroll', (function(_this) {
         return function() {
           var ajax;
@@ -70,6 +72,11 @@ App.classrooms = App.classrooms || {};
           }
         };
       })(this));
+    };
+
+    Announcement.prototype.handleFileUpload = function(e) {
+      this.uploadedFiles = e.target.files;
+      return $('.files').html(this.uploadedFiles[0].name);
     };
 
     Announcement.prototype.newAnnouncement = function(e) {

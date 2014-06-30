@@ -13,7 +13,7 @@ App.classrooms = App.classrooms or {}
 		setTemplates : ->
 
 			@templates = {
-				'classroomTile' : '<li><a href="{{ Classroom.Url }}">{{#if UsersClassroom.is_restricted}}<div class="lock-state"><p>! You do not have access to this class. Please contact the owner</p></div>{{/if}}{{#if UsersClassroom.is_teaching }}<div class="class-head">My Class</div>{{/if}}{{#if Classroom.is_private}}<img src="images/lock_icon.png" class="lock">{{/if}}<div class="doc-top"><p class="subject">{{ Classroom.title }}</p><div>by</div><div><span class="online"></span>{{ Classroom.Educator }}</div><div class="totalstudent">( {{Classroom.users_classroom_count}} Students)</div></div>{{#if Classroom.Campus.name}}<p class="doc-end"> {{Classroom.Campus.name}} </p>{{/if}}</a></li>',
+				'classroomTile' : '<li><a href="{{ Classroom.Url }}">{{#if UsersClassroom.is_restricted}}<div class="lock-state"><p>! You do not have access to this class. Please contact the owner</p></div>{{/if}}{{#if UsersClassroom.is_teaching }}<div class="class-head">My Class</div>{{/if}}{{#if Classroom.is_private}}<img src="{{image "lock_icon.png"}}" class="lock">{{/if}}<div class="doc-top"><p class="subject">{{ Classroom.title }}</p><div>by</div><div><span class="online"></span>{{ Classroom.Educator }}</div><div class="totalstudent">( {{Classroom.users_classroom_count}} Students)</div></div>{{#if Classroom.Campus.name}}<p class="doc-end"> {{Classroom.Campus.name}} </p>{{/if}}</a></li>',
 				'quizTmpl' : '<div class="pop-wind clearfix">
 					            <div class="pop-head clearfix">
 					              <span>Classroom Created</span>
@@ -527,7 +527,12 @@ App.classrooms = App.classrooms or {}
 							                <span>
 							                  <a href="profile-view.htm">by {{AppUser.fname}} {{AppUser.lname}}</a>
 							                </span></h4>
-							                <div class="datetime clearfix"><span class="attach-icon"></span>{{ Announcement.created }}</div>
+							                <div class="datetime clearfix">
+							                	{{#if Announcement.file_path}}
+							                		<span class="attach-icon"></span>
+							                	{{/if}}
+							                	{{ Announcement.created }}
+							                </div>
 							              </div>
 							              <p>{{ Announcement.body }}</p>
 							              {{#if Announcement.file_path}}
@@ -542,10 +547,10 @@ App.classrooms = App.classrooms or {}
 						          <div class="doc-heading clearfix">
 						            <input type="text" class="doc-input" value="{{ Topic.name }}" maxlength="70" readonly="readonly">
 						            <div class="lib-right">
-						              <a href="javascript:void(0)" class="lib-edit tooltip"></a>
-						              <a href="javascript:void(0)" class="lib-delete tooltip"></a>
-						              <a href="javascript:void(0)" class="lib-download tooltip"></a>
-						              <div class="click-lib click-icon tooltip"></div>
+						              <a href="javascript:void(0)" class="lib-edit tooltip" title="Edit Topic"></a>
+						              <a href="javascript:void(0)" class="lib-delete tooltip" title="Delete"></a>
+						              <a href="javascript:void(0)" class="lib-download tooltip" title="Download"></a>
+						              <div class="click-lib click-icon tooltip" title="Click to Slide"></div>
 						            </div>
 						          </div>
 						          <div class="contentblock" style="display: none;">

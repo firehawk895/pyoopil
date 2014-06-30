@@ -198,7 +198,7 @@ header.landing-page { position: relative; }
 .h235 { height:235px; }
 .sub-btn { background: #F67E02; border-radius: 2px; color: #FFFFFF; display: inline-block; font-size: 12px; height: 30px; line-height: 31px; margin: 10px 5px; text-align: center; width: 105px; }
 .cnl-btn { background: #b2b2b2; }
-.disc-room .attachmentbox { border: none; display: block; float: left; height: 20px; width: auto; }
+.disc-room .attachmentbox { border: none; display: block; float: left; height: 35px; width: auto; }
 .att-box { border-top: 1px solid #d7d7d7; }
 .attach-mail { background: url("../images/attach.png") no-repeat left top; display: inline-block; float: left; margin-right: 10px; }
 .attach-mail:hover { background-image: url(../images/attach-hover.png); }
@@ -295,7 +295,7 @@ header.landing-page { position: relative; }
 .announcement { width: 655px; }
 .announcement .add-topic { background-color: #F1F1F1; border: 1px solid transparent; margin-bottom: 10px; width: 632px; }
 .announcement .att-box, .announcement .ques-box { background-color: #F1F1F1; }
-.announcement-outer .middivouter { margin: 10px; width: 665px; text-align:justify; text-justify:inner-word; }
+.announcement-outer .middivouter { margin-left: 10px; width: 665px; text-align:justify; text-justify:inner-word; }
 .middivouter .listbox { background: #fff; margin-bottom: 15px; display: block; width: 100%; padding: 10px; float: left; position: relative; border: 1px solid transparent; border-radius: 3px; height:auto; overflow:hidden; }
 .middivouter .listbox .imgbox img { border-radius: 50%; float: left; border: 3px solid #d9d9d9; width: 70px; margin-right: 10px; }
 .middivouter .listbox .userinfo { float: left; width: 575px; margin-bottom: 10px; }
@@ -1388,3 +1388,5 @@ svg { width:100%; }
 
 .library-wrapper .tinyscrollbar .viewport{height: 450px; margin-top: 40px;}
 .tile-lst li{margin-top: 0; margin-bottom: 20px;}
+#files{margin-left: 25px;}
+#announcements .sub-btn{margin: 17px 5px;}

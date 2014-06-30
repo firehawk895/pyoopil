@@ -24,7 +24,6 @@ App.LeftNavScroll = App.LeftNavScroll || {};
       promise = this.services.getClassrooms();
       return promise.then((function(_this) {
         return function(data) {
-          console.log(data.data);
           if (_this.services.isValid(data.data) === true) {
             return $document.trigger('LeftNavScroll.UPDATE', [data.data]);
           }
