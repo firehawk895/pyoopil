@@ -266,8 +266,12 @@ class DiscussionsController extends AppController {
         $status = true;
 
         if (isset($this->request->data['pollchoice_id'])) {
-            if ($this->Discussion->setPollVote($userId, $this->request->data['pollchoice_id'])) {
+            $pollchoiceId = $this->request->data['pollchoice_id'];
+            if ($this->Discussion->setPollVote($userId, $pollchoiceId)) {
                 $status = true;
+                $discussionId = $this->Discussion->Pollchoice->getDiscussionId($pollchoiceId);
+                $data = $this->Discussion->getDiscussionById($discussionId);
+                $data = $this->Discussion->processData($data, AuthComponent::user('id'));
             } else {
                 $status = false;
                 $message = "Failed to vote on this poll.";
