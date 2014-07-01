@@ -216,7 +216,7 @@ App.classrooms = App.classrooms || {};
           App.common.notifier.notify('error', data.message);
           return;
         }
-        if (App.classrooms.services.isValid(data.data) === true) {
+        if (App.classrooms.services.isValid([data]) === true) {
           $target.data('current-page', nextPage);
           App.common.notifier.notify('success', 'More Replies Loaded');
           return $document.trigger('Discussions.REPLIES', {

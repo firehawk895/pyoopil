@@ -90,7 +90,6 @@
 			@postData(url, {"pollchoice_id" : id})
 
 		isValid : (data) ->
-
 			return data? and data.length > 0
 
 	App.classrooms.discussionServices = new DiscussionServices()

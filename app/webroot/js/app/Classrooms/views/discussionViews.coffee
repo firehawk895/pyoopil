@@ -45,6 +45,8 @@
 
 		renderReply : (reply) ->
 
+			console.log reply
+
 			replyHtml = @replyTemplate reply
 
 			replyHtml
@@ -64,11 +66,14 @@
 			$(gamification.container).html(gamificationHtml)
 
 		renderReplies : (e,replies) =>
-
-			repliesHtml = if replies.data?
-				@renderReply reply for reply in replies.data
+			
+			repliesHtml = []
+			
+			for reply of replies.data
+				repliesHtml.push @renderReply replies.data[reply]				
 
 			replies.container.append repliesHtml
+			''
 
 		renderCharts : () ->
 

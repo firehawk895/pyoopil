@@ -71,6 +71,7 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
     DiscussionViews.prototype.renderReply = function(reply) {
       var replyHtml;
+      console.log(reply);
       replyHtml = this.replyTemplate(reply);
       return replyHtml;
     };
@@ -95,19 +96,12 @@ var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments)
 
     DiscussionViews.prototype.renderReplies = function(e, replies) {
       var repliesHtml, reply;
-      repliesHtml = (function() {
-        var _i, _len, _ref, _results;
-        if (replies.data != null) {
-          _ref = replies.data;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            reply = _ref[_i];
-            _results.push(this.renderReply(reply));
-          }
-          return _results;
-        }
-      }).call(this);
-      return replies.container.append(repliesHtml);
+      repliesHtml = [];
+      for (reply in replies.data) {
+        repliesHtml.push(this.renderReply(replies.data[reply]));
+      }
+      replies.container.append(repliesHtml);
+      return '';
     };
 
     DiscussionViews.prototype.renderCharts = function() {

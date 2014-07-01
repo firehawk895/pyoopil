@@ -224,7 +224,7 @@ App.classrooms = App.classrooms or {}
 					App.common.notifier.notify 'error', data.message
 					return
 
-				if App.classrooms.services.isValid(data.data) is true
+				if App.classrooms.services.isValid([data]) is true
 					$target.data('current-page', nextPage)
 					App.common.notifier.notify 'success', 'More Replies Loaded'
 					$document.trigger('Discussions.REPLIES', {"container" : $replies, "data" : data.data})
