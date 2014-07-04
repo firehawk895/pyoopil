@@ -13,7 +13,7 @@ class PeopleController extends AppController {
         $this->loadModel("UsersClassroom");
         $params = array(
             'contain' => array(
-                'User',
+                'AppUser',
                 'Classroom' => array(
                     'Campus'
                 )
@@ -22,8 +22,8 @@ class PeopleController extends AppController {
 
         $people = $this->UsersClassroom->find('all',$params);
         $this->set('people',$people);
-        /*debug($people);
-        die();*/
+        debug($people);
+        die();
     }
 
 } 
