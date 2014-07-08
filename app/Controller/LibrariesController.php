@@ -140,8 +140,7 @@ class LibrariesController extends AppController {
         } else {
             unset($savedData['Topic']['name']);
         }
-//        $this->log($savedData);
-//        $this->log("save associated");
+
         if (@$this->Library->Topic->saveAssociated($savedData)) {
             $status = true;
             $message = "";
