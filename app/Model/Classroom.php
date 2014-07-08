@@ -113,39 +113,11 @@ class Classroom extends AppModel {
     );
 
     /**
-     * Converted to hasMany, like it always should be
-     * ----------------------------------------------
-     *  public $hasAndBelongsToMany = array(
-     *      'User' => array(
-     *          'className' => 'User',
-     *          'joinTable' => 'users_classrooms',
-     *          'foreignKey' => 'classroom_id',
-     *          'associationForeignKey' => 'user_id',
-     *          'unique' => 'keepExisting',
-     *          'conditions' => '',
-     *          'fields' => '',
-     *          'order' => '',
-     *          'limit' => '',
-     *          'offset' => '',
-     *          'finderQuery' => '',
-     *      )
-     *  );
-     * 
-     */
-//    public function afterSave($created, $options = array()) {
-//        parent::afterSave($created, $options);
-//
-//        //set access code for any private classroom/staffroom
-//        If (isset($created) && $created == true && $this->data['is_private'] == true) {
-//            $this->generateCode();
-//        }
-//    }
-
-    /**
      * create classroom popup:
      * $user_id creates a classroom and joins it as an educator.
      * @param int $user_id
-     * @param mixed $data $request->data 
+     * @param mixed $data $request->data
+     * @return bool
      */
     public function add($user_id, $data) {
         /**
@@ -248,7 +220,8 @@ class Classroom extends AppModel {
     /**
      * generates and assigns access code to classroom, preventing duplicates
      * with CODE_RETRY times retries.
-     * @param int $classroom_id Classroom(pk)
+     * @param $classroom_id
+     * @return bool
      */
     private function generateCode($classroom_id) {
 
@@ -332,7 +305,8 @@ class Classroom extends AppModel {
 
     /**
      * Educator's full name of a classroom
-     * @param int $classroomId
+     * @param $classroomId
+     * @return string
      */
     public function getEducatorName($classroomId) {
 
@@ -382,8 +356,9 @@ class Classroom extends AppModel {
 
     /**
      * get paginated classroom tile details
-     * @param type $user_id
-     * @param type $page
+     * @param int $user_id
+     * @param int $page
+     * @return array
      */
     public function getPaginatedClassrooms($user_id, $page) {
         //sanity check
