@@ -81,7 +81,7 @@ class DiscussionsController extends AppController {
             if (isset($this->params['url']['discussion_id'])) {
                 $discussionId = $this->params['url']['discussion_id'];
 
-                $data = $this->Discussion->getPaginatedReplies($discussionId, $page);
+                $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
                 $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page,$discussionId);
             }
@@ -212,7 +212,7 @@ class DiscussionsController extends AppController {
         if ($this->Discussion->Reply->postReply($discussionId, $comment, AuthComponent::user('id'))) {
             $status = true;
             $message = "";
-            $data = $this->Discussion->getPaginatedReplies($discussionId, 1, true);
+            $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, 1, true);
             $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
         } else {
             $status = false;
@@ -244,7 +244,7 @@ class DiscussionsController extends AppController {
             $id = $this->request->data['id'];
             $type = $this->request->data['type'];
             $vote = $this->request->data['vote'];
-            $status = $this->Discussion->setGamificationVote($type, $id, $vote, $userId);
+            $status = $this->Discussion->Gamificationvote->setGamificationVote($type, $id, $vote, $userId);
             if ($status) {
                 $data = $this->Discussion->getGamificationInfo($type, $id);
             }

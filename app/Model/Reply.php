@@ -84,7 +84,7 @@ class Reply extends AppModel {
 
     public function processReplies($data, $userId) {
         for ($i = 0; $i < count($data); $i++) {
-            $hasVoted = $this->Discussion->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
+            $hasVoted = $this->Gamificationvote->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
             $isOwner = ($data[$i]['Reply']['user_id'] == $userId);
 
             if ($hasVoted || $isOwner) {
@@ -129,5 +129,52 @@ class Reply extends AppModel {
 
     }
 
+    /**
+     * Return Replies of a discussion, paginated
+     * @param $discussionId
+     * @param $page
+     * @param bool $onlylatest
+     * @return array
+     */
+    public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
 
+        $offset = self::MAX_REPLIES * ($page - 1 );
+
+        $contain = array(
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array(
+                    'fname',
+                    'lname'
+                )
+            ),
+        );
+
+        $options = array(
+            'contain' => $contain,
+            'conditions' => array(
+                'discussion_id' => $discussionId
+            ),
+            'order' => array(
+                'created' => 'desc'
+            ),
+            'offset' => $offset,
+            'limit' => self::MAX_REPLIES,
+        );
+
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->find('all', $options);
+        return $data;
+    }
 }
