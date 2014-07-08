@@ -369,8 +369,8 @@ class Discussion extends AppModel {
 
     /**
      * Delete discussion by id by owner
-     * @param $discussionId
-     * @param $userId
+     * @param int $discussionId
+     * @param int $userId
      * @return bool
      */
     public function deleteDiscussion($discussionId, $userId) {
@@ -384,58 +384,10 @@ class Discussion extends AppModel {
     }
 
     /**
-     * Retrieve Gamification information and engagers for a Discussion or Reply
-     * @param $type (Discussion/Reply)
-     * @param int $id
-     * @param int $page
-     * @return array
-     */
-    public function getGamificationInfo($type, $id, $page = 1) {
-        $offset = $this->PAGINATION_LIMIT * ($page - 1 );
-
-        $params = array(
-            'contain' => array(
-                'Gamificationvote' => array(
-                    'AppUser' => array(
-                        'fields' => array(
-                            'fname',
-                            'lname'
-                        )
-                    )
-                )
-            ),
-            'fields' => array(
-                'id',
-                'display_praise',
-                $this->enumMap[self::CU],
-                $this->enumMap[self::IN],
-                $this->enumMap[self::CO],
-                $this->enumMap[self::EN],
-                $this->enumMap[self::ED]
-            ),
-            'conditions' => array(
-                'id' => $id
-            ),
-            'offset' => $offset,
-            'limit' => $this->PAGINATION_LIMIT
-        );
-
-        if ($type == 'Discussion') {
-            $data = $this->find('first', $params);
-        } elseif ($type == 'Reply') {
-            $data = $this->Reply->find('first', $params);
-        }
-        $data['Gamificationvote'] = $this->convertGamificationVoteArray($data['Gamificationvote']);
-
-        return $data;
-    }
-
-    /**
      * Toggle fold on discussion
      * @param $discussionId
      * @param $userId
-     * @param bool $fold
-     * @return bool|mixed
+     * @return bool
      */
     public function toggleFold($discussionId, $userId) {
 
@@ -470,125 +422,6 @@ class Discussion extends AppModel {
             $this->Foldeddiscussion->create();
             return $this->Foldeddiscussion->saveAssociated($data);
         }
-    }
-
-    /**
-     * User votes on a pollChoice for a poll type Discussion
-     * @param type $userId Voter's user ID
-     * @param type $discussionid discussion_id (pk) of the poll type discussion
-     * @param type $pollChoiceId pollchoice_id of the choice on poll voted for
-     */
-    public function setPollVote($userId, $pollChoiceId) {
-
-        $conditions = array(
-            'user_id' => $userId,
-            'pollchoice_id' => $pollChoiceId
-        );
-
-        //check if its a valid poll choice
-        if (!$this->Pollchoice->findById($pollChoiceId)) {
-            return false;
-        }
-
-        //does not check if already voted
-        if (!$this->Pollchoice->Pollvote->hasAny($conditions)) {
-            $this->Pollchoice->id = $pollChoiceId;
-            $newVotes = $this->Pollchoice->field('votes') + 1;
-//            $this->Pollchoice->id = $pollChoiceId;
-//            $this->Pollchoice->saveField('votes' , $newVotes);
-
-            $data = array(
-                'User' => array(
-                    'id' => $userId
-                ),
-                'Pollchoice' => array(
-                    'id' => $pollChoiceId,
-                    'votes' => $newVotes
-                )
-            );
-            $this->Pollchoice->Pollvote->create();
-            if ($this->Pollchoice->Pollvote->saveAssociated($data)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function getPaginatedFoldedDiscussions($roomId, $userId, $page = 1) {
-
-        /**
-         * SELECT *
-         * FROM discussions AS d
-         * INNER JOIN foldeddiscussions AS f ON d.id = f.discussion_id
-         * WHERE f.user_id =1
-         * AND d.classroom_id =1
-         */
-        $offset = self::PAGINATION_LIMIT * ($page - 1);
-
-        $options['joins'] = array(
-            array('table' => 'foldeddiscussions',
-                'alias' => 'Foldeddiscussion',
-                'type' => 'inner',
-                'conditions' => array(
-                    'Discussion.id = Foldeddiscussion.discussion_id'
-                )
-            ),
-        );
-
-        $options['conditions'] = array(
-            'Discussion.classroom_id' => $roomId,
-            'Foldeddiscussion.user_id' => $userId
-        );
-
-        $options['offset'] = $offset;
-        $options['limit'] = self::PAGINATION_LIMIT;
-
-        $contain = array(
-            'Reply' => array(
-                'Gamificationvote' => array(
-                    'AppUser' => array(
-                        'fields' => array(
-                            'fname',
-                            'lname'
-                        )
-                    )
-                ),
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                ),
-                'limit' => self::MAX_REPLIES,
-                'order' => array(
-                    'created' => 'desc'
-                )
-            ),
-            'Pollchoice' => array(
-                'Pollvote'
-            ),
-            'Gamificationvote' => array(
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                )
-            ),
-            'AppUser' => array(
-                'fields' => array('fname', 'lname')
-            ),
-            'Foldeddiscussion' => array(
-                'conditions' => array(
-                    'user_id' => $userId
-                )
-            )
-        );
-
-        $options['contain'] = $contain;
-
-        $data = $this->find('all', $options);
-        return $data;
     }
 
 }

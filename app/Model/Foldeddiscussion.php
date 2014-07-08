@@ -41,39 +41,37 @@ class Foldeddiscussion extends AppModel {
         )
     );
 
-    /*public function getPaginatedFoldedDiscussions($roomId, $userId, $page = 1) {
+    public function getPaginatedFoldedDiscussions($roomId, $userId, $page = 1) {
+
+        /**
+         * SELECT *
+         * FROM discussions AS d
+         * INNER JOIN foldeddiscussions AS f ON d.id = f.discussion_id
+         * WHERE f.user_id =1
+         * AND d.classroom_id =1
+         */
         $offset = self::PAGINATION_LIMIT * ($page - 1);
-        $contain = array(
-            'Discussion' => array(
+
+        $options['joins'] = array(
+            array('table' => 'foldeddiscussions',
+                'alias' => 'Foldeddiscussion',
+                'type' => 'inner',
                 'conditions' => array(
-                    'classroom_id' => $roomId
-                ),
-                'order' => array(
-                    'created' => 'desc'
-                ),
-                'Reply' => array(
-                    'Gamificationvote' => array(
-                        'AppUser' => array(
-                            'fields' => array(
-                                'fname',
-                                'lname'
-                            )
-                        )
-                    ),
-                    'AppUser' => array(
-                        'fields' => array(
-                            'fname',
-                            'lname'
-                        )
-                    ),
-                    'limit' => self::MAX_REPLIES,
-                    'order' => array(
-                        'created' => 'desc'
-                    )
-                ),
-                'Pollchoice' => array(
-                    'Pollvote'
-                ),
+                    'Discussion.id = Foldeddiscussion.discussion_id'
+                )
+            ),
+        );
+
+        $options['conditions'] = array(
+            'Discussion.classroom_id' => $roomId,
+            'Foldeddiscussion.user_id' => $userId
+        );
+
+        $options['offset'] = $offset;
+        $options['limit'] = self::PAGINATION_LIMIT;
+
+        $contain = array(
+            'Reply' => array(
                 'Gamificationvote' => array(
                     'AppUser' => array(
                         'fields' => array(
@@ -83,71 +81,40 @@ class Foldeddiscussion extends AppModel {
                     )
                 ),
                 'AppUser' => array(
-                    'fields' => array('fname', 'lname')
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                ),
+                'limit' => self::MAX_REPLIES,
+                'order' => array(
+                    'created' => 'desc'
+                )
+            ),
+            'Pollchoice' => array(
+                'Pollvote'
+            ),
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array('fname', 'lname')
+            ),
+            'Foldeddiscussion' => array(
+                'conditions' => array(
+                    'user_id' => $userId
                 )
             )
         );
 
-        $params = array(
-            'contain' => $contain,
-            'limit' => self::PAGINATION_LIMIT,
-            'offset' => $offset,
-            'conditions' => array(
-                'Foldeddiscussion.user_id' => $userId
-            )
-        );
+        $options['contain'] = $contain;
 
-        $data = $this->find('all', $params);
-        return $data;
-    }*/
-
-    /*not using - redundant*/
-    public function processData($data, $userId) {
-        for ($i = 0; $i < count($data); $i++) {
-            /* Removing Gamification information */
-            $hasVoted = ($this->Discussion->hasVoted('Discussion', $data[$i]['Discussion']['id'], $userId));
-            $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
-
-            if ($hasVoted || $isOwner) {
-                $data[$i]['Discussion']['showGamification'] = true;
-            } else {
-                unset($data[$i]['Discussion']['real_praise']);
-                unset($data[$i]['Discussion']['cu']);
-                unset($data[$i]['Discussion']['in']);
-                unset($data[$i]['Discussion']['co']);
-                unset($data[$i]['Discussion']['en']);
-                unset($data[$i]['Discussion']['ed']);
-                $data[$i]['Discussion']['showGamification'] = false;
-            }
-
-            /* Remove Key if not folded by current user */
-            if ($data[$i]['Foldeddiscussion'] == NULL) {
-                $data[$i]['Discussion']['isFolded'] = false;
-            } else {
-                $data[$i]['Discussion']['isFolded'] = true;
-            }
-            unset($data[$i]['Foldeddiscussion']);
-
-            /* Removing Gamification information for Reply */
-            for ($j = 0; $j < count($data[$i]['Discussion']['Reply']); $j++) {
-                $hasVoted = ($this->Discussion->hasVoted('Reply', $data[$i]['Discussion']['Reply'][$j]['id'], $userId));
-                $isOwner = ($data[$i]['Discussion']['Reply'][$j]['user_id'] == $userId);
-                if ((!$isOwner && !$hasVoted) || !$isOwner) {
-                    unset($data[$i]['Discussion']['Reply'][$j]['real_praise']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['display_praise']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['cu']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['in']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['co']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['en']);
-                    unset($data[$i]['Discussion']['Reply'][$j]['ed']);
-                    $data[$i]['Discussion']['Reply'][$j]['showGamification'] = false;
-                } else {
-                    $data[$i]['Discussion']['Reply'][$j]['showGamification'] = true;
-                }
-            }
-        }
-
+        $data = $this->Discussion->find('all', $options);
         return $data;
     }
-
 }

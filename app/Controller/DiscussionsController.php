@@ -48,9 +48,9 @@ class DiscussionsController extends AppController {
         $message = "";
 
         if (isset($this->params['url']['folded'])) {
-            $data = $this->Discussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
+            $data = $this->Discussion->Foldeddiscussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
         } else {
-            $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, $page);
+            $data = $this->Discussion->Foldeddiscussion->getPaginatedDiscussions($classroomId, $userId, $page);
         }
         $data = $this->Discussion->processData($data, $userId);
 
@@ -65,7 +65,7 @@ class DiscussionsController extends AppController {
 
     /**
      * API: get paginated replies
-     * @param type $classroomId
+     * Getting replies for a discussion
      */
     public function getreplies() {
         $this->response->type('json');
@@ -147,14 +147,6 @@ class DiscussionsController extends AppController {
         $this->set('webroot', $this->webroot);
         $this->set(compact('status', 'message', 'webroot'));
         $this->set('_serialize', array('status', 'message', 'webroot'));
-    }
-
-    public function test() {
-        debug($this->webroot);
-        debug(Router::fullBaseUrl());
-        debug(Router::url('/', true));
-        debug($this->base);
-        die();
     }
 
     /**
@@ -246,7 +238,7 @@ class DiscussionsController extends AppController {
             $vote = $this->request->data['vote'];
             $status = $this->Discussion->Gamificationvote->setGamificationVote($type, $id, $vote, $userId);
             if ($status) {
-                $data = $this->Discussion->getGamificationInfo($type, $id);
+                $data = $this->Discussion->Gamificationvote->getGamificationInfo($type, $id);
             }
         }
         $this->set('webroot', $this->webroot);

@@ -58,39 +58,8 @@ class Gamificationvote extends AppModel {
 		)
 	);
 
-    const CU = 1;
-    const IN = 2;
-    const CO = 3;
-    const EN = 4;
-    const ED = 5;
-    const limit = 15;
-
-    public $enum = array(
-        'vote' => array(
-            self::CU => 'cu',
-            self::IN => 'in',
-            self::CO => 'co',
-            self::EN => 'en',
-            self::ED => 'ed'
-        )
-    );
-
-    /**
-     * Easily switch between enum string text and integer
-     * easy hack to select required databaseField
-     * @var type
-     */
-    public $enumMap = array(
-        self::CU => 'cu',
-        self::IN => 'in',
-        self::CO => 'co',
-        self::EN => 'en',
-        self::ED => 'ed',
-        'cu' => self::CU,
-        'in' => self::IN,
-        'co' => self::CO,
-        'en' => self::EN,
-        'ed' => self::ED
+    protected $votes = array(
+        'cu', 'in', 'co', 'en', 'ed'
     );
 
     /**
@@ -137,8 +106,7 @@ class Gamificationvote extends AppModel {
             ),
         );
 
-        $voteTypes = Hash::combine($this->enum, 'vote.{n}');
-        $validVote = array_key_exists($vote, $voteTypes);
+        $validVote = in_array($vote, $this->votes);
 
         if ($type == 'Discussion') {
             $this->id = $id;
@@ -159,7 +127,7 @@ class Gamificationvote extends AppModel {
 
                 $displayPraise = $data[$type]['display_praise'] + 1;
 
-                if ($vote == $this->enumMap[self::ED]) {
+                if ($vote == 'ed') {
                     $realPraise = $data[$type]['real_praise'] + 10;
                 } else {
                     $realPraise = $data[$type]['real_praise'] + 1;
@@ -189,5 +157,52 @@ class Gamificationvote extends AppModel {
             /* voting on own discussion/reply */
             return false;
         }
+    }
+
+    /**
+     * Retrieve Gamification information and engagers for a Discussion or Reply
+     * @param $type (Discussion/Reply)
+     * @param int $id
+     * @param int $page
+     * @return array
+     */
+    public function getGamificationInfo($type, $id, $page = 1) {
+        $offset = $this->PAGINATION_LIMIT * ($page - 1 );
+
+        $params = array(
+            'contain' => array(
+                'Gamificationvote' => array(
+                    'AppUser' => array(
+                        'fields' => array(
+                            'fname',
+                            'lname'
+                        )
+                    )
+                )
+            ),
+            'fields' => array(
+                'id',
+                'display_praise',
+                'cu',
+                'in',
+                'co',
+                'en',
+                'ed'
+            ),
+            'conditions' => array(
+                'id' => $id
+            ),
+            'offset' => $offset,
+            'limit' => $this->PAGINATION_LIMIT
+        );
+
+        if ($type == 'Discussion') {
+            $data = $this->Discussion->find('first', $params);
+        } elseif ($type == 'Reply') {
+            $data = $this->Reply->find('first', $params);
+        }
+        $data['Gamificationvote'] = $this->Discussion->convertGamificationVoteArray($data['Gamificationvote']);
+
+        return $data;
     }
 }
