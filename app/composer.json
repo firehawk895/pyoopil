@@ -3,7 +3,7 @@
 		"vendor-dir": "Vendor"
 	},
 	"require": {
-		"mjohnson/uploader": "4.*",
+		"mjohnson/uploader": "4.5.*",
 		"mjohnson/decoda": "6.*",
 		"aws/aws-sdk-php": "2.*",
 		"cakephp/debug_kit": "2.2.*",

@@ -8,9 +8,9 @@
 
 App::uses('AppController', 'Controller');
 
-class SubmissionsController extends AppController {
+class SubmissionsController extends AppController{
 
     public function index($classroomId){
-
+        $this->set('classroomId', $classroomId);
     }
 } 

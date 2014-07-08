@@ -50,6 +50,16 @@ $addClass[$active] = array(
             ?>
         </li>
         <li>
+            <?php
+            echo $this->Html->link('Submissions', array(
+                    'controller' => 'Submissions',
+                    'action' => 'index',
+                    'id' => $classroomId
+                ), $addClass['Submissions']
+            );
+            ?>
+        </li>
+        <li>
             <div class="loader"><img src="<?php echo $this->webroot; ?>/images/loading/ajax-loader.gif" alt="loading">
             </div>
         </li>
