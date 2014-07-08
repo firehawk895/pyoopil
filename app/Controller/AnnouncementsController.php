@@ -18,24 +18,7 @@ class AnnouncementsController extends AppController {
         $this->set('data', json_encode($data));
     }
 
-//    public function getAnnouncements($classroomId) {
-//        $this->response->type('json');
-//        $status = false;
-//        $message = "";
-//        if (isset($this->params['url']['page'])) {
-//            $page = $this->params['url']['page'];
-//            $data = $this->Announcement->getPaginatedAnnouncements($classroomId, $page);
-//        }
-//
-//        if ($data != NULL) {
-//            $status = true;
-//        }
-//
-//        $this->set(compact('status', 'message', 'data'));
-//        $this->set('_serialize', array('status', 'message', 'data'));
-//    }
-
-    public function getannouncements($classroomId) {
+    public function getAnnouncements($classroomId) {
         $this->response->type('json');
         $page = 1;
         $userId = AuthComponent::user('id');
@@ -64,7 +47,6 @@ class AnnouncementsController extends AppController {
         $message = "";
         $userId = AuthComponent::user('id');
 
-//        unset($this->request->data['Announcement']['classroom_id']);
         $data = $this->request->data;
 
         if ($this->Announcement->createAnnouncement($classroomId, $data, $userId)) {
@@ -81,31 +63,6 @@ class AnnouncementsController extends AppController {
         $this->set(compact('status', 'message', 'webroot'));
         $this->set('_serialize', array('status', 'message', 'webroot', 'data'));
     }
-
-//    public function add_($classroomId) {
-//        $this->request->onlyAllow('post');
-//        $this->response->type('json');
-//
-//        $status = false;
-//        $message = "";
-//        $userId = AuthComponent::user('id');
-//
-//        unset($this->request->data['Announcement']['classroom_id']);
-//        $data = $this->request->data;
-//
-//        if ($this->Announcement->createAnnouncement($classroomId, $data, $userId)) {
-//            $data = $this->Announcement->getAnnouncementById($this->Announcement->getLastInsertID());
-//            $message = "Announcement created";
-//            $status = true;
-//            $this->set(compact('status', 'message', 'data'));
-//            $this->set('_serialize', array('status', 'message', 'data'));
-//        } else {
-//            $message = "Could not create announcement";
-//            $status = false;
-//            $this->set(compact('status', 'message'));
-//            $this->set('_serialize', array('status', 'message'));
-//        }
-//    }
 
     public function tasty($classroomId, $announcement) {
 
@@ -140,7 +97,6 @@ class AnnouncementsController extends AppController {
             $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
             $Email->send($body);
         }
-//        $this->log($body);
     }
 
 }
