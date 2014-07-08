@@ -35,40 +35,7 @@ class Discussion extends AppModel {
      * db notes:
      * ON DELETE CASCADE set for all related Discussion models except Classroom 
      */
-    const CU = 1;
-    const IN = 2;
-    const CO = 3;
-    const EN = 4;
-    const ED = 5;
-    const limit = 15;
 
-    public $enum = array(
-        'vote' => array(
-            self::CU => 'cu',
-            self::IN => 'in',
-            self::CO => 'co',
-            self::EN => 'en',
-            self::ED => 'ed'
-        )
-    );
-
-    /**
-     * Easily switch between enum string text and integer
-     * easy hack to select required databaseField
-     * @var type 
-     */
-    public $enumMap = array(
-        self::CU => 'cu',
-        self::IN => 'in',
-        self::CO => 'co',
-        self::EN => 'en',
-        self::ED => 'ed',
-        'cu' => self::CU,
-        'in' => self::IN,
-        'co' => self::CO,
-        'en' => self::EN,
-        'ed' => self::ED
-    );
     public $actsAs = array(
         'Utility.Enumerable',
         'Containable'
