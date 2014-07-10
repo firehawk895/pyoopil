@@ -8,8 +8,8 @@ require_once dirname(__DIR__) . '/Vendor/autoload.php';
 /**
  * Load ENV variables from the .env file
  */
-if(is_file(APP . DS . '.env')) {
-    $vars = json_decode(file_get_contents(APP . DS . '.env'), true);
+if(is_file(APP.'vars.env')) {
+    $vars = json_decode(file_get_contents(APP.'vars.env'), true);
     foreach ($vars as $name => $val) {
         putenv("$name=$val");
     }
