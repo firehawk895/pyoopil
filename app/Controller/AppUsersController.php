@@ -46,9 +46,41 @@ class AppUsersController extends UsersController {
     
     public function login() {
         parent::login();
-        
-        if($this->Auth->loggedIn()){
-            $this->redirect($this->Auth->loginRedirect);
+        //$this->response->type('json');
+
+        $status = $this->Auth->loggedIn();
+
+        if($status){
+            $message = "Login successful";
+        }else{
+            $message = "Login unsuccessful";
         }
+
+        $data = array();
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    public function logout(){
+        $this->response->type('json');
+
+        $this->Session->destroy();
+        $this->RememberMe->destroyCookie();
+
+        $this->Auth->logout();
+
+        $status = !$this->Auth->loggedIn();
+
+        if($status){
+            $message = "Logout successful";
+        }else{
+            $message = "Logout unsuccessful";
+        }
+
+        $data = array();
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 }

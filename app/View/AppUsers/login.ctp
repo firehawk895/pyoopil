@@ -75,7 +75,6 @@ JS;
         <a class="close-link" href="javascript:void(0);"><span class="icon-cross"></span></a>
         <div class="signup-content">
             <p class="signup-heading">Pyoopil Login </p>
-            <form action="" method="post">
                 <table class="signup-form">
                     <?php
                     echo $this->Form->create($model, array(
@@ -131,7 +130,7 @@ JS;
                 </table>
                 <div class="form-btn clearfix">
                     <div class="submit-btn">
-                        <?php 
+                        <?php
                         echo $this->Form->hidden('User.return_to', array(
                             'value' => $return_to));
                         echo $this->Form->submit('Login' , array(
@@ -143,7 +142,6 @@ JS;
                         <!--<input type="submit" class="sub-btn" value="Login">-->
                     </div>
                 </div>
-            </form>
         </div>
     </div>
 </div>
