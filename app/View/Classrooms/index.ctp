@@ -3,8 +3,8 @@ $this->start('pagesubnav');
 echo $this->element('classrooms/classroom-subnav');
 $this->end();
 ?>
-<div class="library-wrapper">
-    <ul class="tile-lst" id="class-tile-list">
+<div class="library-wrapper" ng-app="classrooms">
+    <ul class="tile-lst" id="class-tile-list" ng-controller="crCtrl">
         <div class="tinyscrollbar">
             <div class="viewport">
                 <div class="overview">
@@ -45,8 +45,13 @@ $this->end();
                 </div>
             </div>
         </li
->                    <div id="classrooms">
-                    
+>                    <!-- <div id="classrooms">
+                        
+                    </div> -->
+
+                    <div id="classrooms">
+                        <classrooms></classrooms>
+                        <!-- <groups></groups> -->
                     </div>
                 </div>
                 <div class="scrollbar">
@@ -61,13 +66,14 @@ $this->end();
             </div>
         </div>
         
-        <script type="text/javascript">
-
-            var App = window.App || {};
-                App.classrooms = App.classrooms || {};
-
-                App.classrooms.data = <?php echo $data ?>;
-
-        </script>   
+          
     </ul>
+    <script type="text/javascript">
+
+        var App = window.App || {};
+            App.classrooms = App.classrooms || {};
+
+            App.classrooms.data = <?php echo $data ?>;
+
+    </script>
 </div>

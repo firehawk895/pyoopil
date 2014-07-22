@@ -1,35 +1,15 @@
-(($, window, document) ->
+angular.module('classrooms.services', [])
+angular.module('classrooms.controllers', [])
+angular.module('classrooms.directives', [])
+angular.module('classrooms.filters', [])
 
-	$document = $(document)
 
-	class Init
+angular.module('classrooms', [
 
-		constructor : ->
+	'classrooms.services',
+	'classrooms.controllers',
+	'classrooms.directives',
+	'classrooms.filters'
 
-			@services = App.classrooms.services
-			@currentPage = @services.getCurrentPage()
 
-			# console.log @currentPage
-
-			switch @currentPage
-				when 'Classrooms' then new App.classrooms.landing('#classrooms')
-				when 'Classrooms#' then new App.classrooms.landing('#classrooms')
-				when 'index' then new App.classrooms.landing('#classrooms')
-				when 'Discussions' then App.classrooms.discussion.init('#discussions')
-				when 'Discussions#' then App.classrooms.discussion.init('#discussions')
-				when 'discussions' then App.classrooms.discussion.init('#discussions')
-				when 'discussions#' then App.classrooms.discussion.init('#discussions')
-				when 'foldeddiscussions' then App.classrooms.discussion.init('#discussions')
-				when 'foldeddiscussions#' then App.classrooms.discussion.init('#discussions')
-				when 'Announcements' then App.classrooms.announcement.init('#announcements')
-				when 'Announcements#' then App.classrooms.announcement.init('#announcements')
-				when 'Libraries' then App.classrooms.library.init('#libraries')
-				when 'Libraries#' then App.classrooms.library.init('#libraries')
-				else
-					new App.classrooms.landing('#classrooms')
-		
-
-	new Init()
-
-)($, window, document)
-
+])

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -184,15 +184,16 @@
     <?php
     //core library
     echo $this->Html->script('jquery-1.8.2.min.js');
-    // echo $this->Html->script('https://code.jquery.com/jquery-1.11.1.js');
     echo $this->Html->script('jquery-ui-1.10.3.custom.js');
-    echo $this->Html->script("vendors/underscore.js");
-    echo $this->Html->script("vendors/handlebars.js");
+    echo $this->Html->script('vendors/angular/angular.min.js');
+    echo $this->Html->script('vendors/angular-file-upload/dist/angular-file-upload.min.js');
+    // echo $this->Html->script('vendors/angular-ui-router/release/angular-ui-router.min.js');
+    echo $this->Html->script('vendors/lodash/dist/lodash.min.js');
     echo $this->Html->script("vendors/tinyscrollbar.js");
     echo $this->Html->script("vendors/toastr.js");
     echo $this->Html->script("vendors/googleCharts.js");
 
-    // TO BE Removed
+    // TO Be Removed
     echo $this->Html->script('jquery.autosize.min.js');
     echo $this->Html->script('jquery.passstrength.js');
     echo $this->Html->script('jquery.bxslider.min.js');
@@ -206,54 +207,27 @@
     echo $this->Html->script('jquery.mousewheel.min.js');
     echo $this->Html->script('vertical.slider.standard.js');
     echo $this->Html->script('ck/ckeditor');
+
+    // Temp Plugin Wrappers
+    echo $this->html->script('app/Global/directives/notification.js');
+    
+
 //     Buffer from cakephp
 //     This should always be on top of custom JS files
     echo $this->Js->writeBuffer();
 
-    // COMMON UTILITIES
-    echo $this->Html->script("app/Common/notification.js");
+    // Classrooms Code
+    echo $this->html->script('app/Classrooms/app.js');
+    echo $this->html->script('app/Classrooms/services/crService.js');
+    echo $this->html->script('app/Classrooms/controllers/crCtrl.js');
 
-    // APP LEFT NAV SCROLL JS Files
-    echo $this->Html->script("app/LeftNavScroll/services/services.js");
-    echo $this->Html->script("app/LeftNavScroll/services/templates.js");
-    echo $this->Html->script("app/LeftNavScroll/views/views.js");
-    echo $this->Html->script("app/LeftNavScroll/app.js");
+    //Landing
+    
+    echo $this->html->script('app/Classrooms/Landing/directives/classrooms.js');
+    echo $this->html->script('app/Classrooms/Landing/directives/classroom.js'); 
 
-    // APP CLASSROOMS JS Files
-    echo $this->Html->script("app/Classrooms/configs/configs.js");
-    echo $this->Html->script("app/Classrooms/services/services.js");
-    echo $this->Html->script("app/Classrooms/services/discussionServices.js");
-    echo $this->Html->script("app/Classrooms/services/announcementServices.js");
-    echo $this->Html->script("app/Classrooms/services/libraryServices.js");
-    echo $this->Html->script("app/Classrooms/services/handlebarHelpers.js");
-    echo $this->Html->script("app/Classrooms/services/templates.js");
-    echo $this->Html->script("app/Classrooms/views/views.js");
-    echo $this->Html->script("app/Classrooms/views/discussionViews.js");
-    echo $this->Html->script("app/Classrooms/views/announcementViews.js");
-    echo $this->Html->script("app/Classrooms/views/libraryViews.js");
-    echo $this->Html->script("app/Classrooms/modules/landing.js");
-    echo $this->Html->script("app/Classrooms/modules/discussions.js");
-    echo $this->Html->script("app/Classrooms/modules/announcements.js");
-    echo $this->Html->script("app/Classrooms/modules/library.js");
-    echo $this->Html->script("app/Classrooms/app.js");
-
-
-//     //plugins that should have never been there
-    // echo $this->Html->script('jquery.autosize.min.js');
-//    echo $this->Html->script('charts.js');
-    // echo $this->Html->script('jquery.passstrength.js');
-    // echo $this->Html->script('jquery.bxslider.min.js');
-    // echo $this->Html->script('jquery.slimscroll.min.js');
-    // echo $this->Html->script('tooltip.min.js');
-    // echo $this->Html->script('jquery.prettyPhoto.js');
-    // echo $this->Html->script('chosen.jquery.min.js');
-    // echo $this->Html->script('jquery.ddslick.min.js');
-    // echo $this->Html->script('tag-it.min.js');
-//    echo $this->Html->script('tiny.editor.packed.js');
-    // echo $this->Html->script('fullcalendar.min.js');
-    // echo $this->Html->script('jquery.mousewheel.min.js');
-    // echo $this->Html->script('vertical.slider.standard.js');
-//    echo $this->Html->script('toastr.js');
+    // Announcements
+    echo $this->html->script('app/Classrooms/Announcements/directives/announcementForm.js'); 
 
     echo $this->Html->script('core.js');
 //     echo $this->Html->script('ck/ckeditor');
