@@ -15,7 +15,7 @@ class AppUsersController extends UsersController {
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->layout = 'ajax';
-        $this->Auth->allow('login');
+        $this->Auth->allow('login','add','reset_password');
     }
 
     protected function _setupAuth() {
