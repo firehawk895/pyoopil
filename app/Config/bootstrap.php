@@ -148,3 +148,5 @@ CakePlugin::load('Users', array('routes' => true));
 CakePlugin::load('Uploader');
 
 CakePlugin::load('Utility', array('bootstrap' => true, 'routes' => true));
+
+CakePlugin::load('Authenticate');

@@ -171,4 +171,24 @@ class AppUser extends User {
         return $fullName;
     }
 
+    public function authenticate($data) {
+        $user = $this->find('first', array(
+            'conditions' => array(
+                'AppUser.email' => $data['AppUser']['email'],
+                'AppUser.password' => $this->hash($data['AppUser']['password'], 'sha1', true)
+            ),
+        ));
+
+        if(!empty($user)){
+            return $user;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function generateAuthToken(){
+        return String::uuid();
+    }
+
 }

@@ -11,27 +11,27 @@ class AppUsersController extends UsersController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+        $this->Security->unlockedActions = array('login');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->layout = 'ajax';
         $this->Auth->allow('login');
-        
     }
 
     protected function _setupAuth() {
-        parent::_setupAuth();
-        $this->Auth->loginAction = array(
+        //parent::_setupAuth();
+/*        $this->Auth->loginAction = array(
             'plugin' => null,
             'admin' => false,
             'controller' => 'app_users',
             'action' => 'login'
-        );
-        $this->Auth->loginRedirect = array(
+        );*/
+/*        $this->Auth->loginRedirect = array(
             'plugin' => null,
             'admin' => false,
             'controller' => 'classrooms',
             'action' => 'index'
-        );
+        );*/
         $this->Auth->logoutRedirect = array(
             'plugin' => null,
             'admin' => false,
@@ -43,20 +43,33 @@ class AppUsersController extends UsersController {
             'Actions' => array('actionPath' => 'controllers')
         );
     }
-    
+
     public function login() {
-        parent::login();
-        //$this->response->type('json');
 
-        $status = $this->Auth->loggedIn();
-
-        if($status){
-            $message = "Login successful";
-        }else{
-            $message = "Login unsuccessful";
-        }
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
 
         $data = array();
+        $status = false;
+
+        if($this->request->is('post')){
+            $this->log($this->request);
+            $user = $this->AppUser->authenticate($this->request->data);
+            if($user){
+                $token = $this->AppUser->generateAuthToken();
+                $this->AppUser->id = $user['AppUser']['id'];
+
+                if($this->AppUser->saveField('auth_token', $token)){
+                    $status = true;
+                    $data['auth_token'] = $token;
+                    $message = "Login successful";
+                }
+            }
+            else{
+                $message = "Login unsuccessful";
+            }
+        }
+
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -66,17 +79,8 @@ class AppUsersController extends UsersController {
         $this->response->type('json');
 
         $this->Session->destroy();
-        $this->RememberMe->destroyCookie();
 
-        $this->Auth->logout();
 
-        $status = !$this->Auth->loggedIn();
-
-        if($status){
-            $message = "Logout successful";
-        }else{
-            $message = "Logout unsuccessful";
-        }
 
         $data = array();
         $this->set(compact('status', 'message'));
