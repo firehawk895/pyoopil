@@ -150,3 +150,5 @@ CakePlugin::load('Uploader');
 CakePlugin::load('Utility', array('bootstrap' => true, 'routes' => true));
 
 CakePlugin::load('Authenticate');
+CakePlugin::load('Tools');
+CakePlugin::load('Queue');

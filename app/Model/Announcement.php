@@ -215,7 +215,32 @@ class Announcement extends AppModel {
     /**
      * Deffered email sending.
      */
-    public function sendEmails() {
+    public function sendEmails($classroomId, $announcement) {
+
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id')
+            ),
+            'AppUser' => array(
+                'fields' => array('id', 'email')
+            )
+        );
+
+        $options['conditions'] = array(
+            'UsersClassroom.classroom_id' => $classroomId
+        );
+        $data = $this->Classroom->UsersClassroom->find('all', $options);
+        $emails = Hash::extract($data, '{n}.AppUser.email');
+
+        App::uses('EmailLib', 'Tools.Lib');
+
+        $Email = new EmailLib();
+        $Email->to($emails);
+        $Email->subject($announcement['Announcement']['subject']);
+        $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
+        $result = $Email->send($body);
+
+        return $result;
         
     }
 
