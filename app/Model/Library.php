@@ -122,16 +122,6 @@ class Library extends AppModel {
         );
         
         return $this->Topic->save($data);
-
-//        $data = array(
-//            'name' => $topicText
-//        );
-//
-//        $conditions = array(
-//            'Topic.id' => $topicId
-//        );
-//
-//        return $this->Topic->updateAll($data, $conditions);
     }
 
     public function getLibraryId($classroomId) {
@@ -149,17 +139,6 @@ class Library extends AppModel {
 
     public function deleteTopic($topicId) {
         return $this->Topic->delete($topicId);
-    }
-
-    public function createTopic($libraryId, $topicText) {
-        $data = array(
-            'Library' => array(
-                'id' => $libraryId
-            ),
-            'Topic' => array(
-                'name' => $topicText
-            )
-        );
     }
 
     public function getPaginatedTopics($libraryId, $page = 1) {
@@ -275,7 +254,6 @@ class Library extends AppModel {
             }
             unset($data[$i]['Pyoopilfile']);
         }
-
         return $data;
     }
 

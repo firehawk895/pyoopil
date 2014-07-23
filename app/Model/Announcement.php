@@ -87,28 +87,8 @@ class Announcement extends AppModel {
     );
 
     /**
-     * hasAndBelongsToMany associations
-     * @var array
-     */
-//    public $hasAndBelongsToMany = array(
-//        'User' => array(
-//            'className' => 'User',
-//            'joinTable' => 'users_announcements',
-//            'foreignKey' => 'announcement_id',
-//            'associationForeignKey' => 'user_id',
-//            'unique' => 'keepExisting',
-//            'conditions' => '',
-//            'fields' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'offset' => '',
-//            'finderQuery' => '',
-//        )
-//    );
-
-    /**
      * Get announcement by ID
-     * @param $announcementId
+     * @param int $announcementId
      * @return array
      */
     public function getAnnouncementById($announcementId) {
@@ -128,8 +108,9 @@ class Announcement extends AppModel {
 
     /**
      * Retrieve paginated announcements
-     * @param $classroomId
+     * @param int $classroomId
      * @param int $page
+     * @param bool $onlylatest
      * @return array
      */
     public function getPaginatedAnnouncements($classroomId, $page = 1, $onlylatest = false) {

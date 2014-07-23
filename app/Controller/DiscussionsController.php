@@ -48,9 +48,9 @@ class DiscussionsController extends AppController {
         $message = "";
 
         if (isset($this->params['url']['folded'])) {
-            $data = $this->Discussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
+            $data = $this->Discussion->Foldeddiscussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
         } else {
-            $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, $page);
+            $data = $this->Discussion->Foldeddiscussion->getPaginatedDiscussions($classroomId, $userId, $page);
         }
         $data = $this->Discussion->processData($data, $userId);
 
@@ -65,7 +65,7 @@ class DiscussionsController extends AppController {
 
     /**
      * API: get paginated replies
-     * @param type $classroomId
+     * Getting replies for a discussion
      */
     public function getreplies() {
         $this->response->type('json');
@@ -81,7 +81,7 @@ class DiscussionsController extends AppController {
             if (isset($this->params['url']['discussion_id'])) {
                 $discussionId = $this->params['url']['discussion_id'];
 
-                $data = $this->Discussion->getPaginatedReplies($discussionId, $page);
+                $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
                 $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page,$discussionId);
             }
@@ -149,14 +149,6 @@ class DiscussionsController extends AppController {
         $this->set('_serialize', array('status', 'message', 'webroot'));
     }
 
-    public function test() {
-        debug($this->webroot);
-        debug(Router::fullBaseUrl());
-        debug(Router::url('/', true));
-        debug($this->base);
-        die();
-    }
-
     /**
      * API: add.json
      * Posting discussion (question/poll/note)
@@ -212,7 +204,7 @@ class DiscussionsController extends AppController {
         if ($this->Discussion->Reply->postReply($discussionId, $comment, AuthComponent::user('id'))) {
             $status = true;
             $message = "";
-            $data = $this->Discussion->getPaginatedReplies($discussionId, 1, true);
+            $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, 1, true);
             $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
         } else {
             $status = false;
@@ -244,9 +236,9 @@ class DiscussionsController extends AppController {
             $id = $this->request->data['id'];
             $type = $this->request->data['type'];
             $vote = $this->request->data['vote'];
-            $status = $this->Discussion->setGamificationVote($type, $id, $vote, $userId);
+            $status = $this->Discussion->Gamificationvote->setGamificationVote($type, $id, $vote, $userId);
             if ($status) {
-                $data = $this->Discussion->getGamificationInfo($type, $id);
+                $data = $this->Discussion->Gamificationvote->getGamificationInfo($type, $id);
             }
         }
         $this->set('webroot', $this->webroot);

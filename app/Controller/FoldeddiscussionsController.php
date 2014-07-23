@@ -16,7 +16,7 @@ class FoldeddiscussionsController extends AppController {
     * @param type $classroomId
     */
     public function index($classroomId){
-        $data = $this->Foldeddiscussion->Discussion->getPaginatedFoldedDiscussions($classroomId, AuthComponent::user('id'), 1);
+        $data = $this->Foldeddiscussion->getPaginatedFoldedDiscussions($classroomId, AuthComponent::user('id'), 1);
         $data = $this->Foldeddiscussion->Discussion->processData($data, AuthComponent::user('id'));
 
         /**
