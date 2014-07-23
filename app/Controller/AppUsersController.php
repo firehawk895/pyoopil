@@ -84,15 +84,16 @@ class AppUsersController extends UsersController {
         $data = array();
         $status = false;
 
-        $this->Session->destroy();
+        if($this->request->is('post')){
+            $status = $this->AppUser->deleteAuthToken(AuthComponent::User());
+            $this->Session->destroy();
 
-        $status = $this->AppUser->deleteAuthToken(AuthComponent::User());
-
-        if($status){
-            $message = "Logout successful.";
-        }
-        else{
-            $message = "Logout unsuccessful.";
+            if($status){
+                $message = "Logout successful.";
+            }
+            else{
+                $message = "Logout unsuccessful.";
+            }
         }
 
         $this->set(compact('status', 'message'));

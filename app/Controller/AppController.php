@@ -69,7 +69,7 @@ class AppController extends Controller {
                     'token' => 'auth_token',
                 ),
                 'continue' => false,
-                'unauthorized' => 'BadRequestException'
+                'unauthorized' => 'ForbiddenException'
             )
         );
     }
