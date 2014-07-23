@@ -60,11 +60,11 @@ class AppController extends Controller {
         $this->Auth->authenticate = array(
             'Authenticate.Token' => array(
                 'parameter' => '_token',
-                'header' => 'X-MyApiTokenHeader',
+                'header' => 'X-AuthTokenHeader',
                 'userModel' => 'AppUser',
                 /*'scope' => array('User.active' => 1),*/
                 'fields' => array(
-                    'username' => 'email',
+                    'email' => 'email',
                     'password' => 'password',
                     'token' => 'auth_token',
                 ),
@@ -75,8 +75,8 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-        $this->log($this->request);
-        return true;
+        //Override for each controller
+        return false;
     }
 
 }

@@ -9,6 +9,8 @@ class AppUser extends User {
 
     public $useTable = 'users';
 
+    protected $authTokenExpirationTime = 14400;
+
     /**
      * belongsTo associations
      * @var array
@@ -189,6 +191,22 @@ class AppUser extends User {
 
     public function generateAuthToken(){
         return String::uuid();
+    }
+
+    public function deleteAuthToken($user){
+        $this->id = $user['id'];
+        $data['AppUser']['auth_token'] = null;
+        $data['AppUser']['auth_token_expires'] = null;
+        if($this->save($data,false)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function authTokenExpirationTime() {
+        return date('Y-m-d H:i:s', time() + $this->authTokenExpirationTime);
     }
 
 }

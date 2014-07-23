@@ -11,10 +11,10 @@ class AppUsersController extends UsersController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+        $this->Auth->authorize = array('Controller');
         $this->Security->unlockedActions = array('login');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
-        $this->layout = 'ajax';
         $this->Auth->allow('login','add','reset_password');
     }
 
@@ -58,8 +58,10 @@ class AppUsersController extends UsersController {
             if($user){
                 $token = $this->AppUser->generateAuthToken();
                 $this->AppUser->id = $user['AppUser']['id'];
+                $saveData['AppUser']['auth_token'] = $token;
+                $saveData['AppUser']['auth_token_expires'] = $this->AppUser->authTokenExpirationTime();
 
-                if($this->AppUser->saveField('auth_token', $token)){
+                if($this->AppUser->save($saveData,false)){
                     $status = true;
                     $data['auth_token'] = $token;
                     $message = "Login successful";
@@ -76,15 +78,34 @@ class AppUsersController extends UsersController {
     }
 
     public function logout(){
+        $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
+
+        $data = array();
+        $status = false;
 
         $this->Session->destroy();
 
+        $status = $this->AppUser->deleteAuthToken(AuthComponent::User());
 
+        if($status){
+            $message = "Logout successful.";
+        }
+        else{
+            $message = "Logout unsuccessful.";
+        }
 
-        $data = array();
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    public function isAuthorized($user = null) {
+        if($user){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
