@@ -12,7 +12,7 @@ class AppUsersController extends UsersController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->authorize = array('Controller');
-        $this->Security->unlockedActions = array('login');
+        $this->Security->unlockedActions = array('login','logout');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->Auth->allow('login','add','reset_password');
