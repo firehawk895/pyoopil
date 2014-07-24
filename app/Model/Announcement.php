@@ -240,6 +240,12 @@ class Announcement extends AppModel {
         $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
         $result = $Email->send($body);
 
+        $command = APP."Console/cake Queue.Queue runworker > /dev/null 2>&1 &";
+
+        $this->log($command);
+
+        exec($command);
+
         return $result;
         
     }
