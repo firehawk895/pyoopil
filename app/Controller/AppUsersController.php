@@ -53,7 +53,6 @@ class AppUsersController extends UsersController {
         $status = false;
 
         if($this->request->is('post')){
-            $this->log($this->request);
             $user = $this->AppUser->authenticate($this->request->data);
             if($user){
                 $token = $this->AppUser->generateAuthToken();
@@ -62,6 +61,7 @@ class AppUsersController extends UsersController {
                 $saveData['AppUser']['auth_token_expires'] = $this->AppUser->authTokenExpirationTime();
 
                 if($this->AppUser->save($saveData,false)){
+                    $this->AppUser->updateLastActivity($user['AppUser']['id']);
                     $status = true;
                     $data['auth_token'] = $token;
                     $message = "Login successful";

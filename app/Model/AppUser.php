@@ -209,4 +209,16 @@ class AppUser extends User {
         return date('Y-m-d H:i:s', time() + $this->authTokenExpirationTime);
     }
 
+    public function checkIdleTimeOut($user){
+        App::uses('CakeTime', 'Utility');
+        if(CakeTime::wasWithinLast("4 hours", $user['last_action'])){
+            $this->updateLastActivity($user['id']);
+            return false;
+        }
+        else{
+            $this->deleteAuthToken($user);
+            return true;
+        }
+    }
+
 }

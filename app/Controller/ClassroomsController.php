@@ -149,12 +149,12 @@ class ClassroomsController extends AppController {
     }
 
     public function isAuthorized($user) {
-        if($user){
+        if(parent::isAuthorized($user)){
+            //do role processing here
             return true;
         }
         else{
             return false;
         }
     }
-
 }

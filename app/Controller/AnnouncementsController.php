@@ -63,14 +63,4 @@ class AnnouncementsController extends AppController {
         $this->set(compact('status', 'message', 'webroot'));
         $this->set('_serialize', array('status', 'message', 'webroot', 'data'));
     }
-
-    public function isAuthorized($user){
-        if($user){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
 }

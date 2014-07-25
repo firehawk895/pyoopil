@@ -75,8 +75,12 @@ class AppController extends Controller {
     }
 
     public function isAuthorized($user) {
-        //Override for each controller
-        return false;
+        $this->loadModel('AppUser');
+        if($user){
+            return !$this->AppUser->checkIdleTimeout($user);
+        }
+        else{
+            return false;
+        }
     }
-
 }
