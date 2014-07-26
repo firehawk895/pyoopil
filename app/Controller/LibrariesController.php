@@ -160,4 +160,12 @@ class LibrariesController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    public function isAuthorized($user) {
+        if ($user) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
