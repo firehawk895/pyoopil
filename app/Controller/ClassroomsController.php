@@ -11,18 +11,23 @@ App::uses('DateConvertor', 'Lib/Custom');
  */
 class ClassroomsController extends AppController {
 
+    /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
     public function isAuthorized($user) {
-        if(parent::isAuthorized($user)){
+        if (parent::isAuthorized($user)) {
             //do role processing here
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     /**
-     * API: Create a new classroom
+     * API: Create a new classroom form
      */
     public function add() {
         $this->request->onlyAllow('post');
@@ -51,7 +56,7 @@ class ClassroomsController extends AppController {
     }
 
     /**
-     * Join a classroom provided access code
+     * Join a classroom provided access code form
      */
     public function join() {
         $this->request->onlyAllow('post'); // No direct access via browser URL - Note for Cake2.5: allowMethod()

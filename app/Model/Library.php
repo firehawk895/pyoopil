@@ -29,7 +29,7 @@ class Library extends AppModel {
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
-                //Dynamically add 'accesskey','secretKey','bucket'
+                    //Dynamically add 'accesskey','secretKey','bucket'
                 ),
                 'metaColumns' => array(
 //                  'ext' => 'extension',
@@ -114,13 +114,22 @@ class Library extends AppModel {
      */
     public function editTopic($topicId, $topicText) {
 
+        //sanity check
+        //if topic exists
+        $conditions = array(
+            'id' => $topicId
+        );
+        if (!$this->Topic->hasAny($conditions)) {
+            return false;
+        }
+
         $data = array(
             'Topic' => array(
                 'id' => $topicId,
                 'name' => $topicText
             )
         );
-        
+
         return $this->Topic->save($data);
     }
 
@@ -206,7 +215,6 @@ class Library extends AppModel {
          * presentations: application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation
          */
 
-
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Documents'] = array();
             $data[$i]['Pictures'] = array();
@@ -257,4 +265,21 @@ class Library extends AppModel {
         return $data;
     }
 
+    /**
+     * determine if user of $userID has permission to perform CUD (Create, Update, Delete)
+     * in a given classroom of $classroomId
+     * @param $classroomId
+     * @param $userId
+     * @return bool
+     */
+    public function allowCUD($classroomId, $userId) {
+        $isModerator = $this->Classroom->isModerator($userId, $classroomId);
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+
+        if ($isModerator || $isOwner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

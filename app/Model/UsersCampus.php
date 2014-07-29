@@ -79,10 +79,8 @@ class UsersCampus extends AppModel {
          * whats the point, internally it does a find count!
          */
         if ($this->find('count', array('conditions' => $conditions, 'recursive' => -1)) > 0) {
-            $this->log("true");
             return true;
         } else {
-            $this->log("false");
             return false;
         }
     }
