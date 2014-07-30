@@ -34,46 +34,6 @@ class ClassroomsController extends AppController {
         $this->set(compact('campuses', 'departments', 'degrees'));
     }
 
-//    public function index() {
-//
-//        $this->Classroom->getLatestTile(AuthComponent::user('id'));
-//
-//        App::uses('CakeNumber', 'Utility');
-//        $userId = AuthComponent::user('id');
-//
-//        $this->Paginator->settings = array(
-//            'contain' => array(
-//                'UsersClassroom' => array(
-//                    'conditions' => array(
-//                        'user_id' => $userId
-//                    ),
-//                    'order' => array(
-//                        'UsersClassroom.created' => 'desc'
-//                    )
-//                ),
-//                'Campus' => array(
-//                    'fields' => array(
-//                        'id','name'
-//                    )
-//                )
-//            ),
-//            'limit' => 5,
-//            'fields' => array(
-//                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
-//            )
-//        );
-//
-//        $data = $this->Paginator->paginate('Classroom');
-//
-//        foreach($data as $d){
-//            $teacher = $this->Classroom->getEducatorName($d['Classroom']['id']);
-//            $data = Hash::insert($data,'{n}.Classroom.teacher',$teacher);
-//        }
-//
-//        $jsonData = json_encode($data);
-//        return $jsonData;
-//    }
-
     /**
      * Render a view for a particular classroom
      * @param type $classroomId
@@ -98,41 +58,6 @@ class ClassroomsController extends AppController {
     /**
      * Route : /classrooms/:id-:slug/create
      */
-//    public function add() {
-//        //shit don't work
-////        $this->request->allowMethod('ajax','post');
-////        $this->autoRender(false);
-////        $this->layout = 'myajax';
-//        
-//        if ($this->request->is('post')) {
-//            $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
-//            $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
-////            $this->request->data['Classroom']['is_private'] = true;
-//
-//            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
-//                $this->Session->setFlash('Classroom sucessfully created');
-//                
-//                $this->Classroom->id = $this->Classroom->getLastInsertID();
-//                
-//                $classroomName = $this->Classroom->field('title');
-//                $passCode = $this->Classroom->field('access_code');
-////                debug($classroomName);
-////                debug($passCode);
-////                die();
-//                
-//                $this->set($classroomName);
-//                $this->set($passCode);
-//                
-//            } else {
-//                $this->Session->setFlash('One or more processes failed');
-//                echo "badbad";
-//            }
-//
-//            //populate hidden div with succeful creation
-//            //redirect to classroom successfully created popup
-//            //whatever
-//        }
-//    }
     public function add() {
 //        $this->autoRender = false;
         $this->request->onlyAllow('post');
@@ -156,16 +81,6 @@ class ClassroomsController extends AppController {
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
-
-//    public function add() {
-//        $this->autoRender = false;
-//
-//        $test = array(
-//            'classroomName' => 'test',
-//            'classroomCode' => 'test2'
-//        );
-//        echo json_encode($test);
-//    }
 
     /**
      * Route : /classrooms/:id-:slug/create
@@ -233,4 +148,13 @@ class ClassroomsController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
     }
 
+    public function isAuthorized($user) {
+        if(parent::isAuthorized($user)){
+            //do role processing here
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }

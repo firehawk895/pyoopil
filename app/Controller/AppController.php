@@ -35,14 +35,15 @@ class AppController extends Controller {
     public $components = array(
         'Auth' => array(
             'authorize' => array('Controller'),
-            'loginAction' => array(
+            'autoRedirect' => false
+            /*'loginAction' => array(
                 'controller' => 'app_users',
                 'action' => 'login',
             ),
             'logoutRedirect' => array(
                 'controller' => 'pages',
                 'action' => array('display', 'feedback')
-            )
+            )*/
         ),
         'Session',
         'RequestHandler',
@@ -52,13 +53,34 @@ class AppController extends Controller {
         'Js' => array('Jquery')
     );
 
-    public function beforeFilter() {
+    public function beforeFilter(){
         parent::beforeFilter();
-//        $this->Auth->allow();
+        AuthComponent::$sessionKey = false;
+        $this->Auth->unauthorizedRedirect = false;
+        $this->Auth->authenticate = array(
+            'Authenticate.Token' => array(
+                'parameter' => '_token',
+                'header' => 'X-AuthTokenHeader',
+                'userModel' => 'AppUser',
+                /*'scope' => array('User.active' => 1),*/
+                'fields' => array(
+                    'email' => 'email',
+                    'password' => 'password',
+                    'token' => 'auth_token',
+                ),
+                'continue' => false,
+                'unauthorized' => 'ForbiddenException'
+            )
+        );
     }
 
     public function isAuthorized($user) {
-        return $this->Auth->loggedIn();
+        $this->loadModel('AppUser');
+        if($user){
+            return !$this->AppUser->checkIdleTimeout($user);
+        }
+        else{
+            return false;
+        }
     }
-
 }

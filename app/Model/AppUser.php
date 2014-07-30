@@ -9,6 +9,8 @@ class AppUser extends User {
 
     public $useTable = 'users';
 
+    protected $authTokenExpirationTime = 14400;
+
     /**
      * belongsTo associations
      * @var array
@@ -169,6 +171,54 @@ class AppUser extends User {
         $data = $this->find('first', $options);
         $fullName = $data['AppUser']['fname'] . " " . $data['AppUser']['lname'];
         return $fullName;
+    }
+
+    public function authenticate($data) {
+        $user = $this->find('first', array(
+            'conditions' => array(
+                'AppUser.email' => $data['AppUser']['email'],
+                'AppUser.password' => $this->hash($data['AppUser']['password'], 'sha1', true)
+            ),
+        ));
+
+        if(!empty($user)){
+            return $user;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function generateAuthToken(){
+        return String::uuid();
+    }
+
+    public function deleteAuthToken($user){
+        $this->id = $user['id'];
+        $data['AppUser']['auth_token'] = null;
+        $data['AppUser']['auth_token_expires'] = null;
+        if($this->save($data,false)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function authTokenExpirationTime() {
+        return date('Y-m-d H:i:s', time() + $this->authTokenExpirationTime);
+    }
+
+    public function checkIdleTimeOut($user){
+        App::uses('CakeTime', 'Utility');
+        if(CakeTime::wasWithinLast("4 hours", $user['last_action'])){
+            $this->updateLastActivity($user['id']);
+            return false;
+        }
+        else{
+            $this->deleteAuthToken($user);
+            return true;
+        }
     }
 
 }

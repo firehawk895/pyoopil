@@ -33,13 +33,13 @@ class UsersClassroom extends AppModel {
     );
 
     /**
-     * TODO : Investigate transient flash messages for cake 2.x perhaps,
      * instead of array returns
      * 
      * Make a user join a classroom.
      * @param int $userId user(pk)
      * @param int $classroomId classroom(pk)
      * @param boolean $isOwner If the user joining is the educator/owner of classroom
+     * @return array
      */
     public function joinClassroom($userId, $classroomId, $isOwner) {
 

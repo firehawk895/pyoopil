@@ -87,28 +87,8 @@ class Announcement extends AppModel {
     );
 
     /**
-     * hasAndBelongsToMany associations
-     * @var array
-     */
-//    public $hasAndBelongsToMany = array(
-//        'User' => array(
-//            'className' => 'User',
-//            'joinTable' => 'users_announcements',
-//            'foreignKey' => 'announcement_id',
-//            'associationForeignKey' => 'user_id',
-//            'unique' => 'keepExisting',
-//            'conditions' => '',
-//            'fields' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'offset' => '',
-//            'finderQuery' => '',
-//        )
-//    );
-
-    /**
      * Get announcement by ID
-     * @param $announcementId
+     * @param int $announcementId
      * @return array
      */
     public function getAnnouncementById($announcementId) {
@@ -128,8 +108,9 @@ class Announcement extends AppModel {
 
     /**
      * Retrieve paginated announcements
-     * @param $classroomId
+     * @param int $classroomId
      * @param int $page
+     * @param bool $onlylatest
      * @return array
      */
     public function getPaginatedAnnouncements($classroomId, $page = 1, $onlylatest = false) {
@@ -234,7 +215,38 @@ class Announcement extends AppModel {
     /**
      * Deffered email sending.
      */
-    public function sendEmails() {
+    public function sendEmails($classroomId, $announcement) {
+
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id')
+            ),
+            'AppUser' => array(
+                'fields' => array('id', 'email')
+            )
+        );
+
+        $options['conditions'] = array(
+            'UsersClassroom.classroom_id' => $classroomId
+        );
+        $data = $this->Classroom->UsersClassroom->find('all', $options);
+        $emails = Hash::extract($data, '{n}.AppUser.email');
+
+        App::uses('EmailLib', 'Tools.Lib');
+
+        $Email = new EmailLib();
+        $Email->to($emails);
+        $Email->subject($announcement['Announcement']['subject']);
+        $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
+        $result = $Email->send($body);
+
+        $command = APP."Console/cake Queue.Queue runworker > /dev/null 2>&1 &";
+
+        $this->log($command);
+
+        exec($command);
+
+        return $result;
         
     }
 
