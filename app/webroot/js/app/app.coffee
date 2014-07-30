@@ -20,7 +20,7 @@ angular
 
     $stateProvider.state('classrooms', {
       url : '/index',
-      templateUrl : '/pyoopil/js/app/partials/landing.html'
+      templateUrl : '/pyoopil/js/app/partials/classrooms.html'
     })
 
     $stateProvider.state('reset', {
