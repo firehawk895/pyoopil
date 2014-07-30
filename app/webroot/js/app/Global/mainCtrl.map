@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "mainCtrl.js",
+  "sourceRoot": "",
+  "sources": [
+    "mainCtrl.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,oBAAf,CACE,CAAC,UADH,CACc,UADd,EAC0B,CAAC,QAAD,EAAW,SAAC,MAAD,GAAA,CAAX,CAD1B,CAAA,CAAA;AAAA"
+}
