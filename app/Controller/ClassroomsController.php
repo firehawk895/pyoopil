@@ -113,7 +113,38 @@ class ClassroomsController extends AppController {
          * two steps, set and then _serialize
          */
         $this->set('data', $data);
-        $this->set(compact('permissions'));
+        $this->set(compact('status', 'message', 'permissions'));
         $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
+
+        $this->Classroom->UsersClassroom->setModerator();
+    }
+
+    /**
+     * API : Reset the access code of a classroom
+     * @param $classroomId
+     */
+    public function resetCode($classroomId) {
+        $this->request->onlyAllow('post'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
+        $this->response->type('json');
+
+        $response = $this->Classroom->resetCode($classroomId);
+        $data = array();
+
+        $this->log($response);
+        if ($response) {
+            $status = true;
+            $message = "Access code successfully reset";
+            $data = $response;
+        } else {
+            $status = false;
+            $message = "Access could not be reset";
+        }
+        /**
+         * Setting data for json view.
+         * this code repeats
+         * two steps, set and then _serialize
+         */
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 }
