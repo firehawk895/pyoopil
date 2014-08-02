@@ -33,7 +33,7 @@ Router::connect('/feedback', array('controller' => 'pages', 'action' => 'display
 Router::connect('/test', array('controller' => 'classrooms', 'action' => 'test'));
 //-------------------------Inside classroom---------------------------------------------------------------------
 Router::connect(
-        '/Classrooms/:id/:controller', array('action' => 'index'), array(
+        '/Classrooms/:id/:action', array('controller' => 'classrooms'), array(
     'pass' => array('id'),
     'id' => '[0-9]+'
         )

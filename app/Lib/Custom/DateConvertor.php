@@ -16,7 +16,7 @@ class DateConvertor {
         //check if valid date
         $pattern = '~(0[1-9]|1[012])/(0[1-9]|[12][0-9]|3[01])/((19|20)\d\d)~';
 
-        if (preg_match($pattern, $datePicker)) {
+        if (!$datePicker && preg_match($pattern, $datePicker)) {
             $splitDate = explode('/', $datePicker);
             $convertedDate = array(
                 'month' => $splitDate[0],

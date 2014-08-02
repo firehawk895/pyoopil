@@ -2,20 +2,26 @@
 
 App::uses('CakeEmail', 'Network/Email');
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) Pyoopil Education Technologies Pvt. Ltd.
  */
 
 class AnnouncementsController extends AppController {
 
     public $helpers = array('Time');
 
-    public function index($classroomId) {
-
-        $this->set('classroomId', $classroomId);
-        $data = $this->Announcement->getPaginatedAnnouncements($classroomId, 1);
-        $this->set('data', json_encode($data));
+    /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getAnnouncements($classroomId) {
@@ -30,13 +36,15 @@ class AnnouncementsController extends AppController {
         $message = "";
 
         $data = $this->Announcement->getPaginatedAnnouncements($classroomId, $page);
+        $permissions = array(
+            'allowCreate' => $this->Announcement->allowCreate($classroomId, AuthComponent::user('id'))
+        );
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message', 'permissions'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
     public function add($classroomId) {
