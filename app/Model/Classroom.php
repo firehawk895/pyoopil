@@ -150,7 +150,7 @@ class Classroom extends AppModel {
     }
 
     /**
-     * TODO: Cache the query for use in both side Nav and main tiles
+     * TODO: Cache the query
      * get raw db data for all classrooms attended/taught by $userId
      * @param int $user_id
      * @return array $jsonData
@@ -213,7 +213,7 @@ class Classroom extends AppModel {
         /**
          * All amazons3 links need to be preserved for cloning library
          * Clone:
-         * Library, Submissions, 
+         * Library, Submissions,
          */
     }
 
@@ -257,16 +257,16 @@ class Classroom extends AppModel {
 
     public function displayArchivedTiles() {
         /**
-         * add isArchived = false to DisplayTiles 
+         * add isArchived = false to DisplayTiles
          */
     }
 
     public function joinWithCode($accessCode) {
-        
+
     }
 
     public function joinPublic() {
-        
+
     }
 
     public function invite($data) {
@@ -279,12 +279,12 @@ class Classroom extends AppModel {
      * TODO: decide parameters to display invites
      * Use University association of user,
      * populate Ajax tree:
-     *      Department 
+     *      Department
      *          -> Degree
      *              -> Section
      */
     public function displayInviteData() {
-        
+
     }
 
     /**
@@ -292,11 +292,11 @@ class Classroom extends AppModel {
      * Inherit or put here?
      */
     public function addStaffRoom() {
-        
+
     }
 
     public function displayStaffRooms() {
-        
+
     }
 
     /**
@@ -304,7 +304,73 @@ class Classroom extends AppModel {
      */
 
     /**
-     * Educator's full name of a classroom
+     * get the owner User.id(pk) of classroom
+     * @param $classroomId
+     * @return mixed ownerId or false on failure
+     */
+    public function getOwnerId($classroomId) {
+        $options['conditions'] = array(
+            'classroom_id' => $classroomId,
+            'is_teaching' => true
+        );
+
+        $options['contain'] = array(
+            'AppUser' => array(
+                'fields' => array('id')
+            )
+        );
+
+        $data = $this->UsersClassroom->find('first', $options);
+
+        if ($data) {
+            return $data['AppUser']['id'];
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * check if the user($userId) is the owner of classroom($classroomId)
+     * @param $userId userId(pk) of given user
+     * @param $classroomId classroomId(pk) of classroom to be checked
+     * @return boolean
+     */
+    public function isOwner($userId, $classroomId) {
+        $ownerId = $this->getOwnerId($classroomId);
+        if (!empty($ownerId) && $userId == $ownerId) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * check if user($userId) is moderator of classroom($classroomId)
+     * @param $userId
+     * @param $classroomId
+     * @return bool
+     */
+    public function isModerator($userId, $classroomId) {
+        //sanity check
+        if (!$userId || !$classroomId) {
+            return false;
+        }
+
+        $conditions = array(
+            'user_id' => $userId,
+            'classroom_id' => $classroomId,
+            'is_moderator' => true
+        );
+
+        if ($this->UsersClassroom->hasAny($conditions)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Educator's(owner) full name of a classroom
      * @param $classroomId
      * @return string
      */
@@ -362,7 +428,7 @@ class Classroom extends AppModel {
      */
     public function getPaginatedClassrooms($user_id, $page) {
         //sanity check
-        if ($page < 1) {
+        if ($page || $page < 1) {
             $page = 1;
         }
         $offset = self::PAGINATION_LIMIT * ($page - 1);
@@ -376,11 +442,11 @@ class Classroom extends AppModel {
          * $options['fields'] = array(
          *   'is_teaching', 'is_restricted'
          * );
-         * 
+         *
          * This code has been attempted to be refactored 2 times.
-         * Increment this number, once you refactor and it failes the test cases
+         * Increment this number, once you refactor and it fails the test cases
          * to warn the next developer
-         * 
+         *
          * Changing the entry point to Classroom, solves the issue but returns
          * classrooms that the user is not part of
          */
@@ -401,20 +467,28 @@ class Classroom extends AppModel {
 
         $data = $this->UsersClassroom->find('all', $options);
 
-        for ($i = 0; $i < count($data); $i ++) {
+        for ($i = 0; $i < count($data); $i++) {
             $educator_name = $this->getEducatorName($data[$i]['Classroom']['id']);
             $path = $i . '.Classroom.Educator';
             $data = Hash::insert($data, $path, $educator_name);
 
             $path2 = $i . '.Classroom.Url';
             $data = Hash::insert($data, $path2, Router ::url(array(
-                                'controller' => 'Discussions',
-                                'action' => 'index',
-                                'id' => $data[$i]['Classroom']['id']
+                'controller' => 'Discussions',
+                'action' => 'index',
+                'id' => $data[$i]['Classroom']['id']
             )));
         }
 
         return $data;
     }
 
+    /**
+     * check if permission "Create Classroom" allowed for user
+     * @param $userId
+     * @return bool
+     */
+    public function allowCreate($userId) {
+        return $this->UsersClassroom->AppUser->UsersCampus->isEducator($userId);
+    }
 }

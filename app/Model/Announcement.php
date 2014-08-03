@@ -37,7 +37,7 @@ class Announcement extends AppModel {
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
-                //Dynamically add 'accesskey','secretKey','bucket'
+                    //Dynamically add 'accesskey','secretKey','bucket'
                 ),
                 'metaColumns' => array(
 //                  'ext' => 'extension',
@@ -168,7 +168,7 @@ class Announcement extends AppModel {
 
     /**
      * Dispatch sms for an announcement
-     * TODO:
+     * TODO: the actual sms api
      * Defferred sms sending + testing of services
      * @param type $room_type
      * @param type $room_id
@@ -191,7 +191,7 @@ class Announcement extends AppModel {
 
 
         $friendlyTime = CakeTime::format(
-                        'd-m-Y h:i A', $data['Announcement']['creation_date']
+            'd-m-Y h:i A', $data['Announcement']['creation_date']
         );
 
         $rawString = 'Announcement in classroom Phy-101, from teacher_name about Sex on the beach sent at 14-03-2014 12:48 PM';
@@ -199,11 +199,11 @@ class Announcement extends AppModel {
         $usableLength = $SMS_LIMIT - $rawLength;
 
         $smsString = String::insert('Announcement in :room :roomName, from :name about :subject sent at :timestamp', array(
-                    'name' => 'teacher_name',
-                    'room' => $room,
-                    'roomName' => $roomName,
-                    'subject' => $data['Announcement']['subject'],
-                    'timestamp' => $friendlyTime
+            'name' => 'teacher_name',
+            'room' => $room,
+            'roomName' => $roomName,
+            'subject' => $data['Announcement']['subject'],
+            'timestamp' => $friendlyTime
         ));
 
         debug($smsString);
@@ -213,7 +213,10 @@ class Announcement extends AppModel {
     }
 
     /**
-     * Deffered email sending.
+     * Sends defferred emails
+     * @param $classroomId
+     * @param $announcement
+     * @return bool
      */
     public function sendEmails($classroomId, $announcement) {
 
@@ -240,14 +243,23 @@ class Announcement extends AppModel {
         $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
         $result = $Email->send($body);
 
-        $command = APP."Console/cake Queue.Queue runworker > /dev/null 2>&1 &";
+        $command = APP . "Console/cake Queue.Queue runworker > /dev/null 2>&1 &";
 
         $this->log($command);
 
         exec($command);
 
         return $result;
-        
     }
 
+    public function allowCreate($classroomId, $userId) {
+        $isModerator = $this->Classroom->isModerator($userId, $classroomId);
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+
+        if ($isModerator || $isOwner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

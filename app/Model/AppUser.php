@@ -141,23 +141,31 @@ class AppUser extends User {
             'className' => 'UsersSubmission',
             'foreignKey' => 'user_id',
         ),
-            /**
-             * Already handled by plugin, perhaps:
-              'UserDetail' => array(
-              'className' => 'UserDetail',
-              'foreignKey' => 'user_id',
-              'dependent' => false,
-              'conditions' => '',
-              'fields' => '',
-              'order' => '',
-              'limit' => '',
-              'offset' => '',
-              'exclusive' => '',
-              'finderQuery' => '',
-              'counterQuery' => ''
-              )
-             * 
-             */
+        /**
+         * Already handled by plugin, perhaps:
+         * 'UserDetail' => array(
+         * 'className' => 'UserDetail',
+         * 'foreignKey' => 'user_id',
+         * 'dependent' => false,
+         * 'conditions' => '',
+         * 'fields' => '',
+         * 'order' => '',
+         * 'limit' => '',
+         * 'offset' => '',
+         * 'exclusive' => '',
+         * 'finderQuery' => '',
+         * 'counterQuery' => ''
+         * )
+         *
+         */
+        'Follower' => array(
+            'classname' => 'Follow',
+            'foreignKey' => 'user_id'
+        ),
+        'Followee' => array(
+            'classname' => 'Follow',
+            'foreignKey' => 'follows_id'
+        )
     );
 
     public function getFullName($userId) {
@@ -166,7 +174,7 @@ class AppUser extends User {
         $options['conditions'] = array(
             'AppUser.id' => $userId
         );
-        
+
 //        $this->find('first' , $options);
         $data = $this->find('first', $options);
         $fullName = $data['AppUser']['fname'] . " " . $data['AppUser']['lname'];
@@ -181,26 +189,24 @@ class AppUser extends User {
             ),
         ));
 
-        if(!empty($user)){
+        if (!empty($user)) {
             return $user;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public function generateAuthToken(){
+    public function generateAuthToken() {
         return String::uuid();
     }
 
-    public function deleteAuthToken($user){
+    public function deleteAuthToken($user) {
         $this->id = $user['id'];
         $data['AppUser']['auth_token'] = null;
         $data['AppUser']['auth_token_expires'] = null;
-        if($this->save($data,false)){
+        if ($this->save($data, false)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -209,16 +215,25 @@ class AppUser extends User {
         return date('Y-m-d H:i:s', time() + $this->authTokenExpirationTime);
     }
 
-    public function checkIdleTimeOut($user){
+    public function checkIdleTimeOut($user) {
         App::uses('CakeTime', 'Utility');
-        if(CakeTime::wasWithinLast("4 hours", $user['last_action'])){
+        if (CakeTime::wasWithinLast("4 hours", $user['last_action'])) {
             $this->updateLastActivity($user['id']);
             return false;
-        }
-        else{
+        } else {
             $this->deleteAuthToken($user);
             return true;
         }
     }
 
+    /**
+     * $userId1 follows/unfollows a $userId2
+     * @param $userId1
+     * @param $userId2
+     */
+    public function toggleFollow() {
+        $this->loadModel("Follow");
+        $this->Follow->toggleFollow();
+//        $this->log("what");
+    }
 }

@@ -8,6 +8,21 @@ App::uses('AppController', 'Controller');
 
 class LibrariesController extends AppController {
 
+    /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function index($classroomId) {
 
         if ($this->request->is('post')) {
@@ -18,6 +33,10 @@ class LibrariesController extends AppController {
             } else {
                 unset($savedData['Topic']['name']);
             }
+
+            //Handle any empty inputs
+
+
             if (@$this->Library->Topic->saveAssociated($savedData)) {
                 $status = true;
             } else {
@@ -41,6 +60,11 @@ class LibrariesController extends AppController {
         $this->set('data', json_encode($data));
     }
 
+    /**
+     * API: get topics and corresponding data for library
+     * of a given classroom
+     * @param $classroomId
+     */
     public function getTopics($classroomId) {
         $this->response->type('json');
 
@@ -57,10 +81,17 @@ class LibrariesController extends AppController {
         $data = $this->Library->parsePyoopilfiles($data);
         $status = true;
 
-        $this->set(compact('status', 'message', 'data'));
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $permissions = array(
+            'allowCUD' => $this->Library->allowCUD($classroomId, AuthComponent::user('id'))
+        );
+
+        $this->set(compact('status', 'message', 'data', 'permissions'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
+    /**
+     * API : delete an entire topic form
+     */
     public function deleteTopic() {
         $this->request->onlyAllow('post');
         $this->response->type('json');
@@ -83,29 +114,37 @@ class LibrariesController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * API : change (update) the name of the topic form
+     */
     public function editTopic() {
         $this->request->onlyAllow('post');
         $this->response->type('json');
 
+        $data = array();
         $status = false;
         $message = "";
 
         if (isset($this->request->data)) {
             $topicId = $this->request->data['Topic']['id'];
             $topicName = $this->request->data['Topic']['name'];
-            $status = $this->Library->editTopic($topicId, $topicName);
+            $data = $this->Library->editTopic($topicId, $topicName);
+            $status = !empty($data);
         }
 
         if ($status) {
             $message = "Topic renamed successfully.";
         } else {
-            $message = "Rename unsuccessful";
+            $message = "Could not rename, Topic may have been deleted";
         }
 
-        $this->set(compact('status', 'message', 'data'));
+        $this->set(compact('data', 'status', 'message'));
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * delete any item (type file or link) under a topic
+     */
     public function deleteItem() {
         $this->request->onlyAllow('post');
         $this->response->type('json');
@@ -120,7 +159,7 @@ class LibrariesController extends AppController {
         }
 
         if ($status) {
-            $message = "Deletion successfully.";
+            $message = "Deletion successful";
         } else {
             $message = "Deletion unsuccessful";
         }
@@ -159,5 +198,4 @@ class LibrariesController extends AppController {
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
-
 }
