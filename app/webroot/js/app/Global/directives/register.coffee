@@ -26,7 +26,7 @@ angular.module('Global.Directives')
               post = mainService.postRegistration(data)
 
               post.then(
-                ()->
+                (data)->
                   toastr.success 'Registration Successful'
 
               ,

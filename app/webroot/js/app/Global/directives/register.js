@@ -21,7 +21,7 @@
                 'data[AppUser][institution]': scope.register.institution
               };
               post = mainService.postRegistration(data);
-              post.then(function() {
+              post.then(function(data) {
                 return toastr.success('Registration Successful');
               }, function() {
                 return toastr.error('Registration Failed !');
