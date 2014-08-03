@@ -12,26 +12,26 @@ class AppUsersController extends UsersController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->authorize = array('Controller');
-        $this->Security->unlockedActions = array('login','logout');
+        $this->Security->unlockedActions = array('login', 'logout');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
-        $this->Auth->allow('login','add','reset_password');
+        $this->Auth->allow('login', 'add', 'reset_password');
     }
 
     protected function _setupAuth() {
         //parent::_setupAuth();
-/*        $this->Auth->loginAction = array(
-            'plugin' => null,
-            'admin' => false,
-            'controller' => 'app_users',
-            'action' => 'login'
-        );*/
-/*        $this->Auth->loginRedirect = array(
-            'plugin' => null,
-            'admin' => false,
-            'controller' => 'classrooms',
-            'action' => 'index'
-        );*/
+        /*        $this->Auth->loginAction = array(
+                    'plugin' => null,
+                    'admin' => false,
+                    'controller' => 'app_users',
+                    'action' => 'login'
+                );*/
+        /*        $this->Auth->loginRedirect = array(
+                    'plugin' => null,
+                    'admin' => false,
+                    'controller' => 'classrooms',
+                    'action' => 'index'
+                );*/
         $this->Auth->logoutRedirect = array(
             'plugin' => null,
             'admin' => false,
@@ -52,22 +52,23 @@ class AppUsersController extends UsersController {
         $data = array();
         $status = false;
 
-        if($this->request->is('post')){
+        $this->log($this->request->data);
+
+        if ($this->request->is('post')) {
             $user = $this->AppUser->authenticate($this->request->data);
-            if($user){
+            if ($user) {
                 $token = $this->AppUser->generateAuthToken();
                 $this->AppUser->id = $user['AppUser']['id'];
                 $saveData['AppUser']['auth_token'] = $token;
                 $saveData['AppUser']['auth_token_expires'] = $this->AppUser->authTokenExpirationTime();
 
-                if($this->AppUser->save($saveData,false)){
+                if ($this->AppUser->save($saveData, false)) {
                     $this->AppUser->updateLastActivity($user['AppUser']['id']);
                     $status = true;
                     $data['auth_token'] = $token;
                     $message = "Login successful";
                 }
-            }
-            else{
+            } else {
                 $message = "Login unsuccessful";
             }
         }
@@ -77,21 +78,20 @@ class AppUsersController extends UsersController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
-    public function logout(){
+    public function logout() {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
         $data = array();
         $status = false;
 
-        if($this->request->is('post')){
+        if ($this->request->is('post')) {
             $status = $this->AppUser->deleteAuthToken(AuthComponent::User());
             $this->Session->destroy();
 
-            if($status){
+            if ($status) {
                 $message = "Logout successful.";
-            }
-            else{
+            } else {
                 $message = "Logout unsuccessful.";
             }
         }
@@ -102,10 +102,9 @@ class AppUsersController extends UsersController {
     }
 
     public function isAuthorized($user = null) {
-        if($user){
+        if ($user) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
