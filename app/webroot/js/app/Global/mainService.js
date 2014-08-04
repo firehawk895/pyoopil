@@ -14,7 +14,11 @@
 
         mainService.prototype.postData = function(url, data) {
           var xhr;
-          xhr = $http.post(url, data);
+          xhr = $http({
+            method: 'POST',
+            url: url,
+            data: data
+          });
           return xhr;
         };
 

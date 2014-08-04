@@ -11,10 +11,11 @@ angular.module('Global.Services')
 
       postData : (url, data)->
 
-        xhr = $http.post(
-          url,
-          data
-        )
+        xhr = $http({
+          method: 'POST',
+          url: url,
+          data: data
+        })
 
         xhr
       postLogin : (data)->

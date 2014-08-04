@@ -8,22 +8,36 @@
 
   angular.module('Global.Filters', []);
 
-  angular.module('pyoopil', ['Global.Services', 'Global.Controllers', 'Global.Directives', 'Global.Filters', 'ui.router']).config([
+  angular.module('Classrooms', []);
+
+  angular.module('pyoopil', ['Global.Services', 'Global.Controllers', 'Global.Directives', 'Classrooms', 'Global.Filters', 'ui.router', 'reCAPTCHA']).config([
     '$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
       $stateProvider.state('index', {
         url: '/index',
         templateUrl: '/pyoopil/js/app/partials/landing.html'
-      });
-      $stateProvider.state('classrooms', {
-        url: '/index',
-        templateUrl: '/pyoopil/js/app/partials/classrooms.html'
-      });
-      $stateProvider.state('reset', {
+      }).state('login', {
+        url: '/login',
+        templateUrl: '/pyoopil/js/app/partials/modules/landing.html'
+      }).state('login.classrooms', {
+        url: '/classrooms',
+        views: {
+          'nav': {
+            templateUrl: '/pyoopil/js/app/partials/modules/leftNav.html'
+          },
+          'viewport': {
+            templateUrl: '/pyoopil/js/app/partials/classrooms/landing.html'
+          }
+        }
+      }).state('reset', {
         url: '/reset',
         templateUrl: '/pyoopil/js/app/partials/reset-password.html'
       });
       $urlRouterProvider.otherwise('/index');
       return $urlRouterProvider.rule(function($injector, $location) {});
+    }
+  ]).config([
+    'reCAPTCHAProvider', function(reCAPTCHAProvider) {
+      return reCAPTCHAProvider.setPublicKey('6LeO9fcSAAAAAMsp8vSGpYd8ZHDdcHxvXrZHGf6q');
     }
   ]);
 

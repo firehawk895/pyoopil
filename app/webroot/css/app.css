@@ -40,3 +40,28 @@
 #for-pass:hover{
     text-decoration: underline;
 }
+
+.pass-strength{
+    margin-left : 10px;
+    text-transform: uppercase;
+    color: white;
+    padding: 10px;
+}
+
+.pass-strength.weak{
+    background: red;
+}
+
+.pass-strength.medium{
+    background: orange;
+}
+
+.pass-strength.strong{
+    background: green;
+}
+
+.reCaptcha{
+    display: inline-block;
+    margin-left: 260px;
+    float: left;
+}

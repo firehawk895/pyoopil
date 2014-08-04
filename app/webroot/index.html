@@ -14,20 +14,38 @@
     <![endif]-->
 </head>
 <body ng-controller="mainCtrl">
+<div ui-view="header">
+    <header class="landing-page">
+        <section class="clearfix header">
+            <!-- Logo-->
+            <div class="logo"><a href="#/index"><img src="images/logo.png" class="f-left" alt="logo"></a>
+            </div>
+        </section>
+    </header>
+</div>
 <div ui-view>
 
 </div>
 <overlay></overlay>
 <script src="js/vendors/jquery-1.8.2.min.js"></script>
+<!-- JQUERY PLUGINS -->
 <script src="js/vendors/toastr.js"></script>
+<script src="js/vendors/pass-meter/dist/pass-meter.min.js"></script>
+
+<!-- ANGULAR DEPS-->
 <script src="js/vendors/angular/angular.min.js"></script>
 <script src="js/vendors/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="js/vendors/angular-re-captcha/angular-re-captcha.js"></script>
+<!-- APPLICATION -->
 <script src="js/app/app.js"></script>
 <script src="js/app/Global/mainService.js"></script>
 <script src="js/app/Global/mainCtrl.js"></script>
 <script src="js/app/Global/directives/overlay.js"></script>
 <script src="js/app/Global/directives/register.js"></script>
 <script src="js/app/Global/directives/login.js"></script>
+<script src="js/app/Global/directives/resetpass.js"></script>
+<!-- CLASSROOM -->
+<script src="js/app/Directives/classrooms/create-classroom.js"></script>
 <script>
 
     // Prevent console.log from generating errors in IE for the purposes of the demo

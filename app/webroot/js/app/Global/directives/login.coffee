@@ -1,4 +1,11 @@
 angular.module('Global.Directives')
+.controller('loginCtrl', ['$scope', ($scope)->
+
+    @closeModal = ->
+      $scope.$parent.$emit 'closeModal'
+
+    ''
+])
 .directive('login', ['mainService','$state', (mainService, $state)->
 
     return {
@@ -6,7 +13,8 @@ angular.module('Global.Directives')
       restrict : 'E',
       scope : {
 
-      }
+      },
+      controller : 'loginCtrl',
       templateUrl : '/pyoopil/js/app/partials/login.html'
       link : (scope, elem, attrs, loginCtrl)->
 
@@ -31,12 +39,25 @@ angular.module('Global.Directives')
 
           if form.$valid
             data = {
-              'data[AppUser][email]' : scope.login.email,
-              'data[AppUser][password]' : scope.login.password
+              "AppUser":{
+                "email": scope.login.email,
+                "password": scope.login.password
+              }
             }
+
             post = mainService.postLogin(data)
 
-            post.error(-> toastr.error('Login Failed !'))
+            post.then(
+              (data)->
+                if data.data.status is true
+                  loginCtrl.closeModal()
+                  $state.go 'login.classrooms'
+                else
+                  toastr.error('Login Failed !')
+            ,
+              ()->
+                toastr.error('Login Failed !')
+            )
           ''
 
         elem.on('click', ->
@@ -54,12 +75,13 @@ angular.module('Global.Directives')
 
           false
 
-        $resetPass.on 'click', ->
+        $resetPass.on 'click', (e)->
           e.preventDefault()
           scope.$parent.$emit 'closeModal'
           $state.go 'reset'
 
           false
+
     }
 
 

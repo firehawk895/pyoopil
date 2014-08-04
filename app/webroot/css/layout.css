@@ -221,7 +221,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 /***************************************** 
 				Rights Section  
 ******************************************/
-.rightwrapper { margin-left:250px; padding:80px 0px 0px 0px; min-height:579px; position:relative; background:#e6e6e6; }
+.rightwrapper { margin-left:250px; padding:1px 0px 0px 0px; min-height:579px; position:relative; background:#e6e6e6; }
 /***************************************** 
 	Rights Sub Pages navigation
 ******************************************/
@@ -236,7 +236,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 /***************************************** 
 	Rights Main Contents
 ******************************************/
-.pagecontent { margin-top:50px; }
+.pagecontent { margin-top:70px; }
 /*browse*/
 .attachmentbox { padding:15px 10px; }
 .attachmentbox fileinput-button { position: relative; overflow: hidden; display:block; }

@@ -20,6 +20,8 @@
     "angular-ui-router": "~0.2.10",
     "lodash": "~2.4.1",
     "toastr": "~2.0.3",
-    "ngstorage": "~0.3.0"
+    "ngstorage": "~0.3.0",
+    "pass-meter": "~1.0.0",
+    "angular-re-captcha": "~0.0.3"
   }
 }

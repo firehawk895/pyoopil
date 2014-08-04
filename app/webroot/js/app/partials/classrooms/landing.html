@@ -1,3 +1,69 @@
-<div>
-    Classrooms Landing.
-</div>
+<section class="rightwrapper">
+    <section class="pagesubnav">
+    <div class="clearfix">
+        <ul class="left-subnav clearfix">
+            <li><a href="#/login/classrooms" class="active">My Classrooms</a>
+            </li>
+            <li><a href="#/login/classrooms/announcements">Announcements</a>
+            </li>
+            <li><a href="#/login/classrooms/library">Library</a>
+            </li>
+        </ul>
+        <create-classroom></create-classroom>
+        <!--popup-->
+
+
+        <!--quiz popup-->
+        <div id="quizdialog" class="quizdia create-popup">
+            <div class="pop-wind clearfix">
+                <div class="pop-head clearfix">
+                    <span>Classroom Created</span>
+                    <a class="close-link" href="#">
+                        <span class="icon-cross"></span></a>
+                </div>
+                <div class="pop-content">
+                    <div class="created-contt">
+                        <p class="created-heading">Your Class ______has been successfully created.</p>
+                        <p class="created-txt">Please find below the unique group password. You can distribute the password to your friends so that they can join the group. </p>
+                        <p class="created-txt">An E-mail with the password has also been sent to you for your convenience.</p>
+                        <p class="created-txt">Unique acess code: <span class="code-txt">AEW124Q</span>
+                        </p>
+                        <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the class. Have a great session this semester with your students. Cheers!!</p>
+                        <div class="pop-close">
+                            <a href="classroom.htm" class="sub-btn">Take me to my classrooms</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <section class="pagecontent clearfix">
+        <div class="library-wrapper">
+            <ul class="tile-lst">
+                <li class="code-class">
+                    <div class="newjoinbox">
+                        <a href="#" class="newjoin">Join New Classroom</a>
+                        <div class="accessclass">
+                            <input type="text" class="access" name="search" placeholder="Enter Access Code" >
+                            <a href="#" class="sub-btn">Join Classroom</a>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="classroom-discussion.htm">
+                        <div class="class-head">My Class</div>
+                        <img src="images/lock_icon.png" class="lock">
+                        <div class="doc-top">
+                            <p class="subject">CHEMISTRY 101</p>
+                            <div>by</div>
+                            <div><span class="online"></span>Shivanand Dasgupta</div>
+                            <div class="totalstudent">(35 Students)</div>
+                        </div>
+                        <p class="doc-end"> Amity University </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</section>
