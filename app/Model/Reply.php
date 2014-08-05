@@ -30,7 +30,8 @@ class Reply extends AppModel {
             'foreignKey' => 'discussion_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
+            'counterCache' => true
         )
     );
 
@@ -84,46 +85,25 @@ class Reply extends AppModel {
 
     public function processReplies($data, $userId) {
         for ($i = 0; $i < count($data); $i++) {
-            $hasVoted = $this->Gamificationvote->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
-            $isOwner = ($data[$i]['Reply']['user_id'] == $userId);
-
-            if ($hasVoted || $isOwner) {
-                $data[$i]['Reply']['showGamification'] = true;
-            } else {
-                unset($data[$i]['Reply']['real_praise']);
-                unset($data[$i]['Reply']['cu']);
-                unset($data[$i]['Reply']['in']);
-                unset($data[$i]['Reply']['co']);
-                unset($data[$i]['Reply']['en']);
-                unset($data[$i]['Reply']['ed']);
-                $data[$i]['Reply']['showGamification'] = false;
-            }
-            
-            if($hasVoted) {
-                $data[$i]['allowGamificationvote'] = true;
-            } else {
-                $data[$i]['allowGamificationvote'] = false;
-            }
+            $data[$i]['Reply'] = $this->Discussion->setShowGamification('Reply', $data[$i]['Reply'], $userId);
             $data[$i]['Gamificationvote'] = $this->Discussion->convertGamificationVoteArray($data[$i]['Gamificationvote']);
         }
-
         return $data;
     }
 
-    public function setMoreRepliesFlag($page, $discussionId){
-
+    public function setMoreRepliesFlag($page, $discussionId) {
         $params = array(
             'conditions' => array(
                 'discussion_id' => $discussionId
             )
         );
 
-        $count = count($this->find('all',$params));
+        $count = count($this->find('all', $params));
         $left = $count - ($page * 5);
 
-        if($left>0){
+        if ($left > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -138,7 +118,7 @@ class Reply extends AppModel {
      */
     public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
 
-        $offset = self::MAX_REPLIES * ($page - 1 );
+        $offset = self::MAX_REPLIES * ($page - 1);
 
         $contain = array(
             'Gamificationvote' => array(

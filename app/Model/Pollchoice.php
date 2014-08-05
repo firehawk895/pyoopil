@@ -49,4 +49,15 @@ class Pollchoice extends AppModel {
         return $choice['Pollchoice']['discussion_id'];
     }
 
+    /**
+     * given a discussion of type poll return
+     * @param $discussionId
+     * @return array
+     */
+    public function getPollChoiceList($discussionId) {
+        $list = array();
+
+        return $list;
+    }
+
 }

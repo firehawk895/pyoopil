@@ -115,8 +115,6 @@ class ClassroomsController extends AppController {
         $this->set('data', $data);
         $this->set(compact('status', 'message', 'permissions'));
         $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
-
-        $this->Classroom->UsersClassroom->setModerator();
     }
 
     /**
