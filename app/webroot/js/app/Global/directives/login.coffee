@@ -6,7 +6,7 @@ angular.module('Global.Directives')
 
     ''
 ])
-.directive('login', ['mainService','$state', (mainService, $state)->
+.directive('login', ['mainService','$state', 'Auth',(mainService, $state, Auth)->
 
     return {
 
@@ -51,6 +51,7 @@ angular.module('Global.Directives')
               (data)->
                 if data.data.status is true
                   loginCtrl.closeModal()
+                  Auth.setAuthToken(data.data.data['auth_token'])
                   $state.go 'login.classrooms'
                 else
                   toastr.error('Login Failed !')

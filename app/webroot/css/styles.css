@@ -464,7 +464,7 @@ header.landing-page { position: relative; }
 .new-assign { background-color: #848383; font-size: 12px; color: #fff; padding: 0 15px; float: right; border-radius: 3px; }
 .view-btn { background-color: #fff; color: #f67e02; font-size: 12px; padding: 2px 15px; border: 1px solid #c2c2c2; border-radius: 3px; }
 /* create new assignment popup*/
-#create-assign .pop-wind { width: 700px; }
+#create-assign .pop-wind { width: 700px; margin-left: 25%;}
 #create-iframe { height: 645px; width: 625px; }
 .create-assign { padding: 20px; }
 .create-assign .tab-contt { margin: 0; }

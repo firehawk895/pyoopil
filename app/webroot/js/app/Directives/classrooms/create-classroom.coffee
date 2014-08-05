@@ -1,5 +1,5 @@
 angular.module 'Classrooms'
-  .directive 'createClassroom', [()->
+  .directive 'createClassroom', ['Utilities', (Utilities)->
 
       return {
         restrict : 'E',
@@ -7,9 +7,13 @@ angular.module 'Classrooms'
         scope : {
 
         },
-        templateUrl : '/pyoopil/js/app/partials/classrooms/create-classroom.html',
+        template : '<button class="sub-btn dialogbox" title="create-assign">Create New Classroom</button>',
         link : (scope, elem, attrs)->
-          console.log elem
+          elem.on 'click', (e)->
+
+            Utilities.openModal 'create-classroom-form.html'
+
+            false
       }
 
   ]

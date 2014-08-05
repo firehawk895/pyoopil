@@ -8,7 +8,7 @@
       return '';
     }
   ]).directive('login', [
-    'mainService', '$state', function(mainService, $state) {
+    'mainService', '$state', 'Auth', function(mainService, $state, Auth) {
       return {
         restrict: 'E',
         scope: {},
@@ -43,6 +43,7 @@
               post.then(function(data) {
                 if (data.data.status === true) {
                   loginCtrl.closeModal();
+                  Auth.setAuthToken(data.data.data['auth_token']);
                   return $state.go('login.classrooms');
                 } else {
                   return toastr.error('Login Failed !');

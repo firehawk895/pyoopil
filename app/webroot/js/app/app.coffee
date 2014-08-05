@@ -2,6 +2,7 @@ angular.module('Global.Services', [])
 angular.module('Global.Controllers', [])
 angular.module('Global.Directives', [])
 angular.module('Global.Filters', [])
+angular.module('Pyoopil.Services', [])
 angular.module('Classrooms', [])
 
 angular
@@ -12,7 +13,8 @@ angular
     'Classrooms',
     'Global.Filters',
     'ui.router',
-    'reCAPTCHA'
+    'reCAPTCHA',
+    'Pyoopil.Services',
   ])
   .config(['$stateProvider', '$locationProvider', '$urlRouterProvider', ($stateProvider, $locationProvider, $urlRouterProvider)->
 
@@ -40,7 +42,7 @@ angular
       templateUrl : '/pyoopil/js/app/partials/reset-password.html'
     })
 
-    $urlRouterProvider.otherwise('/index');
+    $urlRouterProvider.otherwise('/index')
 
     $urlRouterProvider.rule( ($injector, $location) ->
 

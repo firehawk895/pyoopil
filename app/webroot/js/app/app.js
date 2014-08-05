@@ -8,9 +8,11 @@
 
   angular.module('Global.Filters', []);
 
+  angular.module('Pyoopil.Services', []);
+
   angular.module('Classrooms', []);
 
-  angular.module('pyoopil', ['Global.Services', 'Global.Controllers', 'Global.Directives', 'Classrooms', 'Global.Filters', 'ui.router', 'reCAPTCHA']).config([
+  angular.module('pyoopil', ['Global.Services', 'Global.Controllers', 'Global.Directives', 'Classrooms', 'Global.Filters', 'ui.router', 'reCAPTCHA', 'Pyoopil.Services']).config([
     '$stateProvider', '$locationProvider', '$urlRouterProvider', function($stateProvider, $locationProvider, $urlRouterProvider) {
       $stateProvider.state('index', {
         url: '/index',
