@@ -14,7 +14,7 @@ class Pollvote extends AppModel {
      * @var array
      */
     public $belongsTo = array(
-        'User' => array(
+        'AppUser' => array(
             'className' => 'User',
             'foreignKey' => 'user_id',
             'conditions' => '',
@@ -30,7 +30,44 @@ class Pollvote extends AppModel {
         )
     );
 
-    public function hasVoted($pollChoiceId, $userId) {
+
+    /**
+     * Check if a user has voted on a Discussion type Poll
+     * @param $discussionId
+     * @param $userId
+     * @return bool
+     */
+    public function hasVotedOnPoll($discussionId, $userId) {
+        //get the list of PollChoiceIds for given Discussion of type Poll
+        $pollChoiceIdList = array(9, 10, 11, 12, 13, 14);
+
+        //check if user has voted on any of the poll choices
+        $options['conditions'] = array(
+            'Pollchoice.id IN' => $pollChoiceIdList,
+            'AppUser.id' => $userId
+        );
+
+        $options['contain'] = array(
+            'AppUser' => array(
+                'fields' => array(
+                    'id'
+                )
+            ),
+            'Pollchoice' => array(
+                'fields' => array(
+                    'id'
+                )
+            )
+        );
+
+        $data = $this->find('first', $options);
+        $this->log($this->getDataSource()->getLog(false, false));
+        $this->log($data);
+        $this->log(!empty($data));
+        return !empty($data);
+    }
+
+    public function hasVotedOnChoice($pollChoiceId, $userId) {
         $conditions = array(
             'user_id' => $userId,
             'pollchoice_id' => $pollChoiceId

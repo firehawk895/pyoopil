@@ -27,13 +27,13 @@ class Discussion extends AppModel {
      * TODO : room wise, and filters
      * Common Authorization Framework:
      * Check if user is participant of room (classRoom | institutionRoom | staffRoom | groupRoom)
-     * check if user is follower of myRoom's user 
+     * check if user is follower of myRoom's user
      * ENUM('cu','in','co','en','ed')
      */
 
     /**
      * db notes:
-     * ON DELETE CASCADE set for all related Discussion models except Classroom 
+     * ON DELETE CASCADE set for all related Discussion models except Classroom
      */
 
     public $actsAs = array(
@@ -183,79 +183,88 @@ class Discussion extends AppModel {
      * @return mixed
      */
     public function processData($data, $userId) {
-//        $this->log($data);
-
         for ($i = 0; $i < count($data); $i++) {
-            /* Removing Gamification information if required */
-            $hasVoted = ($this->Gamificationvote->hasVoted('Discussion', $data[$i]['Discussion']['id'], $userId));
-
-//            $this->log($hasVoted);
-//            $this->log($data[$i]['Discussion']['id']);
-
-            $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
-            if ($hasVoted || $isOwner) {
-                $data[$i]['Discussion']['showGamification'] = true;
-            } else {
-                unset($data[$i]['Discussion']['real_praise']);
-//            unset($data[$i]['Discussion']['display_praise']);
-                unset($data[$i]['Discussion']['cu']);
-                unset($data[$i]['Discussion']['in']);
-                unset($data[$i]['Discussion']['co']);
-                unset($data[$i]['Discussion']['en']);
-                unset($data[$i]['Discussion']['ed']);
-                $data[$i]['Discussion']['showGamification'] = false;
-            }
-
-            /* Converting Gamification information to friendly form */
+            // Remove gamification information if required
+            $data[$i]['Discussion'] = $this->setShowGamification('Discussion', $data[$i]['Discussion'], $userId);
+            // Converting Gamification information to friendly form
             $data[$i]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Gamificationvote']);
 
-            /* Decide to show votes of a poll */
+            // Decide to show votes of a poll
             if ($data[$i]['Discussion']['type'] == 'poll') {
-                $this->log($data[$i]);
-                $data[$i]['Pollchoice']['showPollVote'] = false;
-                if ($isOwner) {
-                    $data[$i]['Pollchoice']['showPollVote'] = true;
-                } else {
-                    for ($k = 0; $k < count($data[$i]['Pollchoice']) - 1; $k++) {
-                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Pollchoice'][$k]['id'], $userId)) {
-                            $data[$i]['Pollchoice']['showPollVote'] = true;
-                            break;
-                        }
-                    }
-                }
+                $data[$i]['Discussion'] = $this->_setShowPollVote($data[$i]['Discussion'], $userId);
             }
-            /* Remove Key if not folded by current user */
-            if ($data[$i]['Foldeddiscussion'] == NULL) {
-                $data[$i]['Discussion']['isFolded'] = false;
-            } else {
-                $data[$i]['Discussion']['isFolded'] = true;
-            }
-            unset($data[$i]['Foldeddiscussion']);
 
-            /* Removing Gamification information for Reply */
+            // Remove Key if not folded by current user
+            $data[$i] = $this->_setIsFolded($data[$i]);
+
+            // Removing Gamification information for Reply
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
-                $hasVoted = ($this->Gamificationvote->hasVoted('Reply', $data[$i]['Reply'][$j]['id'], $userId));
-                $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
-
-                if ($isOwner || $hasVoted) {
-                    $data[$i]['Reply'][$j]['showGamification'] = true;
-                } else {
-                    unset($data[$i]['Reply'][$j]['real_praise']);
-//                unset($data[$i]['Reply'][$j]['display_praise']);
-                    unset($data[$i]['Reply'][$j]['cu']);
-                    unset($data[$i]['Reply'][$j]['in']);
-                    unset($data[$i]['Reply'][$j]['co']);
-                    unset($data[$i]['Reply'][$j]['en']);
-                    unset($data[$i]['Reply'][$j]['ed']);
-                    $data[$i]['Reply'][$j]['showGamification'] = false;
-                }
-                /* Converting Gamification information to friendly form */
+                $data[$i]['Reply'][$j] = $this->setShowGamification('Reply', $data[$i]['Reply'][$j], $userId);
+                //Converting Gamification information to friendly form
                 $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
             }
-
-            $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1,$data[$i]['Discussion']['id']);
+//            $data[$i]['moreReplies'] = $this->Reply->_setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
         }
         return $data;
+    }
+
+    /**
+     * Takes a discussion or reply, removing the gamification votes if required
+     * and setting required flag (showGamification)
+     * @param $type String 'Discussion' or 'Reply'
+     * @param $data mixed Discussion or Reply array
+     * @param $userId int
+     * @return mixed
+     */
+    public function setShowGamification($type, $data, $userId) {
+        unset($data['real_praise']);
+        $hasVoted = $this->Gamificationvote->hasVoted($type, $data['id'], $userId);
+        $isOwner = ($data['user_id'] == $userId);
+        if ($hasVoted || $isOwner) {
+            $data['showGamification'] = true;
+        } else {
+            $data['showGamification'] = false;
+            unset($data['cu']);
+            unset($data['in']);
+            unset($data['co']);
+            unset($data['en']);
+            unset($data['ed']);
+        }
+        return $data;
+    }
+
+
+    /**
+     * takes a Discussion of type 'Poll', determines to show/remove info
+     * of votes of the Poll.
+     * sets flag 'showPollVote'
+     * @param $discussion
+     * @param $userId
+     * @return mixed
+     */
+    private function _setShowPollVote($discussion, $userId) {
+        $isOwner = ($discussion['user_id'] == $userId);
+        $hasVotedOnPoll = $this->Pollchoice->Pollvote->hasVotedOnPoll($discussion['id'], $userId);
+        if ($isOwner || $hasVotedOnPoll) {
+            $discussion['showPollVote'] = true;
+        } else {
+            $discussion['showPollVote'] = false;
+        }
+        return $discussion;
+    }
+
+    /**
+     * @param $discussion
+     * @return mixed
+     */
+    private function _setIsFolded($discussion) {
+        if ($discussion['Foldeddiscussion'] == NULL) {
+            $discussion['Discussion']['isFolded'] = false;
+        } else {
+            $discussion['Discussion']['isFolded'] = true;
+        }
+        unset($discussion['Foldeddiscussion']);
+        return $discussion;
     }
 
     /**
@@ -277,15 +286,20 @@ class Discussion extends AppModel {
             $name = $gamificationVote[$k]['AppUser']['fname'] . ' ' . $gamificationVote[$k]['AppUser']['lname'];
 
             switch ($vote) {
-                case 'en': array_push($data['en'], $name);
+                case 'en':
+                    array_push($data['en'], $name);
                     break;
-                case 'in': array_push($data['in'], $name);
+                case 'in':
+                    array_push($data['in'], $name);
                     break;
-                case 'cu': array_push($data['cu'], $name);
+                case 'cu':
+                    array_push($data['cu'], $name);
                     break;
-                case 'co': array_push($data['co'], $name);
+                case 'co':
+                    array_push($data['co'], $name);
                     break;
-                case 'ed': array_push($data['ed'], $name);
+                case 'ed':
+                    array_push($data['ed'], $name);
                     break;
             }
         }
@@ -301,7 +315,6 @@ class Discussion extends AppModel {
      * @return array
      */
     public function getPaginatedDiscussions($roomId, $userId, $page, $onlylatest = false) {
-
         $offset = self::PAGINATION_LIMIT * ($page - 1);
 
         $contain = array(
@@ -376,7 +389,7 @@ class Discussion extends AppModel {
     public function deleteDiscussion($discussionId, $userId) {
         //Ensure ON DELETE CASCADE in Discussion table
         $discussion = $this->findById($discussionId);
-        if (($discussion != null ) && $discussion['Discussion']['user_id'] == $userId) {
+        if (($discussion != null) && $discussion['Discussion']['user_id'] == $userId) {
             return $this->delete($discussionId);
         } else {
             return false;
@@ -410,18 +423,16 @@ class Discussion extends AppModel {
         );
 
         if ($this->Foldeddiscussion->hasAny($conditions)) {
-            $Foldeddiscussion = $this->Foldeddiscussion->find('first', array(
+            $foldeddiscussion = $this->Foldeddiscussion->find('first', array(
                 'conditions' => $conditions,
                 'recursive' => -1
             ));
 
-            $id = $Foldeddiscussion['Foldeddiscussion']['id'];
-
+            $id = $foldeddiscussion['Foldeddiscussion']['id'];
             return $this->Foldeddiscussion->delete($id);
         } else {
             $this->Foldeddiscussion->create();
             return $this->Foldeddiscussion->saveAssociated($data);
         }
     }
-
 }

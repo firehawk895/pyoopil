@@ -9,6 +9,21 @@ App::uses('AppController', 'Controller');
 class DiscussionsController extends AppController {
 
     /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * get 1st paginated discussions to inject into view
      * Display Discussions of a classroom
      * @param type $classroomId
@@ -50,17 +65,16 @@ class DiscussionsController extends AppController {
         if (isset($this->params['url']['folded'])) {
             $data = $this->Discussion->Foldeddiscussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
         } else {
-            $data = $this->Discussion->Foldeddiscussion->getPaginatedDiscussions($classroomId, $userId, $page);
+            $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, $page);
         }
         $data = $this->Discussion->processData($data, $userId);
 
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
@@ -83,13 +97,12 @@ class DiscussionsController extends AppController {
 
                 $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
-                $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page,$discussionId);
+//                $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page, $discussionId);
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
@@ -120,9 +133,8 @@ class DiscussionsController extends AppController {
         } else {
             $message = "Could not delete or find the {$type}";
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message'));
     }
 
     /**
@@ -144,9 +156,8 @@ class DiscussionsController extends AppController {
                 $message = "";
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message'));
     }
 
     /**
@@ -154,7 +165,6 @@ class DiscussionsController extends AppController {
      * Posting discussion (question/poll/note)
      */
     public function add() {
-
         $this->request->onlyAllow('post');
         $this->response->type('json');
 
@@ -175,9 +185,9 @@ class DiscussionsController extends AppController {
              * because of the securityComponent
              */
             $data = $this->Discussion->getPaginatedDiscussions($savedData['Classroom']['id'], AuthComponent::user('id'), 1, true);
-            $this->log($data);
+//            $this->log($data);
             $data = $this->Discussion->processData($data, AuthComponent::user('id'));
-            $this->log($data);
+//            $this->log($data);
 //            $returnedData = $savedData;
         } else {
             $status = false;
@@ -187,10 +197,9 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     public function addReply() {
@@ -214,10 +223,9 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
@@ -241,13 +249,12 @@ class DiscussionsController extends AppController {
                 $data = $this->Discussion->Gamificationvote->getGamificationInfo($type, $id);
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'data', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'data', 'webroot'));
+        $this->set(compact('status', 'message', 'data'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
 
     /**
-     * 
+     *
      */
     public function setPollVote() {
         $this->request->onlyAllow('post');
@@ -277,10 +284,9 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
 }
