@@ -27,6 +27,66 @@ class ClassroomsController extends AppController {
     }
 
     /**
+     * TODO: Make getList APIs ajax dropdowns
+     */
+    /**
+     * get Campus List for Create Classroom Form
+     */
+    public function getCampusesList() {
+        $this->request->onlyAllow('get');
+        $data = $this->Classroom->Campus->find('list');
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * get Campus List for Create Classroom Form
+     */
+    public function getDepartmentsList() {
+        $this->request->onlyAllow('get');
+        /**
+         * TODO: get departments based on campus input
+         */
+        $data = $this->Classroom->Department->find('list');
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * get Campus List for Create Classroom Form
+     */
+    public function getDegreesList() {
+        $this->request->onlyAllow('get');
+        /**
+         * TODO: get degrees based on campus input
+         */
+        $data = $this->Classroom->Degree->find('list');
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
      * API: Create a new classroom form
      */
     public function add() {
@@ -103,6 +163,7 @@ class ClassroomsController extends AppController {
 
         $this->set(compact('status', 'message'));
 
+        $this->log($page);
         $data = $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page);
         $permissions = array(
             'allowCreate' => $this->Classroom->allowCreate(AuthComponent::user('id'))
@@ -128,14 +189,13 @@ class ClassroomsController extends AppController {
         $response = $this->Classroom->resetCode($classroomId);
         $data = array();
 
-        $this->log($response);
         if ($response) {
             $status = true;
             $message = "Access code successfully reset";
             $data = $response;
         } else {
             $status = false;
-            $message = "Access could not be reset";
+            $message = "Access code could not be reset";
         }
         /**
          * Setting data for json view.

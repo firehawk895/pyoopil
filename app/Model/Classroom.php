@@ -428,7 +428,7 @@ class Classroom extends AppModel {
      */
     public function getPaginatedClassrooms($user_id, $page) {
         //sanity check
-        if ($page || $page < 1) {
+        if ($page < 1) {
             $page = 1;
         }
         $offset = self::PAGINATION_LIMIT * ($page - 1);
@@ -472,12 +472,12 @@ class Classroom extends AppModel {
             $path = $i . '.Classroom.Educator';
             $data = Hash::insert($data, $path, $educator_name);
 
-            $path2 = $i . '.Classroom.Url';
-            $data = Hash::insert($data, $path2, Router ::url(array(
-                'controller' => 'Discussions',
-                'action' => 'index',
-                'id' => $data[$i]['Classroom']['id']
-            )));
+//            $path2 = $i . '.Classroom.Url';
+//            $data = Hash::insert($data, $path2, Router ::url(array(
+//                'controller' => 'Discussions',
+//                'action' => 'index',
+//                'id' => $data[$i]['Classroom']['id']
+//            )));
         }
 
         return $data;

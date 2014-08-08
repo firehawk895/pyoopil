@@ -4,12 +4,10 @@ App::uses('AppModel', 'Model');
 
 /**
  * UsersClassroom Model
- *
  * @property Classroom $Classroom
  * @property User $User
  */
 class UsersClassroom extends AppModel {
-
     /**
      * belongsTo associations
      * @var array
@@ -84,7 +82,7 @@ class UsersClassroom extends AppModel {
      * @return mixed
      */
     public function setModerator($classroomId, $usersList = array()) {
-        $this->_toggleField($classroomId, $usersList, 'is_moderator', true);
+        return $this->_toggleField($classroomId, $usersList, 'is_moderator', true);
     }
 
     /**
@@ -94,19 +92,25 @@ class UsersClassroom extends AppModel {
      * @return mixed
      */
     public function removeModerator($classroomId, $usersList = array()) {
-        $this->_toggleField($classroomId, $usersList, 'is_moderator', false);
+        return $this->_toggleField($classroomId, $usersList, 'is_moderator', false);
     }
 
     /**
-     * @param int $classroomId
+     * @param $classroomId
      * @param array $usersList
+     * @return bool
      */
     public function setRestricted($classroomId, $usersList = array()) {
-        $this->_toggleField($classroomId, $usersList, 'is_restricted', true);
+        return $this->_toggleField($classroomId, $usersList, 'is_restricted', true);
     }
 
+    /**
+     * @param $classroomId
+     * @param array $usersList
+     * @return bool
+     */
     public function removeRestricted($classroomId, $usersList = array()) {
-        $this->_toggleField($classroomId, $usersList, 'is_restricted', false);
+        return $this->_toggleField($classroomId, $usersList, 'is_restricted', false);
     }
 
     /**
@@ -119,8 +123,9 @@ class UsersClassroom extends AppModel {
      * @return bool
      */
     private function _toggleField($classroomId, $usersList = array(), $field, $action) {
+        $field = "UsersClassroom." . $field;
         $status = $this->updateAll(
-            array('UsersClassroom.{$field}' => $action),
+            array($field => $action),
             array(
                 'UsersClassroom.user_id IN' => $usersList,
                 'AND' => array(
@@ -134,5 +139,33 @@ class UsersClassroom extends AppModel {
 //        $this->log($status);
 //        $this->log($this->getDataSource()->getLog(false, false));
         return $status;
+    }
+
+    /**
+     * get all participants of classroom
+     * @param $classroomId
+     * @return array
+     */
+    public function getPeople($classroomId) {
+        /**
+         * TODO: filter out not to allow teacher
+         */
+        $options['conditions'] = array(
+            'Classroom.id' => $classroomId
+        );
+
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id')
+            ),
+            'AppUser' => array(
+                'fields' => array('id', 'fname', 'lname')
+            )
+        );
+
+        $options['fields'] = array('id');
+
+        $data = $this->find('all', $options);
+        return $data;
     }
 }
