@@ -66,9 +66,8 @@ class AnnouncementsController extends AppController {
             $message = "Could not create announcement";
             $status = false;
         }
-        $this->set('webroot', $this->webroot);
         $this->set('data', $data);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot', 'data'));
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
 }
