@@ -8,6 +8,12 @@ App::uses('AppModel', 'Model');
  * @property User $User
  */
 class UsersClassroom extends AppModel {
+
+    /**
+     * pagination limit count for "People" of a Classroom
+     */
+    const PAGINATION_LIMIT = 15;
+
     /**
      * belongsTo associations
      * @var array
@@ -142,28 +148,42 @@ class UsersClassroom extends AppModel {
     }
 
     /**
-     * get all participants of classroom
+     * get all participants of a classroom, paginated
      * @param $classroomId
+     * @param int $page
      * @return array
      */
-    public function getPeople($classroomId) {
+    public function getPaginatedPeople($classroomId, $page = 1) {
         /**
          * TODO: filter out not to allow teacher
          */
-        $options['conditions'] = array(
-            'Classroom.id' => $classroomId
-        );
 
-        $options['contain'] = array(
-            'Classroom' => array(
-                'fields' => array('id')
+        //sanity check
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+
+        $options = array(
+            'contain' => array(
+                'Classroom' => array(
+                    'fields' => array('id')
+                ),
+                'AppUser' => array(
+                    'fields' => array('id', 'fname', 'lname')
+                )
             ),
-            'AppUser' => array(
-                'fields' => array('id', 'fname', 'lname')
+            'fields' => array('id'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId
+            ),
+            'limit' => self::PAGINATION_LIMIT,
+            'offset' => $offset,
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
             )
         );
-
-        $options['fields'] = array('id');
 
         $data = $this->find('all', $options);
         return $data;

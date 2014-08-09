@@ -37,7 +37,7 @@ class AnnouncementsController extends AppController {
 
         $data = $this->Announcement->getPaginatedAnnouncements($classroomId, $page);
         $permissions = array(
-            'allowCreate' => $this->Announcement->allowCreate($classroomId, AuthComponent::user('id'))
+            'allowCreate' => $this->Announcement->allowCreate($classroomId, $userId)
         );
         /**
          * finalize and set the response for the json view
