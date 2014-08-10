@@ -163,7 +163,6 @@ class ClassroomsController extends AppController {
 
         $this->set(compact('status', 'message'));
 
-        $this->log($page);
         $data = $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page);
         $permissions = array(
             'allowCreate' => $this->Classroom->allowCreate(AuthComponent::user('id'))

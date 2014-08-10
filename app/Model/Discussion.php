@@ -54,7 +54,7 @@ class Discussion extends AppModel {
             'order' => ''
         ),
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
@@ -389,6 +389,9 @@ class Discussion extends AppModel {
     public function deleteDiscussion($discussionId, $userId) {
         //Ensure ON DELETE CASCADE in Discussion table
         $discussion = $this->findById($discussionId);
+        /**
+         * TODO: move this logic to authorization layer
+         */
         if (($discussion != null) && $discussion['Discussion']['user_id'] == $userId) {
             return $this->delete($discussionId);
         } else {
@@ -413,13 +416,10 @@ class Discussion extends AppModel {
             'discussion_id' => $discussionId
         );
 
+        //cool model style notation such as AppUser.id not working
         $data = array(
-            'User' => array(
-                'id' => $userId
-            ),
-            'Discussion' => array(
-                'id' => $discussionId
-            )
+            'user_id' => $userId,
+            'discussion_id' => $discussionId
         );
 
         if ($this->Foldeddiscussion->hasAny($conditions)) {
@@ -432,7 +432,17 @@ class Discussion extends AppModel {
             return $this->Foldeddiscussion->delete($id);
         } else {
             $this->Foldeddiscussion->create();
-            return $this->Foldeddiscussion->saveAssociated($data);
+            return $this->Foldeddiscussion->save($data);
         }
+    }
+
+    /**
+     * permission for allowing "Create" privilege for discussions
+     * @param $classroomId
+     * @param $userId
+     * @return bool
+     */
+    public function allowCreate($classroomId, $userId) {
+        return true;
     }
 }

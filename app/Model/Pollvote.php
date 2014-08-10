@@ -15,7 +15,7 @@ class Pollvote extends AppModel {
      */
     public $belongsTo = array(
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
@@ -39,7 +39,7 @@ class Pollvote extends AppModel {
      */
     public function hasVotedOnPoll($discussionId, $userId) {
         //get the list of PollChoiceIds for given Discussion of type Poll
-        $pollChoiceIdList = array(9, 10, 11, 12, 13, 14);
+        $pollChoiceIdList = $this->Pollchoice->getPollChoiceList($discussionId);
 
         //check if user has voted on any of the poll choices
         $options['conditions'] = array(
@@ -61,9 +61,6 @@ class Pollvote extends AppModel {
         );
 
         $data = $this->find('first', $options);
-        $this->log($this->getDataSource()->getLog(false, false));
-        $this->log($data);
-        $this->log(!empty($data));
         return !empty($data);
     }
 
@@ -83,38 +80,49 @@ class Pollvote extends AppModel {
      */
     public function setPollVote($userId, $pollChoiceId) {
 
-        $conditions = array(
-            'user_id' => $userId,
-            'pollchoice_id' => $pollChoiceId
-        );
+        $discussionId = $this->Pollchoice->getDiscussionId($pollChoiceId);
 
-        //check if its a valid poll choice
+        //check if its a valid PollChoice to be voted on
         if (!$this->Pollchoice->findById($pollChoiceId)) {
+            $this->log("Invalid pollchoice id");
             return false;
         }
 
-        //does not check if already voted
-        if (!$this->Pollvote->hasAny($conditions)) {
-            $this->Pollchoice->id = $pollChoiceId;
-            $newVotes = $this->Pollchoice->field('votes') + 1;
-            //            $this->Pollchoice->id = $pollChoiceId;
-            //            $this->Pollchoice->saveField('votes' , $newVotes);
-
-            $data = array(
-                'User' => array(
-                    'id' => $userId
-                ),
-                'Pollchoice' => array(
-                    'id' => $pollChoiceId,
-                    'votes' => $newVotes
-                )
-            );
-            $this->Pollvote->create();
-            if ($this->Pollvote->saveAssociated($data)) {
-                return true;
-            }
+        //check if already voted
+        if ($this->hasVotedOnPoll($discussionId, $userId)) {
+            $this->log("already voted on this poll");
+            return false;
         }
-        return false;
-    }
 
+        $this->Pollchoice->id = $pollChoiceId;
+        $newVotes = $this->Pollchoice->field('votes') + 1;
+        $this->log($newVotes);
+        //            $this->Pollchoice->id = $pollChoiceId;
+        //            $this->Pollchoice->saveField('votes' , $newVotes);
+
+        //great the sweet model notation refuses to work
+        //just upgrade to the new ORM, this battle is OVER!
+//        $data = array(
+//            'AppUser' => array(
+//                'id' => $userId
+//            ),
+//            'Pollchoice' => array(
+//                'id' => $pollChoiceId,
+//                'votes' => $newVotes
+//            )
+//        );
+
+        $data = array(
+            'user_id' => $userId,
+            'pollchoice_id' => $pollChoiceId
+        );
+        $result = $this->save($data);
+        //TODO : use a transaction instead!
+        if (!empty($result)) {
+            $this->Pollchoice->saveField('votes', $newVotes);
+        }
+        $this->log($result);
+        $this->log($this->getDataSource()->getLog(false, false));
+        return !empty($result);
+    }
 }

@@ -9,54 +9,33 @@ App::uses('AppModel', 'Model');
  */
 class Gamificationvote extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array(
-		'user_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'AppUser' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Discussion' => array(
-			'className' => 'Discussion',
-			'foreignKey' => 'discussion_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Reply' => array(
-			'className' => 'Reply',
-			'foreignKey' => 'reply_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    /**
+     * belongsTo associations
+     * @var array
+     */
+    public $belongsTo = array(
+        'AppUser' => array(
+            'className' => 'AppUser',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Discussion' => array(
+            'className' => 'Discussion',
+            'foreignKey' => 'discussion_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
+        'Reply' => array(
+            'className' => 'Reply',
+            'foreignKey' => 'reply_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
 
     protected $votes = array(
         'cu', 'in', 'co', 'en', 'ed'
@@ -97,32 +76,33 @@ class Gamificationvote extends AppModel {
      */
     public function setGamificationVote($type, $id, $vote, $userId) {
 
-        $params = array(
-            'contain' => array(
-                'Gamificationvote'
-            ),
-            'conditions' => array(
-                'id' => $id
-            ),
-        );
-
         $validVote = in_array($vote, $this->votes);
 
+        // Check if the discussion/reply exists
         if ($type == 'Discussion') {
-            $this->id = $id;
-            $data = $this->find('first', $params);
+            $this->Discussion->id = $id;
+            $data = $this->Discussion->find('first', array(
+                'conditions' => array(
+                    'id' => $id
+                ),
+                'recursive' => -1
+            ));
         } elseif ($type == 'Reply') {
             $this->Reply->id = $id;
-            $data = $this->Reply->find('first', $params);
+            $data = $this->Reply->find('first', array(
+                'conditions' => array(
+                    'id' => $id
+                ),
+                'recursive' => -1
+            ));
         }
-
-        /* Check if the discussion/reply exists */
         if (!$data) {
             return false;
         }
-        /* Ensuring no self vote */
+
+        // Ensuring no self vote
         if ($data[$type]['user_id'] != $userId) {
-            /* Ensuring no duplicate voting and valid voting */
+            // Ensuring no duplicate vote, and vote is a valid type
             if (!$this->hasVoted($type, $id, $userId) && $validVote) {
 
                 $displayPraise = $data[$type]['display_praise'] + 1;
@@ -150,11 +130,11 @@ class Gamificationvote extends AppModel {
 
                 return $this->saveAssociated($record);
             } else {
-                /* duplicate vote error message */
+                // duplicate vote error message
                 return false;
             }
         } else {
-            /* voting on own discussion/reply */
+            //voting on own discussion/reply
             return false;
         }
     }
@@ -167,7 +147,7 @@ class Gamificationvote extends AppModel {
      * @return array
      */
     public function getGamificationInfo($type, $id, $page = 1) {
-        $offset = $this->PAGINATION_LIMIT * ($page - 1 );
+        $offset = $this->PAGINATION_LIMIT * ($page - 1);
 
         $params = array(
             'contain' => array(

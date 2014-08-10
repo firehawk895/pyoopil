@@ -25,8 +25,8 @@ class Foldeddiscussion extends AppModel {
      * @var array
      */
     public $belongsTo = array(
-        'User' => array(
-            'className' => 'User',
+        'AppUser' => array(
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',

@@ -19,7 +19,7 @@ class Reply extends AppModel {
      */
     public $belongsTo = array(
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
@@ -55,22 +55,43 @@ class Reply extends AppModel {
         )
     );
 
+    /**
+     * Post a reply for a given discussion
+     * @param $discussionId
+     * @param $comment
+     * @param $userId
+     * @return mixed
+     */
     public function postReply($discussionId, $comment, $userId) {
+//        not working:
+//        $data = array(
+//            'AppUser' => array(
+//                'id' => $userId
+//            ),
+//            'Discussion' => array(
+//                'id' => $discussionId
+//            ),
+//            'Reply' => array(
+//                'comment' => $comment
+//            )
+//        );
         $data = array(
-            'AppUser' => array(
-                'id' => $userId
-            ),
-            'Discussion' => array(
-                'id' => $discussionId
-            ),
-            'Reply' => array(
-                'comment' => $comment
-            )
+            'user_id' => $userId,
+            'discussion_id' => $discussionId,
+            'comment' => $comment
         );
 
-        return $this->saveAssociated($data);
+//        return $this->saveAssociated($data);
+        return $this->save($data);
+
     }
 
+    /**
+     * Delete a given reply by Id
+     * @param $replyId
+     * @param $userId
+     * @return bool
+     */
     public function deleteReply($replyId, $userId) {
         $reply = $this->findById($replyId);
 
@@ -83,6 +104,12 @@ class Reply extends AppModel {
         }
     }
 
+    /**
+     * Post-processing of reply data for use in the front end
+     * @param $data
+     * @param $userId
+     * @return mixed
+     */
     public function processReplies($data, $userId) {
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Reply'] = $this->Discussion->setShowGamification('Reply', $data[$i]['Reply'], $userId);
@@ -91,6 +118,13 @@ class Reply extends AppModel {
         return $data;
     }
 
+    /**
+     * Indicator if more replies are present
+     * to be used for lazy loaded pagination of replies for a given discussion
+     * @param $page
+     * @param $discussionId
+     * @return bool
+     */
     public function setMoreRepliesFlag($page, $discussionId) {
         $params = array(
             'conditions' => array(

@@ -52,8 +52,6 @@ class AppUsersController extends UsersController {
         $data = array();
         $status = false;
 
-        $this->log($this->request->data);
-
         if ($this->request->is('post')) {
             $user = $this->AppUser->authenticate($this->request->data);
             if ($user) {

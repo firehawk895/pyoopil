@@ -228,8 +228,6 @@ class AppUser extends User {
 
     /**
      * $userId1 follows/unfollows a $userId2
-     * @param $userId1
-     * @param $userId2
      */
     public function toggleFollow() {
         $this->loadModel("Follow");
