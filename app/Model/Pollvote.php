@@ -121,8 +121,8 @@ class Pollvote extends AppModel {
         if (!empty($result)) {
             $this->Pollchoice->saveField('votes', $newVotes);
         }
-        $this->log($result);
-        $this->log($this->getDataSource()->getLog(false, false));
+//        $this->log($result);
+//        $this->log($this->getDataSource()->getLog(false, false));
         return !empty($result);
     }
 }
