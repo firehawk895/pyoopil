@@ -31,6 +31,7 @@
 
         Utilities.prototype.closeModal = function(e) {
           this.scope.template.url = null;
+          this.scope.showModal = true;
           this.scope.$broadcast('closeModal');
           if (!this.scope.$$phase) {
             return this.scope.$digest();

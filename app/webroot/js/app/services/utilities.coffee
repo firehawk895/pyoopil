@@ -31,6 +31,7 @@ angular.module 'Pyoopil.Services'
       closeModal : (e) ->
 
         @scope.template.url = null
+        @scope.showModal = true
         @scope.$broadcast 'closeModal'
 
         if not @scope.$$phase

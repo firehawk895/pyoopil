@@ -3,7 +3,7 @@
   angular.module('Pyoopil.Services').factory('Auth', [
     function() {
       var Auth;
-      Auth = (function() {
+      return new (Auth = (function() {
         function Auth() {
           this.token = sessionStorage.authToken || false;
         }
@@ -16,10 +16,18 @@
           return sessionStorage.authToken = this.token = token;
         };
 
+        Auth.prototype.isLoggedIn = function() {
+          return !!this.token;
+        };
+
+        Auth.prototype.logout = function() {
+          delete sessionStorage.authToken;
+          return true;
+        };
+
         return Auth;
 
-      })();
-      return new Auth();
+      })());
     }
   ]);
 

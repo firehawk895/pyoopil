@@ -1,4 +1,4 @@
-angular.module 'Classrooms'
+angular.module 'Pyoopil.Directives'
   .directive 'createClassroom', ['Utilities', (Utilities)->
 
       return {

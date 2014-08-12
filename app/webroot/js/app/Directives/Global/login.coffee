@@ -1,4 +1,4 @@
-angular.module('Global.Directives')
+angular.module('Pyoopil.Directives')
 .controller('loginCtrl', ['$scope', ($scope)->
 
     @closeModal = ->
@@ -52,7 +52,7 @@ angular.module('Global.Directives')
                 if data.data.status is true
                   loginCtrl.closeModal()
                   Auth.setAuthToken(data.data.data['auth_token'])
-                  $state.go 'login.classrooms'
+                  $state.go 'login.Classrooms'
                 else
                   toastr.error('Login Failed !')
             ,

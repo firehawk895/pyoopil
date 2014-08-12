@@ -1,20 +1,30 @@
 angular.module 'Pyoopil.Services'
-.factory 'Auth', [()->
+  .factory 'Auth', [()->
 
-  class Auth
+    new class Auth
 
-    constructor : ->
+      constructor : ->
 
-      @token = sessionStorage.authToken || false
+        @token = sessionStorage.authToken || false
 
-    getAuthToken : ->
+      getAuthToken : ->
 
-      @token.toString()
+        @token.toString()
 
-    setAuthToken : (token)->
-      sessionStorage.authToken = @token = token
+      setAuthToken : (token)->
 
-  new Auth()
+        sessionStorage.authToken = @token = token
 
+
+      isLoggedIn : ->
+
+        !!@token
+
+
+      logout : ->
+
+        delete sessionStorage.authToken
+
+        true
 
 ]

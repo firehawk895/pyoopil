@@ -7,7 +7,6 @@
     <link rel="shortcut icon" href="images/favicon.ico">
     <link href="style.css" rel="stylesheet">
     <link href="js/vendors/toastr/toastr.min.css" rel="stylesheet">
-
     <!--[if lt IE 9]>
     <link rel="stylesheet" type="text/css" href="css/ie9.css" />
     <script src="js/html5shiv.js"></script>
@@ -26,36 +25,50 @@
 <div ui-view>
 
 </div>
-<div class="overlays" ng-if="showModal">
+<div class="overlays">
     <div ng-include src="template.url" class="overlay"></div>
 </div>
 <overlay></overlay>
 <!-- DEPS -->
 <script src="js/vendors/jquery-1.8.2.min.js"></script>
-<script src="js/vendors/lodash/dist/lodash.underscore.min.js"></script>
+<script src="js/vendors/lodash/dist/lodash.min.js"></script>
+<script src="js/vendors/tinyscrollbar/lib/jquery.tinyscrollbar.js"></script>
 <!-- JQUERY PLUGINS -->
 <script src="js/vendors/toastr.js"></script>
 <script src="js/vendors/pass-meter/dist/pass-meter.min.js"></script>
-
 <!-- ANGULAR DEPS-->
 <script src="js/vendors/angular/angular.min.js"></script>
 <script src="js/vendors/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="js/vendors/angular-re-captcha/angular-re-captcha.js"></script>
+
 <!-- APPLICATION -->
 <script src="js/app/app.js"></script>
+<!-- BASE -->
+<script src="js/app/Services/Base.js"></script>
+
 <script src="js/app/Services/authentication.js"></script>
-<script src="js/app/Global/mainService.js"></script>
-<script src="js/app/Global/mainCtrl.js"></script>
-<script src="js/app/Global/directives/overlay.js"></script>
+<script src="js/app/Directives/Global/mainService.js"></script>
+<script src="js/app/Directives/Global/mainCtrl.js"></script>
 <script src="js/app/Services/utilities.js"></script>
 
+<!-- GLOBAL -->
+<script src="js/app/Controllers/logoutCtrl.js"></script>
+<script src="js/app/Directives/Global/overlay.js"></script>
+<script src="js/app/Directives/Global/Sandbox/tiles.js"></script>
+
 <!-- LOGIN -->
-<script src="js/app/Global/directives/register.js"></script>
-<script src="js/app/Global/directives/login.js"></script>
-<script src="js/app/Global/directives/resetpass.js"></script>
-<!-- CLASSROOM -->
-<script src="js/app/Directives/classrooms/classroom-header.js"></script>
-<script src="js/app/Directives/classrooms/create-classroom.js"></script>
+<script src="js/app/Directives/Global/register.js"></script>
+<script src="js/app/Directives/Global/login.js"></script>
+<script src="js/app/Directives/Global/resetpass.js"></script>
+
+<!-- Classroom -->
+<script src="js/app/Services/classrooms.js"></script>
+<script src="js/app/Controllers/Classrooms/classroomCtrl.js"></script>
+<script src="js/app/Directives/Classrooms/classroom.js"></script>
+<script src="js/app/Directives/Classrooms/classroom-header.js"></script>
+<script src="js/app/Directives/Classrooms/create-classroom.js"></script>
+
+
 <script>
 
     // Prevent console.log from generating errors in IE for the purposes of the demo

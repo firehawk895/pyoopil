@@ -1,4 +1,4 @@
-angular.module 'Global.Directives'
+angular.module 'Pyoopil.Directives'
   .controller 'resetpassCtrl', ['$scope', ($scope)->
     $scope.validPass = false
   ]

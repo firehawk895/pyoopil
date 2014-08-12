@@ -214,7 +214,7 @@ li:hover ul.menu-coll li { background:#3f3d3e; }
 .logout { bottom: 90px; display: block; height: 48px; left: 0; position: absolute; width: 47px; z-index: 99999; }
 .logout img { left: 7px; position: absolute; top: 8px; }
 .logout.active { background-color:#313131; }
-.logout-lst { background-color: #5E5D5D; bottom: 90px; color: #FFFFFF; font-size: 14px; height: 48px; left: 48px; position: absolute; width: 202px; z-index: 99999; display:none; }
+.logout-lst { background-color: #5E5D5D; bottom: 90px; color: #FFFFFF; font-size: 14px; height: 48px; bottom:0; position: absolute; width: 202px; z-index: 99999;}
 .logout-lst li a { border-bottom: 1px solid #3d3d3d; display:block; line-height: 47px; text-align: center; }
 .logout-lst li.lastli { border:none; }
 .logout-lst li:hover { background-color:#f67e02 }

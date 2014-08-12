@@ -1,4 +1,4 @@
-angular.module('Global.Services')
+angular.module('Pyoopil.Services')
   .factory('mainService', ['$http', '$window', '$q', 'Auth', ($http, $window, $q, Auth)->
 
     class mainService
@@ -14,7 +14,7 @@ angular.module('Global.Services')
         if isLogin
           headers = ''
         else
-          headers = {'Authorization' : Auth.getAuthToken() }
+          headers = {'X-AuthTokenHeader' : Auth.getAuthToken() }
 
         xhr = $http({
           method: 'POST',
@@ -51,13 +51,16 @@ angular.module('Global.Services')
 
       newClassroom : (data)->
 
-        url = self.url + 'add.json'
+        url = self.url + 'classrooms/add.json'
 
-      getClassrooms : ->
+        @postData url, data, false
 
-        url = self.url + 'Classrooms/getclassrooms.json?page=1'
+      joinClassroom : (data)->
 
-        @getData(url)
+        url = self.url + 'classrooms/join.json'
+
+        @postData url, data, false
+
 
     new mainService()
 

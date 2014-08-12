@@ -263,7 +263,7 @@
 	});
 	 //My classroom acordian	
 		$(".contentblock").hide();	
-		$("#classrooms .click-icon").click(function () {
+		$("#Classrooms .click-icon").click(function () {
 		var $div = $(this).parents().next(".contentblock");
 		$(".contentblock").not($div).hide();
 		$(this).toggleClass("active");

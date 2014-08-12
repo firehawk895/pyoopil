@@ -1,29 +1,20 @@
-angular.module 'Classrooms'
-.directive 'classroomHeader', ['Utilities', 'mainService', (Utilities, mainService)->
+angular.module 'Pyoopil.Directives'
+.directive 'classroomHeader', ['Utilities', 'mainService', '$timeout',(Utilities, mainService, $timeout)->
 
   return {
   restrict : 'E',
   replace : true,
   scope : {
 
-  },
-  templateUrl : '/pyoopil/js/app/partials/classrooms/header.html',
+  }
+  templateUrl : '/pyoopil/js/app/partials/Classrooms/header.html',
   link : (scope, elem, attrs)->
 
-    scope.showModal = false
+    $timeout(->
+      scope.permissions = scope.$parent.permissions
+    ,100)
 
-    $create = elem.find '#newClassroom'
-
-    xhr = mainService.getClassrooms()
-
-    xhr.then((data)->
-
-      console.log data
-
-    )
-
-
-    $create.on 'click', (e)->
+    elem.on 'click', '#newClassroom', (e)->
 
       Utilities.openModal 'create-classroom-form.html'
 

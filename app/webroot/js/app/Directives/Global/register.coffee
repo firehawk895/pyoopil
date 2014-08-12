@@ -1,4 +1,4 @@
-angular.module('Global.Directives')
+angular.module('Pyoopil.Directives')
   .directive('register', ['mainService', (mainService)->
 
       return {
