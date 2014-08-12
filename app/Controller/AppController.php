@@ -73,6 +73,9 @@ class AppController extends Controller {
             )
         );
         $this->response->header('Access-Control-Allow-Origin', '*');
+        $this->response->header('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+        $this->response->header('Access-Control-Allow-Headers', 'X-PINGOTHER');
+        $this->response->header('Access-Control-Max-Age', '1728000');
     }
 
     public function isAuthorized($user) {
