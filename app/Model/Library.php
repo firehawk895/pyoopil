@@ -133,6 +133,11 @@ class Library extends AppModel {
         return $this->Topic->save($data);
     }
 
+    /**
+     * get libraryId from classroomId
+     * @param $classroomId
+     * @return mixed
+     */
     public function getLibraryId($classroomId) {
 
         $params['conditions'] = array(
@@ -146,6 +151,11 @@ class Library extends AppModel {
         return $data['Library']['id'];
     }
 
+    /**
+     * delete topic based on TopicId
+     * @param $topicId
+     * @return bool true for success
+     */
     public function deleteTopic($topicId) {
         return $this->Topic->delete($topicId);
     }
@@ -173,6 +183,30 @@ class Library extends AppModel {
         return $topics = $this->Topic->find('all', $params);
     }
 
+    /**
+     * get a topic based on topicId
+     * @param $topicId
+     * @return array
+     */
+    public function getTopic($topicId) {
+        $options = array(
+            'conditions' => array(
+                'Topic.id' => $topicId
+            ),
+            'contain' => array(
+                'Link',
+                'Pyoopilfile'
+            )
+        );
+        return $this->Topic->find('first', $options);
+    }
+
+    /**
+     * delete an item (File or Link) from the topic
+     * @param $type File or Link
+     * @param $id
+     * @return bool
+     */
     public function deleteItem($type, $id) {
 
         if ($type == 'File') {
@@ -182,6 +216,12 @@ class Library extends AppModel {
         }
     }
 
+    /**
+     * parse links and determine if they are videos
+     * (only youtube supported)
+     * @param $data Link associative array
+     * @return mixed
+     */
     public function parseVideoLinks($data) {
         //ultimate youtube regex
         //http://stackoverflow.com/a/10315969/1881812
@@ -207,6 +247,12 @@ class Library extends AppModel {
         return $data;
     }
 
+    /**
+     * Parse Pyoopilfile based on mimeTypes
+     * and categories Documents, Links, Videos, Presentations, Pictures
+     * @param $data Pyoopilfile associative array
+     * @return mixed
+     */
     public function parsePyoopilfiles($data) {
 
         /* MIME types supported

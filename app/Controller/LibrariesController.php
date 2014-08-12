@@ -61,6 +61,36 @@ class LibrariesController extends AppController {
     }
 
     /**
+     * API : get Topic list for "Upload" Library form
+     */
+    public function getTopicsList($classroomId) {
+        $this->request->onlyAllow('get');
+        $libraryId = $this->Library->getLibraryId($classroomId);
+
+        if (empty($libraryId)) {
+            //not valid
+            //throw an exception
+        }
+
+        $options = array(
+            'conditions' => array(
+                'library_id' => $libraryId
+            ),
+            'recursive' => '-1'
+        );
+        $data = $this->Library->Topic->find('list', $options);
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
      * API: get topics and corresponding data for library
      * of a given classroom
      * @param $classroomId
@@ -168,34 +198,47 @@ class LibrariesController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
-    public function add() {
+    /**
+     * API: Upload files/links for a topic
+     * Post -> Form
+     */
+    public function add($classroomId) {
         $this->request->onlyAllow('post');
         $this->response->type('json');
 
         $savedData = $this->request->data;
-        if ($savedData['Topic']['id'] == "") {
-            unset($savedData['Topic']['id']);
-            $savedData['Library']['id'] = 13;
-        } else {
+        if (isset($savedData['Topic']['id'])) {
             unset($savedData['Topic']['name']);
+        } else {
+            unset($savedData['Topic']['id']);
+            $savedData['Library']['id'] = $this->Library->getLibraryId($classroomId);
         }
 
+        //Handle any empty inputs
         if (@$this->Library->Topic->saveAssociated($savedData)) {
             $status = true;
-            $message = "";
-            //return latest topic or whatever ram needs
-            $data = array();
         } else {
             $status = false;
-            $message = "Saving links/files for the topic failed";
-            $data = array();
         }
 
+        $data = array();
+        if ($status) {
+            $topicId = $this->Library->Topic->id;
+            $data = $this->Library->getTopic($topicId);
+
+            //array_push needs a index [0] or will miserably fail-----
+            $parseData = array();
+            array_push($parseData, $data);
+//            $this->log($parseData);
+            //--------------------------------------------------------
+            $parseData = $this->Library->parseVideoLinks($parseData);
+            $parseData = $this->Library->parsePyoopilfiles($parseData);
+        }
         /**
          * finalize and set the response for the json view
          */
         $this->set(compact('status', 'message'));
-        $this->set('data', $data);
+        $this->set('data', $parseData);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 }
