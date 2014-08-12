@@ -27,8 +27,8 @@ App::uses('Controller', 'Controller');
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package        app.Controller
+ * @link        http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
 
@@ -53,7 +53,7 @@ class AppController extends Controller {
         'Js' => array('Jquery')
     );
 
-    public function beforeFilter(){
+    public function beforeFilter() {
         parent::beforeFilter();
         AuthComponent::$sessionKey = false;
         $this->Auth->unauthorizedRedirect = false;
@@ -72,14 +72,14 @@ class AppController extends Controller {
                 'unauthorized' => 'ForbiddenException'
             )
         );
+        $this->response->header('Access-Control-Allow-Origin', '*');
     }
 
     public function isAuthorized($user) {
         $this->loadModel('AppUser');
-        if($user){
+        if ($user) {
             return !$this->AppUser->checkIdleTimeout($user);
-        }
-        else{
+        } else {
             return false;
         }
     }
