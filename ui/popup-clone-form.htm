@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Pyoopil</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link href="style.css" rel="stylesheet">
+<!--[if lt IE 9]>
+	<link rel="stylesheet" type="text/css" href="css/ie9.css" />
+     <script src="js/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<form class="form-data create-popup">
+  <div class="left-pop">
+    <label>Name of the classrom</label>
+    <input type="text" class="pop-input" value="Economics Major" />
+    <label>University Association</label>
+    <select class="chosen-select select_option">
+      <option>University Association 1</option>
+      <option>University Association 2</option>
+      <option>University Association 3</option>
+      <option>University Association 4</option>
+    </select>
+    <label>Department</label>
+    <select class="chosen-select select_option">
+      <option>Department 1</option>
+      <option>Department 2</option>
+      <option>Department 3</option>
+      <option>Department 4</option>
+    </select>
+    <label>Year</label>
+    <div class="year-dd">
+      <select class="chosen-select">
+        <option>2010</option>
+        <option>2011</option>
+        <option>2012</option>
+        <option>2013</option>
+      </select>
+    </div>
+    <div class="check-btn">
+      <input id="others" type="checkbox" name="others" value="others">
+      <label for="others" class="radio-lbl">Others</label>
+    </div>
+    <label>Duration of the course</label>
+    <div class="calender create-date">
+      <input type="text" class="pop-dura date_popup" value="12/12/2014" />
+    </div>
+    <div class="calender create-date">
+      <input type="text" class="pop-dura date_popup"  value="12/12/2015"  />
+    </div>
+    <label>Semester</label>
+    <select class="chosen-select select_option">
+      <option>Semester 1</option>
+      <option>Semester 2</option>
+      <option>Semester 3</option>
+      <option>Semester 4</option>
+    </select>
+  </div>
+  <div class="right-pop">
+    <label>Course Type</label>
+    <div class="radio-btn">
+      <input id="Public" type="radio" name="course" value="Public">
+      <label for="Public" class="radio-lbl">Public</label>
+      <input id="Private" type="radio" name="course" value="Private" checked>
+      <label for="Private" class="radio-lbl">Private</label>
+    </div>
+    <label>Course Description</label>
+    <textarea class="pop-txtarea">Quo ex everti interesset. An duo error meliore quaerendum. Vis illud sadipscing ne, iusto mollis hendrerit mei in. Vel justo munere placerat ea.</textarea>
+    <label>Degree</label>
+    <input type="text" class="pop-input" value="Economics Professional 1 year diploma
+" />
+    <label>You tube video link</label>
+    <input type="text" class="pop-input" value="http://www.youtube.com/watch?v=lcH9CBWareo" />
+    <label>Minimum required attendance</label>
+    <input type="text" class="pop-dura" value="33" pattern="[0-9]{0,3}" title="Should be Numbers.Max 3 numbers" />
+    % </div>
+  <div class="clear"></div>
+  <div class="submit-btn">
+    <input type="submit" class="sub-btn close-link" value="Clone" id="sub-nxt">
+  </div>
+</form>
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<script src="js/plugin.js"></script>
+<script src="js/core.js"></script>
+</body>
+</html>
