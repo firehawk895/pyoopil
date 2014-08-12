@@ -4,7 +4,7 @@
     'mainService', function(mainService) {
       return {
         restrict: 'E',
-        templateUrl: '/pyoopil/js/app/partials/register.html',
+        templateUrl: '/pyoopil/pyoopil/js/app/partials/register.html',
         link: function(scope, elem, attrs) {
           var $close, $registration;
           $registration = elem.find('#assign-dialog');

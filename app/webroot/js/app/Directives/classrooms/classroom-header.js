@@ -6,7 +6,7 @@
         restrict: 'E',
         replace: true,
         scope: {},
-        templateUrl: '/pyoopil/js/app/partials/Classrooms/header.html',
+        templateUrl: '/pyoopil/pyoopil/js/app/partials/Classrooms/header.html',
         link: function(scope, elem, attrs) {
           $timeout(function() {
             return scope.permissions = scope.$parent.permissions;

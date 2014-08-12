@@ -4,7 +4,7 @@
     '$document', function($document) {
       return {
         restrict: 'E',
-        templateUrl: '/pyoopil/js/app/partials/overlay.html',
+        templateUrl: '/pyoopil/pyoopil/js/app/partials/overlay.html',
         link: function(scope, elem, attrs) {
           var $overlay;
           $overlay = elem.find('#overlayScreen');

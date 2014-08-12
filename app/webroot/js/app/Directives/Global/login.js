@@ -13,7 +13,7 @@
         restrict: 'E',
         scope: {},
         controller: 'loginCtrl',
-        templateUrl: '/pyoopil/js/app/partials/login.html',
+        templateUrl: '/pyoopil/pyoopil/js/app/partials/login.html',
         link: function(scope, elem, attrs, loginCtrl) {
           var $close, $form, $loginDialog, $resetPass;
           $loginDialog = elem.find('#dialog');
