@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Pyoopil</title>
+<link rel="shortcut icon" href="images/favicon.ico">
+<link href="style.css" rel="stylesheet">
+<link href="css/jquery.tagit.css" rel="stylesheet">
+<!--[if lt IE 9]>
+	<link rel="stylesheet" type="text/css" href="css/ie9.css" />
+     <script src="js/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<div class="assign-pop">
+  <form class="form-data create-popup">
+    <p>Choose people to restrict</p>
+    <input name="tags" id="mySingleField" disabled="true" value="Gaurav">
+    <!-- fetches all the value -->
+    <ul id="singleFieldTags" class="pop-input mt5">
+    </ul>
+    <p class="assign-txt mb30">Please note that you can unrestrict access anytime you want from people section by click on unrestrict button</p>
+    <div class="clear"></div>
+    <div class="submit-btn">
+      <input type="button" class="sub-btn close-link" value="Restrict Access">
+    </div>
+  </form>
+</div>
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<script src="js/plugin.js"></script>
+<script type='text/javascript' src='js/tag-it.min.js'></script>
+<script>
+//tagit
+$(function(){
+	//close
+	
+	var sampleTags = ['Ahmed','Ram','Mohan','Swati','Nikhil','Manish','Gaurav','Aaliyah','Apeksha','Deepti','Parul'];
+	$('#singleFieldTags,#singleFieldTags2').tagit({
+		availableTags: sampleTags,
+		// This will make Tag-it submit a single form value, as a comma-delimited field.
+		singleField: true,
+		singleFieldNode: $('#mySingleField,#mySingleField2')
+	});
+});	
+
+</script>
+<script src="js/core.js"></script>
+</body>
+</html>
