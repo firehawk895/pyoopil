@@ -10,6 +10,11 @@ angular.module('Pyoopil.Services').factory('classroomService', [
 
       function ClassroomService() {
         ClassroomService.__super__.constructor.apply(this, arguments);
+
+          //todo: make this automatic depending on production/dev url
+          this.path="http://api.pyoopil.localhost.com/";
+
+
         this.path += 'Classrooms/';
       }
 

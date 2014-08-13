@@ -3,7 +3,7 @@ angular.module('Pyoopil.Directives').directive('tiles', [
   'classroomService', '$timeout', function(classroomService, $timeout) {
     return {
       restrict: 'E',
-      templateUrl: '/pyoopil/pyoopil/js/app/partials/Classrooms/classroom-tile.html',
+      templateUrl: 'js/app/partials/classrooms/classroom-tile.html',
       link: function(scope, elem, attrs) {
         return $timeout(function() {
           scope.classrooms = scope.data;

@@ -15,15 +15,15 @@
         templateUrl: 'js/app/partials/landing.html'
       }).state('login', {
         url: '/login',
-        templateUrl: '/pyoopil/js/app/partials/modules/landing.html'
+        templateUrl: 'js/app/partials/modules/landing.html'
       }).state('login.Classrooms', {
         url: '/Classrooms',
         views: {
           'nav': {
-            templateUrl: '/pyoopil/js/app/partials/modules/leftNav.html'
+            templateUrl: 'js/app/partials/modules/leftNav.html'
           },
           'viewport': {
-            templateUrl: '/pyoopil/js/app/partials/Classrooms/landing.html',
+            templateUrl: 'js/app/partials/classrooms/landing.html',
             controller: 'classroomCtrl'
           }
         }
@@ -31,19 +31,19 @@
         url: '/Classroom/:id',
         views: {
           'nav': {
-            templateUrl: '/pyoopil/js/app/partials/modules/leftNav.html'
+            templateUrl: 'js/app/partials/modules/leftNav.html'
           },
           'viewport': {
-            templateUrl: '/pyoopil/js/app/partials/Classrooms/classroom.html',
+            templateUrl: 'js/app/partials/classrooms/classroom.html',
             controller: 'announcementCtrl'
           }
         }
       }).state('reset', {
         url: '/reset',
-        templateUrl: '/pyoopil/js/app/partials/reset-password.html'
+        templateUrl: 'js/app/partials/reset-password.html'
       }).state('logout', {
         url: '/logout',
-        templateUrl: '/pyoopil/js/app/partials/logout.html',
+        templateUrl: 'js/app/partials/logout.html',
         controller: 'logoutCtrl'
       });
       return $urlRouterProvider.otherwise('index');

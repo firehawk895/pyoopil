@@ -8,8 +8,12 @@
 
         self = mainService;
 
+
         function mainService() {
-          self.url = $window.location.origin + $window.location.pathname;
+//          self.url = $window.location.origin + $window.location.pathname;
+
+            //todo: make this automatic depending on production/dev url
+            self.url = "http://api.pyoopil.localhost.com/";
         }
 
         mainService.prototype.postData = function(url, data, isLogin) {

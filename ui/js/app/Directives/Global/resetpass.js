@@ -10,7 +10,7 @@
         restrict: 'E',
         scope: {},
         controller: 'resetpassCtrl',
-        templateUrl: '/pyoopil/pyoopil/js/app/partials/reset-pass-form.html',
+        templateUrl: 'js/app/partials/reset-pass-form.html',
         link: function(scope, elem, attrs, ctrl) {
           var $newPass, $newPassConfirm, $submit, score;
           $newPass = angular.element('#reset_pass');

@@ -5,7 +5,7 @@
       var Utilities;
       Utilities = (function() {
         function Utilities() {
-          this.modalPath = '/pyoopil/pyoopil/js/app/partials/modules/';
+          this.modalPath = 'js/app/partials/modules/';
           this.currentModal = false;
           this._body = angular.element($document[0].body);
         }
