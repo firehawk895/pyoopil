@@ -75,7 +75,7 @@ class AppController extends Controller {
 
         $this->response->header('Access-Control-Allow-Origin', '*');
         $this->response->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-        $this->response->header('Access-Control-Allow-Headers', 'X-Auth-Token,Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since');
+        $this->response->header('Access-Control-Allow-Headers', 'X-AuthTokenHeader, X-Auth-Token,Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since');
         //$this->response->header('Access-Control-Allow-Headers', 'Content-Type,x-xsrf-token');
     }
 
