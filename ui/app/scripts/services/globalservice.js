@@ -17,7 +17,7 @@ angular.module('uiApp')
 
             self.isAuthorised = false;
             self.messages = [];
-            self.baseUrl = "http://127.0.0.1:9000";
+            self.baseUrl = "http://api.pyoopil.localhost.com";
 
             //to remove the messages which have expired.
             $interval(
@@ -63,10 +63,10 @@ angular.module('uiApp')
             self.getBaseUrl = function () {
                 switch ($location.host()) {
                     case 'localhost':
-                        self.baseUrl = "http://127.0.0.1:9000";
+                        self.baseUrl = "http://api.pyoopil.localhost.com";
                         break;
                     case '127.0.0.1':
-                        self.baseUrl = "http://127.0.0.1:9000";
+                        self.baseUrl = "http://api.pyoopil.localhost.com";
                         break;
                     case 'trackin.getinsured.co.in':
                         self.baseUrl = "http://api.getinsured.co.in";

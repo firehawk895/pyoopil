@@ -17,8 +17,9 @@ angular
         'ngSanitize',
         'ngTouch'
     ])
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-        // For any unmatched url, redirect to /state1
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise("/rooms");
         //
         // Now set up the states
