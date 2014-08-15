@@ -8,19 +8,17 @@
  * Factory in the uiApp.
  */
 angular.module('uiApp')
-    .factory('roomService', function () {
-        var self = this;
+  .factory('roomService', function () {
+    var self = this;
 
-        self.getRooms = function(){
+    self.getRooms = function () {
 
-        };
+    };
 
-        self.getRoom = function(){
+    self.getRoom = function () {
 
-        };
-
-
+    };
 
 
-        return self;
-    });
+    return self;
+  });

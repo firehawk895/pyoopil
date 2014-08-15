@@ -16,8 +16,7 @@ class AppUsersController extends UsersController {
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->Auth->allow('login', 'add', 'reset_password');
-
-
+        
         $this->response->header('Access-Control-Allow-Origin', '*');
         $this->response->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
         $this->response->header('Access-Control-Allow-Headers', 'X-AuthTokenHeader,X-Auth-Token,Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since');

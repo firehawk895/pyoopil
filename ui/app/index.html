@@ -1,495 +1,58 @@
 <!doctype html>
 <html class="no-js">
 <head>
-    <meta charset="utf-8">
-    <title></title>
-    <base href="/"/>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/reset.css">
-    <link rel="stylesheet" href="styles/layout.css">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/jquery-ui-latest.css">
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
-    <link rel="stylesheet" href="styles/plugins.css">
-    <!-- endbuild -->
+  <meta charset="utf-8">
+  <title></title>
+  <base href="/"/>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/reset.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/jquery-ui-latest.css">
+  <link rel="stylesheet" href="styles/font-awesome.min.css">
+  <link rel="stylesheet" href="styles/plugins.css">
+  <!-- endbuild -->
 </head>
 <body ng-app="uiApp" class="bg-color">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+<div ng-controller="MainController">
+
+
+  <!--[if lt IE 7]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
-<![endif]-->
+  <![endif]-->
 
-<!-- Header -->
-<header>
+  <!-- Header -->
+  <header>
     <section class="clearfix header">
-        <!-- Logo-->
-        <div class="logo"><a href="javascript:void(0)"><img src="images/logo.png" class="f-left" alt="logo"></a>
-        </div>
-        <div class="search">
-            <div class="uni-search clearfix">
-                <a href="javascript:void(0)" class="search-bx"></a>
-                <input type="text" placeholder="Search.." class="uni-searchinput">
-            </div>
-            <!-- Top Notification -->
-            <div class="right-slide">
-                <div class="toprightsection tabpages">
-                    <ul>
-                        <li><a href="#tab1" class="calenderdescrip tab">
-                            <div class="top-icon cal"></div>
-                            <span class="noti-num">5</span></a>
-                        </li>
-                        <li><a href="#tab2" class="msgdescrip tab">
-                            <div class="top-icon chat"></div>
-                            <span class="noti-num">5</span></a>
-                        </li>
-                        <li><a href="#tab3" class="tab">
-                            <div class="top-icon noti"></div>
-                            <span class="noti-num">11</span></a>
-                        </li>
-                        <li><a href="#tab4" class="tab">
-                            <div class="top-icon msg"></div>
-                            <span class="noti-num">4</span></a>
-                        </li>
-                        <li class="dock-bk lastli"><a href="#" class="active tab"><img src="images/arrow_back.png"
-                                                                                       class="mt5" alt=""></a>
-                        </li>
-                    </ul>
+      <!-- Logo-->
+      <div class="logo"><a href="javascript:void(0)"><img src="images/logo.png" class="f-left" alt="logo"></a>
+      </div>
 
-                    <!-- Notification Right Window -->
-                    <div class="notification_details">
-                        <div id="tab1">
-                            <p>Calender Panel</p>
-                        </div>
-                        <div id="tab2">
-                            <p>Chat Panel</p>
-                        </div>
-                        <div id="tab3">
-                            <p>Notification Panel</p>
-                        </div>
-                        <div id="tab4">
-                            <p>Message Panel</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div ng-if="isLoggedIn" ng-include="'/views/home/top-right-header.html'"></div>
+
     </section>
-</header>
-<div class="container calen">
-<!-- Left Navigation -->
-<nav class="navigation-main">
-<ul class="primary">
-<li class="pdiscover">
-    <a href="#" class="lst-a myroom"><span class="icon"></span>
-        <span class="label">My Room</span></a>
-</li>
-<li class="pdiscover hassub active">
-    <a ui-sref="rooms" class="lst-a classrooms"><span class="icon"></span>
-        <span class="label">Classrooms</span></a>
+  </header>
+  <div class="container calen">
+    <!-- Left Navigation -->
 
-    <div class="sub">
-        <!--Classroom sub nav-->
-        <ul class="menu-coll">
-            <li class="sub-menu pre-contact">
-                <a href="classroom.htm">
-                    <p class="submenu-heading">All<br>
-                        Classroom</p>
-                </a>
-                <!--Classroom Vertical Scroller-->
-                <div class="clearfix">
-                    <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
-                    <div class="scroll-pane">
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="classroom-discussion.htm">
-                            <div class="classouter">
-                                <div class="doc-list">
-                                    <div class="doc-top">
-                                        <p class="subject">CHEMISTRY <br>
-                                            101</p>
-                                        <span>by</span>
-                                        <span>Shivanand Dasgupta</span>
-                                        <span class="totalstudent">(35 Students)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        </div>
-                    </div>
-                    <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="pdiscover hassub"><a href="institution.htm" class="lst-a institutionroom"><span class="icon"></span>
-    <span class="label">Institution Room</span></a>
 
-    <div class="sub">
-        <!--Institution sub nav-->
-        <ul class="menu-coll">
-            <li class="sub-menu pre-contact ">
-                <a href="institution.htm">
-                    <p class="submenu-heading">Institution<br>
-                        Room</p>
-                </a>
+    <div ng-if="isLoggedIn" ng-include="'/views/home/left-navbar.html'"></div>
 
-                <div class="clearfix">
-                    <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
-                    <div class="scroll-pane">
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
+    <!-- Right side Content  -->
+    <section class="rightwrapper">
+      <div ui-view></div>
+    </section>
 
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox">
-                                <div class="inst-icon"></div>
-                                <p class="ins-head">Institution Name 2</p>
-
-                                <p class="sub-head">Department Degree</p>
-
-                                <p class="sub-head">Diploma Semester</p>
-                            </div>
-                        </a>
-                        </div>
-                    </div>
-                    <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="pdiscover hassub">
-    <a href="group.htm" class="lst-a groups"><span class="icon"></span>
-        <span class="label">Groups</span></a>
-
-    <div class="sub">
-        <!--Classroom sub nav-->
-        <ul class="menu-coll">
-            <li class="sub-menu pre-contact"><a href="group.htm">
-                <p class="submenu-heading">All<br>
-                    Groups</p>
-            </a>
-
-                <div class="clearfix">
-                    <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
-                    <div class="scroll-pane">
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                        <div class="scroll-content-item"><a href="#">
-                            <div class="inst-mbox grp-mbox">
-                                <div class="grps-icon"></div>
-                                <p class="grp-head">Group 1</p>
-
-                                <p class="grpsub-head">36</p>
-                            </div>
-                        </a>
-                        </div>
-                    </div>
-                    <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</li>
-<li class="pdiscover">
-    <a href="pyoopilhub.htm" class="lst-a hub"><span class="icon hub-icon"></span>
-        <span class="label">pyoopil hub</span></a>
-</li>
-<li class="pdiscover">
-    <a href="my-account.htm" class="lst-a flname"><span class="icon"><img src="images/chat1.jpg" alt="fname"/></span>
-        <span class="label">first last name</span></a>
-</li>
-<li>
-    <a href="javascript:void(0)" class="logout"><img src="images/logout.png" alt=""></a>
-    <ul class="logout-lst">
-        <li class="lastli"><a href="logout.htm">Logout</a>
-        </li>
-    </ul>
-
-</li>
-</ul>
-</li>
-</ul>
-</nav>
-<!-- Right side Content  -->
-<section class="rightwrapper">
-    <div ui-view></div>
-</section>
-
+  </div>
 </div>
-
 
 <!-- build:js(.) scripts/oldieshim.js -->
 <!--[if lt IE 9]>
@@ -534,6 +97,8 @@
 <script src="scripts/services/globalservice.js"></script>
 <script src="scripts/services/userservice.js"></script>
 <script src="scripts/services/roomservice.js"></script>
+<script src="scripts/controllers/home/login.js"></script>
 <!-- endbuild -->
+
 </body>
 </html>
