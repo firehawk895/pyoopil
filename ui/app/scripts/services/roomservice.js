@@ -8,7 +8,7 @@
  * Factory in the uiApp.
  */
 angular.module('uiApp')
-  .factory('roomService', function () {
+  .factory('roomService', ['Restangular', function (restangular) {
     var self = this;
 
     self.getRooms = function () {
@@ -19,18 +19,18 @@ angular.module('uiApp')
 
     };
 
-    self.getAnnouncements = function(roomId){
+    self.getAnnouncements = function (roomId, page) {
+      page = page || 1;
 
+      restangular.one("classrooms", roomId).all("announcements").customGET("getAnnouncements.json", {page: page});
     };
 
-    self.createAnnouncement = function(subject, message, attachment){
+    self.createAnnouncement = function (subject, message, attachment) {
       //todo: support attachments
-
-
 
 
     };
 
 
     return self;
-  });
+  }]);
