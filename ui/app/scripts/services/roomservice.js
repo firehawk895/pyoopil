@@ -15,7 +15,19 @@ angular.module('uiApp')
 
     };
 
-    self.getRoom = function () {
+    self.getRoom = function (roomId) {
+
+    };
+
+    self.getAnnouncements = function(roomId){
+
+    };
+
+    self.createAnnouncement = function(subject, message, attachment){
+      //todo: support attachments
+
+
+
 
     };
 

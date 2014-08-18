@@ -44,10 +44,11 @@ angular
   .run(['$http', 'globalService', 'Restangular',
     function ($http, globalService, restangular) {
 
-      $http.defaults.useXDomain = true;
-
       //set base path for restangular
       restangular.setBaseUrl(globalService.getBaseUrl());
+
+      $http.defaults.headers.common = {'X-AuthTokenHeader': '123456'};
+
 //      userService.validateSession();
 //      $idle.watch();
     }])

@@ -1,8 +1,5 @@
 'use strict';
 
-//['$rootScope', 'Restangular', '$interval', '$location',
-//    function ($rootScope, restangular, $interval, $location)
-
 /**
  * @ngdoc service
  * @name uiApp.globalService
