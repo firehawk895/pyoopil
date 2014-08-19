@@ -29,7 +29,8 @@ angular
         $stateProvider
             .state('rooms', {
                 url: "/rooms/",
-                templateUrl: "views/rooms/index.html"
+                templateUrl: "views/rooms/index.html",
+                controller:"myRoomCtrl"
             })
             .state('login', {
                 url: "/login/",

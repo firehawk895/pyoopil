@@ -12,9 +12,12 @@ angular.module('uiApp')
         $scope.announcement = {};
         //todo : check if room id has access
         $scope.page = 1;
+
+        $scope.roomId = $stateParams.roomId;
+
         roomService.getAnnouncements($stateParams.roomId, $scope.page).then(function (result) {
             $scope.announcements = result.data;
-            $scope.canPost=result.permissions.allowCreate;
+            $scope.canPost = result.permissions.allowCreate;
         });
 
         $scope.createAnnouncement = function () {
@@ -31,12 +34,9 @@ angular.module('uiApp')
                 $scope.announcements = $scope.announcements.concat(result.data);
             });
         };
-//        $scope.subCharLeft = function () {
-//            var charLeft = 200 - $scope.announcement.Announcement.subject.length;
-//            if (charLeft==undefined)
-//                return 0;
-//
-//            return charLeft;
-//        };
+
+        $scope.cancelAnnouncement = function () {
+            $scope.announcement = {};
+        }
 
     }]);
