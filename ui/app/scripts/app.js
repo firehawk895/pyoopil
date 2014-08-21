@@ -18,7 +18,8 @@ angular
         'restangular',
         'LocalStorageModule',
         'ngTouch',
-        'infinite-scroll'
+        'infinite-scroll',
+        'ngDialog'
     ])
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
@@ -54,7 +55,7 @@ angular
             //set base path for restangular
             restangular.setBaseUrl(globalService.getBaseUrl());
 
-            $http.defaults.headers.common = {'X-AuthTokenHeader': '53f2f038-e8d4-47d3-a681-03f90130a31c'};
+            $http.defaults.headers.common = {'X-AuthTokenHeader': '53f5c830-790c-480c-9995-2be00130a31c'};
 
 //      userService.validateSession();
 //      $idle.watch();

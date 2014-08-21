@@ -17,7 +17,7 @@ angular.module('uiApp')
 
             if (messageType)
                 toastr.success(message);
-            else if(messageType==false)
+            else
             toastr.error(message);
         };
 

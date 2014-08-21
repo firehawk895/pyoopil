@@ -32,6 +32,10 @@ angular.module('uiApp')
             return restangular.one("Classrooms", roomId).all("Announcements").customPOST(announcement, "add.json");
         };
 
+        self.joinClassroom = function (accessCode) {
+            return restangular.all("Classrooms").customPOST(accessCode, "join.json");
+        };
+
 
         return self;
     }]);
