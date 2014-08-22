@@ -9,42 +9,11 @@
             <li><a href="classroom-archived.htm">Archived Classrooms</a>
             </li>
         </ul>
-        <a ng-click="open()" class="sub-btn" title="create-assign">Create New Classroom</a>
-        <!--popup-->
 
-        <!--quiz popup-->
-        <div id="quizdialog" class="quizdia create-popup">
-            <div class="pop-wind clearfix">
-                <div class="pop-head clearfix">
-                    <span>Classroom Created</span>
-                    <a class="close-link" href="#">
-                        <span class="icon-cross"></span></a>
-                </div>
-                <div class="pop-content">
-                    <div class="created-contt">
-                        <p class="created-heading">Your Class ______has been successfully created.</p>
+        <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canCreate">Create New Classroom</a>
 
-                        <p class="created-txt">Please find below the unique group password. You can distribute the
-                            password to your
-                            friends so that they can join the group. </p>
 
-                        <p class="created-txt">An E-mail with the password has also been sent to you for your
-                            convenience.</p>
 
-                        <p class="created-txt">Unique acess code: <span class="code-txt">AEW124Q</span>
-                        </p>
-
-                        <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the
-                            class. Have
-                            a great session this semester with your students. Cheers!!</p>
-
-                        <div class="pop-close">
-                            <a href="classroom.htm" class="sub-btn">Take me to my classrooms</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </div>
 </section>

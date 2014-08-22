@@ -21,12 +21,17 @@ angular
         'infinite-scroll',
         'ngDialog'
     ])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider','ngDialogProvider',function ($stateProvider, $urlRouterProvider, $locationProvider,ngDialogProvider) {
 
         $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise("/rooms/");
         //
         // Now set up the states
+        ngDialogProvider.setDefaults({
+            showClose: false
+        });
+
+
         $stateProvider
             .state('rooms', {
                 url: "/rooms/",
@@ -55,7 +60,7 @@ angular
             //set base path for restangular
             restangular.setBaseUrl(globalService.getBaseUrl());
 
-            $http.defaults.headers.common = {'X-AuthTokenHeader': '53f5c830-790c-480c-9995-2be00130a31c'};
+            $http.defaults.headers.common = {'X-AuthTokenHeader': '53f6d1ad-5d84-4c84-8bb1-04b20130a31c'};
 
 //      userService.validateSession();
 //      $idle.watch();

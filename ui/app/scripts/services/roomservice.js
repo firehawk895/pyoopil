@@ -35,6 +35,18 @@ angular.module('uiApp')
         self.joinClassroom = function (accessCode) {
             return restangular.all("Classrooms").customPOST(accessCode, "join.json");
         };
+        self.createClassroom = function (classroom) {
+            return restangular.all("Classrooms").customPOST(classroom, "add.json");
+        };
+        self.getCampuses = function () {
+            return restangular.all("Classrooms").customGET("getCampusesList.json");
+        };
+        self.getDepartments = function () {
+            return restangular.all("Classrooms").customGET("getDepartmentsList.json");
+        };
+        self.getDegrees = function () {
+            return restangular.all("Classrooms").customGET("getDegreesList.json");
+        };
 
 
         return self;
