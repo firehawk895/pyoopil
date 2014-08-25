@@ -2,17 +2,15 @@
 <section class="pagesubnav">
     <div class="clearfix">
         <ul class="left-subnav clearfix">
-            <li><a sref="rooms.my" class="active">My Classrooms</a>
+            <li><a ui-sref="app.rooms" class="active" >My Classrooms</a>
             </li>
-            <li><a sref="rooms.staffroom">Staffroom</a>
+            <li><a ui-sref="app.staffroom">Staffroom</a>
             </li>
-            <li><a href="classroom-archived.htm">Archived Classrooms</a>
+            <li><a ui-sref="app.archived">Archived Classrooms</a>
             </li>
         </ul>
 
-        <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canCreate">Create New Classroom</a>
-
-
+        <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canPost">Create New Classroom</a>
 
 
     </div>
@@ -27,8 +25,9 @@
 
                     <a href="#" class="newjoin" ng-show="showJoin" ng-click="showJoin=false">Join New Classroom</a>
 
-                    <div  class="accessclass" ng-show="!showJoin">
-                        <input type="text" class="access" name="search" placeholder="Enter Access Code" ng-model="accessCode">
+                    <div class="accessclass" ng-show="!showJoin">
+                        <input type="text" class="access" name="search" placeholder="Enter Access Code"
+                               ng-model="accessCode">
                         <a ng-click="joinClassroom()" class="sub-btn">Join Classroom</a>
                     </div>
                 </div>
@@ -36,8 +35,8 @@
 
             <li ng-repeat="classroom in classrooms">
 
-                <a href="/rooms/{{classroom.Classroom.id}}/announcements/">
-
+                <!--todo:disable link if restricted-->
+                <a ui-sref="app.rooms.announcements({ roomId:{{classroom.Classroom.id}} })">
                     <div class="lock-state" ng-if="classroom.UsersClassroom.is_restricted">
                         <p>! You do not have access to this class. Please contact the owner</p>
                     </div>

@@ -13,17 +13,8 @@ angular.module('uiApp')
 
       var self = this;
       //login for the entire app
-      self.login = function (username, password) {
-
-        var data = {
-          "AppUser": {
-            "email": username,
-            "password": password
-          }};
-
-        return restangular.all("").customPOST(data, "login.json").then(function (result) {
-          console.log(result);
-        });
+      self.login = function (model) {
+        return restangular.all("").customPOST(model, "login.json");
       };
 
       //logout function

@@ -9,6 +9,7 @@
  */
 angular.module('uiApp')
     .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', function ($scope, $stateParams, roomService, notificationService) {
+
         $scope.announcement = {};
         //todo : check if room id has access
         $scope.page = 1;

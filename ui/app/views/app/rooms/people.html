@@ -1,0 +1,54 @@
+<section class="pagesubnav">
+    <div class="clearfix">
+        <ul class="left-subnav clearfix">
+            <li>
+                <a ui-sref="announcements">Announcements</a>
+            </li>
+            <li>
+                <a ui-sref="discussions">Discussions</a>
+            </li>
+            <li>
+                <a ui-sref="library">Library</a>
+            </li>
+            <li>
+                <a ui-sref="people" class="active">People</a>
+            </li>
+        </ul>
+        <div class="nav-right">
+            <a href="#" class="sub-btn" id="dialog-link">Invite</a>
+        </div>
+    </div>
+</section>
+
+<section class="pagecontent clearfix">
+    <div class="library-wrapper people">
+        <div class="topbuttons clearfix">
+            <div class="all-dd">
+                <a href="#" class="sel-topic">All</a>
+
+                <div class="seltop-dd" style="display: none;">
+                    <ul>
+                        <li><a href="javascript:void(0)">All</a>
+                        </li>
+                        <li><a href="javascript:void(0)">Restricted</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pep-right">
+                <a href="javascript:void(0)" class="assign-icon tooltip" ng-click="assignModerators($event)"
+                   id="assign-link">
+                </a>
+
+                <a href="javascript:void(0)" class="rest-icon tooltip" id="rest-link" ng-click="restrictUsers($event)">
+                </a>
+
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="people-lst">
+            <peoples></peoples>
+        </div>
+    </div>
+
+</section>

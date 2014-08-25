@@ -9,9 +9,9 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
-    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
-    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
+    <link rel="stylesheet" href="bower_components/toastr/toastr.css"/>
+    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css"/>
+    <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css"/>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -31,30 +31,8 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
         your browser</a> to improve your experience.</p>
     <![endif]-->
+    <div ui-view></div>
 
-    <!-- Header -->
-    <header>
-        <section class="clearfix header">
-            <!-- Logo-->
-            <div class="logo"><a href="javascript:void(0)"><img src="images/logo.png" class="f-left" alt="logo"></a>
-            </div>
-
-            <div ng-if="isLoggedIn" ng-include="'/views/home/top-right-header.html'"></div>
-
-        </section>
-    </header>
-    <div class="container calen">
-        <!-- Left Navigation -->
-
-
-        <div ng-if="isLoggedIn" ng-include="'/views/home/left-navbar.html'"></div>
-
-        <!-- Right side Content  -->
-        <section class="rightwrapper">
-            <div ui-view></div>
-        </section>
-
-    </div>
 </div>
 
 <!-- build:js(.) scripts/oldieshim.js -->
@@ -101,7 +79,7 @@
 <script src="scripts/services/globalservice.js"></script>
 <script src="scripts/services/userservice.js"></script>
 <script src="scripts/services/roomservice.js"></script>
-<script src="scripts/controllers/home/login.js"></script>
+<script src="scripts/controllers/public/public.js"></script>
 <script src="scripts/controllers/rooms/announcement.js"></script>
 <script src="scripts/controllers/rooms/myrooms.js"></script>
 <script src="scripts/services/notificationservice.js"></script>

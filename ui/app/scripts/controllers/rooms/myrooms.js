@@ -9,7 +9,6 @@ angular.module('uiApp')
             $scope.accessCode = null;
             $scope.classroom = {};
             $scope.page = 1;
-
             roomService.getRooms($scope.page).then(function (result) {
                 $scope.classrooms = result.data;
                 $scope.canCreate = result.permissions.allowCreate;
@@ -22,26 +21,26 @@ angular.module('uiApp')
                 });
             };
             $scope.open = function () {
+                $scope.classroom = {};
                 ngDialog.open({
                     template: 'views/rooms/createclassroom.html',
                     scope: $scope,
                     className: 'ngdialog-theme-default'
                 });
             };
-
             $scope.createClassroom = function () {
+                $scope.classroom.Classroom.minimum_attendance /= 100;
                 roomService.createClassroom($scope.classroom).then(function (result) {
                     notificationService.show(result.status, result.message);
-                    if (true) {
-                        $scope.classroom = result.data;
+                    if (result.status) {
                         ngDialog.close();
+                        $scope.classroom = result.data;
                         ngDialog.open({
                             template: 'views/rooms/classcreated.html',
                             scope: $scope,
                             className: 'ngdialog-theme-default'
                         });
                     }
-                    $scope.classroom = {};
                 });
             };
             roomService.getCampuses().then(function (result) {
@@ -53,5 +52,4 @@ angular.module('uiApp')
             roomService.getDegrees().then(function (result) {
                 $scope.degrees = result.data;
             });
-
         }]);

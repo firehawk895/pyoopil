@@ -21,10 +21,10 @@ angular
         'infinite-scroll',
         'ngDialog'
     ])
-    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider','ngDialogProvider',function ($stateProvider, $urlRouterProvider, $locationProvider,ngDialogProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider) {
 
         $locationProvider.html5Mode(true);
-        $urlRouterProvider.otherwise("/rooms/");
+        $urlRouterProvider.otherwise("/public/");
         //
         // Now set up the states
         ngDialogProvider.setDefaults({
@@ -33,21 +33,37 @@ angular
 
 
         $stateProvider
-            .state('rooms', {
-                url: "/rooms/",
-                templateUrl: "views/rooms/index.html",
-                controller:"myRoomCtrl"
+            .state('public', {
+                url: "/public/",
+                templateUrl: "views/public/public.html",
+                controller:"publicCtrl"
             })
-            .state('login', {
-                url: "/login/",
-                templateUrl: "views/home/login.html",
-                controller: "LoginCtrl"
+            .state('app', {
+                url: "/app/",
+                templateUrl: "views/app/app.html"
             })
-            .state('announcements', {
-                url: "/rooms/:roomId/announcements/",
-                templateUrl: "views/rooms/announcement.html",
+            .state('app.rooms', {
+                url: "rooms/",
+                templateUrl: "views/app/rooms/room.html",
+                controller: "myRoomCtrl"
+            })
+            .state('app.staffroom', {
+                url: "staffroom/",
+                templateUrl: "views/app/rooms/staffroom.html",
+                controller: "myRoomCtrl"
+            })
+            .state('app.archived', {
+                url: "archived/",
+                templateUrl: "views/app/rooms/archived.html",
+                controller: "myRoomCtrl"
+            })
+//
+            .state('app.rooms.announcements', {
+                url: ":roomId/announcements/",
+                templateUrl: "views/app/rooms/announcement.html",
                 controller: "announcementCtrl"
             });
+
     }])
     .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
         $scope.isLoggedIn = globalService.getIsAuthorised();
@@ -60,7 +76,7 @@ angular
             //set base path for restangular
             restangular.setBaseUrl(globalService.getBaseUrl());
 
-            $http.defaults.headers.common = {'X-AuthTokenHeader': '53f6d1ad-5d84-4c84-8bb1-04b20130a31c'};
+            $http.defaults.headers.common = {'X-AuthTokenHeader': '53fac647-53b0-40da-b988-04850130a31c'};
 
 //      userService.validateSession();
 //      $idle.watch();
