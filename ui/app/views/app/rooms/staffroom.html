@@ -1,0 +1,14 @@
+<!-- Right Sub Navigation -->
+<section class="pagesubnav">
+    <div class="clearfix">
+        <ul class="left-subnav clearfix">
+            <li><a ui-sref="app.rooms" >My Classrooms</a>
+            </li>
+            <li><a ui-sref="app.staffroom" class="active">Staffroom</a>
+            </li>
+            <li><a ui-sref="app.archived">Archived Classrooms</a>
+            </li>
+        </ul>
+        <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canPost">Create New Classroom</a>
+    </div>
+</section>

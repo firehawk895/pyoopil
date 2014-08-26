@@ -1079,7 +1079,7 @@ li:hover ul.menu-coll li {
     overflow: auto;
     width: 100%;
     margin-left: 28px;
-    min-height: 120px;
+    min-height: 500px;
     position: relative;
     display: inline-block
 }

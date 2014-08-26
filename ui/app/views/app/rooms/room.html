@@ -1,61 +1,52 @@
 <!-- Right Sub Navigation -->
 <section class="pagesubnav">
-    <div class="clearfix">
-        <ul class="left-subnav clearfix">
-            <li><a ui-sref="app.rooms" class="active" >My Classrooms</a>
-            </li>
-            <li><a ui-sref="app.staffroom">Staffroom</a>
-            </li>
-            <li><a ui-sref="app.archived">Archived Classrooms</a>
-            </li>
-        </ul>
-
-        <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canPost">Create New Classroom</a>
-
-
-    </div>
+  <div class="clearfix">
+    <ul class="left-subnav clearfix">
+      <li><a ui-sref="app.rooms" class="active">My Classrooms</a>
+      </li>
+      <li><a ui-sref="app.staffroom">Staffroom</a>
+      </li>
+      <li><a ui-sref="app.archived">Archived Classrooms</a>
+      </li>
+    </ul>
+    <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="canPost">Create New Classroom</a>
+  </div>
 </section>
 <!-- Right Content -->
 <section class="pagecontent clearfix">
-    <div class="library-wrapper">
-        <ul class="tile-lst">
+  <div class="library-wrapper">
+    <ul class="tile-lst">
+      <li class="code-class">
+        <div class="newjoinbox">
+          <a class="newjoin" ng-show="showJoin" ng-click="showJoin=false">Join New Classroom</a>
 
-            <li class="code-class">
-                <div class="newjoinbox">
+          <div class="accessclass" ng-show="!showJoin">
+            <input type="text" class="access" name="search" placeholder="Enter Access Code"
+                   ng-model="accessCode">
+            <a ng-click="joinClassroom()" class="sub-btn">Join Classroom</a>
+          </div>
+        </div>
+      </li>
+      <li ng-repeat="classroom in classrooms">
+        <!--todo:disable link if restricted-->
+        <a ui-sref="app.announcements({ roomId:{{classroom.Classroom.id}} })">
+          <div class="lock-state" ng-if="classroom.UsersClassroom.is_restricted">
+            <p>! You do not have access to this class. Please contact the owner</p>
+          </div>
+          <div class="class-head" ng-if="classroom.UsersClassroom.is_teaching">My Class</div>
+          <img src="images/lock_icon.png" class="lock" ng-if="classroom.Classroom.is_private">
 
-                    <a href="#" class="newjoin" ng-show="showJoin" ng-click="showJoin=false">Join New Classroom</a>
+          <div class="doc-top">
+            <p class="subject">{{classroom.Classroom.title}} {{classroom.Classroom.id}}</p>
 
-                    <div class="accessclass" ng-show="!showJoin">
-                        <input type="text" class="access" name="search" placeholder="Enter Access Code"
-                               ng-model="accessCode">
-                        <a ng-click="joinClassroom()" class="sub-btn">Join Classroom</a>
-                    </div>
-                </div>
-            </li>
+            <div>by</div>
+            <div><span class="online"></span>{{classroom.Classroom.Educator}}</div>
+            <div class="totalstudent">({{classroom.Classroom.users_classroom_count}} Students)</div>
+          </div>
 
-            <li ng-repeat="classroom in classrooms">
-
-                <!--todo:disable link if restricted-->
-                <a ui-sref="app.rooms.announcements({ roomId:{{classroom.Classroom.id}} })">
-                    <div class="lock-state" ng-if="classroom.UsersClassroom.is_restricted">
-                        <p>! You do not have access to this class. Please contact the owner</p>
-                    </div>
-                    <div class="class-head" ng-if="classroom.UsersClassroom.is_teaching">My Class</div>
-                    <img src="images/lock_icon.png" class="lock" ng-if="classroom.Classroom.is_private">
-
-                    <div class="doc-top">
-                        <p class="subject">{{classroom.Classroom.title}} {{classroom.Classroom.id}}</p>
-
-                        <div>by</div>
-                        <div><span class="online"></span>{{classroom.Classroom.Educator}}</div>
-                        <div class="totalstudent">({{classroom.Classroom.users_classroom_count}} Students)</div>
-                    </div>
-
-                    <p class="doc-end"> {{classroom.Classroom.Campus.name}} </p>
-
-                </a>
-
-            </li>
-        </ul>
-    </div>
+          <p class="doc-end"> {{classroom.Classroom.Campus.name || 'Not Available'}} </p>
+        </a>
+      </li>
+    </ul>
+  </div>
 </section>
