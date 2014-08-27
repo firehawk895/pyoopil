@@ -2,3 +2,11 @@
   padding: 0;
   width: 700px;
 }
+
+.select2-drop {
+  z-index: 99900;
+}
+
+.select2-full-width, .select2-container {
+  width: 100%;
+}

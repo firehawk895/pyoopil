@@ -18,7 +18,7 @@ angular.module('uiApp')
                         localStorageService.add("token", result.data.auth_token);
                         authService.loginConfirmed(result.data.auth_token);
                         //redirect to rooms on successful login
-                        $location.path('/app/rooms/');
+                        $location.path('/app/roomsDash/');
                     }
                 }, function (error) {
                     //todo: log error

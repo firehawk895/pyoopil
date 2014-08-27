@@ -1186,16 +1186,15 @@ li:hover ul.menu-coll li {
 }
 
 .logout-lst {
-    background-color: #5E5D5D;
-    bottom: 90px;
-    color: #FFFFFF;
-    font-size: 14px;
-    height: 48px;
-    left: 48px;
-    position: absolute;
-    width: 202px;
-    z-index: 99999;
-    display: none;
+  background-color: #5E5D5D;
+  bottom: 90px;
+  color: #FFFFFF;
+  font-size: 14px;
+  height: 48px;
+  left: 48px;
+  position: absolute;
+  width: 202px;
+  z-index: 99999;
 }
 
 .logout-lst li a {

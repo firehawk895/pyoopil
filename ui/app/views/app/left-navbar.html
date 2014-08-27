@@ -1,25 +1,27 @@
 <nav class="navigation-main" ng-controller="leftNavCtrl">
   <ul class="primary">
     <li class="pdiscover" ng-mouseover="showScroller()" ng-mouseleave="hideScroller()">
-      <a ui-sref="app.rooms" class="lst-a myroom"><span class="icon"></span>
+      <a ui-sref="app.roomsDash.myroom" class="lst-a myroom"><span class="icon"></span>
         <span class="label">My Room</span></a>
     </li>
     <li class="pdiscover hassub active" ng-mouseover="showScroller()" ng-mouseleave="hideScroller()">
-      <a ui-sref="app.rooms" class="lst-a classrooms"><span class="icon"></span>
+      <a ui-sref="app.roomsDash.myroom" class="lst-a classrooms"><span class="icon"></span>
         <span class="label">Classrooms</span></a>
 
       <div class="sub" ng-mouseleave="hideScroller()">
         <!--Classroom sub nav-->
         <ul class="menu-coll">
           <li class="sub-menu pre-contact">
-            <a ui-sref="app.rooms">
+            <a ui-sref="app.roomsDash.myroom">
               <p class="submenu-heading">All<br>
                 Classroom</p>
             </a>
             <!--Classroom Vertical Scroller-->
             <div class="clearfix">
               <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
+              <!--<div infinite-scroll="myPagingFunction()">-->
               <div class="scroll-pane" ui-left-scroll ng-model="classrooms"></div>
+              <!--</div>-->
               <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
             </div>
           </li>
@@ -27,10 +29,10 @@
       </div>
     </li>
     <li>
-      <a href="#" ng-click="logout()" class="logout"><img
+      <a ng-click="showLogout=!showLogout" class="logout"><img
           src="../../images/logout.png" alt=""></a>
 
-      <ul class="logout-lst">
+      <ul class="logout-lst" ng-if="showLogout">
         <li class="lastli"><a ng-click="logout()">Logout</a>
         </li>
       </ul>

@@ -20,7 +20,9 @@ angular
     'ngTouch',
     'infinite-scroll',
     'ngDialog',
-    'http-auth-interceptor'
+    'http-auth-interceptor',
+    'ui.utils',
+    'ui.select2'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
@@ -62,25 +64,46 @@ angular
         })
         .state('app.rooms', {
           url: "rooms/",
-          templateUrl: "views/app/rooms/room.html",
-          controller: "myRoomCtrl"
+          abstract: true,
+          templateUrl: "views/app/rooms/room.html"
+
         })
-        .state('app.staffroom', {
-          url: "staffroom/",
-          templateUrl: "views/app/rooms/staffroom.html",
-          controller: "myRoomCtrl"
-        })
-        .state('app.archived', {
-          url: "archived/",
-          templateUrl: "views/app/rooms/archived.html",
-          controller: "myRoomCtrl"
-        })
-//
-        .state('app.announcements', {
+        .state('app.rooms.announcements', {
           url: ":roomId/announcements/",
           templateUrl: "views/app/rooms/announcement.html",
           controller: "announcementCtrl"
         })
+        .state('app.rooms.library', {
+          url: ":roomId/library/",
+          templateUrl: "views/app/rooms/library.html",
+          controller: "libraryCtrl"
+        })
+        .state('app.rooms.people', {
+          url: ":roomId/people/",
+          templateUrl: "views/app/rooms/people.html",
+          controller: "peopleCtrl"
+        })
+        .state('app.roomsDash', {
+          url: "roomsDash/",
+          templateUrl: "views/app/roomsDash/roomsdash.html",
+          controller: "myRoomCtrl"
+        })
+        .state('app.roomsDash.myroom', {
+          url: "myroom/",
+          templateUrl: "views/app/roomsDash/myroom.html",
+          controller: "myRoomCtrl"
+        })
+        .state('app.roomsDash.staffroom', {
+          url: "staffroom/",
+          templateUrl: "views/app/roomsDash/staffroom.html"
+//          controller: "myRoomCtrl"
+        })
+        .state('app.roomsDash.archived', {
+          url: "archived/",
+          templateUrl: "views/app/roomsDash/archived.html"
+//          controller: "myRoomCtrl"
+        })
+
         .state('logout', {
           url: "/logout/",
           templateUrl: "views/app/logout.html"
@@ -108,14 +131,12 @@ angular
 
       //set base path for restangular
       restangular.setBaseUrl(globalService.getBaseUrl());
-
-//            $http.defaults.headers.common = {'X-AuthTokenHeader': '53fac647-53b0-40da-b988-04850130a31c'};
-
       userService.validateSession();
 
-      if (globalService.getIsAuthorised()) {
-        $location.path('/app/rooms/');
-      }
+//      if (globalService.getIsAuthorised()) {
+//        $location.path('/app/rooms/');
+//      }
+
 //      $idle.watch();
     }])
   .directive('uiLeftScroll', ['$timeout', function ($timeout) {
@@ -140,5 +161,14 @@ angular
         });
       }
     };
+  }])
+  .directive('uiDatePicker', ['$timeout', function ($timeout) {
+    return{
+      restrict: 'A',
+      link: function (scope, element) {
+        scope.watch()
+      }
+
+    }
   }])
 ;

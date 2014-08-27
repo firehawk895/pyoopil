@@ -1,54 +1,56 @@
-<section class="pagesubnav">
-    <div class="clearfix">
-        <ul class="left-subnav clearfix">
-            <li>
-                <a ui-sref="announcements">Announcements</a>
-            </li>
-            <li>
-                <a ui-sref="discussions">Discussions</a>
-            </li>
-            <li>
-                <a ui-sref="library">Library</a>
-            </li>
-            <li>
-                <a ui-sref="people" class="active">People</a>
-            </li>
-        </ul>
-        <div class="nav-right">
-            <a href="#" class="sub-btn" id="dialog-link">Invite</a>
-        </div>
-    </div>
-</section>
-
+<!-- Right Content -->
 <section class="pagecontent clearfix">
-    <div class="library-wrapper people">
-        <div class="topbuttons clearfix">
-            <div class="all-dd">
-                <a href="#" class="sel-topic">All</a>
+  <div class="library-wrapper people">
+    <div class="topbuttons clearfix">
+      <div class="all-dd">
+        <a href="javascript:void(0)" class="sel-topic">All</a>
 
-                <div class="seltop-dd" style="display: none;">
-                    <ul>
-                        <li><a href="javascript:void(0)">All</a>
-                        </li>
-                        <li><a href="javascript:void(0)">Restricted</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="pep-right">
-                <a href="javascript:void(0)" class="assign-icon tooltip" ng-click="assignModerators($event)"
-                   id="assign-link">
-                </a>
-
-                <a href="javascript:void(0)" class="rest-icon tooltip" id="rest-link" ng-click="restrictUsers($event)">
-                </a>
-
-            </div>
+        <div class="seltop-dd">
+          <ul>
+            <li><a href="#">All</a>
+            </li>
+            <li><a href="#">Restricted</a>
+            </li>
+          </ul>
         </div>
-        <div class="clear"></div>
-        <div class="people-lst">
-            <peoples></peoples>
-        </div>
+      </div>
+      <div class="pep-right">
+        <a ng-click="openModerate()" class="assign-icon tooltip" id="assign-link" title="Assign Moderators"></a>
+        <a ng-click="openRestrict()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"></a>
+      </div>
     </div>
+    <div class="clear"></div>
+    <div class="people-lst">
+      <ul>
+        <li class="follow-box" ng-repeat="people in peoples"
+            ng-class="{'restrict' :people.UsersClassroom.is_restricted}">
+          <div class="relative clearfix">
+            <div class="follow-left">
+              <span ng-class="{'mod-icon' :people.UsersClassroom.is_moderator}"></span>
+              <a href="#"><img src="images/follow1.jpg" alt="" class="follow-img"></a>
+              <span class="online"></span>Online
+            </div>
+            <div class="follow-right">
+              <p class="cname"><a href="#">{{people.AppUser.fname}} {{people.AppUser.lname}}</a>
+              </p>
 
+              <p class="cpost">Student</p>
+
+              <p class="cpost">Degree</p>
+
+              <p class="cclg">Lovely Professional University</p>
+            </div>
+          </div>
+          <div class="follow-footer" ng-if=" !people.UsersClassroom.is_restricted">
+            <a ng-click="openMessage()" class="msg-link tooltip" title="Message"><img src="images/mail-icon.png" alt=""></a>
+            <a ng-click="openRecommend()" class="rec-link tooltip" title="Recommend"><img src="images/follow-icon.png"
+                                                                                          alt=""></a>
+          </div>
+          <div class="follow-footer" ng-if="people.UsersClassroom.is_restricted">
+            <p class="rest-txt" ng-click="unRestrict(people.AppUser.id)">Unrestrict</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </section>
