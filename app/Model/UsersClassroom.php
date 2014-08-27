@@ -174,7 +174,7 @@ class UsersClassroom extends AppModel {
                     'fields' => array('id', 'fname', 'lname')
                 )
             ),
-            'fields' => array('id'),
+            'fields' => array('id', 'is_moderator', 'is_restricted', 'is_teaching'),
             'conditions' => array(
                 'Classroom.id' => $classroomId
             ),
