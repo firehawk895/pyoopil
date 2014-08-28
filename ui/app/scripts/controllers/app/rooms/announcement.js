@@ -30,7 +30,7 @@ angular.module('uiApp')
             });
         };
 
-        $scope.myPagingFunction = function () {
+        $scope.updatePage = function () {
             roomService.getAnnouncements($stateParams.roomId, ++$scope.page).then(function (result) {
                 $scope.announcements = $scope.announcements.concat(result.data);
             });

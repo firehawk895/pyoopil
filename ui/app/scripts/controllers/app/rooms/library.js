@@ -2,58 +2,52 @@
  * Created by himanshu on 21/8/14.
  */
 angular.module('uiApp')
-  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService','ngDialog',
-    function ($scope, $stateParams, roomService, notificationService,ngDialog) {
+  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog',
+    function ($scope, $stateParams, roomService, notificationService, ngDialog) {
 
-      $scope.people = {};
       $scope.page = 1;
-
+      $scope.topics = [];
       $scope.roomId = $stateParams.roomId;
 
-      roomService.getPeoples($stateParams.roomId, $scope.page).then(function (result) {
-        $scope.peoples = result.data;
-        $scope.canModerate = result.permissions.CUDModerator;
-        $scope.canRestrict = result.permissions.CUDRestricted;
+      roomService.getTopics($stateParams.roomId, $scope.page).then(function (result) {
+        $scope.topics = result.data;
       });
 
-      $scope.myPagingFunction = function () {
-        roomService.getPeoples($stateParams.roomId, ++$scope.page).then(function (result) {
-          $scope.peoples = $scope.peoples.concat(result.data);
+      $scope.updatePage = function () {
+        roomService.getTopics($stateParams.roomId, ++$scope.page).then(function (result) {
+          $scope.topics = $scope.topics.concat(result.data);
         });
       };
-
-      $scope.unRestrict = function (id) {
-        roomService.unRestrict().then(function (result) {
+      $scope.showFileName = function (name) {
+        var fileNameArray = name.split(".");
+        if (fileNameArray.length > 1)
+          fileNameArray.pop();
+        var filename = fileNameArray.join(".");
+        return filename;
+      };
+      $scope.deleteFile = function (topic, index) {
+        roomService.deleteFile(topic.Documents[index].id, "File").then(function (result) {
+          notificationService.show(result.status, result.message);
           if (result.status) {
+            topic.Documents.splice(index, 1);
           }
         });
       };
-      $scope.openModerateDialog=function(){
-        ngDialog.open({
-          template: 'views/app/rooms/moderatorDialog.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
+      $scope.deletePicture = function (topic, index) {
+        roomService.deleteFile(topic.Pictures[index].id, "File").then(function (result) {
+          notificationService.show(result.status, result.message);
+          if (result.status) {
+            topic.Pictures.splice(index, 1);
+          }
         });
       };
-      $scope.openRestrictDialog=function(){
-        ngDialog.open({
-          template: 'views/app/rooms/restrictDialog.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
-        });
-      };
-      $scope.openMessage=function(){
-        ngDialog.open({
-          template: 'views/app/rooms/openmessage.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
-        });
-      };
-      $scope.openRecommend=function(){
-        ngDialog.open({
-          template: 'views/app/rooms/openrecommend.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
+
+      $scope.deleteLink = function (topic, index) {
+        roomService.deleteLink(topic.Link[index].id, "link").then(function (result) {
+          notificationService.show(result.status, result.message);
+          if (result.status) {
+            topic.Link.splice(index, 1);
+          }
         });
       };
     }]);

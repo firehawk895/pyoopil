@@ -16,6 +16,7 @@
             <!-- form 1 -->
             <div id="form1">
               <p class="up-heading"> Step 1 of 2: Select a topic</p>
+
               <div class="select-topic">
                 <!-- <a href="javascript:void(0)" class="sel-topic">Select Topic</a>
                  <div class="seltop-dd">
@@ -37,7 +38,8 @@
                   <option>Topic 3</option>
                   <option>Topic 4</option>
                 </select>
-                <input type="text" class="pop-input" id="enter-topic" placeholder="Enter Topic Name" />
+                <input type="text" class="pop-input" id="enter-topic" placeholder="Enter Topic Name"/>
+
                 <div class="nav-btn">
                   <input type="button" class="follow active goto2" value="Next">
                 </div>
@@ -46,8 +48,10 @@
             <!-- form 2 -->
             <div id="form2">
               <p class="up-heading">Step 2 of 2</p>
+
               <div class="select-topic">
                 <p class="sub-sel">Topic Name:<span> Topic 1</span></p>
+
                 <div class="tabpages">
                   <ul class="upload-tab">
                     <li><a href="#file1" class="tab active">Upload file</a>
@@ -57,10 +61,12 @@
                   </ul>
                   <div id="file1" class="tab-contt">
                     <p>Select file to upload</p>
+
                     <div class="upload-files">
                       <div class="add-upload clearfix">
                         <div class="custom-upload" id="test0">
                           <input type="file" name="files[]">
+
                           <div class="file-upload">
                             <span class="file-txt">Select file</span>
                             <input disabled="disabled" value="No File Chosen">
@@ -72,11 +78,13 @@
                     </div>
                     <div class="error-txt">
                       <p>! File exceeded max. limit. </p>
+
                       <p>Select another file or reduce size and upload again</p>
                     </div>
                   </div>
                   <div id="link1" class="tab-contt">
                     <p>Paste link here</p>
+
                     <div class="upload-links">
                       <div class="add-links">
                         <input type="text" class="pop-input" placeholder="Upload links">
@@ -98,176 +106,127 @@
   </div>
 </div>
 <div class="clear"></div>
-<div class="attach-doc classlibrary stud-pnl">
+<div infinite-scroll="updatePage()">
+<div class="attach-doc classlibrary stud-pnl" ng-repeat="topic in topics">
 <div class="doc-heading clearfix">
-  <input type="text" class="doc-input" value="Topic 1"  maxlength="70" readonly>
+  <input type="text" class="doc-input" value="{{topic.Topic.name}}" maxlength="70" readonly>
+
   <div class="lib-right">
     <a href="javascript:void(0)" class="lib-edit tooltip" title="Edit Topic"></a>
     <a href="javascript:void(0)" class="lib-delete tooltip" title="Delete"></a>
     <a href="javascript:void(0)" class="lib-download tooltip" title="Download"></a>
+
     <div class="click-lib click-icon tooltip" title="Click to slide"></div>
   </div>
 </div>
 <div class="contentblock">
-<p class="classlibraryhd">Documents </p>
+<p class="classlibraryhd" ng-if="topic.Documents.length">Documents </p>
 <ul class="doc-list">
-  <li>
-    <a href="javascript:void(0)" class="del-lib"></a>
-    <a href="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]">
+  <li ng-repeat="document in topic.Documents">
+    <a ng-click="deleteFile(topic,$index)" class="del-lib"></a>
+    <a href="{{document.file_path}}" rel="prettyPhoto[iframes]">
       <div class="doc-top">
-
-        <p>Document</p>
-        <p>Subject</p>
-
-      </div> </a>
-    <div class="doc-end clearfix">
-      <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"></a>
-      <p class="f-right">Posted<br>
-        12.08.13</p>
-    </div>
-  </li>
-  <li>
-    <a href="javascript:void(0)" class="del-lib"></a>
-    <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><div class="doc-top">
-
-      <p>Document</p>
-      <p>Subject</p>
-
-    </div></a>
-    <div class="doc-end clearfix">
-      <a href="javascript:void(0)" title="dialogbox2" class="dialogbox"><img src="images/doc-icon.png" class="m3-0"></a>
-      <p class="f-right">Posted<br>
-        12.08.13</p>
-    </div>
-
-  </li>
-  <li>
-    <a href="javascript:void(0)" class="del-lib"></a>
-    <a href="javascript:void(0)" title="dialogbox3" class="dialogbox"><div class="doc-top">
-
-      <p>Document</p>
-      <p>Subject</p>
-
-    </div></a>
-    <div class="doc-end clearfix">
-      <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/doc-icon.png" class="m3-0"></a>
-      <p class="f-right">Posted<br>
-        12.08.13</p>
-    </div>
-
-  </li>
-  <li>
-    <a href="javascript:void(0)" class="del-lib"></a>
-    <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><div class="doc-top">
-
-      <p>Document</p>
-      <p>Subject</p>
-
-    </div></a>
-    <div class="doc-end clearfix">
-      <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/doc-icon.png" class="m3-0"></a>
-      <p class="f-right">Posted<br>
-        12.08.13</p>
-    </div>
-  </li>
-</ul>
-<p class="classlibraryhd">Pictures</p>
-<ul class="doc-list imglist">
-  <li>
-    <div class="img-wrapper">
-      <a href="javascript:void(0)" class="del-lib"></a>
-      <a href="images/classroom/big.png" rel="prettyPhoto[pp_gal]">
-        <img src="images/classroom/big.png">
-        <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
-      </a>
-    </div>
-  </li>
-  <li>
-    <div class="img-wrapper">
-      <a href="javascript:void(0)" class="del-lib"></a>
-      <a href="images/classroom/library-img2.jpg" rel="prettyPhoto[pp_gal]">
-        <img src="images/classroom/library-img2.jpg">
-        <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
-      </a>
-    </div>
-  </li>
-  <li>
-    <div class="img-wrapper">
-      <a href="javascript:void(0)" class="del-lib"></a>
-      <a href="images/classroom/library-img3.jpg" rel="prettyPhoto[pp_gal]">
-        <img src="images/classroom/library-img3.jpg">
-        <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
-      </a>
-    </div>
-  </li>
-  <li>
-    <a href="javascript:void(0)" class="del-lib"></a>
-    <a href="images/classroom/library-img4.jpg" rel="prettyPhoto[pp_gal]">
-      <img src="images/classroom/library-img4.jpg">
-      <div class="piccaption clearfix">Posted <br>
-        08.02.13</div>
+        <p>{{showFileName(document.filename)}}</p>
+      </div>
     </a>
+
+    <div class="doc-end clearfix">
+      <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"
+                                                                             ng-if="document.mime_type== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ">
+        <img src="images/doc-icon.png" class="m3-0" ng-if="document.mime_type=='application/pdf' "></a>
+
+      <p class="f-right">Posted<br>
+        {{document.created }}</p>
+    </div>
   </li>
-  <li>
+
+</ul>
+
+<p class="classlibraryhd" ng-if="topic.Pictures.length">Pictures</p>
+<ul class="doc-list imglist">
+  <li ng-repeat="picture in topic.Pictures">
     <div class="img-wrapper">
-      <a href="javascript:void(0)" class="del-lib"></a>
-      <a href="images/classroom/library-img5.jpg" rel="prettyPhoto[pp_gal]">
-        <img src="images/classroom/library-img5.jpg">
+      <a ng-click="deletePicture(topic,$index)" class="del-lib"></a>
+      <a href="images/classroom/big.png" rel="prettyPhoto[pp_gal]">
+
+        <img ng-src="{{picture.thumbnail_path}}">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          {{picture.created}}
+        </div>
       </a>
     </div>
   </li>
+
+  <!--<li>-->
+  <!--<a href="javascript:void(0)" class="del-lib"></a>-->
+  <!--<a href="images/classroom/library-img4.jpg" rel="prettyPhoto[pp_gal]">-->
+  <!--<img src="images/classroom/library-img4.jpg">-->
+
+  <!--<div class="piccaption clearfix">Posted <br>-->
+  <!--08.02.13-->
+  <!--</div>-->
+  <!--</a>-->
+  <!--</li>-->
 </ul>
 <p class="classlibraryhd">Presentations</p>
 <ul class="doc-list">
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Document</p>
+
       <p>Subject</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/ppt_icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
   </li>
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Document</p>
+
       <p>Subject</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/ppt_icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
   </li>
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Document</p>
+
       <p>Subject</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/ppt_icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
   </li>
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Document</p>
+
       <p>Subject</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/ppt_icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
@@ -277,33 +236,39 @@
 <ul class="doc-list link-lst">
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Go To Link</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/link-icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
   </li>
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Go To Link</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/link-icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
   </li>
   <li>
     <a href="javascript:void(0)" class="del-lib"></a>
+
     <div class="doc-top">
       <p>Go To Link</p>
     </div>
     <div class="doc-end clearfix">
       <img src="images/link-icon.png" class="m3-0">
+
       <p class="f-right">Posted<br>
         12.08.13</p>
     </div>
@@ -316,8 +281,10 @@
       <a href="javascript:void(0)" class="del-lib"></a>
       <a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]">
         <img src="images/classroom/library-video1.jpg">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          08.02.13
+        </div>
       </a>
     </div>
   </li>
@@ -326,8 +293,10 @@
       <a href="javascript:void(0)" class="del-lib"></a>
       <a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]">
         <img src="images/classroom/library-video2.jpg">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          08.02.13
+        </div>
       </a>
     </div>
   </li>
@@ -336,8 +305,10 @@
       <a href="javascript:void(0)" class="del-lib"></a>
       <a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]">
         <img src="images/classroom/library-video3.jpg">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          08.02.13
+        </div>
       </a>
     </div>
   </li>
@@ -346,8 +317,10 @@
       <a href="javascript:void(0)" class="del-lib"></a>
       <a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]">
         <img src="images/classroom/library-video4.jpg">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          08.02.13
+        </div>
       </a>
     </div>
   </li>
@@ -356,71 +329,16 @@
       <a href="javascript:void(0)" class="del-lib"></a>
       <a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]">
         <img src="images/classroom/library-video5.jpg">
+
         <div class="piccaption clearfix">Posted <br>
-          08.02.13</div>
+          08.02.13
+        </div>
       </a>
     </div>
   </li>
 </ul>
 </div>
 </div>
-<div class="attach-doc classlibrary stud-pnl">
-  <div class="doc-heading clearfix">
-    <input type="text" class="doc-input" value="Topic 2"  maxlength="70" readonly>
-    <div class="lib-right">
-      <a href="javascript:void(0)" class="lib-edit tooltip" title="Edit Topic"></a>
-      <a href="javascript:void(0)" class="lib-delete tooltip" title="Delete"></a>
-      <a href="javascript:void(0)" class="lib-download tooltip" title="Download"></a>
-      <div class="click-lib click-icon tooltip" title="Click to slide"></div>
-    </div>
-  </div>
-  <div class="contentblock">
-    <p class="classlibraryhd">Documents </p>
-    <ul class="doc-list">
-      <li>
-        <a href="javascript:void(0)" class="del-lib"></a>
-        <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><div class="doc-top">
-
-          <p>Document</p>
-          <p>Subject</p>
-
-        </div> </a>
-        <div class="doc-end clearfix">
-          <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"></a>
-          <p class="f-right">Posted<br>
-            12.08.13</p>
-        </div>
-      </li>
-      <li>
-        <a href="javascript:void(0)" class="del-lib"></a>
-        <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><div class="doc-top">
-
-          <p>Document</p>
-          <p>Subject</p>
-
-        </div></a>
-        <div class="doc-end clearfix">
-          <a href="javascript:void(0)" title="dialogbox1" class="dialogbox"><img src="images/doc-icon.png" class="m3-0"></a>
-          <p class="f-right">Posted<br>
-            12.08.13</p>
-        </div>
-
-        <!--popup-->
-        <div id="dialogbox1" class="create-popup doc-popup">
-          <div class="pop-wind clearfix">
-            <div class="pop-head clearfix">
-              <span>Document</span>
-              <a href="#" class="close-link"><span class="icon-cross">
-                      </span></a>
-            </div>
-            <div class="pop-content clearfix">
-              <iframe src="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true" width="100%" height="780" style="border: none;"></iframe>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
 </div>
 </div>
 </section>

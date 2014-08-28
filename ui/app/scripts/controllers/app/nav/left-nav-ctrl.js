@@ -24,7 +24,7 @@ angular.module('uiApp')
         });
       };
 
-      $scope.myPagingFunction = function () {
+      $scope.updatePage = function () {
         roomService.getRooms(++$scope.page).then(function (result) {
           $scope.classrooms = $scope.classrooms.concat(result.data);
         });

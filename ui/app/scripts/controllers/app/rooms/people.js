@@ -26,7 +26,7 @@ angular.module('uiApp')
         });
       });
 
-      $scope.myPagingFunction = function () {
+      $scope.updatePage = function () {
         roomService.getPeoples($stateParams.roomId, ++$scope.page).then(function (result) {
           $scope.peoples = $scope.peoples.concat(result.data);
 
