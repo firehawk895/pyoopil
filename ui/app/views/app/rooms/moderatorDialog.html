@@ -1,0 +1,39 @@
+<div class="create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Assign Moderators</span>
+      <a class="close-link" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <div class="assign-pop">
+        <form class="form-data create-popup">
+          <p>Choose people to assign moderation powers</p>
+          <br/>
+
+          <select id="ddlModeratorIds" ui-select2 multiple ng-model="ids"
+                  class="select2-full-width">
+            <option ng-repeat="person in dataTagMod" value="{{person.AppUser.id}}">
+              {{person.AppUser.fname}} {{person.AppUser.lname}}
+            </option>
+          </select>
+
+          <p class="assign-txt">Choose moderation powers</p>
+
+          <div class="assign-ck">
+            <input id="up1" type="checkbox" name="up1" value="others">
+            <label for="up1" class="radio-lbl">Upload content in Library</label>
+            <input id="up2" type="checkbox" name="up2" value="others">
+            <label for="up2" class="radio-lbl">Create announcements</label>
+            <input id="up3" type="checkbox" name="up3" value="others">
+            <label for="up3" class="radio-lbl">Dummy </label>
+          </div>
+          <div class="clear"></div>
+          <div class="submit-btn">
+            <input type="button" class="sub-btn close-link" value="Assign" ng-click="setModerator()">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

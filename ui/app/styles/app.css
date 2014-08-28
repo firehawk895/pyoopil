@@ -10,3 +10,14 @@
 .select2-full-width, .select2-container {
   width: 100%;
 }
+
+.unfollow-footer {
+  background: #ffffff;
+
+}
+
+.unfollow-footer a {
+  border-right: 1px solid #7d7d7d;
+  display: inline-block;
+  padding: 5px 55px;
+}

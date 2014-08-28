@@ -157,7 +157,7 @@ angular
               element.css('min-height', '200px')
             }
 
-          }, 100);
+          }, 500);
         });
       }
     };
@@ -168,7 +168,6 @@ angular
       link: function (scope, element) {
         scope.watch()
       }
-
     }
   }])
 ;

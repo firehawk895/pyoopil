@@ -53,7 +53,29 @@ angular.module('uiApp')
     self.getDegrees = function () {
       return restangular.all("Classrooms").customGET("getDegreesList.json");
     };
+    self.removeModerator = function (roomId, id) {
+      return restangular.one("Classrooms", roomId).all("People").customPOST({ids: id}, "removeModerator.json");
+    };
+    self.unRestrict = function (roomId, id) {
+      return restangular.one("Classrooms", roomId).all("People").customPOST({ids: id}, "removeRestricted.json");
+    };
+    self.setModerator=function(roomId,setModIds){
+      var setModeratorIds="";
+      if(setModIds.length==1)
+      setModeratorIds=setModIds+",";
+      else
+      setModeratorIds=setModIds.toString();
+      return restangular.one("Classrooms", roomId).all("People").customPOST({ids:setModeratorIds}, "setModerator.json");
+    };
 
+    self.setRestricted=function(roomId,setRestrictIds){
+      var setRestrictedIds="";
+      if(setRestrictIds.length==1)
+      setRestrictedIds=setRestrictIds+",";
+      else
+      setRestrictedIds=setRestrictIds.toString();
+      return restangular.one("Classrooms", roomId).all("People").customPOST({ids:setRestrictedIds}, "setRestricted.json");
+    };
 
     return self;
   }]);

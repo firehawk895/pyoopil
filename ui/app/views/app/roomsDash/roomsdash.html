@@ -1,0 +1,14 @@
+<section class="pagesubnav">
+  <div class="clearfix">
+    <ul class="left-subnav clearfix">
+      <li><a ui-sref="app.roomsDash.myroom" class="active">My Classrooms</a>
+      </li>
+      <li><a ui-sref="app.roomsDash.staffroom">Staffroom</a>
+      </li>
+      <li><a ui-sref="app.roomsDash.archived">Archived Classrooms</a>
+      </li>
+    </ul>
+    <a ng-click="open()" class="sub-btn" title="create-assign" ng-if="true">Create New Classroom</a>
+  </div>
+</section>
+<div ui-view></div>
