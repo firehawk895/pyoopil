@@ -39,13 +39,20 @@ angular.module('uiApp')
         });
       };
 
-      $scope.removeModerator = function (id) {
-        var removeId = id + ",";
-        roomService.removeModerator($stateParams.roomId, removeId);
+      $scope.removeModerator = function (people) {
+        var removeId = people.AppUser.id + ",";
+        roomService.removeModerator($stateParams.roomId, removeId).then(function (result) {
+          if (result.status)
+            people.UsersClassroom.is_moderator = false;
+        });
       };
-      $scope.unRestrict = function (id) {
-        var removeId = id + ",";
-        roomService.unRestrict($stateParams.roomId, removeId);
+
+      $scope.unRestrict = function (people) {
+        var removeId = people.AppUser.id + ",";
+        roomService.unRestrict($stateParams.roomId, removeId).then(function (result) {
+          if (result.status)
+            people.UsersClassroom.is_restricted = false;
+        });
       };
 
       $scope.openModerateDialog = function () {
@@ -60,13 +67,32 @@ angular.module('uiApp')
       };
 
       $scope.setModerator = function () {
-        var setModIds=$("#ddlModeratorIds").select2("val");
-      roomService.setModerator($stateParams.roomId,setModIds);
+        var setModIds = $("#ddlModeratorIds").select2("val");
+        roomService.setModerator($stateParams.roomId, setModIds).then(function (result) {
+          if (result.status) {
+            angular.forEach($scope.peoples, function (people) {
+              if (setModIds.indexOf(people.AppUser.id) != -1) {
+                people.UsersClassroom.is_moderator = true;
+              }
+            });
+            ngDialog.close();
+          }
+        });
       };
 
       $scope.setRestricted = function () {
-        var setRestrictIds=$("#ddlRestrictedIds").select2("val");
-        roomService.setRestricted($stateParams.roomId,setRestrictIds);
-      }
+        var setRestrictIds = $("#ddlRestrictedIds").select2("val");
+        roomService.setRestricted($stateParams.roomId, setRestrictIds).then(function (result) {
+          if (result.status) {
+            angular.forEach($scope.peoples, function (people) {
+              if (setRestrictIds.indexOf(people.AppUser.id) != -1) {
+                people.UsersClassroom.is_restricted = true;
+              }
+            });
+            ngDialog.close();
+          }
+
+        });
+      };
 
     }]);

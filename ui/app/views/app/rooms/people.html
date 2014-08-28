@@ -43,9 +43,9 @@
           </div>
           <div class="follow-footer" ng-class="{'unfollow-footer' :!people.UsersClassroom.is_moderator &&
             !people.UsersClassroom.is_restricted}">
-            <p class="rest-txt" ng-click="unRestrict(people.AppUser.id)" ng-if="people.UsersClassroom.is_restricted">Unrestrict</p>
+            <p class="rest-txt" ng-click="unRestrict(people)" ng-if="people.UsersClassroom.is_restricted">Unrestrict</p>
 
-            <p class="rest-txt" ng-click="removeModerator(people.AppUser.id)"
+            <p class="rest-txt" ng-click="removeModerator(people)"
                ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted">Remove Moderator</p>
 
             <p class="rest-txt" ng-if="!people.UsersClassroom.is_moderator &&
