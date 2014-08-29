@@ -1,4 +1,3 @@
-
 document.write("<script type='text/javascript' src='js/jquery.autosize.min.js'></script>");
 document.write("<script type='text/javascript' src='js/jquery.slimscroll.min.js'></script>");
 document.write("<script type='text/javascript' src='js/tooltip.min.js'></script>");

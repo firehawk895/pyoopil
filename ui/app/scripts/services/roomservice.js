@@ -27,6 +27,10 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Libraries").customGET("getTopics.json", {page: page});
     };
+    self.getTopicsList = function (roomId, page) {
+      page = page || 1;
+      return restangular.one("Classrooms", roomId).all("Libraries").customGET("getTopicsList.json", {page: page});
+    };
     self.createAnnouncement = function (roomId, announcement) {
       //todo: support attachments
       return restangular.one("Classrooms", roomId).all("Announcements").customPOST(announcement, "add.json");
@@ -71,6 +75,23 @@ angular.module('uiApp')
     self.deleteFile = function (id, type) {
       var file = {id: id, type: type}
       return restangular.all("Classrooms").all("Libraries").customPOST(file, "deleteItem.json");
+    };
+    self.editTopic = function (name, id) {
+      var data = {
+        Topic: {
+          id: id,
+          name: name
+        }
+      };
+      return restangular.all("Classrooms").all("Libraries").customPOST(data, "editTopic.json");
+    };
+    self.deleteTopic = function (id) {
+      var data = {
+        Topic: {
+          id: id
+        }
+      };
+      return restangular.all("Classrooms").all("Libraries").customPOST(data, "deleteTopic.json");
     };
     return self;
   }]);

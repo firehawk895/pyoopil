@@ -8,22 +8,22 @@
  * Service in the uiApp.
  */
 angular.module('uiApp')
-    .factory('notificationService', function () {
+  .factory('notificationService', function () {
 
-        var self = this;
+    var self = this;
 
-        self.show = function (messageType, message) {
-
-
-            if (messageType)
-                toastr.success(message);
-            else
-            toastr.error(message);
-        };
+    self.show = function (messageType, message) {
 
 
-        return self;
+      if (messageType)
+        toastr.success(message);
+      else
+        toastr.error(message);
+    };
 
 
-        // AngularJS will instantiate a singleton by calling "new" on this function
-    });
+    return self;
+
+
+    // AngularJS will instantiate a singleton by calling "new" on this function
+  });

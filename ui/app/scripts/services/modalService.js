@@ -13,6 +13,5 @@ angular.module('uiApp')
       };
 
 
-
       return self;
     }]);

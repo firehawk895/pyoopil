@@ -27,10 +27,7 @@ angular.module('uiApp')
       //logout function
       self.logout = function () {
         var token = localStorageService.get("token");
-        return restangular.all("").customPOST(token, "logout.json").then(function () {
-          localStorageService.remove("token");
-          globalService.setIsAuthorised(false);
-        });
+        return restangular.all("").customPOST(token, "logout.json");
       };
       return self;
     }]);

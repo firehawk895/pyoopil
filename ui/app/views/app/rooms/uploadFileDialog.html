@@ -1,0 +1,95 @@
+<div class="create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Upload</span>
+      <a class="close-link" ng-click="closeThisDialog()">
+        <span class="icon-cross" ></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <form class="form-data">
+        <div class="upload-form clearfix">
+          <!-- form 1 -->
+          <div id="form1">
+            <p class="up-heading"> Step 1 of 2: Select a topic</p>
+            <div class="select-topic">
+             <!--<select class="chosen-select select_option" id="topic-dd" ui-jq="chosen">-->
+                <!--<option class="new-topic">Create New Topic</option>-->
+                <!--<option>Topic 2</option>-->
+                <!--<option>Topic 3</option>-->
+                <!--<option>Topic 4</option>-->
+              <!--</select>-->
+
+
+              <select class="chosen-select select_option" ng-required="true"
+                      ui-jq="chosen"
+                      ng-model="topic.id"
+                      ng-options="key as topic for (key,topic) in topicsList">
+                <option value=" ">CreateNewTopic</option>
+              </select>
+
+              <input type="text" class="pop-input" id="enter-topic" placeholder="Enter Topic Name"/>
+
+              <div class="nav-btn">
+                <input type="button" class="follow active goto2" value="Next">
+              </div>
+            </div>
+          </div>
+          <!-- form 2 -->
+          <div id="form2" class="contentblock">
+            <p class="up-heading">Step 2 of 2</p>
+
+            <div class="select-topic">
+              <p class="sub-sel">Topic Name:<span> Topic 1</span></p>
+
+              <div class="tabpages">
+                <ul class="upload-tab">
+                  <li><a href="#file1" class="tab active">Upload file</a>
+                  </li>
+                  <li><a href="#link1" class="tab">Upload link</a>
+                  </li>
+                </ul>
+                <div id="file1" class="tab-contt">
+                  <p>Select file to upload</p>
+
+                  <div class="upload-files">
+                    <div class="add-upload clearfix">
+                      <div class="custom-upload" id="test0">
+                        <input type="file" name="files[]">
+
+                        <div class="file-upload">
+                          <span class="file-txt">Select file</span>
+                          <input disabled="disabled" value="No File Chosen">
+                        </div>
+                        <div class="size-txt">(Max. 00 mb)</div>
+                      </div>
+                    </div>
+                    <span class="add-more tooltip" title="Add File"></span>
+                  </div>
+                  <div class="error-txt">
+                    <p>! File exceeded max. limit. </p>
+
+                    <p>Select another file or reduce size and upload again</p>
+                  </div>
+                </div>
+                <div id="link1" class="tab-contt">
+                  <p>Paste link here</p>
+
+                  <div class="upload-links">
+                    <div class="add-links">
+                      <input type="text" class="pop-input" placeholder="Upload links">
+                    </div>
+                  </div>
+                  <span class="add-link tooltip" title="Add Link"></span>
+                </div>
+              </div>
+              <div class="nav-btn">
+                <input type="button" class="follow backto1" value="Oops !">
+                <input type="button" class="follow active" value="Save">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

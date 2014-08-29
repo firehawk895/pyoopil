@@ -2,18 +2,18 @@
 <section class="pagecontent clearfix">
   <div class="library-wrapper">
     <div infinite-scroll="updatePage()">
-    <ul class="tile-lst">
-      <li class="code-class">
-        <div class="newjoinbox">
-          <a class="newjoin" ng-show="showJoin" ng-click="showJoin=false">Join New Classroom</a>
+      <ul class="tile-lst">
+        <li class="code-class">
+          <div class="newjoinbox">
+            <a class="newjoin" ng-show="showJoin" ng-click="showJoin=false">Join New Classroom</a>
 
-          <div class="accessclass" ng-show="!showJoin">
-            <input type="text" class="access" name="search" placeholder="Enter Access Code"
-                   ng-model="accessCode">
-            <a ng-click="joinClassroom()" class="sub-btn">Join Classroom</a>
+            <div class="accessclass" ng-show="!showJoin">
+              <input type="text" class="access" name="search" placeholder="Enter Access Code"
+                     ng-model="accessCode">
+              <a ng-click="joinClassroom()" class="sub-btn">Join Classroom</a>
+            </div>
           </div>
-        </div>
-      </li>
+        </li>
 
         <li ng-repeat="classroom in classrooms">
           <!--todo:disable link if restricted-->
@@ -36,7 +36,7 @@
           </a>
         </li>
 
-    </ul>
+      </ul>
     </div>
   </div>
 </section>
