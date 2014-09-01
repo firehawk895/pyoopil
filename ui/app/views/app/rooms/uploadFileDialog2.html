@@ -2,40 +2,14 @@
   <div class="pop-wind clearfix">
     <div class="pop-head clearfix">
       <span>Upload</span>
-      <a class="close-link" ng-click="closeThisDialog()">
-        <span class="icon-cross" ></span></a>
+      <a href="" class="close-link" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
     </div>
     <div class="pop-content clearfix">
       <form class="form-data">
         <div class="upload-form clearfix">
-          <!-- form 1 -->
-          <div id="form1">
-            <p class="up-heading"> Step 1 of 2: Select a topic</p>
-            <div class="select-topic">
-             <!--<select class="chosen-select select_option" id="topic-dd" ui-jq="chosen">-->
-                <!--<option class="new-topic">Create New Topic</option>-->
-                <!--<option>Topic 2</option>-->
-                <!--<option>Topic 3</option>-->
-                <!--<option>Topic 4</option>-->
-              <!--</select>-->
 
-
-              <select class="chosen-select select_option" ng-required="true"
-                      ui-jq="chosen"
-                      ng-model="topic.id"
-                      ng-options="key as topic for (key,topic) in topicsList">
-                <option value=" ">CreateNewTopic</option>
-              </select>
-
-              <input type="text" class="pop-input" id="enter-topic" placeholder="Enter Topic Name"/>
-
-              <div class="nav-btn">
-                <input type="button" class="follow active goto2" value="Next">
-              </div>
-            </div>
-          </div>
-          <!-- form 2 -->
-          <div id="form2" class="contentblock">
+          <div id="form2">
             <p class="up-heading">Step 2 of 2</p>
 
             <div class="select-topic">
@@ -43,9 +17,9 @@
 
               <div class="tabpages">
                 <ul class="upload-tab">
-                  <li><a href="#file1" class="tab active">Upload file</a>
+                  <li><a ng-href="#file1" class="tab active">Upload file</a>
                   </li>
-                  <li><a href="#link1" class="tab">Upload link</a>
+                  <li><a ng-href="#link1" class="tab">Upload link</a>
                   </li>
                 </ul>
                 <div id="file1" class="tab-contt">
@@ -83,8 +57,8 @@
                 </div>
               </div>
               <div class="nav-btn">
-                <input type="button" class="follow backto1" value="Oops !">
-                <input type="button" class="follow active" value="Save">
+                <input type="button" class="follow backto1" value="Oops !" ng-click="showStep1()">
+                <input type="button" class="follow active" value="Save" ng-click="uploadFiles()">
               </div>
             </div>
           </div>

@@ -31,9 +31,18 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Libraries").customGET("getTopicsList.json", {page: page});
     };
-    self.createAnnouncement = function (roomId, announcement) {
-      //todo: support attachments
-      return restangular.one("Classrooms", roomId).all("Announcements").customPOST(announcement, "add.json");
+    self.createAnnouncement = function (roomId, subject, body, file) {
+
+      var formData = new FormData();
+      formData.append("data[Announcement][subject]", subject);
+      formData.append("data[Announcement][body]", body);
+
+      if (angular.isDefined(file))
+        formData.append("data[Announcement][file_path]", file);
+      return restangular.one("Classrooms", roomId)
+        .all("Announcements")
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
     self.joinClassroom = function (accessCode) {
       return restangular.all("Classrooms").customPOST(accessCode, "join.json");

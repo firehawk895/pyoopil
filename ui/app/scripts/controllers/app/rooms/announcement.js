@@ -9,11 +9,12 @@
  */
 angular.module('uiApp')
   .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', function ($scope, $stateParams, roomService, notificationService) {
-
-    $scope.announcement = {};
     //todo : check if room id has access
     $scope.page = 1;
-
+    $scope.vm = {};
+    $scope.vm.subject = "";
+    $scope.vm.body = "";
+    $scope.vm.file = null;
     $scope.roomId = $stateParams.roomId;
 
     roomService.getAnnouncements($stateParams.roomId, $scope.page).then(function (result) {
@@ -22,12 +23,17 @@ angular.module('uiApp')
     });
 
     $scope.createAnnouncement = function () {
-
-      roomService.createAnnouncement($stateParams.roomId, $scope.announcement).then(function (added) {
-        notificationService.show(added.status, added.message);
-        $scope.announcements.unshift(added.data);
-        $scope.announcement = {};
-      });
+      $scope.vm.file = document.getElementById("fileupload").files[0];
+      roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
+        .then(function (added) {
+          notificationService.show(added.status, added.message);
+          if (added.status) {
+            $scope.announcements.unshift(added.data);
+            $scope.vm.subject = "";
+            $scope.vm.body = "";
+            $scope.vm.file = null;
+          }
+        });
     };
 
     $scope.updatePage = function () {
@@ -37,7 +43,11 @@ angular.module('uiApp')
     };
 
     $scope.cancelAnnouncement = function () {
-      $scope.announcement = {};
-    }
+      $scope.vm.subject = "";
+      $scope.vm.body = "";
+      $scope.vm.file = "";
+
+    };
+
 
   }]);

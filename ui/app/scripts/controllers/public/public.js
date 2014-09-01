@@ -14,10 +14,10 @@ angular.module('uiApp')
           notificationService.show(result.status, result.message);
           if (result.status) {
             ngDialog.close();
-            $http.defaults.headers.common = {'X-AuthTokenHeader': result.data.auth_token};
             localStorageService.add("token", result.data.auth_token);
+            userService.validateSession();
             authService.loginConfirmed(result.data.auth_token);
-//            console.log(result.data.auth_token);
+            console.log(result.data.auth_token);
             //redirect to rooms on successful login
             $location.path('/app/roomsDash/myroom/');
           }

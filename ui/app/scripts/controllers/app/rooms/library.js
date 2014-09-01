@@ -11,9 +11,12 @@ angular.module('uiApp')
       $scope.showContent = true;
       $scope.lastExpandedItemIndex = -1;
       $scope.editTopicName = false;
+      $scope.libraryUpload = {};
+      $scope.isNewTopic = true;
 
       roomService.getTopics($stateParams.roomId, $scope.page).then(function (result) {
         $scope.topics = result.data;
+        $scope.canUpload = result.permissions.allowCUD;
       });
 
       roomService.getTopicsList($stateParams.roomId, $scope.page).then(function (result) {
@@ -91,10 +94,11 @@ angular.module('uiApp')
             topic.Video.splice(index, 1);
         });
       };
-      $scope.openUploadDialog = function () {
+      $scope.showStep1 = function () {
+        ngDialog.close();
         ngDialog.open({
           scope: $scope,
-          template: 'views/app/rooms/uploadFileDialog.html'
+          template: 'views/app/rooms/uploadFileDialog1.html'
         });
 
       };
@@ -120,5 +124,20 @@ angular.module('uiApp')
 //            $scope.topics[index].Topic.name = $scope.newTopic;
         });
       };
-    }])
-;
+      $scope.showStep2 = function () {
+        ngDialog.close();
+        ngDialog.open({
+          scope: $scope,
+          template: 'views/app/rooms/uploadFileDialog2.html'
+        });
+      };
+      $scope.checkNew = function () {
+        if ($scope.libraryUpload.id)
+          $scope.isNewTopic = false;
+        else
+          $scope.isNewTopic = true;
+      };
+      $scope.uploadFiles = function () {
+
+      }
+    }]);

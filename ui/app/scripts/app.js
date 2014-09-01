@@ -22,7 +22,8 @@ angular
     'ngDialog',
     'http-auth-interceptor',
     'ui.utils',
-    'ui.select2'
+    'ui.select2',
+    'angular-loading-bar'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
@@ -43,7 +44,7 @@ angular
           }
         };
       }]);
-      $locationProvider.html5Mode(true);
+//      $locationProvider.html5Mode(true);
       $urlRouterProvider.otherwise("/");
       //
       // Now set up the states
@@ -63,23 +64,23 @@ angular
           templateUrl: "views/app/app.html"
         })
         .state('app.rooms', {
-          url: "rooms/",
+          url: "rooms/:roomId/",
           abstract: true,
           templateUrl: "views/app/rooms/room.html"
 
         })
         .state('app.rooms.announcements', {
-          url: ":roomId/announcements/",
+          url: "announcements/",
           templateUrl: "views/app/rooms/announcement.html",
           controller: "announcementCtrl"
         })
         .state('app.rooms.library', {
-          url: ":roomId/library/",
+          url: "library/",
           templateUrl: "views/app/rooms/library.html",
           controller: "libraryCtrl"
         })
         .state('app.rooms.people', {
-          url: ":roomId/people/",
+          url: "people/",
           templateUrl: "views/app/rooms/people.html",
           controller: "peopleCtrl"
         })
@@ -133,9 +134,9 @@ angular
       restangular.setBaseUrl(globalService.getBaseUrl());
       userService.validateSession();
 
-//      if (globalService.getIsAuthorised()) {
-//        $location.path('/app/rooms/');
-//      }
+      if (globalService.getIsAuthorised()) {
+        $location.path('/app/roomsDash/myroom/');
+      }
 
 //      $idle.watch();
     }])

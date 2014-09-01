@@ -21,3 +21,20 @@
   display: inline-block;
   padding: 5px 55px;
 }
+
+.select-topic .pop-input {
+  width: 92%;
+  margin-top: 30px;
+  display: block;
+}
+
+.pop-input {
+  height: 38px;
+}
+
+.create-popup .chosen-container-single .chosen-single {
+  height: 38px;
+}
+.pop-dura{
+  height:38px;
+}

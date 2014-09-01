@@ -5,27 +5,32 @@
     <form name="formAnnouncement" ng-if="canPost">
       <div class="top-div announcement">
           <span class="txt-count">(
-          <span id="rem_count">{{200-announcement.Announcement.subject.length}}</span>/200 characters left)</span>
+          <span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
         <input class="add-topic" type="text" placeholder="Subject" ng-maxlength=200 maxlength="200"
-               ng-model="announcement.Announcement.subject" ng-trim="false" ng-required="true">
+              ng-model="vm.subject" ng-trim="false" ng-required="true">
 
         <div class="ques-box">
           <textarea class="txt-area" placeholder="Type announcement text here…"
-                    ng-model="announcement.Announcement.body" ng-required="true"></textarea>
+                    ng-model="vm.body" ng-required="true"></textarea>
+
 
           <div class="att-box clearfix">
             <div class="disc-room f-left">
               <div class="attachmentbox">
-                  <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                  <span class="att-txt">Add files 
-                  <span class="att-size">(Max 100 mb)</span></span> 
-                  <input id="fileupload" type="file" name="files[]" class="i_file"/></span>
+                <input id="fileupload" type="file" name="files[]"
+                       class="i_file">
+                <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+                <!--&lt;!&ndash;todo:Style add files button&ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="att-txt">Add files &ndash;&gt;-->
+                <!--&lt;!&ndash;<span class="att-size">(Max 100 mb)</span></span>&ndash;&gt;-->
 
-                <div id="files" class="files"></div>
+                <!--</span>-->
+
+                <!--<div id="files" class="files"></div>-->
               </div>
             </div>
             <div class="f-right">
-              <a class="follow" ng-click="cancelAnnouncement()">Cancel</a>
+              <a href="" class="follow" ng-click="cancelAnnouncement()">Cancel</a>
               <button type="submit" class="sub-btn chk-file" ng-click="createAnnouncement()"
                       ng-disabled="formAnnouncement.$invalid">Create
               </button>
@@ -61,7 +66,8 @@
 
             <p class="cl">
               <a class="dlfile" ng-show="announcement.Announcement.filename">{{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
-              <a class="down-icon" ng-show="announcement.Announcement.filename"></a>
+              <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
+                 ng-show="announcement.Announcement.filename" target="_blank"></a>
             </p>
           </div>
         </div>
