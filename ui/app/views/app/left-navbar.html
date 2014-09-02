@@ -19,8 +19,24 @@
             <!--Classroom Vertical Scroller-->
             <div class="clearfix">
               <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
-              <div infinite-scroll="updatePage()">
-                <div class="scroll-pane" ui-left-scroll ng-model="classrooms"></div>
+              <div class="scroll-pane" ui-jq="slider">
+                <div infinite-scroll="updatePage()" style="margin-left: -28px">
+                  <div ng-repeat="classroom in classrooms" class="scroll-content-item"><a
+                      ui-sref="app.rooms.announcements({ roomId:{{classroom.Classroom.id}} })">
+                    <div class="classouter">
+                      <div class="doc-list">
+                        <div class="doc-top">
+                          <p class="subject">{{classroom.Classroom.title}} <br>
+                            {{classroom.Classroom.id}}</p>
+                          <span>by</span>
+                          <span>{{classroom.Classroom.Educator}}</span>
+                          <span class="totalstudent">({{classroom.Classroom.users_classroom_count}} Students)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                  </div>
+                </div>
               </div>
               <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
             </div>

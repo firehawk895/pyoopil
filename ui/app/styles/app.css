@@ -35,6 +35,23 @@
 .create-popup .chosen-container-single .chosen-single {
   height: 38px;
 }
-.pop-dura{
-  height:38px;
+
+.pop-dura {
+  height: 38px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  border-top-color: #ff992f;
+  border-left-color: #ff992f;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: #ff992f 1px 0 6px 1px;
+  -ms-box-shadow: #ff992f 1px 0 6px 1px;
+  -webkit-box-shadow: #ff992f 1px 0 6px 1px;
+  box-shadow: #ff992f 1px 0 6px 1px;
+}
+
+#loading-bar .bar {
+  background: #ff992f;
 }

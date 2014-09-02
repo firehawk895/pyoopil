@@ -29,9 +29,7 @@ angular.module('uiApp')
           notificationService.show(added.status, added.message);
           if (added.status) {
             $scope.announcements.unshift(added.data);
-            $scope.vm.subject = "";
-            $scope.vm.body = "";
-            $scope.vm.file = null;
+           $scope.vm={};
           }
         });
     };
@@ -43,9 +41,8 @@ angular.module('uiApp')
     };
 
     $scope.cancelAnnouncement = function () {
-      $scope.vm.subject = "";
-      $scope.vm.body = "";
-      $scope.vm.file = "";
+      $scope.vm.subject = {};
+
 
     };
 

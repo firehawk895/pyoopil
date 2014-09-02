@@ -12,7 +12,41 @@ angular.module('uiApp')
       $scope.lastExpandedItemIndex = -1;
       $scope.editTopicName = false;
       $scope.libraryUpload = {};
+      $scope.libraryUpload.id = null;
+      $scope.libraryUpload.name = "";
+      $scope.libraryUpload.files = ["file-0"];
+      $scope.libraryUpload.links = [];
+      $scope.linkIndex = 0;
+      $scope.vm = {};
+      $scope.vm.files = ["file-0"];
+      $scope.vm.links = [
+        {
+          url: "",
+          isVisible: true
+        },
+        {
+          url: "",
+          isVisible: false
+        },
+        {
+          url: "",
+          isVisible: false
+        },
+        {
+          url: "",
+          isVisible: false
+        },
+        {
+          url: "",
+          isVisible: false
+        },
+        {
+          url: "",
+          isVisible: false
+        }
+      ];
       $scope.isNewTopic = true;
+      $scope.uploadFileFlag = true;
 
       roomService.getTopics($stateParams.roomId, $scope.page).then(function (result) {
         $scope.topics = result.data;
@@ -42,6 +76,7 @@ angular.module('uiApp')
           if (result.status) {
             topic.Documents.splice(index, 1);
           }
+
         });
       };
 
@@ -125,19 +160,57 @@ angular.module('uiApp')
         });
       };
       $scope.showStep2 = function () {
-        ngDialog.close();
-        ngDialog.open({
-          scope: $scope,
-          template: 'views/app/rooms/uploadFileDialog2.html'
-        });
+        if ($scope.libraryUpload.id == null && $scope.libraryUpload.name == "")
+          notificationService.show(false, "Enter topic Name or choose a topic");
+        else {
+          ngDialog.close();
+          ngDialog.open({
+            scope: $scope,
+            template: 'views/app/rooms/uploadFileDialog2.html'
+          });
+        }
       };
       $scope.checkNew = function () {
-        if ($scope.libraryUpload.id)
+        if ($scope.libraryUpload.id) {
           $scope.isNewTopic = false;
-        else
+          angular.forEach($scope.topicsList, function (value, key) {
+            if (key == $scope.libraryUpload.id)
+              $scope.libraryUpload.name = value;
+          });
+        }
+        else {
           $scope.isNewTopic = true;
+          $scope.libraryUpload.name = "";
+          $scope.libraryUpload.id = null;
+        }
       };
       $scope.uploadFiles = function () {
 
-      }
-    }]);
+        angular.forEach($scope.vm.links, function (value, key) {
+          if (value.url != "")
+            $scope.libraryUpload.links.push(value.url);
+        });
+
+        console.log($scope.libraryUpload.files);
+        console.log($scope.libraryUpload.links);
+        console.log($scope.vm.links);
+
+
+        roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
+          then(function (result) {
+            notificationService.show(result.status, result.message);
+            if (result.status)
+              $scope.libraryUpload = {};
+          });
+      };
+
+      $scope.addNewFile = function () {
+        $scope.libraryUpload.files.push("file-" + $scope.libraryUpload.files.length);
+      };
+
+      $scope.addNewLink = function () {
+        $scope.linkIndex++;
+        $scope.vm.links[$scope.linkIndex].isVisible = true;
+      };
+    }])
+;

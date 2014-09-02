@@ -82,7 +82,7 @@ angular.module('uiApp')
       return restangular.one("Classrooms", roomId).all("People").customPOST({ids: setRestrictedIds}, "setRestricted.json");
     };
     self.deleteFile = function (id, type) {
-      var file = {id: id, type: type}
+      var file = {id: id, type: type};
       return restangular.all("Classrooms").all("Libraries").customPOST(file, "deleteItem.json");
     };
     self.editTopic = function (name, id) {
@@ -102,5 +102,33 @@ angular.module('uiApp')
       };
       return restangular.all("Classrooms").all("Libraries").customPOST(data, "deleteTopic.json");
     };
+
+    self.uploadFiles = function (roomId, id, name, files, links) {
+      var formData = new FormData();
+
+      if (id)
+        formData.append("data[Topic][id]", id);
+      else
+        formData.append("data[Topic][name]", name);
+
+      if (files.length) {
+        angular.forEach(files, function (value, key) {
+          if (angular.isDefined(value))
+            formData.append("data[Pyoopilfile][" + key + "][file_path]", value);
+        });
+      };
+      if (links.length) {
+        angular.forEach(links, function (value, key) {
+          if (angular.isDefined(value))
+            formData.append("data[Link][" + key + "][linktext]", value);
+        });
+      };
+      return restangular.one("Classrooms", roomId)
+        .all("Libraries")
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
+    };
+
+
     return self;
   }]);

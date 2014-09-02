@@ -134,41 +134,9 @@ angular
       restangular.setBaseUrl(globalService.getBaseUrl());
       userService.validateSession();
 
-      if (globalService.getIsAuthorised()) {
-        $location.path('/app/roomsDash/myroom/');
-      }
+//      if (globalService.getIsAuthorised()) {
+//        $location.path('/app/roomsDash/myroom/');
+//      }
 
 //      $idle.watch();
-    }])
-  .directive('uiLeftScroll', ['$timeout', function ($timeout) {
-    return {
-      restrict: 'AE',
-      scope: {
-        ngModel: '='
-      },
-      templateUrl: 'views/directives/ui-left-scroll.html',
-      link: function (scope, element) {
-        var model = element.attr("ng-model");
-
-        scope.$watch(model, function (o, n) {
-          $timeout(function () {
-            setSlider(element);
-
-            if (model.length < 4) {
-              element.css('min-height', '200px')
-            }
-
-          }, 500);
-        });
-      }
-    };
-  }])
-  .directive('uiDatePicker', ['$timeout', function ($timeout) {
-    return{
-      restrict: 'A',
-      link: function (scope, element) {
-        scope.watch()
-      }
-    }
-  }])
-;
+    }]);

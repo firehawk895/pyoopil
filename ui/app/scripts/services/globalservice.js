@@ -23,6 +23,7 @@ angular.module('uiApp')
               self.removeMessage(val);
           });
         }, 1000);
+
       self.setIsAuthorised = function (loginStatus) {
         self.isAuthorised = loginStatus
       };

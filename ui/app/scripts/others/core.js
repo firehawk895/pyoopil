@@ -797,9 +797,9 @@ $(".date_popup").datepicker({
 });
 
 //left menu scroll
-//$('.scroll-pane').each(function () {
-//  setSlider($(this));
-//});
+$('.scroll-pane').each(function () {
+  setSlider($(this));
+});
 
 var bh = $(window).height();
 var al = bh - 260;
