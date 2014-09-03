@@ -15,6 +15,10 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.all("Classrooms").customGET("getclassrooms.json", {page: page});
     };
+    self.getDiscussions = function (roomId, page) {
+      page = page || 1;
+      return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page});
+    };
     self.getAnnouncements = function (roomId, page) {
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Announcements").customGET("getannouncements.json", {page: page});

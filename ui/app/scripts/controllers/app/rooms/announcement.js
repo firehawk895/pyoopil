@@ -8,7 +8,8 @@
  * Controller of the uiApp
  */
 angular.module('uiApp')
-  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', function ($scope, $stateParams, roomService, notificationService) {
+  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService',
+    function ($scope, $stateParams, roomService, notificationService) {
     //todo : check if room id has access
     $scope.page = 1;
     $scope.vm = {};

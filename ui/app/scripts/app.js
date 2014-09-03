@@ -69,6 +69,11 @@ angular
           templateUrl: "views/app/rooms/room.html"
 
         })
+        .state('app.rooms.discussions', {
+          url: "discussions/",
+          templateUrl: "views/app/rooms/discussion.html",
+          controller: "discussionCtrl"
+        })
         .state('app.rooms.announcements', {
           url: "announcements/",
           templateUrl: "views/app/rooms/announcement.html",
