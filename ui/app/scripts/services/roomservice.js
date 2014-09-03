@@ -120,19 +120,27 @@ angular.module('uiApp')
           if (angular.isDefined(value))
             formData.append("data[Pyoopilfile][" + key + "][file_path]", value);
         });
-      };
+      }
       if (links.length) {
         angular.forEach(links, function (value, key) {
           if (angular.isDefined(value))
             formData.append("data[Link][" + key + "][linktext]", value);
         });
-      };
+      }
       return restangular.one("Classrooms", roomId)
         .all("Libraries")
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
-
-
+    self.delete = function (id, type) {
+      var data = {
+        type: type,
+        id: id
+      };
+      return restangular.all("Classrooms").all("Discussions").customPOST(data, "delete.json");
+    };
+    self.toggleFold = function (id) {
+      return restangular.all("Classrooms").all("Discussions").customPOST({id: id}, "togglefold.json");
+    };
     return self;
   }]);

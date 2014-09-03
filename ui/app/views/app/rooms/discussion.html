@@ -93,7 +93,7 @@
 <li ng-class="{'lastli' :!discussion.Reply.length}">
   <div class="disc-box clearfix">
     <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/follow1.jpg" class="disc-img"></a>
+      <a href=""><img src="images/follow1.jpg" class="disc-img"></a>
     </div>
     <div class="arrow_box">
       <span class="arrowbox-icon quest-icon" ng-if="discussion.Discussion.type=='question' "></span>
@@ -105,13 +105,14 @@
 
         <p class="tby"><a href="javascript:void(0)">by {{discussion.AppUser.fname}} {{discussion.AppUser.lname}}</a></p>
 
-        <p class="tby">Today at 11:20 am</p>
+        <p class="tby">{{discussion.Discussion.created}}</p>
       </div>
       <div class="icon-right">
-        <a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>
-        <a href="javascript:void(0)" class="vl-t tooltip" title="Delete"><img src="images/disc-close.png"></a>
+        <a href="" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>
+        <a href="" class="vl-t tooltip" title="Delete" ng-click="deleteDiscussion($index)"><img src="images/disc-close.png"></a>
         <a class="tooltip" title="Fold Discussion" href=""
-           ng-class="{'fold-icon' :!discussion.Discussion.isFolded,'folded-icon' :discussion.Discussion.isFolded}"></a>
+           ng-class="{'fold-icon' :!discussion.Discussion.isFolded,'folded-icon' :discussion.Discussion.isFolded}"
+            ng-click="toggleFold($index)"></a>
       </div>
       <div class="clear"></div>
       <p class="ttxt">{{discussion.Discussion.body}}</p>
@@ -223,16 +224,16 @@
       <div class="name-left">
         <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.fname}}</a></p>
 
-        <p class="tby">Today at 11:20 am</p>
+        <p class="tby">{{reply.created}}</p>
       </div>
       <div class="icon-right">
                   <span class="dd-block">
-                  <a href="javascript:void(0)" class="dd-icon dd-click"></a>
+                  <a href="" class="dd-icon dd-click"></a>
                   <div class="arr-dd">
                     <ul>
                       <li><a href="javascript:void(0)">Report Abuse</a>
                       </li>
-                      <li class="lastli"><a href="javascript:void(0)">Delete Comment</a>
+                      <li class="lastli"><a href="" ng-click="deleteReply(discussion,$index)">Delete Comment</a>
                       </li>
                     </ul>
                   </div>
@@ -335,467 +336,467 @@
 </li>
 </ul>
 
-<ul class="disc-list">
-<li>
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/follow4.jpg" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <span class="arrowbox-icon"></span>
+<!--<ul class="disc-list">-->
+<!--<li>-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/follow4.jpg" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<span class="arrowbox-icon"></span>-->
 
-      <div class="name-left">
-        <p class="tname">Topic of the discussion</p>
+      <!--<div class="name-left">-->
+        <!--<p class="tname">Topic of the discussion</p>-->
 
-        <p class="tby"><a href="javascript:void(0)">by Akriti Singh</a></p>
+        <!--<p class="tby"><a href="javascript:void(0)">by Akriti Singh</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-        <a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>
-                  <span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                     title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-        <a class="tooltip" title="Fold Discussion" href=""></a>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">What do you think should be the dress code for our upcoming fest?</p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+        <!--<a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
+                  <!--<span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                     <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+        <!--<a class="tooltip" title="Fold Discussion" href=""></a>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">What do you think should be the dress code for our upcoming fest?</p>-->
 
-      <div class="clearfix">
-        <div class="poll-left">
-          <a href="javascript:void(0)" class="ans-btn">Answer 1</a>
-          <a href="javascript:void(0)" class="ans-btn">Answer 2</a>
-          <a href="javascript:void(0)" class="ans-btn">Answer 3</a>
-          <a href="javascript:void(0)" class="ans-btn">Answer 4</a>
-        </div>
-        <div class="poll-right">
-          <div id="chart_div2"></div>
-        </div>
-      </div>
+      <!--<div class="clearfix">-->
+        <!--<div class="poll-left">-->
+          <!--<a href="javascript:void(0)" class="ans-btn">Answer 1</a>-->
+          <!--<a href="javascript:void(0)" class="ans-btn">Answer 2</a>-->
+          <!--<a href="javascript:void(0)" class="ans-btn">Answer 3</a>-->
+          <!--<a href="javascript:void(0)" class="ans-btn">Answer 4</a>-->
+        <!--</div>-->
+        <!--<div class="poll-right">-->
+          <!--<div id="chart_div2"></div>-->
+        <!--</div>-->
+      <!--</div>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="f-right">
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="f-right">-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">EN</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">17</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="point-icon nopoint-icon">IN</a>
-            <span class="icon-title">0</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">CU</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">17</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="point-icon nopoint-icon">IN</a>-->
+            <!--<span class="icon-title">0</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">CU</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">7</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">CO</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Sumit Patil</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">7</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">CO</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                  <li><p class="tt-name">Apeksha Verma</p></li>
-                  <li><p class="tt-name">Harpreet Kaur</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">3</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">ED</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Sumit Patil</p></li>-->
+                  <!--<li><p class="tt-name">Apeksha Verma</p></li>-->
+                  <!--<li><p class="tt-name">Harpreet Kaur</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">3</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">ED</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Harpreet Kaur</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">10</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 5 answers <img src="images/view-all.png"></a>
-  </div>
-</li>
-<li>
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <div class="name-left">
-        <p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Harpreet Kaur</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">10</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 5 answers <img src="images/view-all.png"></a>-->
+  <!--</div>-->
+<!--</li>-->
+<!--<li>-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<div class="name-left">-->
+        <!--<p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-                  <span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                          title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was
-        explained. </p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+                  <!--<span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                          <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was-->
+        <!--explained. </p>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</li>
-<li class="lastli">
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <div class="name-left">
-        <p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</li>-->
+<!--<li class="lastli">-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<div class="name-left">-->
+        <!--<p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-                  <span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                          title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was
-        explained. </p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+                  <!--<span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                          <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was-->
+        <!--explained. </p>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <input class="add-ans" type="text" placeholder="Add your answer...">
-</li>
-</ul>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<input class="add-ans" type="text" placeholder="Add your answer...">-->
+<!--</li>-->
+<!--</ul>-->
 
-<ul class="disc-list">
-<li>
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat1.png" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <span class="arrowbox-icon note-icon"></span>
+<!--<ul class="disc-list">-->
+<!--<li>-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/chat1.png" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<span class="arrowbox-icon note-icon"></span>-->
 
-      <div class="name-left">
-        <p class="tname">Topic of the discussion</p>
+      <!--<div class="name-left">-->
+        <!--<p class="tname">Topic of the discussion</p>-->
 
-        <p class="tby"><a href="javascript:void(0)">by Akriti Singh</a></p>
+        <!--<p class="tby"><a href="javascript:void(0)">by Akriti Singh</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-        <a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>
-                  <span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                     title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-        <a class="fold-icon tooltip" title="Fold Discussion" href="javascript:void(0)"></a>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">What do you think should be the dress code for our upcoming fest?</p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+        <!--<a href="javascript:void(0)" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
+                  <!--<span class="dd-block abuse-dd"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                     <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+        <!--<a class="fold-icon tooltip" title="Fold Discussion" href="javascript:void(0)"></a>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">What do you think should be the dress code for our upcoming fest?</p>-->
 
-      <p class="txt-img"><a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]"><img
-          src="images/video1.png"></a></p>
+      <!--<p class="txt-img"><a href="http://www.youtube.com/watch?v=hKC-sWjgdPA" rel="prettyPhoto[pp_gal]"><img-->
+          <!--src="images/video1.png"></a></p>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="f-right">
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">EN</a>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="f-right">-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">EN</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">17</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="point-icon nopoint-icon">IN</a>
-            <span class="icon-title">0</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">CU</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Sumit Patil</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">17</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="point-icon nopoint-icon">IN</a>-->
+            <!--<span class="icon-title">0</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">CU</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                  <li><p class="tt-name">Apeksha Verma</p></li>
-                  <li><p class="tt-name">Harpreet Kaur</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">7</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">CO</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Sumit Patil</p></li>-->
+                  <!--<li><p class="tt-name">Apeksha Verma</p></li>-->
+                  <!--<li><p class="tt-name">Harpreet Kaur</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">7</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">CO</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">3</span>
-          </div>
-          <div class="enga">
-            <a href="javascript:void(0)" class="msg-link point-icon">ED</a>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">3</span>-->
+          <!--</div>-->
+          <!--<div class="enga">-->
+            <!--<a href="javascript:void(0)" class="msg-link point-icon">ED</a>-->
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                </ul>
-              </div>
-            </div>
-            <span class="icon-title">10</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 8 answers <img src="images/view-all.png"></a>
-  </div>
-</li>
-<li>
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <div class="name-left">
-        <p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>
+            <!--<div class="enga-tooltip">-->
+              <!--<div class="enga-list">-->
+                <!--<ul>-->
+                  <!--<li><p class="tt-name">Amar Verma</p></li>-->
+                  <!--<li><p class="tt-name">Akriti Singh</p></li>-->
+                  <!--<li><p class="tt-name">Deepti Singh</p></li>-->
+                <!--</ul>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<span class="icon-title">10</span>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="bor-rep"><a href="javascript:void(0)" class="view-more">View all 8 answers <img src="images/view-all.png"></a>-->
+  <!--</div>-->
+<!--</li>-->
+<!--<li>-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<div class="name-left">-->
+        <!--<p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-                  <span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                          title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was
-        explained. </p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+                  <!--<span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                          <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was-->
+        <!--explained. </p>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</li>
-<li class="lastli">
-  <div class="disc-box clearfix">
-    <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
-    </div>
-    <div class="arrow_box">
-      <div class="name-left">
-        <p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</li>-->
+<!--<li class="lastli">-->
+  <!--<div class="disc-box clearfix">-->
+    <!--<div class="disc-left">-->
+      <!--<a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>-->
+    <!--</div>-->
+    <!--<div class="arrow_box">-->
+      <!--<div class="name-left">-->
+        <!--<p class="tname"><a href="javascript:void(0)">Aditya Sehgal</a></p>-->
 
-        <p class="tby">Today at 11:20 am</p>
-      </div>
-      <div class="icon-right">
-                  <span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"
-                                                          title="Report Abuse"></a>
-                  <div class="arr-dd">
-                    <ul>
-                      <li class="lastli"><a href="javascript:void(0)">Report Abuse</a>
-                      </li>
-                    </ul>
-                  </div>
-                  </span>
-      </div>
-      <div class="clear"></div>
-      <p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was
-        explained. </p>
+        <!--<p class="tby">Today at 11:20 am</p>-->
+      <!--</div>-->
+      <!--<div class="icon-right">-->
+                  <!--<span class="dd-block abuse-dd last"><a href="javascript:void(0)" class="dd-icon dd-click tooltip"-->
+                                                          <!--title="Report Abuse"></a>-->
+                  <!--<div class="arr-dd">-->
+                    <!--<ul>-->
+                      <!--<li class="lastli"><a href="javascript:void(0)">Report Abuse</a>-->
+                      <!--</li>-->
+                    <!--</ul>-->
+                  <!--</div>-->
+                  <!--</span>-->
+      <!--</div>-->
+      <!--<div class="clear"></div>-->
+      <!--<p class="ttxt">Hi, even I would want to know the same thing as I was also not present when this concept was-->
+        <!--explained. </p>-->
 
-      <div class="arrbox-footer clearfix">
-        <div class="f-left prs-sp">
-          <a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>
+      <!--<div class="arrbox-footer clearfix">-->
+        <!--<div class="f-left prs-sp">-->
+          <!--<a href="javascript:void(0)" class="icon-title"><span class="praise-icon">61</span>Praise</a>-->
 
-          <div class="clk-tt">
-            <ul>
-              <li><a href="javascript:void(0)"><span>EH</span>Engagement</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>
-              </li>
-              <li><a href="javascript:void(0)"><span>CO</span>Contribution</a>
-              </li>
-              <li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <input class="add-ans" type="text" placeholder="Add your answer...">
-</li>
-</ul>
+          <!--<div class="clk-tt">-->
+            <!--<ul>-->
+              <!--<li><a href="javascript:void(0)"><span>EH</span>Engagement</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>IN</span>Intelligence</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CU</span>Curiosity</a>-->
+              <!--</li>-->
+              <!--<li><a href="javascript:void(0)"><span>CO</span>Contribution</a>-->
+              <!--</li>-->
+              <!--<li class="lastli"><a href="javascript:void(0)"><span>EN</span>Endorsement</a>-->
+              <!--</li>-->
+            <!--</ul>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<input class="add-ans" type="text" placeholder="Add your answer...">-->
+<!--</li>-->
+<!--</ul>-->
 
 </div>
 <!--Praise people Dialog-->
