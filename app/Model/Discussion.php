@@ -202,8 +202,8 @@ class Discussion extends AppModel {
                 $data[$i]['Reply'][$j] = $this->setShowGamification('Reply', $data[$i]['Reply'][$j], $userId);
                 //Converting Gamification information to friendly form
                 $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
+                $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
             }
-//            $data[$i]['moreReplies'] = $this->Reply->_setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
         }
         return $data;
     }

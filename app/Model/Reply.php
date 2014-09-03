@@ -126,21 +126,24 @@ class Reply extends AppModel {
      * @return bool
      */
     public function setMoreRepliesFlag($page, $discussionId) {
-        $params = array(
+        $data = $this->Discussion->find('first', array(
+            'fields' => array(
+                'reply_count'
+            ),
             'conditions' => array(
-                'discussion_id' => $discussionId
-            )
-        );
+                'id' => $discussionId
+            ),
+            'recursive' => -1
+        ));
 
-        $count = count($this->find('all', $params));
-        $left = $count - ($page * 5);
+        $count = $data['Discussion']['reply_count'];
+        $remaining = $count - ($page * self::MAX_REPLIES);
 
-        if ($left > 0) {
+        if ($remaining > 0) {
             return true;
         } else {
             return false;
         }
-
     }
 
     /**

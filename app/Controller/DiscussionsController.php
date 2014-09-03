@@ -101,12 +101,12 @@ class DiscussionsController extends AppController {
 
                 $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
-//                $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page, $discussionId);
+                $moreReplies = $this->Discussion->Reply->setMoreRepliesFlag($page, $discussionId);
             }
         }
-        $this->set(compact('status', 'message'));
+        $this->set(compact('moreReplies', 'status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'moreReplies', 'status', 'message'));
     }
 
     /**
