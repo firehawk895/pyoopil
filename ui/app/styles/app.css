@@ -55,3 +55,6 @@
 #loading-bar .bar {
   background: #ff992f;
 }
+.pop-close .sub-btn {
+  width: 180px;
+}

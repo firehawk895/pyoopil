@@ -24,6 +24,7 @@ angular.module('uiApp')
     });
 
     $scope.createAnnouncement = function () {
+
       $scope.vm.file = document.getElementById("fileupload").files[0];
       roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
         .then(function (added) {
@@ -42,7 +43,8 @@ angular.module('uiApp')
     };
 
     $scope.cancelAnnouncement = function () {
-      $scope.vm.subject = {};
+      $scope.vm= {};
+
 
 
     };

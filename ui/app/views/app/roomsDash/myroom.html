@@ -17,7 +17,7 @@
 
         <li ng-repeat="classroom in classrooms">
           <!--todo:disable link if restricted-->
-          <a ui-sref="app.rooms.announcements({ roomId:{{classroom.Classroom.id}} })">
+          <a ui-sref="app.rooms.discussions({ roomId:{{classroom.Classroom.id}} })">
             <div class="lock-state" ng-if="classroom.UsersClassroom.is_restricted">
               <p>! You do not have access to this class. Please contact the owner</p>
             </div>
@@ -28,7 +28,9 @@
               <p class="subject">{{classroom.Classroom.title}} {{classroom.Classroom.id}}</p>
 
               <div>by</div>
-              <div><span class="online"></span>{{classroom.Classroom.Educator}}</div>
+              <div>
+                <!--<span class="online"></span>-->
+                {{classroom.Classroom.Educator}}</div>
               <div class="totalstudent">({{classroom.Classroom.users_classroom_count}} Students)</div>
             </div>
 

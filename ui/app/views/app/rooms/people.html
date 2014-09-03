@@ -3,7 +3,7 @@
   <div class="library-wrapper people">
     <div class="topbuttons clearfix">
       <div class="all-dd">
-        <a href="javascript:void(0)" class="sel-topic">All</a>
+        <a href="" class="sel-topic">All</a>
 
         <div class="seltop-dd">
           <ul>
@@ -15,8 +15,10 @@
         </div>
       </div>
       <div class="pep-right">
-        <a ng-click="openModerateDialog()" class="assign-icon tooltip" id="assign-link" title="Assign Moderators"></a>
-        <a ng-click="openRestrictDialog()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"></a>
+        <a ng-click="openModerateDialog()" class="assign-icon tooltip" id="assign-link" title="Assign Moderators"
+           ng-if="canModerate"></a>
+        <a ng-click="openRestrictDialog()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"
+           ng-if="canRestrict"></a>
       </div>
     </div>
     <div class="clear"></div>
@@ -28,7 +30,7 @@
             <div class="follow-left">
               <span ng-class="{'mod-icon' :people.UsersClassroom.is_moderator}"></span>
               <a href="#"><img src="images/follow1.jpg" alt="" class="follow-img"></a>
-              <span class="online"></span>Online
+              <!--<span class="online"></span>Online-->
             </div>
             <div class="follow-right">
               <p class="cname"><a href="#">{{people.AppUser.fname}} {{people.AppUser.lname}}</a>
@@ -43,10 +45,12 @@
           </div>
           <div class="follow-footer" ng-class="{'unfollow-footer' :!people.UsersClassroom.is_moderator &&
             !people.UsersClassroom.is_restricted}">
-            <p class="rest-txt" ng-click="unRestrict(people)" ng-if="people.UsersClassroom.is_restricted">Unrestrict</p>
+            <p class="rest-txt" ng-click="unRestrict(people)"
+               ng-if="people.UsersClassroom.is_restricted">Unrestrict</p>
 
             <p class="rest-txt" ng-click="removeModerator(people)"
-               ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted">Remove Moderator</p>
+               ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted">Remove
+              Moderator</p>
 
             <p class="rest-txt" ng-if="!people.UsersClassroom.is_moderator &&
             !people.UsersClassroom.is_restricted">a</p>
