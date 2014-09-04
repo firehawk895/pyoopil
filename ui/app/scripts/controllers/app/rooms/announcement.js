@@ -44,9 +44,6 @@ angular.module('uiApp')
 
     $scope.cancelAnnouncement = function () {
       $scope.vm= {};
-
-
-
     };
 
 

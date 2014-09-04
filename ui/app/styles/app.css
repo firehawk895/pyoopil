@@ -55,6 +55,19 @@
 #loading-bar .bar {
   background: #ff992f;
 }
+
 .pop-close .sub-btn {
   width: 180px;
+}
+
+.arr-dd {
+  display: block;
+}
+
+.clk-tt {
+  display: block;
+}
+
+.main-box {
+  display: block;
 }

@@ -15,9 +15,13 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.all("Classrooms").customGET("getclassrooms.json", {page: page});
     };
-    self.getDiscussions = function (roomId, page) {
+    self.getDiscussions = function (roomId, page, type) {
       page = page || 1;
-      return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page});
+//      return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page});
+      if (type == "folded")
+        return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page, folded: true});
+      else
+        return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page});
     };
     self.getAnnouncements = function (roomId, page) {
       page = page || 1;
@@ -45,6 +49,20 @@ angular.module('uiApp')
         formData.append("data[Announcement][file_path]", file);
       return restangular.one("Classrooms", roomId)
         .all("Announcements")
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
+    };
+    self.createDiscussion = function (roomId, topic, body, file, type) {
+
+      var formData = new FormData();
+      formData.append("data[Discussion][topic]", topic);
+      formData.append("data[Discussion][body]", body);
+      formData.append("data[Discussion][type]", type);
+//      if (angular.isDefined(file))
+//        formData.append("data[Announcement][file_path]", file);
+
+      return restangular.one("Classrooms", roomId)
+        .all("Discussions")
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
@@ -141,6 +159,12 @@ angular.module('uiApp')
     };
     self.toggleFold = function (id) {
       return restangular.all("Classrooms").all("Discussions").customPOST({id: id}, "togglefold.json");
+    };
+    self.addReply = function (id, comment) {
+      return restangular.all("Classrooms").all("Discussions").customPOST({discussion_id: id, comment: comment}, "addReply.json");
+    };
+    self.setGamificationVote = function (id, vote, type) {
+      return restangular.all("Classrooms").all("Discussions").customPOST({id: id, vote: vote, type: type}, "setGamificationVote.json")
     };
     return self;
   }]);

@@ -191,9 +191,9 @@ angular.module('uiApp')
             $scope.libraryUpload.links.push(value.url);
         });
 
-        console.log($scope.libraryUpload.files);
-        console.log($scope.libraryUpload.links);
-        console.log($scope.vm.links);
+//        console.log($scope.libraryUpload.files);
+//        console.log($scope.libraryUpload.links);
+//        console.log($scope.vm.links);
 
 
         roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
