@@ -73,7 +73,12 @@ angular.module('uiApp')
         .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
     self.joinClassroom = function (accessCode) {
-      return restangular.all("Classrooms").customPOST(accessCode, "join.json");
+      var data = {
+        Classroom: {
+          access_code: accessCode
+        }
+      };
+      return restangular.all("Classrooms").customPOST(data, "join.json");
     };
     self.createClassroom = function (classroom) {
       return restangular.all("Classrooms").customPOST(classroom, "add.json");
@@ -156,7 +161,7 @@ angular.module('uiApp')
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
-    self.delete = function (id, type) {
+    self.deleteInDiscussion = function (id, type) {
       var data = {
         type: type,
         id: id
@@ -171,6 +176,9 @@ angular.module('uiApp')
     };
     self.setGamificationVote = function (id, vote, type) {
       return restangular.all("Classrooms").all("Discussions").customPOST({id: id, vote: vote, type: type}, "setGamificationVote.json")
+    };
+    self.setPollVote = function (id) {
+      return restangular.all("Classrooms").all("Discussions").customPOST({pollchoice_id: id}, "setPollVote.json");
     };
     return self;
   }]);

@@ -7,6 +7,7 @@ angular.module('uiApp')
 
       $scope.showLogout = false;
       $scope.classrooms = [];
+      $scope.pageEnd = false;
 
       $scope.page = 1;
       roomService.getRooms($scope.page).then(function (result) {
@@ -25,9 +26,14 @@ angular.module('uiApp')
       };
 
       $scope.updatePage = function () {
-        roomService.getRooms(++$scope.page).then(function (result) {
-          $scope.classrooms = $scope.classrooms.concat(result.data);
-        });
+        if (!$scope.pageEnd) {
+          roomService.getRooms(++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else
+              $scope.classrooms = $scope.classrooms.concat(result.data);
+          });
+        }
       };
 
     }]);

@@ -6,6 +6,7 @@ angular.module('uiApp')
     function ($scope, $stateParams, roomService, notificationService, ngDialog) {
 
       $scope.page = 1;
+      $scope.pageEnd=false;
       $scope.topics = [];
       $scope.roomId = $stateParams.roomId;
       $scope.showContent = true;
@@ -59,9 +60,14 @@ angular.module('uiApp')
 
 
       $scope.updatePage = function () {
-        roomService.getTopics($stateParams.roomId, ++$scope.page).then(function (result) {
-          $scope.topics = $scope.topics.concat(result.data);
-        });
+        if (!$scope.pageEnd) {
+          roomService.getTopics($stateParams.roomId, ++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else
+              $scope.topics = $scope.topics.concat(result.data);
+          });
+        }
       };
       $scope.showFileName = function (name) {
         var fileNameArray = name.split(".");

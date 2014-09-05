@@ -24,7 +24,8 @@ angular
     'ui.utils',
     'ui.select2',
     'angular-loading-bar',
-    'highcharts-ng'
+    'highcharts-ng',
+    'ngCkeditor'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
@@ -145,4 +146,14 @@ angular
 //      }
 
 //      $idle.watch();
-    }]);
+    }])
+.filter('unsafe', function($sce) {
+
+  return function(val) {
+
+    return $sce.trustAsHtml(val);
+
+  };
+
+});
+;

@@ -10,13 +10,16 @@ angular.module('uiApp')
       $scope.dataTagMod = [];
       $scope.dataTagRestrict = [];
       $scope.roomId = $stateParams.roomId;
+      $scope.canModerate = false;
+      $scope.canRestrict = false;
+      $scope.pageEnd=false;
 
       $scope.ids = "";
 
       roomService.getPeoples($stateParams.roomId, $scope.page).then(function (result) {
         $scope.peoples = result.data;
-        $scope.canModerate = result.permissions.CUDModerator;
-        $scope.canRestrict = result.permissions.CUDRestricted;
+        $scope.canModerate = result.permissions.CUDmoderator;
+        $scope.canRestrict = result.permissions.CUDrestricted;
 
         angular.forEach(result.data, function (peopleData) {
           if (!peopleData.UsersClassroom.is_moderator)
@@ -27,31 +30,36 @@ angular.module('uiApp')
       });
 
       $scope.updatePage = function () {
-        roomService.getPeoples($stateParams.roomId, ++$scope.page).then(function (result) {
-          $scope.peoples = $scope.peoples.concat(result.data);
-
-          angular.forEach(result.data, function (peopleData) {
-            if (!peopleData.UsersClassroom.is_moderator)
-              $scope.dataTagMod.push(peopleData);
-            if (!peopleData.UsersClassroom.is_restricted)
-              $scope.dataTagRestrict.push(peopleData);
+        if (!$scope.pageEnd) {
+          roomService.getPeoples($stateParams.roomId, ++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else {
+              $scope.peoples = $scope.peoples.concat(result.data);
+              angular.forEach(result.data, function (peopleData) {
+                if (!peopleData.UsersClassroom.is_moderator)
+                  $scope.dataTagMod.push(peopleData);
+                if (!peopleData.UsersClassroom.is_restricted)
+                  $scope.dataTagRestrict.push(peopleData);
+              });
+            }
           });
-        });
+        }
       };
 
-      $scope.removeModerator = function (people) {
-        var removeId = people.AppUser.id + ",";
+      $scope.removeModerator = function (index) {
+        var removeId = $scope.peoples[index].AppUser.id + ",";
         roomService.removeModerator($stateParams.roomId, removeId).then(function (result) {
           if (result.status)
-            people.UsersClassroom.is_moderator = false;
+            $scope.peoples[index].UsersClassroom.is_moderator = false;
         });
       };
 
-      $scope.unRestrict = function (people) {
-        var removeId = people.AppUser.id + ",";
+      $scope.unRestrict = function (index) {
+        var removeId = $scope.peoples[index].AppUser.id + ",";
         roomService.unRestrict($stateParams.roomId, removeId).then(function (result) {
           if (result.status)
-            people.UsersClassroom.is_restricted = false;
+            $scope.peoples[index].UsersClassroom.is_restricted = false;
         });
       };
 

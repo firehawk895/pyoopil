@@ -2,22 +2,23 @@
 <section class="pagecontent clearfix">
   <div class="library-wrapper people">
     <div class="topbuttons clearfix">
-      <div class="all-dd">
-        <a href="" class="sel-topic">All</a>
+      <!--<div class="all-dd">-->
+      <!--<a href="" class="sel-topic">All</a>-->
 
-        <div class="seltop-dd">
-          <ul>
-            <li><a href="#">All</a>
-            </li>
-            <li><a href="#">Restricted</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <!--&lt;!&ndash;<div class="seltop-dd">&ndash;&gt;-->
+      <!--&lt;!&ndash;<ul>&ndash;&gt;-->
+      <!--&lt;!&ndash;<li><a href="#">All</a>&ndash;&gt;-->
+      <!--&lt;!&ndash;</li>&ndash;&gt;-->
+      <!--&lt;!&ndash;<li><a href="#">Restricted</a>&ndash;&gt;-->
+      <!--&lt;!&ndash;</li>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--</div>-->
       <div class="pep-right">
-        <a ng-click="openModerateDialog()" class="assign-icon tooltip" id="assign-link" title="Assign Moderators"
+        <a href="" ng-click="openModerateDialog()" class="assign-icon tooltip" id="assign-link"
+           title="Assign Moderators"
            ng-if="canModerate"></a>
-        <a ng-click="openRestrictDialog()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"
+        <a href="" ng-click="openRestrictDialog()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"
            ng-if="canRestrict"></a>
       </div>
     </div>
@@ -43,17 +44,14 @@
               <p class="cclg">Lovely Professional University</p>
             </div>
           </div>
-          <div class="follow-footer" ng-class="{'unfollow-footer' :!people.UsersClassroom.is_moderator &&
-            !people.UsersClassroom.is_restricted}">
-            <p class="rest-txt" ng-click="unRestrict(people)"
-               ng-if="people.UsersClassroom.is_restricted">Unrestrict</p>
+          <div class="follow-footer">
+            <p class="rest-txt" ng-click="unRestrict($index)"
+               ng-if="people.UsersClassroom.is_restricted && canRestrict" >Unrestrict</p>
 
-            <p class="rest-txt" ng-click="removeModerator(people)"
-               ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted">Remove
+            <p class="rest-txt" ng-click="removeModerator($index)"
+               ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted && canModerate">Remove
               Moderator</p>
 
-            <p class="rest-txt" ng-if="!people.UsersClassroom.is_moderator &&
-            !people.UsersClassroom.is_restricted">a</p>
           </div>
         </li>
       </ul>

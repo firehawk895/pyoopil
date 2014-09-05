@@ -5,10 +5,10 @@ angular.module('uiApp')
   .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', 'globalService', '$stateParams',
     function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, globalService, $stateParams) {
       $scope.showJoin = true;
-      $scope.accessCode = null;
+      $scope.accessCode = "";
       $scope.classroom = {};
       $scope.page = 1;
-
+      $scope.pageEnd = false;
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
         $scope.canCreate = result.permissions.allowCreate;
@@ -16,9 +16,14 @@ angular.module('uiApp')
       });
 
       $scope.updatePage = function () {
-        roomService.getRooms(++$scope.page).then(function (result) {
-          $scope.classrooms = $scope.classrooms.concat(result.data);
-        });
+        if (!$scope.pageEnd) {
+          roomService.getRooms(++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else
+              $scope.classrooms = $scope.classrooms.concat(result.data);
+          });
+        }
       };
 
       $scope.joinClassroom = function () {

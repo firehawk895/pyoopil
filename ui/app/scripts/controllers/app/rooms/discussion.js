@@ -14,6 +14,7 @@ angular.module('uiApp')
       $scope.vm.showFold = false;
       $scope.vm.discussionType = "";
       $scope.choices = [];
+      $scope.pageEnd=false;
       $scope.vm.answerChoices = [
         {
           choice: "",
@@ -28,18 +29,21 @@ angular.module('uiApp')
       roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
         $scope.discussions = result.data;
         $scope.canCreate = result.permissions.allowCreate;
+//        console.log($scope.discussions);
         angular.forEach($scope.discussions, function (value, key) {
-          value.Replies.newReply = "";
+
+          value.newReply = "";
           value.isPraiseVisible = false;
           angular.forEach(value.Replies, function (value, key) {
             value.isIconVisible = false;
             value.isReplyPraiseVisible = false;
           });
-          console.log($scope.discussions);
+
+
         });
       });
       $scope.deleteDiscussion = function (index) {
-        roomService.delete($scope.discussions[index].Discussion.id, "Discussion").then(function (result) {
+        roomService.deleteInDiscussion($scope.discussions[index].Discussion.id, "Discussion").then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status)
             $scope.discussions.splice(index, 1);
@@ -47,7 +51,7 @@ angular.module('uiApp')
       };
       $scope.deleteReply = function (parentIndex, index) {
 
-        roomService.delete($scope.discussions[parentIndex].Replies[index].Reply.id, "Reply").then(function (result) {
+        roomService.deleteInDiscussion($scope.discussions[parentIndex].Replies[index].Reply.id, "Reply").then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status)
             $scope.discussions[parentIndex].Replies.splice(index, 1);
@@ -61,12 +65,12 @@ angular.module('uiApp')
         });
       };
       $scope.addReply = function (index) {
-        roomService.addReply($scope.discussions[index].Discussion.id, $scope.discussions[index].Replies.newReply).then(function (result) {
+        roomService.addReply($scope.discussions[index].Discussion.id, $scope.discussions[index].newReply).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
             $scope.discussions[index].Replies.push(result.data[0]);
           }
-          $scope.discussions[index].Replies.newReply = "";
+          $scope.discussions[index].newReply = "";
 
         });
 
@@ -105,7 +109,7 @@ angular.module('uiApp')
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
           angular.forEach($scope.discussions, function (value, key) {
-            value.Replies.newReply = "";
+            value.newReply = "";
             value.isPraiseVisible = false;
             angular.forEach(value.Replies, function (value, key) {
               value.isIconVisible = false;
@@ -123,7 +127,7 @@ angular.module('uiApp')
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
           angular.forEach($scope.discussions, function (value, key) {
-            value.Replies.newReply = "";
+            value.newReply = "";
             value.isPraiseVisible = false;
             angular.forEach(value.Replies, function (value, key) {
               value.isIconVisible = false;
@@ -176,6 +180,20 @@ angular.module('uiApp')
             }
           });
       };
+      $scope.createDiscussionNote = function () {
+        $scope.vm.file = document.getElementById("fileupload").files[0];
+        roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
+          then(function (added) {
+            if (added.status) {
+              $scope.discussions.unshift(added.data[0]);
+              $scope.vm.subject = "";
+              $scope.vm.body = "";
+              $scope.vm.file = null;
+            }
+
+          })
+      };
+
 
       $scope.addNewChoice = function () {
         if ($scope.vm.answerChoices.length < 6)
@@ -210,6 +228,34 @@ angular.module('uiApp')
         height: 400
 
       };
+      $scope.setPollVote = function (parentIndex, index) {
+        roomService.setPollVote($scope.discussions[parentIndex].Pollchoice[index].id).then(function (result) {
+          if (result.status) {
+            $scope.discussions[parentIndex] = result.data[0];
+          }
+        })
+      };
 
+      $scope.editorOptions = {
+        height: 150
+      };
 
-    }]);
+      $scope.updatePage = function () {
+        if (!$scope.pageEnd) {
+          roomService.getDiscussions($stateParams.roomId, ++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else
+              $scope.discussions = $scope.discussions.concat(result.data);
+          });
+        }
+      };
+
+    }])
+  .
+  filter('unsafe', function ($sce) {
+    return function (val) {
+      return $sce.trustAsHtml(val);
+    };
+
+  });

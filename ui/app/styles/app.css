@@ -71,3 +71,13 @@
 .main-box {
   display: block;
 }
+
+.sign-txtbx input{
+  height:38px;
+}
+.signup .icon-cross{
+  top:0px;
+}
+input.ng-dirty {
+  border: 1px solid red;
+}
