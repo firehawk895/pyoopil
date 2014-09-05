@@ -197,13 +197,36 @@ class Discussion extends AppModel {
             // Remove Key if not folded by current user
             $data[$i] = $this->_setIsFolded($data[$i]);
 
+            $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
+
             // Removing Gamification information for Reply
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
+                /**
+                 * careful with this state changer
+                 */
                 $data[$i]['Reply'][$j] = $this->setShowGamification('Reply', $data[$i]['Reply'][$j], $userId);
-                //Converting Gamification information to friendly form
-                $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
-                $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
+
+                /**
+                 * Maintaining consistency for data format like getReplies()
+                 * this code is just not beautiful
+                 * this is technical debt, do not mix this portion with anything above
+                 */
+                $onlyReplyArray = $data[$i]['Reply'][$j];
+                $restOfReplyArray = array(
+                    'AppUser' => $onlyReplyArray['AppUser'],
+                    'Gamificationvote' => $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']),
+                );
+                unset($onlyReplyArray['AppUser']);
+                unset($onlyReplyArray['Gamificationvote']);
+
+                $newReplyArray = array(
+                    'Reply' => $onlyReplyArray
+                );
+
+                $newReplyArray = $newReplyArray + $restOfReplyArray;
+                $data[$i]['Replies'][$j] = $newReplyArray;
             }
+            unset($data[$i]['Reply']);
         }
         return $data;
     }
