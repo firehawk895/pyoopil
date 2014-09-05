@@ -23,7 +23,8 @@ angular
     'http-auth-interceptor',
     'ui.utils',
     'ui.select2',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'highcharts-ng'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {

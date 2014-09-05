@@ -20,12 +20,14 @@
       <div class="att-box clearfix">
         <div class="disc-room f-left">
           <div class="attachmentbox">
-                    <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                    <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
-                    <input id="fileupload" type="file" name="files[]">
-                    </span>
+            <input id="fileupload" type="file" name="files[]">
+            <!--todo:Styling of add files button-->
+            <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+            <!--<span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>-->
+            <!---->
+            <!--</span>-->
 
-            <div id="files" class="files"></div>
+            <!--<div id="files" class="files"></div>-->
           </div>
         </div>
         <div class="f-right">
@@ -41,35 +43,9 @@
 
       <div class="add-here">
         <div class="add-choice" ng-repeat="answerChoice in vm.answerChoices">
-          <input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly
-                 ng-model="answerChoice.choice">
+          <input type="text" class="ans-txtbx" placeholder="Type your answer here..." ng-model="answerChoice.choice">
           <a href="" class="close-btn" ng-click="removeChoice($index)"></a>
         </div>
-        <!--<div class="add-choice" ng-if="vm.answerChoices[1].isVisible">-->
-          <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly-->
-                 <!--ng-model="vm.answerChoices[1].choice">-->
-          <!--<a href="" class="close-btn" ng-click="removeChoice(1)"></a>-->
-        <!--</div>-->
-        <!--<div class="add-choice" ng-if="vm.answerChoices[2].isVisible">-->
-          <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly-->
-                 <!--ng-model="vm.answerChoices[2].choice">-->
-          <!--<a href="" class="close-btn" ng-click="removeChoice(2)"></a>-->
-        <!--</div>-->
-        <!--<div class="add-choice" ng-if="vm.answerChoices[3].isVisible">-->
-          <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly-->
-                 <!--ng-model="vm.answerChoices[3].choice">-->
-          <!--<a href="" class="close-btn" ng-click="removeChoice(3)"></a>-->
-        <!--</div>-->
-        <!--<div class="add-choice" ng-if="vm.answerChoices[4].isVisible">-->
-          <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly-->
-                 <!--ng-model="vm.answerChoices[4].choice">-->
-          <!--<a href="" class="close-btn" ng-click="removeChoice(4)"></a>-->
-        <!--</div>-->
-        <!--<div class="add-choice" ng-if="vm.answerChoices[5].isVisible">-->
-          <!--<input type="text" class="ans-txtbx" placeholder="Type your answer here..." readonly-->
-                 <!--ng-model="vm.answerChoices[5].choice">-->
-          <!--<a href="" class="close-btn" ng-click="removeChoice(5)"></a>-->
-        <!--</div>-->
 
       </div>
       <div class="add-choice" ng-click="addNewChoice()"><a href="" class="add-div"> + Add answer choice</a>
@@ -77,18 +53,19 @@
       <div class="att-box clearfix">
         <div class="disc-room f-left">
           <div class="attachmentbox">
-    <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-    <span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>
-    <input id="fileupload" type="file" name="files[]">
-    </span>
+            <!--todo:Styling of add files button-->
+            <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+            <!--<span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>-->
+            <input id="fileupload" type="file" name="files[]">
+            <!--</span>-->
 
-            <div id="files" class="files"></div>
+            <!--<div id="files" class="files"></div>-->
           </div>
         </div>
         <div class="f-right">
 
           <a href="javascript:void(0)" class="sub-btn cnl-btn">Cancel</a>
-          <a href="" class="sub-btn" ng-click="addDiscussionPoll()">Submit</a>
+          <a href="" class="sub-btn" ng-click="createDiscussionPoll()">Submit</a>
         </div>
       </div>
     </div>
@@ -122,7 +99,7 @@
 </div>
 
 <ul class="disc-list" ng-repeat="discussion in discussions" ng-init="discussionIndex=$index">
-<li ng-class="{'lastli' :!discussion.Reply.length}">
+<li ng-class="{'lastli' :!discussion.Replies.length}">
   <div class="disc-box clearfix">
     <div class="disc-left">
       <a href=""><img src="images/follow1.jpg" class="disc-img"></a>
@@ -150,15 +127,16 @@
       <div class="clear"></div>
       <p class="ttxt">{{discussion.Discussion.body}}</p>
 
-      <div class="clearfix">
+      <div class="clearfix" ng-if="discussion.Discussion.type=='poll'">
         <div class="poll-left">
           <a href="" class="ans-btn" ng-repeat="poll in discussion.Pollchoice">{{poll.choice}}</a>
         </div>
         <div class="poll-right">
-          <div id="chart_div2"></div>
+          <div id="chart_div2">
+            <highchart id="chart1" config="chartConfig"></highchart>
+          </div>
         </div>
       </div>
-
       <div class="arrbox-footer clearfix">
         <div class="f-left prs-sp">
           <a href="" class="icon-title">
@@ -260,7 +238,7 @@
       src="images/view-all.png"></a>
   </div>
 </li>
-<li ng-class="{'lastli' :$index == discussion.Reply.length-1}" ng-repeat="reply in discussion.Reply">
+<li ng-class="{'lastli' :$index == discussion.Replies.length-1}" ng-repeat="reply in discussion.Replies">
   <div class="disc-box clearfix">
     <div class="disc-left">
       <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
@@ -269,7 +247,7 @@
       <div class="name-left">
         <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.fname}}</a></p>
 
-        <p class="tby">{{reply.created}}</p>
+        <p class="tby">{{reply.Reply.created}}</p>
       </div>
       <div class="icon-right">
                   <span class="dd-block" ng-click="reply.isIconVisible=!reply.isIconVisible">
@@ -285,14 +263,14 @@
                   </span>
       </div>
       <div class="clear"></div>
-      <p class="ttxt">{{reply.comment}} </p>
+      <p class="ttxt">{{reply.Reply.comment}} </p>
 
       <div class="arrbox-footer clearfix">
         <div class="f-left prs-sp">
           <a href="" class="icon-title"><span class="praise-icon"
-                                              ng-class="{'nopraise' :reply.showGamification}"
+                                              ng-class="{'nopraise' :reply.Reply.showGamification}"
                                               ng-click="reply.isReplyPraiseVisible=!reply.isReplyPraiseVisible">
-            {{reply.display_praise}}</span>Praise</a>
+            {{reply.Reply.display_praise}}</span>Praise</a>
 
           <div class="clk-tt" ng-if="reply.isReplyPraiseVisible">
             <ul>
@@ -311,10 +289,10 @@
             </ul>
           </div>
         </div>
-        <div class="f-right" ng-if="reply.showGamification">
+        <div class="f-right" ng-if="reply.Reply.showGamification">
           <div class="enga">
             <a href="" class="point-icon"
-               ng-class="{'msg-link':reply.en,'nopoint-icon' :reply.en==0 }">EN</a>
+               ng-class="{'msg-link':reply.Reply.en,'nopoint-icon' :reply.Reply.en==0 }">EN</a>
 
             <div class="enga-tooltip">
               <div class="enga-list">
@@ -323,16 +301,16 @@
                 </ul>
               </div>
             </div>
-            <span class="icon-title">{{reply.en}}</span>
+            <span class="icon-title">{{reply.Reply.en}}</span>
           </div>
           <div class="enga">
             <a href="" class="point-icon"
-               ng-class="{'msg-link':reply.in,'nopoint-icon' :reply.in==0 }">IN</a>
-            <span class="icon-title">{{reply.in}}</span>
+               ng-class="{'msg-link':reply.Reply.in,'nopoint-icon' :reply.Reply.in==0 }">IN</a>
+            <span class="icon-title">{{reply.Reply.in}}</span>
           </div>
           <div class="enga">
             <a href="" class="point-icon"
-               ng-class="{'msg-link':reply.cu,'nopoint-icon' :reply.cu==0 }">CU</a>
+               ng-class="{'msg-link':reply.Reply.cu,'nopoint-icon' :reply.Reply.cu==0 }">CU</a>
 
             <div class="enga-tooltip">
               <div class="enga-list">
@@ -346,11 +324,11 @@
                 </ul>
               </div>
             </div>
-            <span class="icon-title">{{reply.cu}}</span>
+            <span class="icon-title">{{reply.Reply.cu}}</span>
           </div>
           <div class="enga">
             <a href="" class="point-icon"
-               ng-class="{'msg-link':reply.co,'nopoint-icon' :reply.co==0 }">CO</a>
+               ng-class="{'msg-link':reply.Reply.co,'nopoint-icon' :reply.Reply.co==0 }">CO</a>
 
             <div class="enga-tooltip">
               <div class="enga-list">
@@ -362,11 +340,11 @@
                 </ul>
               </div>
             </div>
-            <span class="icon-title">{{reply.co}}</span>
+            <span class="icon-title">{{reply.Reply.co}}</span>
           </div>
           <div class="enga">
             <a href="" class="point-icon"
-               ng-class="{'msg-link':reply.ed,'nopoint-icon' :reply.ed==0 }">ED</a>
+               ng-class="{'msg-link':reply.Reply.ed,'nopoint-icon' :reply.Reply.ed==0 }">ED</a>
 
             <div class="enga-tooltip">
               <div class="enga-list">
@@ -375,7 +353,7 @@
                 </ul>
               </div>
             </div>
-            <span class="icon-title">{{reply.ed}}</span>
+            <span class="icon-title">{{reply.Reply.ed}}</span>
           </div>
         </div>
       </div>
@@ -384,7 +362,7 @@
 </li>
 <li>
   <form ng-submit="addReply($index)">
-    <input class="add-ans" type="text" placeholder="Add your answer..." ng-model="discussion.Reply.newReply"
+    <input class="add-ans" type="text" placeholder="Add your answer..." ng-model="discussion.Replies.newReply"
            ng-required="true">
   </form>
 </li>

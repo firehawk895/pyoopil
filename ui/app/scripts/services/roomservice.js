@@ -52,7 +52,7 @@ angular.module('uiApp')
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "add.json", undefined, {'Content-Type': undefined});
     };
-    self.createDiscussion = function (roomId, topic, body, file, type) {
+    self.createDiscussion = function (roomId, topic, body, file, type, choices) {
 
       var formData = new FormData();
       formData.append("data[Discussion][topic]", topic);
@@ -60,6 +60,12 @@ angular.module('uiApp')
       formData.append("data[Discussion][type]", type);
 //      if (angular.isDefined(file))
 //        formData.append("data[Announcement][file_path]", file);
+      if (angular.isDefined(choices)) {
+        angular.forEach(choices, function (value, key) {
+          if (angular.isDefined(value))
+            formData.append("data[Pollchoice][" + key + "][choice]", value);
+        });
+      }
 
       return restangular.one("Classrooms", roomId)
         .all("Discussions")
