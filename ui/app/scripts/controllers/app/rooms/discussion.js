@@ -14,7 +14,7 @@ angular.module('uiApp')
       $scope.vm.showFold = false;
       $scope.vm.discussionType = "";
       $scope.choices = [];
-      $scope.pageEnd=false;
+      $scope.pageEnd = false;
       $scope.vm.answerChoices = [
         {
           choice: "",
@@ -66,8 +66,10 @@ angular.module('uiApp')
       };
       $scope.addReply = function (index) {
         roomService.addReply($scope.discussions[index].Discussion.id, $scope.discussions[index].newReply).then(function (result) {
-          notificationService.show(result.status, result.message);
+          notificationService.show(result.status, "Comments Posted");
           if (result.status) {
+            $scope.discussions[index].Replies = $scope.discussions[index].Replies || [];
+
             $scope.discussions[index].Replies.push(result.data[0]);
           }
           $scope.discussions[index].newReply = "";
