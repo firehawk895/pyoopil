@@ -140,60 +140,82 @@ angular.module('uiApp')
         });
       };
       $scope.createDiscussionQuestion = function () {
-
-        $scope.vm.file = document.getElementById("fileupload").files[0];
-        roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "question")
-          .then(function (added) {
-            if (added.status) {
-              $scope.discussions.unshift(added.data[0]);
-              $scope.vm.subject = "";
-              $scope.vm.body = "";
-              $scope.vm.file = null;
-            }
-          });
+        if ($scope.vm.subject == "" || $scope.vm.body == "")
+          notificationService.show(false, "Cannot Create Discussion");
+        else {
+          $scope.vm.file = document.getElementById("fileupload").files[0];
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
+            notificationService.show(false, "Cannot upload more than 2mb");
+          else {
+            roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "question")
+              .then(function (added) {
+                if (added.status) {
+                  $scope.discussions.unshift(added.data[0]);
+                  $scope.vm.subject = "";
+                  $scope.vm.body = "";
+                  $scope.vm.file = null;
+                }
+              });
+          }
+        }
       };
 
       $scope.createDiscussionPoll = function () {
-
-        angular.forEach($scope.vm.answerChoices, function (value, key) {
-          if (value.choice != "")
-            $scope.choices.push(value.choice);
-        });
-        $scope.vm.file = document.getElementById("fileupload").files[0];
-        roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
-          .then(function (added) {
-            if (added.status) {
-              $scope.discussions.unshift(added.data[0]);
-              $scope.vm.subject = "";
-              $scope.vm.body = "";
-              $scope.vm.file = null;
-              $scope.vm.answerChoices = [
-                {
-                  choice: "",
-                  isVisible: true
-                },
-                {
-                  choice: "",
-                  isVisible: true
-                }
-
-              ];
-              $scope.choices = [];
-            }
+        if ($scope.vm.subject == "" || $scope.vm.body == "")
+          notificationService.show(false, "Cannot Create Discussion");
+        else {
+          angular.forEach($scope.vm.answerChoices, function (value, key) {
+            if (value.choice != "")
+              $scope.choices.push(value.choice);
           });
+          $scope.vm.file = document.getElementById("fileupload").files[0];
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
+            notificationService.show(false, "Cannot upload more than 2mb");
+          else {
+            roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
+              .then(function (added) {
+                if (added.status) {
+                  $scope.discussions.unshift(added.data[0]);
+                  $scope.vm.subject = "";
+                  $scope.vm.body = "";
+                  $scope.vm.file = null;
+                  $scope.vm.answerChoices = [
+                    {
+                      choice: "",
+                      isVisible: true
+                    },
+                    {
+                      choice: "",
+                      isVisible: true
+                    }
+
+                  ];
+                  $scope.choices = [];
+                }
+              });
+          }
+        }
       };
       $scope.createDiscussionNote = function () {
-        $scope.vm.file = document.getElementById("fileupload").files[0];
-        roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
-          then(function (added) {
-            if (added.status) {
-              $scope.discussions.unshift(added.data[0]);
-              $scope.vm.subject = "";
-              $scope.vm.body = "";
-              $scope.vm.file = null;
-            }
+        if ($scope.vm.subject == "" || $scope.vm.body == "")
+          notificationService.show(false, "Cannot Create Discussion");
+        else {
+          $scope.vm.file = document.getElementById("fileupload").files[0];
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
+            notificationService.show(false, "Cannot upload more than 2mb");
+          else {
+            roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
+              then(function (added) {
+                if (added.status) {
+                  $scope.discussions.unshift(added.data[0]);
+                  $scope.vm.subject = "";
+                  $scope.vm.body = "";
+                  $scope.vm.file = null;
+                }
 
-          })
+              })
+          }
+        }
       };
 
 
@@ -213,30 +235,42 @@ angular.module('uiApp')
         $scope.vm.answerChoices.splice(index, 1);
       };
 
-      $scope.chartConfig = {
-        options: {
-          chart: {
-            type: 'bar'
-          }
-        },
-        series: [
-          {
-            data: [10, 15, 12]
-          }
-        ],
-        title: {
-          text: null
-        },
-        height: 400
-
+      $scope.getChartConfig = function () {
+        return{
+          options: {
+            chart: {
+              type: 'bar'
+            }
+          },
+          xAxis: {
+            categories: ['A', 'B', 'C']
+          },
+          series: [
+            {
+              data: [1, 0]
+            }
+          ],
+          title: {
+            text: null
+          },
+          height: 400
+        }
       };
+
       $scope.setPollVote = function (parentIndex, index) {
+
         roomService.setPollVote($scope.discussions[parentIndex].Pollchoice[index].id).then(function (result) {
           if (result.status) {
             $scope.discussions[parentIndex] = result.data[0];
+//            angular.forEach(result.data[0].Pollchoice, function (value, key) {
+//              $scope.answerCategories.push(value.choice);
+//              $scope.answerData.push(value.votes);
+//            });
+
           }
         })
       };
+      $scope.chartConfig = $scope.getChartConfig();
 
       $scope.editorOptions = {
         height: 150

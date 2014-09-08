@@ -52,11 +52,11 @@
     </div>
     </li>
     <li>
-      <a ng-click="showLogout=!showLogout" class="logout"><img
+      <a ng-click="showLogout=!showLogout" class="logout hand" ng-class="{'active' :showLogout}"><img
           src="../../images/logout.png" alt=""></a>
 
       <ul class="logout-lst" ng-if="showLogout">
-        <li class="lastli"><a ng-click="logout()">Logout</a>
+        <li class="lastli"><a href="" ng-click="logout()">Logout</a>
         </li>
       </ul>
 

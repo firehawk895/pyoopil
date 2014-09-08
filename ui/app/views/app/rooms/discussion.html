@@ -32,9 +32,8 @@
         </div>
         <div class="f-right">
 
-          <a href="javascript:void(0)" class="sub-btn cnl-btn">Cancel</a>
-          <a href="" class="sub-btn" ng-click="createDiscussionQuestion()"
-             ng-disabled="formDiscussion.$invalid">Submit</a>
+          <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
+          <button class="sub-btn hand" ng-click="createDiscussionQuestion()">Submit</button>
         </div>
       </div>
     </div>
@@ -65,8 +64,8 @@
         </div>
         <div class="f-right">
 
-          <a href="javascript:void(0)" class="sub-btn cnl-btn">Cancel</a>
-          <a href="" class="sub-btn" ng-click="createDiscussionPoll()" ng-disabled="formDiscussion.$invalid">Submit</a>
+          <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
+          <button class="sub-btn hand" ng-click="createDiscussionPoll()">Submit</button>
         </div>
       </div>
     </div>
@@ -85,9 +84,8 @@
           </div>
         </div>
         <div class="f-right">
-          <a href="" class="sub-btn cnl-btn">Cancel</a>
-          <a href="" class="sub-btn" ng-click="createDiscussionNote()"
-             ng-disabled="formDiscussion.$invalid">Submit</a>
+          <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
+          <button class="sub-btn" ng-click="createDiscussionNote()">Submit</button>
         </div>
       </div>
     </div>
@@ -148,8 +146,7 @@
                   ng-click="discussion.isPraiseVisible=!discussion.isPraiseVisible">{{discussion.Discussion.display_praise}}
             </span>Praise</a>
 
-          <div class="clk-tt" ng-if="discussion.isPraiseVisible"
-              >
+          <div class="clk-tt" ng-if="discussion.isPraiseVisible && !discussion.Discussion.showGamification">
             <ul>
               <li><a href="" ng-click="setGamificationVoteDiscussion($index,'en')"><span>EH</span>Engagement</a>
               </li>
@@ -275,7 +272,7 @@
                                               ng-click="reply.isReplyPraiseVisible=!reply.isReplyPraiseVisible">
             {{reply.Reply.display_praise}}</span>Praise</a>
 
-          <div class="clk-tt" ng-if="reply.isReplyPraiseVisible">
+          <div class="clk-tt" ng-if="reply.isReplyPraiseVisible && !reply.Reply.showGamification">
             <ul>
               <li><a href="" ng-click="setGamificationVoteReply(discussionIndex,$index,'en')"><span>EH</span>Engagement</a>
               </li>

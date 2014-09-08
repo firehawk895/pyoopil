@@ -29,14 +29,18 @@ angular.module('uiApp')
           notificationService.show(false, "Cannot Create Announcement");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
-          roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
-            .then(function (added) {
-              notificationService.show(added.status, added.message);
-              if (added.status) {
-                $scope.announcements.unshift(added.data);
-                $scope.vm = {};
-              }
-            });
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
+            notificationService.show(false, "Cannot upload more than 2mb");
+          else {
+            roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
+              .then(function (added) {
+                notificationService.show(added.status, added.message);
+                if (added.status) {
+                  $scope.announcements.unshift(added.data);
+                  $scope.vm = {};
+                }
+              });
+          }
         }
       };
 
@@ -45,7 +49,7 @@ angular.module('uiApp')
           roomService.getAnnouncements($stateParams.roomId, ++$scope.page).then(function (result) {
             if (!result.data.length)
               $scope.pageEnd = true;
-              else
+            else
               $scope.announcements = $scope.announcements.concat(result.data);
           });
         }

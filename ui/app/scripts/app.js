@@ -92,30 +92,30 @@ angular
           controller: "peopleCtrl"
         })
         .state('app.roomsDash', {
-          url: "roomsDash/",
+          url: "room/",
           templateUrl: "views/app/roomsDash/roomsdash.html",
           controller: "myRoomCtrl"
         })
         .state('app.roomsDash.myroom', {
-          url: "myroom/",
+          url: "my/",
           templateUrl: "views/app/roomsDash/myroom.html",
           controller: "myRoomCtrl"
         })
-        .state('app.roomsDash.staffroom', {
-          url: "staffroom/",
-          templateUrl: "views/app/roomsDash/staffroom.html"
-//          controller: "myRoomCtrl"
-        })
-        .state('app.roomsDash.archived', {
-          url: "archived/",
-          templateUrl: "views/app/roomsDash/archived.html"
-//          controller: "myRoomCtrl"
-        })
+//        .state('app.roomsDash.staffroom', {
+//          url: "staffroom/",
+//          templateUrl: "views/app/roomsDash/staffroom.html"
+////          controller: "myRoomCtrl"
+//        })
+//        .state('app.roomsDash.archived', {
+//          url: "archived/",
+//          templateUrl: "views/app/roomsDash/archived.html"
+////          controller: "myRoomCtrl"
+//        })
 
         .state('logout', {
           url: "/logout/",
-          templateUrl: "views/app/logout.html"
-//                controller: "logOutCtrl"
+          templateUrl: "views/app/logout.html",
+          controller: "publicCtrl"
         });
 
     }])
@@ -142,18 +142,21 @@ angular
       userService.validateSession();
 
 //      if (globalService.getIsAuthorised()) {
-//        $location.path('/app/roomsDash/myroom/');
+//        $location.path('/app/room/my/');
 //      }
+//      else
+//        $location.path('/');
+
 
 //      $idle.watch();
     }])
-.filter('unsafe', function($sce) {
+  .filter('unsafe', function ($sce) {
 
-  return function(val) {
+    return function (val) {
 
-    return $sce.trustAsHtml(val);
+      return $sce.trustAsHtml(val);
 
-  };
+    };
 
-});
+  });
 ;

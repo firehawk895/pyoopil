@@ -29,15 +29,17 @@
 }
 
 .pop-input {
-  height: 38px;
+  height: 37px;
+  width: 254px;
 }
 
 .create-popup .chosen-container-single .chosen-single {
-  height: 38px;
+  height: 37px;
+  width: 254px;
 }
 
 .pop-dura {
-  height: 38px;
+  height: 37px;
 }
 
 #loading-bar-spinner .spinner-icon {
@@ -72,12 +74,42 @@
   display: block;
 }
 
-.sign-txtbx input{
-  height:38px;
+.sign-txtbx input {
+  height: 38px;
 }
-.signup .icon-cross{
-  top:0px;
+
+.signup .icon-cross {
+  top: 0px;
 }
-input.ng-dirty {
+
+.ng-dirty .ng-invalid {
   border: 1px solid red;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.left-pop {
+  width: 50%;
+}
+
+.calender .pop-dura {
+  width: 108%;
+}
+
+.right-pop {
+  width: 50%;
+}
+
+.pop-txtarea {
+  width: 254px;
+  height: 117px;
+}
+
+.create-popup input[type=radio] + .radio-lbl {
+  width: 39px;
+}
+strong {
+  font-weight: bold;
 }

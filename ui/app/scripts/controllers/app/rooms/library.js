@@ -6,7 +6,7 @@ angular.module('uiApp')
     function ($scope, $stateParams, roomService, notificationService, ngDialog) {
 
       $scope.page = 1;
-      $scope.pageEnd=false;
+      $scope.pageEnd = false;
       $scope.topics = [];
       $scope.roomId = $stateParams.roomId;
       $scope.showContent = true;
@@ -15,7 +15,7 @@ angular.module('uiApp')
       $scope.libraryUpload = {};
       $scope.libraryUpload.id = null;
       $scope.libraryUpload.name = "";
-      $scope.libraryUpload.files = ["file-0"];
+      $scope.libraryUpload.files = [];
       $scope.libraryUpload.links = [];
       $scope.linkIndex = 0;
       $scope.vm = {};
@@ -191,27 +191,43 @@ angular.module('uiApp')
         }
       };
       $scope.uploadFiles = function () {
-
+        var hasError = false;
         angular.forEach($scope.vm.links, function (value, key) {
           if (value.url != "")
             $scope.libraryUpload.links.push(value.url);
         });
 
+        angular.forEach($scope.vm.files, function (value, key) {
+          var file = document.getElementById(value).files[0];
+          if (angular.isDefined(file) && file.size > 2097152) {
+            notificationService.show(false, "Cannot Upload more than 2 mb");
+            hasError = true;
+            $scope.libraryUpload.files = [];
+            $scope.vm.files = ["file-0"];
+            return false;
+          }
+          else
+            $scope.libraryUpload.files.push(file);
+        });
+
+
 //        console.log($scope.libraryUpload.files);
 //        console.log($scope.libraryUpload.links);
 //        console.log($scope.vm.links);
 
-
-        roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
-          then(function (result) {
-            notificationService.show(result.status, result.message);
-            if (result.status)
-              $scope.libraryUpload = {};
-          });
+        if (!hasError) {
+          roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
+            then(function (result) {
+              if (result.status)
+                $scope.libraryUpload = {};
+            });
+        }
       };
 
       $scope.addNewFile = function () {
-        $scope.libraryUpload.files.push("file-" + $scope.libraryUpload.files.length);
+        $scope.vm.files.push("file-" + $scope.vm.files.length);
+
+
       };
 
       $scope.addNewLink = function () {
