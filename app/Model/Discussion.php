@@ -22,7 +22,7 @@ class Discussion extends AppModel {
     /**
      * max no. of replies to retrieve per discussion
      */
-    const MAX_REPLIES = 5;
+    const MAX_REPLIES = 2;
 
     /**
      * TODO : room wise, and filters
@@ -497,5 +497,16 @@ class Discussion extends AppModel {
      */
     public function allowCreate($classroomId, $userId) {
         return true;
+    }
+
+    /**
+     * permission for allowing "Endorsement" type gamification vote for discussions
+     * @param $classroomId
+     * @param $userId
+     * @return bool
+     */
+    public function allowEndorse($classroomId, $userId) {
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+        return $isOwner;
     }
 }

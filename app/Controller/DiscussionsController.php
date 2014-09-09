@@ -70,7 +70,8 @@ class DiscussionsController extends AppController {
         $data = $this->Discussion->processData($data, $userId);
 
         $permissions = array(
-            'allowCreate' => $this->Discussion->allowCreate($classroomId, $userId)
+            'allowCreate' => $this->Discussion->allowCreate($classroomId, $userId),
+            'allowEndorse' => $this->Discussion->allowEndorse($classroomId, $userId)
         );
 
         /**
