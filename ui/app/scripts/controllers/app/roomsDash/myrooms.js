@@ -46,7 +46,7 @@ angular.module('uiApp')
             $scope.classrooms.unshift(result.data);
             console.log($scope.classrooms);
             ngDialog.close();
-            $scope.classroom = {};
+            $scope.classroom = result.data;
             ngDialog.open({
               template: 'views/app/roomsDash/classcreated.html',
               scope: $scope

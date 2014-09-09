@@ -11,14 +11,15 @@
         <p class="created-heading">Your Class {{classroom.Classroom.title}} has been successfully
           created.</p>
 
-        <p class="created-txt">Please find below the unique group password. You can distribute the
+        <p class="created-txt">Please find below your unique access code to the classroom. You can distribute the
           password to your
-          friends so that they can join the group. </p>
+          friends so that they can join your newly created Pyoopil classroom. </p>
 
-        <p class="created-txt">An E-mail with the password has also been sent to you for your
-          convenience.</p>
+        <!--<p class="created-txt">An E-mail with the password has also been sent to you for your-->
+        <!--convenience.</p>-->
 
-        <p class="created-txt">Unique access code: <span class="code-txt">{{classroom.Classroom.access_code}}</span>
+        <p class="created-txt">Unique access code: <span class="code-txt">{{classroom.Classroom.access_code}}</span>Please
+          note that the unique access code is case sensitive
         </p>
 
         <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the
@@ -26,9 +27,18 @@
           a great session this semester with your students. Cheers!!</p>
 
         <div class="pop-close">
-          <a ui-sref="app.roomsDash.myroom" class="sub-btn hands"  ng-click="closeThisDialog()">Take me to my classrooms</a>
+          <a ui-sref="app.roomsDash.myroom" class="sub-btn hands" ng-click="closeThisDialog()">Take me to my
+            classrooms</a>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<!--"Your Class ______has been successfully created.-->
+<!--Please find below your unique access code to the classroom.-->
+<!--You can distribute the password to your students so that they can join your newly created Pyoopil classroom.-->
+<!--Unique access code: AEW124Q  Please note that the unique access code is case sensitive.-->
+<!--Now make your class more engaging with pyoopil. Kudos for setting up the class.-->
+<!--Have a great session this semester with your students. Cheers!!"-->

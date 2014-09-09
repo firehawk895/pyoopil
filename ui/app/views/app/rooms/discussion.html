@@ -85,7 +85,7 @@
         </div>
         <div class="f-right">
           <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
-          <button class="sub-btn" ng-click="createDiscussionNote()">Submit</button>
+          <button class="sub-btn hand" ng-click="createDiscussionNote()">Submit</button>
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@
       <div class="name-left">
         <p class="tname">{{discussion.Discussion.topic}}</p>
 
-        <p class="tby"><a href="javascript:void(0)">by {{discussion.AppUser.fname}} {{discussion.AppUser.lname}}</a></p>
+        <p class="tby"><a href="">by {{discussion.AppUser.fname}} {{discussion.AppUser.lname}}</a></p>
 
         <p class="tby">{{discussion.Discussion.created}}</p>
       </div>
@@ -120,12 +120,12 @@
         <!--<a href="" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
         <a href="" class="vl-t tooltip" title="Delete" ng-click="deleteDiscussion($index)"><img
             src="images/disc-close.png"></a>
-        <a class="tooltip" title="Fold Discussion" href=""
+        <a class="tooltip" title="Fold/Unfold" href=""
            ng-class="{'fold-icon' :!discussion.Discussion.isFolded,'folded-icon' :discussion.Discussion.isFolded}"
            ng-click="toggleFold($index)"></a>
       </div>
       <div class="clear"></div>
-      <p class="ttxt" ng-bind-html="discussion.Discussion.body | unsafe"></p>
+      <p class="ttxt wordwrap" ng-bind-html="discussion.Discussion.body | unsafe"></p>
 
       <div class="clearfix" ng-if="discussion.Discussion.type=='poll'">
         <div class="poll-left">
@@ -254,8 +254,8 @@
                   <a href="" class="dd-icon dd-click"></a>
                   <div class="arr-dd" ng-if="reply.isIconVisible">
                     <ul>
-                      <li><a href="">Report Abuse</a>
-                      </li>
+                      <!--<li><a href="">Report Abuse</a>-->
+                      <!--</li>-->
                       <li class="lastli"><a href="" ng-click="deleteReply(discussionIndex,$index)">Delete Comment</a>
                       </li>
                     </ul>
@@ -263,7 +263,7 @@
                   </span>
       </div>
       <div class="clear"></div>
-      <p class="ttxt">{{reply.Reply.comment}} </p>
+      <p class="ttxt wordwrap">{{reply.Reply.comment}} </p>
 
       <div class="arrbox-footer clearfix">
         <div class="f-left prs-sp">

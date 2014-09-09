@@ -107,7 +107,7 @@ angular.module('uiApp')
       $scope.showAll = function () {
         $scope.vm.showFold = false;
 
-
+        $scope.page = 1;
         roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
@@ -127,7 +127,7 @@ angular.module('uiApp')
       };
       $scope.showFold = function () {
         $scope.vm.showFold = true;
-
+        $scope.page = 1;
         roomService.getDiscussions($stateParams.roomId, $scope.page, "folded").then(function (result) {
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
@@ -153,6 +153,7 @@ angular.module('uiApp')
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "question")
               .then(function (added) {
+                notificationService.show(true, "Discussion Created Successfully");
                 if (added.status) {
                   $scope.discussions.unshift(added.data[0]);
                   $scope.vm.subject = "";
@@ -172,31 +173,36 @@ angular.module('uiApp')
             if (value.choice != "")
               $scope.choices.push(value.choice);
           });
-          $scope.vm.file = document.getElementById("fileupload").files[0];
-          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
-            notificationService.show(false, "Cannot upload more than 2mb");
+          if ($scope.choices.length < 2)
+            notificationService.show(false, "Cannot Create Discussion. Enter minimum two choices");
           else {
-            roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
-              .then(function (added) {
-                if (added.status) {
-                  $scope.discussions.unshift(added.data[0]);
-                  $scope.vm.subject = "";
-                  $scope.vm.body = "";
-                  $scope.vm.file = null;
-                  $scope.vm.answerChoices = [
-                    {
-                      choice: "",
-                      isVisible: true
-                    },
-                    {
-                      choice: "",
-                      isVisible: true
-                    }
+            $scope.vm.file = document.getElementById("fileupload").files[0];
+            if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
+              notificationService.show(false, "Cannot upload more than 2mb");
+            else {
+              roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
+                .then(function (added) {
+                  notificationService.show(true, "Discussion Created Successfully");
+                  if (added.status) {
+                    $scope.discussions.unshift(added.data[0]);
+                    $scope.vm.subject = "";
+                    $scope.vm.body = "";
+                    $scope.vm.file = null;
+                    $scope.vm.answerChoices = [
+                      {
+                        choice: "",
+                        isVisible: true
+                      },
+                      {
+                        choice: "",
+                        isVisible: true
+                      }
 
-                  ];
-                  $scope.choices = [];
-                }
-              });
+                    ];
+                    $scope.choices = [];
+                  }
+                });
+            }
           }
         }
       };
@@ -210,6 +216,7 @@ angular.module('uiApp')
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
               then(function (added) {
+                notificationService.show(true, "Discussion Created Successfully");
                 if (added.status) {
                   $scope.discussions.unshift(added.data[0]);
                   $scope.vm.subject = "";

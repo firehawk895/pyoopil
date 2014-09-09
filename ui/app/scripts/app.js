@@ -25,7 +25,8 @@ angular
     'ui.select2',
     'angular-loading-bar',
     'highcharts-ng',
-    'ngCkeditor'
+    'ngCkeditor',
+    'ui.bootstrap'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
