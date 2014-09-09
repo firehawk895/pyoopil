@@ -120,7 +120,7 @@ angular.module('uiApp')
       };
 
       $scope.deleteTopic = function (index) {
-        roomService.deleteTopic(index).then(function (result) {
+        roomService.deleteTopic($scope.topics[index].Topic.id).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status)
             $scope.topics.splice(index, 1);
@@ -218,8 +218,11 @@ angular.module('uiApp')
         if (!hasError) {
           roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
             then(function (result) {
-              if (result.status)
+              if (result.status) {
+                ngDialog.close();
+                $scope.topics.push(result.data[0]);
                 $scope.libraryUpload = {};
+              }
             });
         }
       };

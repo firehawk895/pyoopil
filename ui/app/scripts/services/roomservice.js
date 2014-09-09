@@ -23,6 +23,9 @@ angular.module('uiApp')
       else
         return restangular.one("Classrooms", roomId).all("Discussions").customGET("getdiscussions.json", {page: page});
     };
+    self.getReplies = function (id, page) {
+      return restangular.all("Classrooms").all("Discussions").customGET("getreplies.json", {page: page, discussion_id: id});
+    };
     self.getAnnouncements = function (roomId, page) {
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Announcements").customGET("getannouncements.json", {page: page});
@@ -58,8 +61,8 @@ angular.module('uiApp')
       formData.append("data[Discussion][topic]", topic);
       formData.append("data[Discussion][body]", body);
       formData.append("data[Discussion][type]", type);
-//      if (angular.isDefined(file))
-//        formData.append("data[Announcement][file_path]", file);
+      if (angular.isDefined(file))
+        formData.append("data[Discussion][file_path]", file);
       if (angular.isDefined(choices)) {
         angular.forEach(choices, function (value, key) {
           if (angular.isDefined(value))
@@ -81,6 +84,7 @@ angular.module('uiApp')
       return restangular.all("Classrooms").customPOST(data, "join.json");
     };
     self.createClassroom = function (classroom) {
+      classroom.Classroom.minimum_attendance /= 100;
       return restangular.all("Classrooms").customPOST(classroom, "add.json");
     };
     self.getCampuses = function () {

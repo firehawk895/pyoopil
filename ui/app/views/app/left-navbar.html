@@ -5,14 +5,14 @@
     <!--<span class="label">My Room</span></a>-->
     <!--</li>-->
     <li class="pdiscover hassub active" ng-mouseover="showScroller()">
-    <!--ng-mouseleave="hideScroller()"-->
+      <!--ng-mouseleave="hideScroller()"-->
 
-    <a ui-sref="app.roomsDash.myroom" class="lst-a classrooms"><span class="icon"></span>
-      <span class="label">Classrooms</span></a>
+      <a ui-sref="app.roomsDash.myroom" class="lst-a classrooms"><span class="icon"></span>
+        <span class="label">Classrooms</span></a>
 
     <li class="pdiscover">
       <a href="" class="lst-a flname"><span class="icon"><img src="images/chat1.jpg" alt="fname"></span>
-        <span class="label">first last name</span></a>
+        <span class="label">{{fullName}}</span></a>
     </li>
 
     <div class="sub" ng-mouseleave="hideScroller()">

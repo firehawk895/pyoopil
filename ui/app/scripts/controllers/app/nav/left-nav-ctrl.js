@@ -8,7 +8,7 @@ angular.module('uiApp')
       $scope.showLogout = false;
       $scope.classrooms = [];
       $scope.pageEnd = false;
-
+      $scope.fullName = localStorageService.get("name");
       $scope.page = 1;
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
@@ -21,6 +21,7 @@ angular.module('uiApp')
           $location.path('/logout/');
           $http.defaults.headers.common = {'X-AuthTokenHeader': ''};
           localStorageService.remove("token");
+          localStorageService.remove("name");
           globalService.setIsAuthorised(false);
         });
       };

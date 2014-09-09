@@ -12,11 +12,11 @@
                  ng-readonly="!editTopicName" ng-blur="editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id);">
 
           <div class="lib-right">
-            <a ng-click="editTopicName=true" class="lib-edit tooltip" title="Edit Topic"></a>
-            <a ng-click="deleteTopic($index)" class="lib-delete tooltip" title="Delete"></a>
-            <a href="javascript:void(0)" class="lib-download tooltip" title="Download"></a>
+            <a ng-click="editTopicName=true" class="lib-edit" tooltip="Edit Topic"></a>
+            <a ng-click="deleteTopic($index)" class="lib-delete" tooltip="Delete"></a>
+            <!--<a href="javascript:void(0)" class="lib-download" tooltip="Download"></a>-->
 
-            <div class="click-lib click-icon tooltip" title="Click to slide" ng-click="displayContent($index)"
+            <div class="click-lib click-icon " tooltip="Click to slide" ng-click="displayContent($index)"
                  ng-class="{'active' :topic.showContent}"></div>
           </div>
         </div>
@@ -96,7 +96,7 @@
           <ul class="doc-list imglist">
             <li ng-repeat="video in topic.Video">
               <div class="img-wrapper">
-                <a ng-click="deleteVideo(topic,$index)" class="del-lib"></a>
+                <a ng-click="deleteVideo(topic,$index)" class="del-lib hand"></a>
                 <a ng-href="{{video.linktext}}" ui-jq="prettyPhoto">
                   <img ng-src="{{showThumbnail(video.linktext)}}">
 

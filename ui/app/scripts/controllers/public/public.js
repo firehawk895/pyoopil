@@ -22,6 +22,7 @@ angular.module('uiApp')
           if (result.status) {
             ngDialog.close();
             localStorageService.add("token", result.data.auth_token);
+            localStorageService.add("name", result.data.fullname);
             userService.validateSession();
             authService.loginConfirmed(result.data.auth_token);
             console.log(result.data.auth_token);

@@ -89,11 +89,11 @@
         </div>
       </div>
     </div>
-    <a href="" class="ques-icon ques" ng-class="{'active' :vm.discussionType=='question'}"
+    <a href="" class="ques-icon ques" title="Question" ng-class="{'active' :vm.discussionType=='question'}"
        ng-click="vm.discussionType='question'"></a>
-    <a href="" class="ques-icon poll" ng-class="{'active' :vm.discussionType=='poll'}"
+    <a href="" class="ques-icon poll" title="Poll" ng-class="{'active' :vm.discussionType=='poll'}"
        ng-click="vm.discussionType='poll'"></a>
-    <a href="" class="ques-icon note-icon" ng-class="{'active' :vm.discussionType=='note'}"
+    <a href="" class="ques-icon note-icon" title="Note" ng-class="{'active' :vm.discussionType=='note'}"
        ng-click="vm.discussionType='note'"></a>
   </form>
 </div>
@@ -134,10 +134,18 @@
         </div>
         <div class="poll-right" ng-if="discussion.Discussion.showPollVote">
           <div id="chart_div2">
-            <highchart id="chart1" config="chartConfig"></highchart>
+            <highchart id="chart1" config="discussion.chartConfig"></highchart>
           </div>
         </div>
+
       </div>
+      <p class="cl">
+        <a class="dlfile" ng-show="discussion.Discussion.filename">{{discussion.Discussion.filename}}.{{discussion.Discussion.filesize}}</a>
+        <a ng-href="{{discussion.Discussion.file_path}}" class="down-icon"
+           ng-show="discussion.Discussion.filename" target="_blank"></a>
+      </p>
+      <br>
+
       <div class="arrbox-footer clearfix">
         <div class="f-left prs-sp">
           <a href="" class="icon-title">
@@ -154,88 +162,49 @@
               </li>
               <li><a href="" ng-click="setGamificationVoteDiscussion($index,'cu')"><span>CU</span>Curiosity</a>
               </li>
-              <li><a href="" ng-click="setGamificationVoteDiscussion($index,'co')"><span>CO</span>Contribution</a>
+              <li ng-class="{'lastli' :canEndorse}"><a href=""
+                                                       ng-click="setGamificationVoteDiscussion($index,'co')"><span>CO</span>Contribution</a>
               </li>
-              <li class="lastli"><a href="" ng-click="setGamificationVoteDiscussion($index,'ed')"><span>EN</span>Endorsement</a>
+              <li class="lastli" ng-if="canEndorse"><a href=""
+                                                       ng-click="setGamificationVoteDiscussion($index,'ed')"><span>EN</span>Endorsement</a>
               </li>
             </ul>
           </div>
         </div>
         <div class="f-right" ng-if="discussion.Discussion.showGamification">
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.en)}}"
                ng-class="{'msg-link':discussion.Discussion.en,'nopoint-icon' :discussion.Discussion.en==0 }">EN</a>
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{discussion.Discussion.en}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.in)}}"
                ng-class="{'msg-link':discussion.Discussion.in,'nopoint-icon' :discussion.Discussion.in==0 }">IN</a>
             <span class="icon-title">{{discussion.Discussion.in}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.cu)}}"
                ng-class="{'msg-link':discussion.Discussion.cu,'nopoint-icon' :discussion.Discussion.cu==0 }">CU</a>
-
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                  <li><p class="tt-name">Apeksha Verma</p></li>
-                  <li><p class="tt-name">Harpreet Kaur</p></li>
-                  <li><p class="tt-name">& 15 Others</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{discussion.Discussion.cu}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.co)}}"
                ng-class="{'msg-link':discussion.Discussion.co,'nopoint-icon' :discussion.Discussion.co==0 }">CO</a>
-
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{discussion.Discussion.co}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.ed)}}"
                ng-class="{'msg-link':discussion.Discussion.ed,'nopoint-icon' :discussion.Discussion.ed==0 }">ED</a>
-
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{discussion.Discussion.ed}}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="bor-rep" ng-if="discussion.moreReplies"><a href="" class="view-more">View more answers <img
-      src="images/view-all.png"></a>
+  <div class="bor-rep" ng-if="discussion.moreReplies"><a href="" class="view-more" ng-click="getReplies($index)">View
+    more answers <img
+        src="images/view-all.png"></a>
   </div>
 </li>
 <li ng-class="{'lastli' :$index == discussion.Replies.length-1}" ng-repeat="reply in discussion.Replies">
@@ -281,9 +250,10 @@
               <li><a href=""
                      ng-click="setGamificationVoteReply(discussionIndex,$index,'cu')"><span>CU</span>Curiosity</a>
               </li>
-              <li><a href="" ng-click="setGamificationVoteReply(discussionIndex,$index,'co')"><span>CO</span>Contribution</a>
+              <li ng-class="{'lastli' :canEndorse}"><a href=""
+                                                       ng-click="setGamificationVoteReply(discussionIndex,$index,'co')"><span>CO</span>Contribution</a>
               </li>
-              <li class="lastli" ng-click="setGamificationVoteReply(discussionIndex,$index,'ed')"><a
+              <li class="lastli" ng-click="setGamificationVoteReply(discussionIndex,$index,'ed')" ng-if="canEndorse"><a
                   href=""><span>EN</span>Endorsement</a>
               </li>
             </ul>
@@ -291,68 +261,31 @@
         </div>
         <div class="f-right" ng-if="reply.Reply.showGamification">
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.en)}}"
                ng-class="{'msg-link':reply.Reply.en,'nopoint-icon' :reply.Reply.en==0 }">EN</a>
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                </ul>
-              </div>
-            </div>
+
             <span class="icon-title">{{reply.Reply.en}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.in)}}"
                ng-class="{'msg-link':reply.Reply.in,'nopoint-icon' :reply.Reply.in==0 }">IN</a>
             <span class="icon-title">{{reply.Reply.in}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.cu)}}"
                ng-class="{'msg-link':reply.Reply.cu,'nopoint-icon' :reply.Reply.cu==0 }">CU</a>
 
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                  <li><p class="tt-name">Apeksha Verma</p></li>
-                  <li><p class="tt-name">Harpreet Kaur</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{reply.Reply.cu}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.co)}}"
                ng-class="{'msg-link':reply.Reply.co,'nopoint-icon' :reply.Reply.co==0 }">CO</a>
-
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                  <li><p class="tt-name">Akriti Singh</p></li>
-                  <li><p class="tt-name">Deepti Singh</p></li>
-                  <li><p class="tt-name">Sumit Patil</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{reply.Reply.co}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.ed)}}"
                ng-class="{'msg-link':reply.Reply.ed,'nopoint-icon' :reply.Reply.ed==0 }">ED</a>
-
-            <div class="enga-tooltip">
-              <div class="enga-list">
-                <ul>
-                  <li><p class="tt-name">Amar Verma</p></li>
-                </ul>
-              </div>
-            </div>
             <span class="icon-title">{{reply.Reply.ed}}</span>
           </div>
         </div>

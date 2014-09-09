@@ -14,6 +14,7 @@ angular.module('uiApp')
       $scope.vm.showFold = false;
       $scope.vm.discussionType = "";
       $scope.choices = [];
+      $scope.chartConfig = {};
       $scope.pageEnd = false;
       $scope.vm.answerChoices = [
         {
@@ -27,11 +28,43 @@ angular.module('uiApp')
 
       ];
       roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
+
+
         $scope.discussions = result.data;
         $scope.canCreate = result.permissions.allowCreate;
+        $scope.canEndorse = result.permissions.allowEndorse;
 //        console.log($scope.discussions);
         angular.forEach($scope.discussions, function (value, key) {
+          if (value.Discussion.showPollVote) {
+            var choiceCategories = [];
+            var choiceData = [];
+            angular.forEach(value.Pollchoice, function (value, key) {
+              choiceCategories.push(value.choice);
+              choiceData.push(parseInt(value.votes));
+            });
 
+
+            value.chartConfig = {
+              options: {
+                chart: {
+                  type: 'bar'
+                }
+              },
+              xAxis: {
+                categories: choiceCategories
+              },
+              series: [
+                {
+                  data: choiceData
+                }
+              ],
+              title: {
+                text: null
+              },
+              height: 400
+            };
+          }
+          value.currentPage = 1;
           value.newReply = "";
           value.isPraiseVisible = false;
           angular.forEach(value.Replies, function (value, key) {
@@ -41,7 +74,26 @@ angular.module('uiApp')
 
 
         });
-      });
+      })
+      ;
+      $scope.getReplies = function (index) {
+        roomService.getReplies($scope.discussions[index].Discussion.id, $scope.discussions[index].currentPage).then(function (result) {
+          if (result.status) {
+            if (!result.data.length)
+              notificationService.show(false, "No more replies to load");
+            else if ($scope.discussions[index].currentPage == 1) {
+              $scope.discussions[index].Replies = result.data;
+              $scope.discussions[index].currentPage++;
+
+            }
+            else {
+              $scope.discussions[index].Replies.concat(result.data);
+              $scope.discussions[index].currentPage++;
+            }
+          }
+        });
+      };
+
       $scope.deleteDiscussion = function (index) {
         roomService.deleteInDiscussion($scope.discussions[index].Discussion.id, "Discussion").then(function (result) {
           notificationService.show(result.status, result.message);
@@ -106,14 +158,13 @@ angular.module('uiApp')
       };
       $scope.showAll = function () {
         $scope.vm.showFold = false;
-
         $scope.page = 1;
         roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
 //        console.log($scope.discussions);
           angular.forEach($scope.discussions, function (value, key) {
-
+            value.currentPage = 1;
             value.newReply = "";
             value.isPraiseVisible = false;
             angular.forEach(value.Replies, function (value, key) {
@@ -132,6 +183,7 @@ angular.module('uiApp')
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
           angular.forEach($scope.discussions, function (value, key) {
+            value.currentPage = 1;
             value.newReply = "";
             value.isPraiseVisible = false;
             angular.forEach(value.Replies, function (value, key) {
@@ -246,42 +298,46 @@ angular.module('uiApp')
         $scope.vm.answerChoices.splice(index, 1);
       };
 
-      $scope.getChartConfig = function () {
-        return{
-          options: {
-            chart: {
-              type: 'bar'
-            }
-          },
-          xAxis: {
-            categories: ['A', 'B', 'C']
-          },
-          series: [
-            {
-              data: [1, 0]
-            }
-          ],
-          title: {
-            text: null
-          },
-          height: 400
-        }
-      };
 
       $scope.setPollVote = function (parentIndex, index) {
 
         roomService.setPollVote($scope.discussions[parentIndex].Pollchoice[index].id).then(function (result) {
           if (result.status) {
             $scope.discussions[parentIndex] = result.data[0];
-//            angular.forEach(result.data[0].Pollchoice, function (value, key) {
-//              $scope.answerCategories.push(value.choice);
-//              $scope.answerData.push(value.votes);
-//            });
+            var choiceCategories = [];
+            var choiceData = [];
+            angular.forEach($scope.discussions[parentIndex].Pollchoice, function (value, key) {
+              choiceCategories.push(value.choice);
+              choiceData.push(parseInt(value.votes));
+            });
+
+
+            $scope.discussions[parentIndex].chartConfig = {
+              options: {
+                chart: {
+                  type: 'bar'
+                }
+              },
+              xAxis: {
+                categories: choiceCategories
+              },
+              series: [
+                {
+
+                  data: choiceData
+                }
+              ],
+              title: {
+                text: null
+              },
+              height: 400
+
+            };
 
           }
         })
-      };
-      $scope.chartConfig = $scope.getChartConfig();
+      }
+      ;
 
       $scope.editorOptions = {
         height: 150
@@ -293,13 +349,52 @@ angular.module('uiApp')
             if (!result.data.length)
               $scope.pageEnd = true;
             else
-              $scope.discussions = $scope.discussions.concat(result.data);
+              angular.forEach(result.data, function (value, key) {
+                if (value.Discussion.showPollVote) {
+                  var choiceCategories = [];
+                  var choiceData = [];
+                  angular.forEach(value.Pollchoice, function (value, key) {
+                    choiceCategories.push(value.choice);
+                    choiceData.push(parseInt(value.votes));
+                  });
+
+
+                  value.chartConfig = {
+                    options: {
+                      chart: {
+                        type: 'bar'
+                      }
+                    },
+                    xAxis: {
+                      categories: choiceCategories
+                    },
+                    series: [
+                      {
+                        data: choiceData
+                      }
+                    ],
+                    title: {
+                      text: null
+                    },
+                    height: 400
+                  };
+                }
+                value.currentPage = 1;
+                value.newReply = "";
+                value.isPraiseVisible = false;
+                angular.forEach(value.Replies, function (value, key) {
+                  value.isIconVisible = false;
+                  value.isReplyPraiseVisible = false;
+                });
+              });
+            $scope.discussions = $scope.discussions.concat(result.data);
           });
         }
       };
-
-    }
-  ])
+      $scope.getNames = function (arr) {
+        return arr.join('/n');
+      };
+    }])
   .
   filter('unsafe', function ($sce) {
     return function (val) {

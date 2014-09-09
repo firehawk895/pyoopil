@@ -39,12 +39,10 @@ angular.module('uiApp')
         });
       };
       $scope.createClassroom = function () {
-        $scope.classroom.Classroom.minimum_attendance /= 100;
         roomService.createClassroom($scope.classroom).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
-            $scope.classrooms.unshift(result.data);
-            console.log($scope.classrooms);
+//            console.log($scope.classrooms);
             ngDialog.close();
             $scope.classroom = result.data;
             ngDialog.open({
@@ -53,6 +51,7 @@ angular.module('uiApp')
             });
 
           }
+//          $scope.classrooms.unshift(result.data);
         });
       };
       $scope.open = function () {
@@ -71,6 +70,14 @@ angular.module('uiApp')
           $state.go('app.rooms.discussions', { roomId: id });
       };
 
+      $scope.closeClassDialog = function () {
+        ngDialog.close();
+        $scope.page = 1;
+        roomService.getRooms($scope.page).then(function (result) {
+          $scope.classrooms = result.data;
+        });
+
+      };
 
       roomService.getCampuses().then(function (result) {
         $scope.campuses = result.data;
