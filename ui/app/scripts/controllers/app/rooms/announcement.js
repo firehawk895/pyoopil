@@ -37,6 +37,7 @@ angular.module('uiApp')
                 notificationService.show(added.status, added.message);
                 if (added.status) {
                   $scope.announcements.unshift(added.data);
+                  console.log($scope.announcements);
                   $scope.vm = {};
                 }
               });

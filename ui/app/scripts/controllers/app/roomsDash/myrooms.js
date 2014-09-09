@@ -2,8 +2,8 @@
  * Created by greenapple on 19/8/14.
  */
 angular.module('uiApp')
-  .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', 'globalService', '$stateParams',
-    function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, globalService, $stateParams) {
+  .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', '$state', 'globalService', '$stateParams',
+    function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, $state, globalService, $stateParams) {
       $scope.showJoin = true;
       $scope.accessCode = "";
       $scope.classroom = {};
@@ -22,6 +22,7 @@ angular.module('uiApp')
               $scope.pageEnd = true;
             else
               $scope.classrooms = $scope.classrooms.concat(result.data);
+
           });
         }
       };
@@ -37,6 +38,23 @@ angular.module('uiApp')
 
         });
       };
+      $scope.createClassroom = function () {
+        $scope.classroom.Classroom.minimum_attendance /= 100;
+        roomService.createClassroom($scope.classroom).then(function (result) {
+          notificationService.show(result.status, result.message);
+          if (result.status) {
+            $scope.classrooms.unshift(result.data);
+            console.log($scope.classrooms);
+            ngDialog.close();
+            $scope.classroom = {};
+            ngDialog.open({
+              template: 'views/app/roomsDash/classcreated.html',
+              scope: $scope
+            });
+
+          }
+        });
+      };
       $scope.open = function () {
         $scope.classroom = {};
 
@@ -45,21 +63,14 @@ angular.module('uiApp')
           scope: $scope
         });
       };
-      $scope.createClassroom = function () {
-        $scope.classroom.Classroom.minimum_attendance /= 100;
-        roomService.createClassroom($scope.classroom).then(function (result) {
-          notificationService.show(result.status, result.message);
-          if (result.status) {
-            ngDialog.close();
-            $scope.classroom = result.data;
-            ngDialog.open({
-              template: 'views/app/roomsDash/classcreated.html',
-              scope: $scope
-            });
-            $scope.classrooms.unshift(result.data)
-          }
-        });
+
+      $scope.goToClass = function (id, restricted) {
+        if (restricted)
+          notificationService.show(false, "Cannot Enter Classroom");
+        else
+          $state.go('app.rooms.discussions', { roomId: id });
       };
+
 
       roomService.getCampuses().then(function (result) {
         $scope.campuses = result.data;

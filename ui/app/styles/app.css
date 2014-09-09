@@ -110,6 +110,11 @@
 .create-popup input[type=radio] + .radio-lbl {
   width: 39px;
 }
+
 strong {
   font-weight: bold;
+}
+
+.hiring a {
+  width: 105px;
 }

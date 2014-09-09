@@ -62,6 +62,7 @@ angular
           controller: "publicCtrl"
         })
         .state('app', {
+          abstract: true,
           url: "/app/",
           templateUrl: "views/app/app.html"
         })
@@ -159,4 +160,4 @@ angular
     };
 
   });
-;
+

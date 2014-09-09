@@ -107,20 +107,23 @@ angular.module('uiApp')
       $scope.showAll = function () {
         $scope.vm.showFold = false;
 
+
         roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
           $scope.discussions = result.data;
           $scope.canCreate = result.permissions.allowCreate;
+//        console.log($scope.discussions);
           angular.forEach($scope.discussions, function (value, key) {
+
             value.newReply = "";
             value.isPraiseVisible = false;
             angular.forEach(value.Replies, function (value, key) {
               value.isIconVisible = false;
               value.isReplyPraiseVisible = false;
             });
-//          console.log($scope.discussions);
+
+
           });
         });
-
       };
       $scope.showFold = function () {
         $scope.vm.showFold = true;
@@ -139,6 +142,7 @@ angular.module('uiApp')
           });
         });
       };
+
       $scope.createDiscussionQuestion = function () {
         if ($scope.vm.subject == "" || $scope.vm.body == "")
           notificationService.show(false, "Cannot Create Discussion");
@@ -287,7 +291,8 @@ angular.module('uiApp')
         }
       };
 
-    }])
+    }
+  ])
   .
   filter('unsafe', function ($sce) {
     return function (val) {

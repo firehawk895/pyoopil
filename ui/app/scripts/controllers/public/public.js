@@ -2,8 +2,8 @@ angular.module('uiApp')
   .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'notificationService', 'localStorageService', '$http', 'authService', 'globalService',
     function ($scope, $location, userService, ngDialog, notificationService, localStorageService, $http, authService, globalService) {
 
-      if (globalService.getIsAuthorised())
-        $location.path('/app/room/my/');
+//      if (authService.isLoggedIn())
+//        $location.path('/app/room/my/');
 
 
       $scope.openLogin = function () {
