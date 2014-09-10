@@ -9,11 +9,12 @@
       <div class="attach-doc classlibrary stud-pnl" ng-repeat="topic in topics">
         <div class="doc-heading clearfix">
           <input type="text" class="doc-input" value="{{topic.Topic.name}}" maxlength="70"
-                 ng-readonly="!editTopicName" ng-blur="editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id);">
+                 ng-readonly="!vm.editTopicName"
+                 ng-blur="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id);">
 
           <div class="lib-right">
-            <a ng-click="editTopicName=true" class="lib-edit" tooltip="Edit Topic"></a>
-            <a ng-click="deleteTopic($index)" class="lib-delete" tooltip="Delete"></a>
+            <a ng-click="vm.editTopicName=true" class="lib-edit hand" tooltip="Edit Topic"></a>
+            <a ng-click="deleteTopic($index)" class="lib-delete hand" tooltip="Delete"></a>
             <!--<a href="javascript:void(0)" class="lib-download" tooltip="Download"></a>-->
 
             <div class="click-lib click-icon " tooltip="Click to slide" ng-click="displayContent($index)"
@@ -25,7 +26,7 @@
           <ul class="doc-list">
             <li ng-repeat="document in topic.Documents">
               <a ng-click="deleteDoc(topic,$index)" class="del-lib"></a>
-              <a ng-href="{{document.file_path}}" ui-jq="prettyPhoto">
+              <a ng-href="{{document.file_path}}" target="_blank">
                 <div class="doc-top">
                   <p>{{showFileName(document.filename)}}</p>
                 </div>
@@ -61,7 +62,7 @@
           <ul class="doc-list">
             <li ng-repeat="presentation in topic.Presentations">
               <a ng-click="deletePresentation(topic,$index)" class="del-lib"></a>
-              <a ng-href="{{presentation.file_path}}">
+              <a ng-href="{{presentation.file_path}}" target="_blank">
                 <div class="doc-top">
                   <p>{{showFileName(presentation.filename)}}</p>
                 </div>
@@ -79,7 +80,7 @@
           <ul class="doc-list link-lst">
             <li ng-repeat="link in topic.Link">
               <a ng-click="deleteLink(topic,$index)" class="del-lib"></a>
-              <a ng-href="{{link.linktext}}" target="_blank">
+              <a ng-href="{{getLink(link.linktext)}}" target="_blank">
                 <div class="doc-top">
                   <p>Go To Link</p>
                 </div>

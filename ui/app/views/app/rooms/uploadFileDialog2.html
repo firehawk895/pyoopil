@@ -17,18 +17,18 @@
 
               <div class="tabpages">
                 <ul class="upload-tab">
-                  <li><a ng-click="uploadFileFlag=true" class="tab " ng-class="{'active' :uploadFileFlag}">Upload file</a>
+                  <li><a ng-click="uploadFileFlag=true" class="tab hand" ng-class="{'active' :uploadFileFlag}">Upload file</a>
                   </li>
-                  <li><a ng-click="uploadFileFlag=false" class="tab"  ng-class="{'active' :!uploadFileFlag}">Upload link</a>
+                  <li><a ng-click="uploadFileFlag=false" class="tab hand"  ng-class="{'active' :!uploadFileFlag}">Upload link</a>
                   </li>
                 </ul>
                 <div ng-show="uploadFileFlag" id="file1" class="tab-contt">
                   <p>Select file to upload</p>
 
                   <input type="file" name="files[]" id='{{file}}'
-                         ng-repeat="file in vm.files">
+                         ng-repeat="file in vm.files" accept="{{getMimeTypes()}}">
 
-                  <span class="add-more tooltip" title="Add File" ng-click="addNewFile()"></span>
+                  <span class="add-more" tooltip="Add File" ng-click="addNewFile()"></span>
                   <!--todo:style add files and put error limit-->
                   <!--<div class="upload-files">-->
                   <!--<div class="add-upload clearfix">-->
@@ -69,7 +69,7 @@
                              ng-model="vm.links[5].url" ng-if="vm.links[5].isVisible">
                     </div>
                   </div>
-                  <span class="add-link tooltip" title="Add Link" ng-click="addNewLink()"></span>
+                  <span class="add-link" tooltip="Add Link" ng-click="addNewLink()"></span>
                 </div>
               </div>
               <div class="nav-btn">

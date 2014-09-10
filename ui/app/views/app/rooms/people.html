@@ -15,10 +15,10 @@
       <!--&lt;!&ndash;</div>&ndash;&gt;-->
       <!--</div>-->
       <div class="pep-right">
-        <a href="" ng-click="openModerateDialog()" class="assign-icon tooltip" id="assign-link"
-           title="Assign Moderators"
+        <a href="" ng-click="openModerateDialog()" class="assign-icon " id="assign-link"
+           tooltip="Assign Moderators"
            ng-if="canModerate"></a>
-        <a href="" ng-click="openRestrictDialog()" class="rest-icon tooltip" id="rest-link" title="Restrict Access"
+        <a href="" ng-click="openRestrictDialog()" class="rest-icon " id="rest-link" tooltip="Restrict Access"
            ng-if="canRestrict"></a>
       </div>
     </div>
@@ -45,10 +45,10 @@
             </div>
           </div>
           <div class="follow-footer">
-            <p class="rest-txt" ng-click="unRestrict($index)"
+            <p class="rest-txt hand" ng-click="unRestrict($index)"
                ng-if="people.UsersClassroom.is_restricted && canRestrict" >Unrestrict</p>
 
-            <p class="rest-txt" ng-click="removeModerator($index)"
+            <p class="rest-txt hand" ng-click="removeModerator($index)"
                ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted && canModerate">Remove
               Moderator</p>
 

@@ -9,26 +9,32 @@
   filter: alpha(opacity=0);
   opacity: 0;
 }
+
 .tooltip.in {
   filter: alpha(opacity=90);
   opacity: .9;
 }
+
 .tooltip.top {
   padding: 5px 0;
   margin-top: -3px;
 }
+
 .tooltip.right {
   padding: 0 5px;
   margin-left: 3px;
 }
+
 .tooltip.bottom {
   padding: 5px 0;
   margin-top: 3px;
 }
+
 .tooltip.left {
   padding: 0 5px;
   margin-left: -3px;
 }
+
 .tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
@@ -38,6 +44,7 @@
   background-color: #000;
   border-radius: 4px;
 }
+
 .tooltip-arrow {
   position: absolute;
   width: 0;
@@ -45,6 +52,7 @@
   border-color: transparent;
   border-style: solid;
 }
+
 .tooltip.top .tooltip-arrow {
   bottom: 0;
   left: 50%;
@@ -52,18 +60,21 @@
   border-width: 5px 5px 0;
   border-top-color: #000;
 }
+
 .tooltip.top-left .tooltip-arrow {
   bottom: 0;
   left: 5px;
   border-width: 5px 5px 0;
   border-top-color: #000;
 }
+
 .tooltip.top-right .tooltip-arrow {
   right: 5px;
   bottom: 0;
   border-width: 5px 5px 0;
   border-top-color: #000;
 }
+
 .tooltip.right .tooltip-arrow {
   top: 50%;
   left: 0;
@@ -71,6 +82,7 @@
   border-width: 5px 5px 5px 0;
   border-right-color: #000;
 }
+
 .tooltip.left .tooltip-arrow {
   top: 50%;
   right: 0;
@@ -78,6 +90,7 @@
   border-width: 5px 0 5px 5px;
   border-left-color: #000;
 }
+
 .tooltip.bottom .tooltip-arrow {
   top: 0;
   left: 50%;
@@ -85,19 +98,20 @@
   border-width: 0 5px 5px;
   border-bottom-color: #000;
 }
+
 .tooltip.bottom-left .tooltip-arrow {
   top: 0;
   left: 5px;
   border-width: 0 5px 5px;
   border-bottom-color: #000;
 }
+
 .tooltip.bottom-right .tooltip-arrow {
   top: 0;
   right: 5px;
   border-width: 0 5px 5px;
   border-bottom-color: #000;
 }
-
 
 /*End of tooltip*/
 
@@ -223,8 +237,21 @@ strong {
 }
 
 .wordwrap {
-  white-space: pre-wrap;      /* CSS3 */
+  white-space: pre-wrap; /* CSS3 */
   white-space: -moz-pre-wrap; /* Firefox */
-  white-space: -o-pre-wrap;   /* Opera 7 */
-  word-wrap: break-word;      /* IE */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+  margin-left: -1.6em;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  padding: 3px 18px 3px 5px;
+}
+
+.select2-container-multi .select2-search-choice-close {
+  left:inherit;
+  right: 2px ;
 }

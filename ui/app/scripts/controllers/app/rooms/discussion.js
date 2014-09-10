@@ -42,12 +42,25 @@ angular.module('uiApp')
               choiceCategories.push(value.choice);
               choiceData.push(parseInt(value.votes));
             });
-
-
             value.chartConfig = {
               options: {
                 chart: {
-                  type: 'bar'
+                  type: 'bar',
+                  width: 380,
+                  height: 270
+                },
+                legend: {
+                  align: 'right',
+                  verticalAlign: 'top'
+                },
+                yAxis: {
+                  labels: {
+                    enabled: false
+                  },
+                  min: 0,
+                  title: {
+                    text: ''
+                  }
                 }
               },
               xAxis: {
@@ -55,15 +68,19 @@ angular.module('uiApp')
               },
               series: [
                 {
-                  data: choiceData
+                  name: 'Reply',
+                  data: choiceData,
+                  color: '#ff992f'
                 }
               ],
               title: {
                 text: null
-              },
-              height: 400
+              }
             };
           }
+          value.Replies = value.Replies || [];
+          if (value.Replies.length)
+            value.Replies = value.Replies.reverse();
           value.currentPage = 1;
           value.newReply = "";
           value.isPraiseVisible = false;
@@ -82,12 +99,12 @@ angular.module('uiApp')
             if (!result.data.length)
               notificationService.show(false, "No more replies to load");
             else if ($scope.discussions[index].currentPage == 1) {
-              $scope.discussions[index].Replies = result.data;
+              $scope.discussions[index].Replies = result.data.reverse();
               $scope.discussions[index].currentPage++;
 
             }
             else {
-              $scope.discussions[index].Replies.concat(result.data);
+              $scope.discussions[index].Replies = result.data.reverse().concat($scope.discussions[index].Replies);
               $scope.discussions[index].currentPage++;
             }
           }
@@ -200,8 +217,8 @@ angular.module('uiApp')
           notificationService.show(false, "Cannot Create Discussion");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
-          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
-            notificationService.show(false, "Cannot upload more than 2mb");
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+            notificationService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "question")
               .then(function (added) {
@@ -229,13 +246,55 @@ angular.module('uiApp')
             notificationService.show(false, "Cannot Create Discussion. Enter minimum two choices");
           else {
             $scope.vm.file = document.getElementById("fileupload").files[0];
-            if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
-              notificationService.show(false, "Cannot upload more than 2mb");
+            if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+              notificationService.show(false, "Cannot upload more than 5 MB");
             else {
               roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
                 .then(function (added) {
                   notificationService.show(true, "Discussion Created Successfully");
                   if (added.status) {
+                    var choiceCategories = [];
+                    var choiceData = [];
+                    angular.forEach(added.data[0].Pollchoice, function (value, key) {
+                      choiceCategories.push(value.choice);
+                      choiceData.push(parseInt(value.votes));
+                    });
+                    added.data[0].chartConfig = {
+                      options: {
+                        chart: {
+                          type: 'bar',
+                          width: 380,
+                          height: 270
+                        },
+                        legend: {
+                          align: 'right',
+                          verticalAlign: 'top'
+                        },
+                        yAxis: {
+                          labels: {
+                            enabled: false
+                          },
+                          min: 0,
+                          title: {
+                            text: ''
+                          }
+                        }
+                      },
+
+                      xAxis: {
+                        categories: choiceCategories
+                      },
+                      series: [
+                        {
+                          name: 'Reply',
+                          data: choiceData,
+                          color: '#ff992f'
+                        }
+                      ],
+                      title: {
+                        text: null
+                      }
+                    };
                     $scope.discussions.unshift(added.data[0]);
                     $scope.vm.subject = "";
                     $scope.vm.body = "";
@@ -263,8 +322,8 @@ angular.module('uiApp')
           notificationService.show(false, "Cannot Create Discussion");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
-          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
-            notificationService.show(false, "Cannot upload more than 2mb");
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+            notificationService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
               then(function (added) {
@@ -301,43 +360,58 @@ angular.module('uiApp')
 
       $scope.setPollVote = function (parentIndex, index) {
 
-        roomService.setPollVote($scope.discussions[parentIndex].Pollchoice[index].id).then(function (result) {
-          if (result.status) {
-            $scope.discussions[parentIndex] = result.data[0];
-            var choiceCategories = [];
-            var choiceData = [];
-            angular.forEach($scope.discussions[parentIndex].Pollchoice, function (value, key) {
-              choiceCategories.push(value.choice);
-              choiceData.push(parseInt(value.votes));
-            });
+        if (!$scope.discussions[parentIndex].Discussion.showPollVote) {
+          roomService.setPollVote($scope.discussions[parentIndex].Pollchoice[index].id).then(function (result) {
+            if (result.status) {
+              $scope.discussions[parentIndex] = result.data[0];
+              var choiceCategories = [];
+              var choiceData = [];
+              angular.forEach($scope.discussions[parentIndex].Pollchoice, function (value, key) {
+                choiceCategories.push(value.choice);
+                choiceData.push(parseInt(value.votes));
+              });
+              $scope.discussions[parentIndex].chartConfig = {
+                options: {
+                  chart: {
+                    type: 'bar',
+                    width: 380,
+                    height: 270
+                  },
+                  legend: {
+                    align: 'right',
+                    verticalAlign: 'top'
+                  },
+                  yAxis: {
+                    labels: {
+                      enabled: false
+                    },
+                    min: 0,
+                    title: {
+                      text: ''
+                    }
+                  }
+                },
 
-
-            $scope.discussions[parentIndex].chartConfig = {
-              options: {
-                chart: {
-                  type: 'bar'
+                xAxis: {
+                  categories: choiceCategories
+                },
+                series: [
+                  {
+                    name: 'Reply',
+                    data: choiceData,
+                    color: '#ff992f'
+                  }
+                ],
+                title: {
+                  text: null
                 }
-              },
-              xAxis: {
-                categories: choiceCategories
-              },
-              series: [
-                {
-
-                  data: choiceData
-                }
-              ],
-              title: {
-                text: null
-              },
-              height: 400
-
-            };
-
-          }
-        })
-      }
-      ;
+              };
+            }
+          })
+        }
+        else
+          notificationService.show(false, "Cannot vote on poll")
+      };
 
       $scope.editorOptions = {
         height: 150
@@ -362,7 +436,22 @@ angular.module('uiApp')
                   value.chartConfig = {
                     options: {
                       chart: {
-                        type: 'bar'
+                        type: 'bar',
+                        width: 380,
+                        height: 270
+                      },
+                      legend: {
+                        align: 'right',
+                        verticalAlign: 'top'
+                      },
+                      yAxis: {
+                        labels: {
+                          enabled: false
+                        },
+                        min: 0,
+                        title: {
+                          text: ''
+                        }
                       }
                     },
                     xAxis: {
@@ -370,15 +459,19 @@ angular.module('uiApp')
                     },
                     series: [
                       {
-                        data: choiceData
+                        name: 'Reply',
+                        data: choiceData,
+                        color: '#ff992f'
                       }
                     ],
                     title: {
                       text: null
-                    },
-                    height: 400
+                    }
                   };
                 }
+                value.Replies = value.Replies || [];
+                if (value.Replies.length)
+                  value.Replies = value.Replies.reverse();
                 value.currentPage = 1;
                 value.newReply = "";
                 value.isPraiseVisible = false;
@@ -392,7 +485,7 @@ angular.module('uiApp')
         }
       };
       $scope.getNames = function (arr) {
-        return arr.join('/n');
+        return arr.join('\n');
       };
     }])
   .

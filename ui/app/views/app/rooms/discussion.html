@@ -20,7 +20,7 @@
       <div class="att-box clearfix">
         <div class="disc-room f-left">
           <div class="attachmentbox">
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" accept="{{getMimeTypes()}}">
             <!--todo:Styling of add files button-->
             <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
             <!--<span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>-->
@@ -56,7 +56,7 @@
             <!--todo:Styling of add files button-->
             <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
             <!--<span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>-->
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" accept="{{getMimeTypes()}}">
             <!--</span>-->
 
             <!--<div id="files" class="files"></div>-->
@@ -77,7 +77,7 @@
           <div class="attachmentbox">
             <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
             <!--<span class="att-txt">Add files <span class="att-size">(Max 100 mb)</span></span>-->
-            <input id="fileupload" type="file" name="files[]">
+            <input id="fileupload" type="file" name="files[]" accept="{{getMimeTypes()}}">
             <!--</span>-->
 
             <!--<div id="files" class="files"></div>-->
@@ -118,9 +118,9 @@
       </div>
       <div class="icon-right">
         <!--<a href="" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
-        <a href="" class="vl-t tooltip" title="Delete" ng-click="deleteDiscussion($index)"><img
+        <a href="" class="vl-t" tooltip="Delete" ng-click="deleteDiscussion($index)"><img
             src="images/disc-close.png"></a>
-        <a class="tooltip" title="Fold/Unfold" href=""
+        <a tooltip="Fold/Unfold" href=""
            ng-class="{'fold-icon' :!discussion.Discussion.isFolded,'folded-icon' :discussion.Discussion.isFolded}"
            ng-click="toggleFold($index)"></a>
       </div>
@@ -261,30 +261,30 @@
         </div>
         <div class="f-right" ng-if="reply.Reply.showGamification">
           <div class="enga">
-            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.en)}}"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.en)}}"
                ng-class="{'msg-link':reply.Reply.en,'nopoint-icon' :reply.Reply.en==0 }">EN</a>
 
 
             <span class="icon-title">{{reply.Reply.en}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.in)}}"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.in)}}"
                ng-class="{'msg-link':reply.Reply.in,'nopoint-icon' :reply.Reply.in==0 }">IN</a>
             <span class="icon-title">{{reply.Reply.in}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.cu)}}"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.cu)}}"
                ng-class="{'msg-link':reply.Reply.cu,'nopoint-icon' :reply.Reply.cu==0 }">CU</a>
 
             <span class="icon-title">{{reply.Reply.cu}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.co)}}"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.co)}}"
                ng-class="{'msg-link':reply.Reply.co,'nopoint-icon' :reply.Reply.co==0 }">CO</a>
             <span class="icon-title">{{reply.Reply.co}}</span>
           </div>
           <div class="enga">
-            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.ed)}}"
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.ed)}}"
                ng-class="{'msg-link':reply.Reply.ed,'nopoint-icon' :reply.Reply.ed==0 }">ED</a>
             <span class="icon-title">{{reply.Reply.ed}}</span>
           </div>

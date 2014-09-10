@@ -11,7 +11,6 @@ angular.module('uiApp')
       $scope.roomId = $stateParams.roomId;
       $scope.showContent = true;
       $scope.lastExpandedItemIndex = -1;
-      $scope.editTopicName = false;
       $scope.libraryUpload = {};
       $scope.libraryUpload.id = null;
       $scope.libraryUpload.name = "";
@@ -19,6 +18,7 @@ angular.module('uiApp')
       $scope.libraryUpload.links = [];
       $scope.linkIndex = 0;
       $scope.vm = {};
+      $scope.vm.editTopicName = false;
       $scope.vm.files = ["file-0"];
       $scope.vm.links = [
         {
@@ -199,8 +199,8 @@ angular.module('uiApp')
 
         angular.forEach($scope.vm.files, function (value, key) {
           var file = document.getElementById(value).files[0];
-          if (angular.isDefined(file) && file.size > 2097152) {
-            notificationService.show(false, "Cannot Upload more than 2 mb");
+          if (angular.isDefined(file) && file.size > 5242880) {
+            notificationService.show(false, "Cannot Upload more than 5 MB");
             hasError = true;
             $scope.libraryUpload.files = [];
             $scope.vm.files = ["file-0"];
@@ -218,9 +218,17 @@ angular.module('uiApp')
         if (!hasError) {
           roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
             then(function (result) {
+              var current = -1;
               if (result.status) {
                 ngDialog.close();
-                $scope.topics.push(result.data[0]);
+                angular.forEach($scope.topics, function (value, key) {
+                  if ($scope.libraryUpload.id == value.Topic.id)
+                    current = key;
+                });
+                if (current > -1)
+                  $scope.topics[current] = result.data[0];
+                else
+                  $scope.topics.push(result.data[0]);
                 $scope.libraryUpload = {};
               }
             });
@@ -228,14 +236,23 @@ angular.module('uiApp')
       };
 
       $scope.addNewFile = function () {
-        $scope.vm.files.push("file-" + $scope.vm.files.length);
-
-
+        if ($scope.vm.files.length < 5)
+          $scope.vm.files.push("file-" + $scope.vm.files.length);
+        else
+          notificationService.show(false, "Max 5 files can be uploaded");
       };
 
       $scope.addNewLink = function () {
         $scope.linkIndex++;
         $scope.vm.links[$scope.linkIndex].isVisible = true;
       };
+
+      $scope.getLink = function (url) {
+        if (!/^https?:\/\//i.test(url)) {
+          url = 'http://' + url;
+        }
+        return url;
+      };
+
     }])
 ;

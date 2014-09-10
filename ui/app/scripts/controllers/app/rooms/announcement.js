@@ -29,8 +29,8 @@ angular.module('uiApp')
           notificationService.show(false, "Cannot Create Announcement");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
-          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 2097152)
-            notificationService.show(false, "Cannot upload more than 2mb");
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+            notificationService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
               .then(function (added) {
