@@ -1,4 +1,5 @@
 <section class="pagecontent clearfix">
+  <div class="roomTitle">{{roomId}}<span class="title-arr hand"></span></div>
   <div class="library-wrapper library">
     <div class="topbuttons">
       <a ng-click="showStep1()" class="follow" ng-if="canUpload" href="">Upload</a>
@@ -82,7 +83,7 @@
               <a ng-click="deleteLink(topic,$index)" class="del-lib"></a>
               <a ng-href="{{getLink(link.linktext)}}" target="_blank">
                 <div class="doc-top">
-                  <p>Go To Link</p>
+                  <p class="wordwrap">Go To {{link.linktext}}</p>
                 </div>
                 <div class="doc-end clearfix">
                   <img src="images/link-icon.png" class="m3-0">

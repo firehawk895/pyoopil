@@ -1,5 +1,6 @@
 <!-- Right Content -->
 <section class="pagecontent clearfix">
+  <div class="roomTitle">{{roomId}}<span class="title-arr hand"></span></div>
   <div class="library-wrapper people">
     <div class="topbuttons clearfix">
       <!--<div class="all-dd">-->
@@ -46,7 +47,7 @@
           </div>
           <div class="follow-footer">
             <p class="rest-txt hand" ng-click="unRestrict($index)"
-               ng-if="people.UsersClassroom.is_restricted && canRestrict" >Unrestrict</p>
+               ng-if="people.UsersClassroom.is_restricted && canRestrict">Unrestrict</p>
 
             <p class="rest-txt hand" ng-click="removeModerator($index)"
                ng-if="people.UsersClassroom.is_moderator && !people.UsersClassroom.is_restricted && canModerate">Remove

@@ -1,5 +1,14 @@
 <!-- Right Content -->
 <section class="pagecontent clearfix">
+  <div class="roomTitle">{{roomId}}<span class="title-arr hand" ng-click="showInfoPopup=true"></span>
+  <div class="arr-dd" ng-if="showInfoPopup" ng-blur="showInfoPopup=false">
+    <ul>
+      <li class="lastli"><a href="">Reset Access Code</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
   <div class="content-wrapper">
     <!--content top-->
     <form name="formAnnouncement" ng-if="canPost">
@@ -20,9 +29,9 @@
                 <input id="fileupload" type="file" name="files[]"
                        class="i_file" accept="{{getMimeTypes()}}">
                 <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
-                <!--&lt;!&ndash;todo:Style add files button&ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="att-txt">Add files &ndash;&gt;-->
-                <!--&lt;!&ndash;<span class="att-size">(Max 100 mb)</span></span>&ndash;&gt;-->
+                <!--<!--todo:Style add files button-->
+                <!--<!--<span class="att-txt">Add files -->
+                <!--<!--<span class="att-size">(Max 100 mb)</span></span>-->
 
                 <!--</span>-->
 
@@ -30,7 +39,7 @@
               </div>
             </div>
             <div class="f-right">
-              <button type="reset" class="sub-btn cnl-btn hand" >Cancel</button>
+              <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
               <button class="sub-btn chk-file" ng-click="createAnnouncement()">Create
               </button>
 
@@ -42,7 +51,7 @@
     <!--content list-->
     <div class="announcement-outer">
       <div class="middivouter">
-        <div infinite-scroll="updatePage()" >
+        <div infinite-scroll="updatePage()">
 
           <div class="listbox" ng-repeat="announcement in announcements">
             <div class="imgbox">
@@ -64,7 +73,9 @@
             <p class="wordwrap">{{announcement.Announcement.body}}</p>
 
             <p class="cl">
-              <a class="dlfile" ng-show="announcement.Announcement.filename" ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook"> {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+              <a class="dlfile" ng-show="announcement.Announcement.filename"
+                 ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook">
+                {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
               <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
                  ng-show="announcement.Announcement.filename" target="_blank"></a>
             </p>

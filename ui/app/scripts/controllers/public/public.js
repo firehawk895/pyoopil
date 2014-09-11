@@ -5,12 +5,11 @@ angular.module('uiApp')
 //      if (globalService.getIsAuthorised())
 //        $location.path('/app/room/my/');
 
-
+      $scope.url = globalService.getBaseUrl();
       $scope.openLogin = function () {
         ngDialog.open({
           template: 'views/public/login.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
+          scope: $scope
         });
       };
       $scope.vm = {};
@@ -36,9 +35,12 @@ angular.module('uiApp')
       $scope.openSignUp = function () {
         ngDialog.open({
           template: 'views/public/signup.html',
-          scope: $scope,
-          className: 'ngdialog-theme-default'
+          scope: $scope
         });
+      };
+      $scope.goToHome = function (path) {
+//        console.log($scope.url+"/#"+path);
+        $location.path($scope.url + "/#" + path);
       };
 
     }]);

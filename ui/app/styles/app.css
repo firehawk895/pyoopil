@@ -245,6 +245,7 @@ strong {
 
 .ui-slider-horizontal .ui-slider-handle {
   margin-left: -1.6em;
+  left: -6%;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
@@ -252,9 +253,24 @@ strong {
 }
 
 .select2-container-multi .select2-search-choice-close {
-  left:inherit;
-  right: 2px ;
+  left: inherit;
+  right: 2px;
 }
-.dialogLook{
-  width:800;
+
+.dialogLook {
+  width: 800;
+}
+
+div.roomTitle {
+  position: fixed;
+  margin-top: -76px;
+  margin-left: 10px;
+  z-index: 4;
+  font-weight: bold;
+  color: black;
+  font-size: 17px
+}
+
+.arr-dd {
+  display: block;
 }

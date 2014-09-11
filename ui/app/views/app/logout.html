@@ -4,7 +4,7 @@
   <header class="landing-page">
     <section class="clearfix logoutheader">
       <!-- Logo-->
-      <div class="logo"><a href="javascript:void(0)"><img src="images/logo.png" class="f-left" alt="logo"></a></div>
+      <div class="logo"><a ui-sref="public" class="hand"><img src="images/logo.png" class="f-left" alt="logo"></a></div>
     </section>
   </header>
 </div>
@@ -107,21 +107,21 @@
       <div class="footerlinks">
         <div class="social clearfix">
           <ul>
-            <li><a href="#" class="fb">facebook</a></li>
+            <li><a href="" class="fb">facebook</a></li>
             <!--<li><a href="#" class="linkedin">Linkedin</a></li>-->
-            <li><a href="#" class="twitter">twitter</a></li>
+            <li><a href="" class="twitter">twitter</a></li>
             <!--<li><a href="#" class="gplus">googleplus</a></li>-->
             <!--<li><a href="#" class="youtube">youtube</a></li>-->
           </ul>
         </div>
         <ul>
-          <li><a href="">What is Pyoopil</a></li>
-          <li><a href="">What we do for you</a></li>
-          <li><a href="">Features</a></li>
-          <li><a href="">Why Pyoopil</a></li>
-          <li><a href="">Our Team</a></li>
-          <li><a href="">What's Next</a></li>
-          <li><a href="">Terms & conditions</a></li>
+          <li><a ng-click="goToHome('/')" class="hand">What is Pyoopil</a></li>
+          <li><a ng-click="goToHome('showcase')" class="hand">What we do for you</a></li>
+          <li><a ng-click="goToHome('testimonials')" class="hand">Features</a></li>
+          <li><a ng-click="go('/')" class="hand">Why Pyoopil</a></li>
+          <li><a ng-click="go('/')" class="hand">Our Team</a></li>
+          <li><a ng-click="go('/')" class="hand">What's Next</a></li>
+          <li><a ng-click="go('/')" class="hand">Terms & conditions</a></li>
         </ul>
       </div>
       <div class="hiring">
