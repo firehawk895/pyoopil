@@ -74,9 +74,20 @@ angular
 
         })
         .state('app.rooms.discussions', {
+          abstract: true,
           url: "discussions/",
-          templateUrl: "views/app/rooms/discussion.html",
+          templateUrl: "views/app/rooms/discussion/discussion.html",
           controller: "discussionCtrl"
+        })
+        .state('app.rooms.discussions.all', {
+          url: "all/",
+          templateUrl: "views/app/rooms/discussion/allDiscussion.html",
+          controller: "allDiscussionCtrl"
+        })
+        .state('app.rooms.discussions.folded', {
+          url: "folded/",
+          templateUrl: "views/app/rooms/discussion/foldedDiscussion.html",
+          controller: "foldedDiscussionCtrl"
         })
         .state('app.rooms.announcements', {
           url: "announcements/",
@@ -118,6 +129,22 @@ angular
           url: "/logout/",
           templateUrl: "views/app/logout.html",
           controller: "publicCtrl"
+        })
+        .state('app.profile', {
+          url: "profile/",
+          abstract: true,
+          templateUrl: "views/app/profile/profile.html",
+          controller: "profileCtrl"
+        })
+        .state('app.profile.my', {
+          url: 'my/',
+          templateUrl: "views/app/profile/myProfile.html",
+          controller: "profileCtrl"
+        })
+        .state('app.profile.feedback', {
+          url: 'feedback/',
+          templateUrl: "views/app/profile/feedback.html",
+          controller: "profileCtrl"
         });
 
     }])

@@ -64,7 +64,7 @@
             <p class="wordwrap">{{announcement.Announcement.body}}</p>
 
             <p class="cl">
-              <a class="dlfile" ng-show="announcement.Announcement.filename">{{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+              <a class="dlfile" ng-show="announcement.Announcement.filename" ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook"> {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
               <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
                  ng-show="announcement.Announcement.filename" target="_blank"></a>
             </p>

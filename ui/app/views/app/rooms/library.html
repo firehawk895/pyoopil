@@ -26,8 +26,8 @@
           <ul class="doc-list">
             <li ng-repeat="document in topic.Documents">
               <a ng-click="deleteDoc(topic,$index)" class="del-lib"></a>
-              <a ng-href="{{document.file_path}}" target="_blank">
-                <div class="doc-top">
+              <a href="" ng-click="openDocViewerDialog(document.file_path)">
+                <div class="doc-top hand">
                   <p>{{showFileName(document.filename)}}</p>
                 </div>
               </a>
@@ -62,8 +62,8 @@
           <ul class="doc-list">
             <li ng-repeat="presentation in topic.Presentations">
               <a ng-click="deletePresentation(topic,$index)" class="del-lib"></a>
-              <a ng-href="{{presentation.file_path}}" target="_blank">
-                <div class="doc-top">
+              <a ng-click="openDocViewerDialog(presentation.file_path)">
+                <div class="doc-top hand">
                   <p>{{showFileName(presentation.filename)}}</p>
                 </div>
               </a>

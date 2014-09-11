@@ -2,8 +2,8 @@
  * Created by himanshu on 21/8/14.
  */
 angular.module('uiApp')
-  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog',
-    function ($scope, $stateParams, roomService, notificationService, ngDialog) {
+  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', 'modalService',
+    function ($scope, $stateParams, roomService, notificationService, ngDialog, modalService) {
 
       $scope.page = 1;
       $scope.pageEnd = false;
@@ -252,6 +252,10 @@ angular.module('uiApp')
           url = 'http://' + url;
         }
         return url;
+      };
+
+      $scope.openDocViewerDialog = function (path) {
+        modalService.openDocViewerDialog($scope, path);
       };
 
     }])

@@ -1,0 +1,205 @@
+<div infinite-scroll="updatePage()">
+<ul class="disc-list" ng-repeat="discussion in discussions" ng-init="discussionIndex=$index">
+<li ng-class="{'lastli' :!discussion.Replies.length}">
+  <div class="disc-box clearfix">
+    <div class="disc-left">
+      <a href=""><img src="images/follow1.jpg" class="disc-img"></a>
+    </div>
+    <div class="arrow_box">
+      <span class="arrowbox-icon quest-icon" ng-if="discussion.Discussion.type=='question' "></span>
+      <span class="arrowbox-icon" ng-if="discussion.Discussion.type=='poll' "></span>
+      <span class="arrowbox-icon note-icon" ng-if="discussion.Discussion.type=='note' "></span>
+
+      <div class="name-left">
+        <p class="tname">{{discussion.Discussion.topic}}</p>
+
+        <p class="tby"><a href="">by {{discussion.AppUser.fname}} {{discussion.AppUser.lname}}</a></p>
+
+        <p class="tby">{{discussion.Discussion.created}}</p>
+      </div>
+      <div class="icon-right">
+        <!--<a href="" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
+        <a href="" class="vl-t" tooltip="Delete" ng-click="deleteDiscussion($index)"><img
+            src="images/disc-close.png"></a>
+        <a tooltip="Fold/Unfold" href=""
+           ng-class="{'fold-icon' :!discussion.Discussion.isFolded,'folded-icon' :discussion.Discussion.isFolded}"
+           ng-click="toggleFold($index)"></a>
+      </div>
+      <div class="clear"></div>
+      <p class="ttxt wordwrap" ng-bind-html="discussion.Discussion.body | unsafe"></p>
+
+      <div class="clearfix" ng-if="discussion.Discussion.type=='poll'">
+        <div class="poll-left">
+          <a href="" class="ans-btn" ng-repeat="poll in discussion.Pollchoice"
+             ng-click="setPollVote(discussionIndex,$index)">{{poll.choice}}</a>
+        </div>
+        <div class="poll-right" ng-if="discussion.Discussion.showPollVote">
+          <div id="chart_div2">
+            <highchart id="chart1" config="discussion.chartConfig"></highchart>
+          </div>
+        </div>
+
+      </div>
+      <p class="cl">
+        <a class="dlfile hand" ng-show="discussion.Discussion.filename"
+           ng-click="openDocViewerDialog(discussion.Discussion.file_path)">{{discussion.Discussion.filename}}.{{discussion.Discussion.filesize}}</a>
+        <a ng-href="{{discussion.Discussion.file_path}}" class="down-icon"
+           ng-show="discussion.Discussion.filename" target="_blank"></a>
+      </p>
+      <br>
+
+      <div class="arrbox-footer clearfix">
+        <div class="f-left prs-sp">
+          <a href="" class="icon-title">
+            <span class="praise-icon"
+                  ng-class="{'nopraise' :discussion.Discussion.showGamification}"
+                  ng-click="discussion.isPraiseVisible=!discussion.isPraiseVisible">{{discussion.Discussion.display_praise}}
+            </span>Praise</a>
+
+          <div class="clk-tt" ng-if="discussion.isPraiseVisible && !discussion.Discussion.showGamification">
+            <ul>
+              <li><a href="" ng-click="setGamificationVoteDiscussion($index,'en')"><span>EH</span>Engagement</a>
+              </li>
+              <li><a href="" ng-click="setGamificationVoteDiscussion($index,'in')"><span>IN</span>Intelligence</a>
+              </li>
+              <li><a href="" ng-click="setGamificationVoteDiscussion($index,'cu')"><span>CU</span>Curiosity</a>
+              </li>
+              <li ng-class="{'lastli' :canEndorse}"><a href=""
+                                                       ng-click="setGamificationVoteDiscussion($index,'co')"><span>CO</span>Contribution</a>
+              </li>
+              <li class="lastli" ng-if="canEndorse"><a href=""
+                                                       ng-click="setGamificationVoteDiscussion($index,'ed')"><span>EN</span>Endorsement</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="f-right" ng-if="discussion.Discussion.showGamification">
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.en)}}"
+               ng-class="{'msg-link':discussion.Discussion.en,'nopoint-icon' :discussion.Discussion.en==0 }">EN</a>
+
+            <span class="icon-title">{{discussion.Discussion.en}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.in)}}"
+               ng-class="{'msg-link':discussion.Discussion.in,'nopoint-icon' :discussion.Discussion.in==0 }">IN</a>
+            <span class="icon-title">{{discussion.Discussion.in}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.cu)}}"
+               ng-class="{'msg-link':discussion.Discussion.cu,'nopoint-icon' :discussion.Discussion.cu==0 }">CU</a>
+            <span class="icon-title">{{discussion.Discussion.cu}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.co)}}"
+               ng-class="{'msg-link':discussion.Discussion.co,'nopoint-icon' :discussion.Discussion.co==0 }">CO</a>
+            <span class="icon-title">{{discussion.Discussion.co}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(discussion.Gamificationvote.ed)}}"
+               ng-class="{'msg-link':discussion.Discussion.ed,'nopoint-icon' :discussion.Discussion.ed==0 }">ED</a>
+            <span class="icon-title">{{discussion.Discussion.ed}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bor-rep" ng-if="discussion.moreReplies"><a href="" class="view-more" ng-click="getReplies($index)">View
+    more answers <img
+        src="images/view-all.png"></a>
+  </div>
+</li>
+<li ng-class="{'lastli' :$index == discussion.Replies.length-1}" ng-repeat="reply in discussion.Replies">
+  <div class="disc-box clearfix">
+    <div class="disc-left">
+      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
+    </div>
+    <div class="arrow_box">
+      <div class="name-left">
+        <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.fname}}</a></p>
+
+        <p class="tby">{{reply.Reply.created}}</p>
+      </div>
+      <div class="icon-right">
+                  <span class="dd-block" ng-click="reply.isIconVisible=!reply.isIconVisible">
+                  <a href="" class="dd-icon dd-click"></a>
+                  <div class="arr-dd" ng-if="reply.isIconVisible">
+                    <ul>
+                      <!--<li><a href="">Report Abuse</a>-->
+                      <!--</li>-->
+                      <li class="lastli"><a href="" ng-click="deleteReply(discussionIndex,$index)">Delete Comment</a>
+                      </li>
+                    </ul>
+                  </div>
+                  </span>
+      </div>
+      <div class="clear"></div>
+      <p class="ttxt wordwrap">{{reply.Reply.comment}} </p>
+
+      <div class="arrbox-footer clearfix">
+        <div class="f-left prs-sp">
+          <a href="" class="icon-title"><span class="praise-icon"
+                                              ng-class="{'nopraise' :reply.Reply.showGamification}"
+                                              ng-click="reply.isReplyPraiseVisible=!reply.isReplyPraiseVisible">
+            {{reply.Reply.display_praise}}</span>Praise</a>
+
+          <div class="clk-tt" ng-if="reply.isReplyPraiseVisible && !reply.Reply.showGamification">
+            <ul>
+              <li><a href="" ng-click="setGamificationVoteReply(discussionIndex,$index,'en')"><span>EH</span>Engagement</a>
+              </li>
+              <li><a href="" ng-click="setGamificationVoteReply(discussionIndex,$index,'in')"><span>IN</span>Intelligence</a>
+              </li>
+              <li><a href=""
+                     ng-click="setGamificationVoteReply(discussionIndex,$index,'cu')"><span>CU</span>Curiosity</a>
+              </li>
+              <li ng-class="{'lastli' :canEndorse}"><a href=""
+                                                       ng-click="setGamificationVoteReply(discussionIndex,$index,'co')"><span>CO</span>Contribution</a>
+              </li>
+              <li class="lastli" ng-click="setGamificationVoteReply(discussionIndex,$index,'ed')" ng-if="canEndorse"><a
+                  href=""><span>EN</span>Endorsement</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="f-right" ng-if="reply.Reply.showGamification">
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.en)}}"
+               ng-class="{'msg-link':reply.Reply.en,'nopoint-icon' :reply.Reply.en==0 }">EN</a>
+
+
+            <span class="icon-title">{{reply.Reply.en}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.in)}}"
+               ng-class="{'msg-link':reply.Reply.in,'nopoint-icon' :reply.Reply.in==0 }">IN</a>
+            <span class="icon-title">{{reply.Reply.in}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.cu)}}"
+               ng-class="{'msg-link':reply.Reply.cu,'nopoint-icon' :reply.Reply.cu==0 }">CU</a>
+
+            <span class="icon-title">{{reply.Reply.cu}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.co)}}"
+               ng-class="{'msg-link':reply.Reply.co,'nopoint-icon' :reply.Reply.co==0 }">CO</a>
+            <span class="icon-title">{{reply.Reply.co}}</span>
+          </div>
+          <div class="enga">
+            <a href="" class="point-icon" tooltip-html-unsafe="{{getNames(reply.Gamificationvote.ed)}}"
+               ng-class="{'msg-link':reply.Reply.ed,'nopoint-icon' :reply.Reply.ed==0 }">ED</a>
+            <span class="icon-title">{{reply.Reply.ed}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+<li>
+  <form ng-submit="addReply($index)">
+    <input class="add-ans" type="text" placeholder="Add your answer..." ng-model="discussion.newReply"
+           ng-required="true">
+  </form>
+</li>
+</ul>
+</div>

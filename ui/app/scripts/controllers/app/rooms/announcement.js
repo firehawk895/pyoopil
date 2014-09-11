@@ -8,8 +8,8 @@
  * Controller of the uiApp
  */
 angular.module('uiApp')
-  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService',
-    function ($scope, $stateParams, roomService, notificationService) {
+  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', '$sce', 'modalService',
+    function ($scope, $stateParams, roomService, notificationService, ngDialog, $sce, modalService) {
       //todo : check if room id has access
       $scope.page = 1;
       $scope.vm = {};
@@ -37,7 +37,6 @@ angular.module('uiApp')
                 notificationService.show(added.status, added.message);
                 if (added.status) {
                   $scope.announcements.unshift(added.data);
-                  console.log($scope.announcements);
                   $scope.vm = {};
                 }
               });
@@ -59,7 +58,8 @@ angular.module('uiApp')
       $scope.cancelAnnouncement = function () {
         $scope.vm = {};
       };
+      $scope.openDocViewerDialog = function (path) {
+        modalService.openDocViewerDialog($scope, path);
+      };
 
-
-    }])
-;
+    }]);

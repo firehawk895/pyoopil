@@ -67,7 +67,7 @@ angular.module('uiApp')
         if (restricted)
           notificationService.show(false, "Cannot Enter Classroom");
         else
-          $state.go('app.rooms.discussions', { roomId: id });
+          $state.go('app.rooms.discussions.all', { roomId: id });
       };
 
       $scope.closeClassDialog = function () {
