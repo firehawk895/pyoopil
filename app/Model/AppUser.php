@@ -234,4 +234,33 @@ class AppUser extends User {
         $this->Follow->toggleFollow();
 //        $this->log("what");
     }
+
+    /**
+     * get a users profile
+     * @param $userId
+     * @return array
+     */
+    public function getProfile($userId) {
+        App::uses('CakeTime', 'Utility');
+
+        $options = array(
+            'fields' => array(
+                'fname', 'lname', 'gender', 'dob', 'location',
+                'facebook_link', 'twitter_link', 'linkedin_link',
+                'email', 'mobile', 'university_assoc', 'location_full'
+            ),
+            'conditions' => array(
+                'AppUser.id' => $userId
+            )
+        );
+
+        $data = $this->find('first', $options);
+        $data['AppUser']['age'] = null;
+
+        $this->log($data);
+        if (isset($data['AppUser']['dob'])) {
+            $data['AppUser']['age'] = CakeTime::timeAgoInWords($data['AppUser']['dob']);
+        }
+        return $data;
+    }
 }
