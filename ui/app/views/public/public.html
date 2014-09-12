@@ -1,138 +1,30 @@
-<html>
-<!--[if lt IE 7 ]>
-<html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]>
-<html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]>
-<html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
-<html lang="en"> <!--<![endif]-->
-<head>
+<!-- Css -->
 
-  <!-- Basic Page Needs -->
-  <meta charset="utf-8">
-  <title>Pyoopil</title>
-  <meta name="description" content="Landing page for Pyoopil Education Technologies">
-  <meta name="author" content="Pyoopil Education Technologies">
+<link rel="stylesheet" href="styles/public/public-cat-all.css" type="text/css">
 
-  <!-- Mobile Specific Metas -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<!-- Webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700|Open+Sans:400,300' rel='stylesheet'
+      type='text/css'>
 
-  <!-- Css -->
-  <link rel="stylesheet" href="styles/landing-layout.css">
-  <link rel="stylesheet" href="styles/animate.css">
-  <link rel="stylesheet" href="styles/landing.css">
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="css/ie.css">
+<![endif]-->
 
-  <!-- Webfonts -->
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,700|Open+Sans:400,300' rel='stylesheet'
-        type='text/css'>
+<!-- Favicons -->
+<link rel="shortcut icon" href="images/favicon.ico">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
-  <!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+<style type="text/css">
 
-  <!--[if IE 9]>
-  <link rel="stylesheet" type="text/css" href="css/ie.css">
-  <![endif]-->
-
-  <!-- Favicons -->
-  <link rel="shortcut icon" href="images/favicon.ico">
-  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-
-  <link rel="stylesheet" href="colors/aaa.css">
-  <style type="text/css">
-    #styleswitcher {
-      height: auto;
-      position: fixed;
-      top: 30%;
-      left: -250px;
-      border-radius: 5px;
-      -webkit-border-radius: 5px;
-    }
-
-    #styleswitcher ul {
-      margin-bottom: 0;
-      padding: 20px 14px 11px 20px;
-      background: #fff;
-      display: table;
-      width: 216px;
-      border-right: 1px solid #ccc;
-      clear: left;
-    }
-
-    #styleswitcher li i {
-      color: #fff;
-      line-height: 30px;
-      width: 30px;
-      text-align: center;
-    }
-
-    #styleswitcher h3 {
-      border-bottom: 1px solid #ccc;
-      border-top: 1px solid #ccc;
-      padding: 10px 36px 10px 23px;
-      text-transform: uppercase;
-      font-size: 18px;
-      margin-bottom: 0;
-      float: left;
-    }
-
-    #styleswitcher h3, #styleswitcher strong {
-      color: #7F7F7F;
-      background: #fff;
-    }
-
-    #styleswitcher p {
-      color: #727171;
-      font-size: 10px;
-      line-height: 18px;
-      width: 200px;
-      margin: 0;
-      padding: 0 25px 20px;
-      display: block;
-      float: left;
-      background: #fff;
-      border-bottom-right-radius: 5px;
-      border-right: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-    }
-
-    #styleswitcher li {
-      width: 30px;
-      height: 30px;
-      margin: 5px;
-      display: block;
-      float: left;
-      cursor: pointer;
-      border-radius: 3px;
-      -webkit-border-radius: 3px;
-    }
-
-    #styleswitcher .trigger {
-      background: #fff;
-      width: 60px;
-      height: 60px;
-      line-height: 60px;
-      float: left;
-      text-align: center;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 25px;
-      cursor: pointer;
-      color: #ccc;
-    }
-
-    #styleswitcher .trigger:hover {
-      color: #7F7F7F;
-    }
-  </style>
+</style>
 
 </head>
-<body>
 <!-- Primary Page Layout
 ================================================== -->
 
@@ -867,7 +759,7 @@
         <i class="fa fa-android"></i>
         <i class="fa fa-windows"></i>
       </div>
-      <a href="#" class="button white">Request for sign up Now</a>
+      <a href="#" class="button white" ng-click="openSignUp()">Request for sign up Now</a>
     </div>
 
   </div>
@@ -922,7 +814,7 @@
     <div class="sixteen columns contact-form">
       <!--<div class="clearfix"></div>-->
       <!--<div class="hiring">-->
-        <!--<a href="">We are Hiring!!!</a>-->
+      <!--<a href="">We are Hiring!!!</a>-->
       <!--</div>-->
       <!--<div class="clearfix"></div>-->
       <h2>Get in touch with us</h2>
@@ -963,95 +855,4 @@
 
 <!-- Javascript
 ================================================== -->
-<script type="text/javascript" src="scripts/others/jquery.1.10.2.js"></script>
-<script type="text/javascript" src="scripts/others/jquery.loupe.min.js"></script>
-<script type="text/javascript" src="scripts/others/tweetie.js"></script>
-<script type="text/javascript" src="scripts/others/jquery.placeholder.js"></script>
-<script type="text/javascript" src="scripts/others/waypoints.min.js"></script>
-<script type="text/javascript" src="scripts/others/waypoints-sticky.min.js"></script>
-<script type="text/javascript" src="scripts/others/jquery.countTo.js"></script>
-<script type="text/javascript" src="scripts/others/jquery.parallax-1.1.3.js"></script>
-<script type="text/javascript" src="scripts/others/jquery.nicescroll.min.js"></script>
-<script type="text/javascript" src="scripts/others/custom.js"></script>
-<script type="text/javascript" src="scripts/others/animations.js"></script>
-<script type="text/javascript">
-  $('.tweet').twittie();
-</script>
-
-<!--[if lt IE 10]>
-<script type="text/javascript">
-  $(document).ready(function () {
-
-    $(".lightbox-close").click(function () {
-      $(".lightbox, .lightbox-overlay").hide();
-    });
-
-    $(".feature-selector-buttons li").click(function () {
-      $('.feature-selector-frame img').hide();
-    });
-
-  });
-</script>
-<![endif]-->
-
-
-<!--  STYLESWITCHER ==================================================
-<div id="styleswitcher">
-	<h3>Demo Color Schemes</h3>
-	<i class="fa fa-signal trigger"></i>
-	<ul>
-		<li style="background: #4b97ed;" data-color="aaa"><i class="fa fa-check"></i></li>
-		<li style="background: #1abc9c;" data-color="bbb"></li>
-		<li style="background: #2ecc71;" data-color="ccc"></li>
-		<li style="background: #e74c3c;" data-color="ddd"></li>
-		<li style="background: #34495e;" data-color="eee"></li>
-		<li style="background: #d35400;" data-color="fff"></li>
-		<li style="background: #9b59b6;" data-color="ggg"></li>
-		<li style="background: #FAC105;" data-color="hhh"></li>
-		<li style="background: #E35DD8;" data-color="iii"></li>
-		<li style="background: #E64E7B;" data-color="jjj"></li>
-		<li style="background: #A967EB;" data-color="kkk"></li>
-		<li style="background: #855313;" data-color="lll"></li>
-		<li style="background: #5F5AE8;" data-color="mmm"></li>
-		<li style="background: #8ADED8;" data-color="nnn"></li>
-		<li style="background: #43B554;" data-color="ooo"></li>
-		<li style="background: #D2DB97;" data-color="ppp"></li>
-		<li style="background: #E6A77A;" data-color="qqq"></li>
-		<li style="background: #BFBBBA;" data-color="rrr"></li>
-		<li style="background: #8ECADE;" data-color="sss"></li>
-		<li style="background: #D3F2AC;" data-color="ttt"></li>
-	</ul>
-	<p>These are just demos, you can choose from unlimited colors in the theme</p>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){
-
-	$("#styleswitcher li").click(function(){
-		var colorFile = $(this).data("color");
-		$("link").last().attr("href","colors/"+colorFile+".css");
-		$("#styleswitcher li").empty();
-		$(this).html('<i class="fa fa-check"></i>');
-	});
-
-
-	$(function () {
-		function first() {
-		   $("#styleswitcher").animate({left: "+=250px"}, 500);
-			$(this).one("click", second);
-		}
-		function second() {
-		   $("#styleswitcher").animate({left: "-=250px"}, 500);
-			$(this).one("click", first);
-		}
-		$("#styleswitcher .trigger").one("click", first);
-	});
-
-});
-</script>
- STYLESWITCHER ================================================== -->
-
-
-<!-- End Document
-================================================== -->
-</body>
-</html>
+<script type="text/javascript" src="scripts/others/public-cat-all.js"></script>

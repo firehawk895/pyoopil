@@ -29,7 +29,7 @@
               <a ng-click="deleteDoc(topic,$index)" class="del-lib"></a>
               <a href="" ng-click="openDocViewerDialog(document.file_path)">
                 <div class="doc-top hand">
-                  <p>{{showFileName(document.filename)}}</p>
+                  <p class="wordwrap">{{showFileName(document.filename)}}</p>
                 </div>
               </a>
 
@@ -65,7 +65,7 @@
               <a ng-click="deletePresentation(topic,$index)" class="del-lib"></a>
               <a ng-click="openDocViewerDialog(presentation.file_path)">
                 <div class="doc-top hand">
-                  <p>{{showFileName(presentation.filename)}}</p>
+                  <p class="wordwrap">{{showFileName(presentation.filename)}}</p>
                 </div>
               </a>
 
