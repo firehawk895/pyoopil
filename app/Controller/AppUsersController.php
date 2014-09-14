@@ -105,6 +105,26 @@ class AppUsersController extends UsersController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * @param string $type
+     * @param null $token
+     */
+    public function verify($type = 'email', $token = null) {
+        if ($type == 'reset') {
+            // Backward compatiblity
+            $this->request_new_password($token);
+        }
+
+        try {
+            $this->{$this->modelClass}->verifyEmail($token);
+            $this->Session->setFlash(__d('users', 'Your e-mail has been validated!'));
+            return $this->redirect('/');
+        } catch (RuntimeException $e) {
+            $this->Session->setFlash($e->getMessage());
+            return $this->redirect('/');
+        }
+    }
+
     public function isAuthorized($user = null) {
         if ($user) {
             return true;
