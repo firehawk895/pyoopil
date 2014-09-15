@@ -9,7 +9,16 @@
       <div class="myprofile clearfix">
         <div class="myprofile-left">
           <a href="" class="edit-pro msg-link" ng-if="vm.editProfile" ng-click="openLeftEditDialog()">Edit</a>
-          <a href=""><img src="images/chat1.jpg" class="pro-img"></a>
+
+          <div class="profile-img" ng-class="{'hand' :vm.editProfile}">
+              <span class="fileinput-button cam-icon" ng-if="vm.editProfile">
+              <input id="fileInput" type="file" name="files[]"
+                     onchange="angular.element(this).scope().file_changed(this)" ng-model="vm.image" accept="image/*">
+              </span>
+
+            <div id="files" class="files"></div>
+            <img src="images/chat1.jpg" class="pro-img">
+          </div>
 
           <p class="pro-name"><a href="">{{profile.fname}} {{profile.lname}}</a>
           </p>
@@ -50,8 +59,8 @@
           <!--</ul>-->
           <!--</div>-->
           <div class="profile-detail">
-            <a href="" class="oredit-btn edit-click" ng-if="vm.editProfile">Edit</a>
-            <table>
+            <a href="" class="oredit-btn edit-click" ng-if="vm.editProfile" ng-click="editFullProfile()">Edit</a>
+            <table ng-class="{'post-edit-pnl mainpro' :vm.editFullProfile}">
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/mail.png" alt="img"></td>
                 <td class="pro-td2">
@@ -61,37 +70,52 @@
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/phone.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="{{profile.mobile | NA}}" disabled>
+                  <input type="text" class="pro-input" value="{{profile.mobile | NA}}" ng-model="profile.mobile"
+                         ng-readonly="!vm.editFullProfile">
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/institute.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="Student at {{profile.university_assoc}} " disabled>
+                  <input type="text" class="pro-input" value="{{profile.university_assoc | NA}}"
+                         ng-model="profile.university_assoc"
+                         ng-readonly="!vm.editFullProfile">
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/location.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>{{profile.location_full | NA}}</textarea>
+                  <textarea class="pro-txtarea" ng-readonly="!vm.editFullProfile" ng-model="profile.location_full">{{profile.location_full
+                    | NA}}</textarea>
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>{{profile.facebook_link | NA}}</textarea>
+                  <textarea class="pro-txtarea" ng-readonly="!vm.editFullProfile" ng-model="profile.facebook_link">{{profile.facebook_link
+                    | NA}}</textarea>
                 </td>
               </tr>
               <tr ng-if="profile.twitter_link">
                 <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>{{profile.twitter_link}}</textarea>
+                  <textarea class="pro-txtarea" ng-readonly="!vm.editFullProfile" ng-model="profile.twitter_link">{{profile.twitter_link
+                    | NA}}</textarea>
                 </td>
               </tr>
               <tr ng-if="profile.linkedin_link">
                 <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>{{profile.linkedin_link}}</textarea>
+                  <textarea class="pro-txtarea" ng-readonly="!vm.editFullProfile" ng-model="profile.linkedin_link">{{profile.linkedin_link
+                    | NA}}</textarea>
+                </td>
+              </tr>
+              <tr ng-if="vm.editFullProfile">
+                <td colspan="2">
+                  <div class="pro-btn">
+                    <input type="button" class="sub-btn" value="Save" ng-click="saveFullProfile()">
+                    <input type="button" class="sub-btn cnl-btn" value="Cancel" ng-click="vm.editFullProfile=false">
+                  </div>
                 </td>
               </tr>
             </table>
@@ -100,4 +124,10 @@
       </div>
     </div>
   </div>
+  <!--<div>Select an image file: <input onchange="angular.element(this).scope().file_changed(this)" ng-model="vm.myImage"-->
+  <!--type="file" id="fileInput"/></div>-->
+  <!--<div class="cropArea">-->
+  <!--<img-crop image="vm.myImage" result-image="vm.myCroppedImage" area-type="square"></img-crop>-->
+  <!--</div>-->
+  <!--<img ng-src="{{vm.myCroppedImage}}">-->
 </section>

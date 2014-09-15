@@ -274,6 +274,17 @@ div.roomTitle {
 .arr-dd {
   display: block;
 }
-.pro-txtarea{
+
+.pro-txtarea {
   overflow-y: hidden;
+}
+
+.post-edit-pnl {
+  display: table
+}
+
+.cropArea {
+  overflow: hidden;
+  width: 700px;
+  height: 600px;
 }

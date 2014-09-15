@@ -187,5 +187,30 @@ angular.module('uiApp')
     self.getProfile = function () {
       return restangular.all("Profiles").customGET("getprofile.json");
     };
+    self.saveMinProfile = function (fname, lname, gender, dob, location) {
+      var data = {
+        AppUser: {
+          fname: fname,
+          lname: lname,
+          gender: gender,
+          dob: dob,
+          location: location
+        }
+      };
+      return restangular.all('Profiles').customPOST(data, 'addMinProfile.json');
+    };
+    self.saveFullProfile = function (mobile, university_assoc, location_full, facebook_link, twitter_link, linkedin_link) {
+      var data = {
+        AppUser: {
+          mobile: mobile,
+          university_assoc: university_assoc,
+          location_full: location_full,
+          facebook_link: facebook_link,
+          twitter_link: twitter_link,
+          linkedin_link: linkedin_link
+        }
+      };
+      return restangular.all('Profiles').customPOST(data, 'addFullProfile.json');
+    };
     return self;
   }]);
