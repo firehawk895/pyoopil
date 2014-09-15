@@ -80,6 +80,16 @@ class ProfilesController extends AppController {
             $status = true;
         }
 
+        $data = $this->AppUser->find('first', array(
+            'conditions' => array(
+                'AppUser.id' => $this->AppUser->id
+            ),
+            'recursive' => -1,
+            'fields' => array(
+                'fname', 'lname', 'dob', 'location'
+            )
+        ));
+
         $this->set('data', $data);
         $this->set(compact('status', 'message'));
         $this->set('_serialize', array('status', 'message', 'data'));
@@ -133,6 +143,16 @@ class ProfilesController extends AppController {
         } else {
             $status = true;
         }
+
+        $data = $this->AppUser->find('first', array(
+            'conditions' => array(
+                'AppUser.id' => $this->AppUser->id
+            ),
+            'recursive' => -1,
+            'fields' => array(
+                'mobile', 'university_assoc', 'location_full', 'linkedin_link', 'twitter_link', 'facebook_link'
+            )
+        ));
 
         $this->set('data', $data);
         $this->set(compact('status', 'message'));
