@@ -13,7 +13,7 @@ angular.module('uiApp')
 
     self.getRooms = function (page) {
       page = page || 1;
-      return restangular.all("Classrooms").customGET("getclassrooms.json", {page: page});
+      return restangular.all('Classrooms').customGET('getclassrooms.json', {page: page});
     };
     self.getDiscussions = function (roomId, page, type) {
       page = page || 1;
@@ -183,6 +183,9 @@ angular.module('uiApp')
     };
     self.setPollVote = function (id) {
       return restangular.all("Classrooms").all("Discussions").customPOST({pollchoice_id: id}, "setPollVote.json");
+    };
+    self.getProfile = function () {
+      return restangular.all("Profiles").customGET("getprofile.json");
     };
     return self;
   }]);

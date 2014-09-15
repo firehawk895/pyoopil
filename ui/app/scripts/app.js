@@ -111,8 +111,7 @@ angular
         })
         .state('app.roomsDash.myroom', {
           url: "my/",
-          templateUrl: "views/app/roomsDash/myroom.html",
-          controller: "myRoomCtrl"
+          templateUrl: "views/app/roomsDash/myroom.html"
         })
 //        .state('app.roomsDash.staffroom', {
 //          url: "staffroom/",
@@ -138,13 +137,11 @@ angular
         })
         .state('app.profile.my', {
           url: 'my/',
-          templateUrl: "views/app/profile/myProfile.html",
-          controller: "profileCtrl"
+          templateUrl: "views/app/profile/myProfile.html"
         })
         .state('app.profile.feedback', {
           url: 'feedback/',
-          templateUrl: "views/app/profile/feedback.html",
-          controller: "profileCtrl"
+          templateUrl: "views/app/profile/feedback.html"
         });
 
     }])

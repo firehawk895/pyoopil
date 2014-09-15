@@ -274,3 +274,6 @@ div.roomTitle {
 .arr-dd {
   display: block;
 }
+.pro-txtarea{
+  overflow-y: hidden;
+}

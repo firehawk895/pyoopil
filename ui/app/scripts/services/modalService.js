@@ -18,6 +18,12 @@ angular.module('uiApp')
           scope: scope
         });
       };
-
+      self.openLeftEditDialog = function (scope) {
+        ngDialog.open({
+          template: 'views/app/profile/leftEditDialog.html',
+          scope: scope
+        });
+      };
       return self;
-    }]);
+    }])
+;

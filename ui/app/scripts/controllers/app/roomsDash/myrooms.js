@@ -9,6 +9,7 @@ angular.module('uiApp')
       $scope.classroom = {};
       $scope.page = 1;
       $scope.pageEnd = false;
+
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
         $scope.canCreate = result.permissions.allowCreate;

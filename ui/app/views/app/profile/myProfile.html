@@ -8,74 +8,90 @@
       </div>
       <div class="myprofile clearfix">
         <div class="myprofile-left">
+          <a href="" class="edit-pro msg-link" ng-if="vm.editProfile" ng-click="openLeftEditDialog()">Edit</a>
           <a href=""><img src="images/chat1.jpg" class="pro-img"></a>
 
-          <p class="pro-name"><a href="javascript:void(0)">{{fullName}}</a>
+          <p class="pro-name"><a href="">{{profile.fname}} {{profile.lname}}</a>
           </p>
 
-          <p class="pro-detail">Female, 26</p>
+          <p class="pro-detail" ng-if="profile.gender">{{profile.gender}}, 26</p>
 
-          <p class="pro-detail">New Delhi, India</p>
+          <p class="pro-detail" ng-if="profile.location">{{profile.location}}</p>
 
           <div class="pro-social">
             <ul>
-              <li><a href="" class="pro-icon fbp"></a>
+              <li ng-if="profile.facebook_link"><a ng-href="{{profile.facebook_link}}" class="pro-icon fbp"
+                                                   target="_blank"></a>
               </li>
-              <li><a href="" class="pro-icon twt"></a>
+              <li ng-if="profile.twitter_link"><a ng-href="{{profile.twitter_link}}" class="pro-icon twt"
+                                                  target=_blank"></a>
               </li>
-              <li><a href="" class="pro-icon ln"></a>
+              <li ng-if="profile.linkedin_link"><a ng-href="{{profile.linkedin_link}}" class="pro-icon ln"
+                                                   target="_blank"></a>
               </li>
             </ul>
           </div>
         </div>
         <div class="myprofile-right">
-          <div class="pro-follow">
-            <ul>
-              <li><a href="javascript:void(0)" title="dialogbox1" class="dialogbox">
-                <p class="fol-num">315</p>
+          <!--<div class="pro-follow">-->
+          <!--<ul>-->
+          <!--<li><a href="javascript:void(0)" title="dialogbox1" class="dialogbox">-->
+          <!--<p class="fol-num">315</p>-->
 
-                <p>Follower</p>
-              </a>
-              </li>
-              <li><a href="javascript:void(0)" title="dialogbox1" class="dialogbox">
-                <p class="fol-num">508</p>
+          <!--<p>Follower</p>-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--<li><a href="javascript:void(0)" title="dialogbox1" class="dialogbox">-->
+          <!--<p class="fol-num">508</p>-->
 
-                <p>Following</p>
-              </a>
-              </li>
-            </ul>
-          </div>
+          <!--<p>Following</p>-->
+          <!--</a>-->
+          <!--</li>-->
+          <!--</ul>-->
+          <!--</div>-->
           <div class="profile-detail">
+            <a href="" class="oredit-btn edit-click" ng-if="vm.editProfile">Edit</a>
             <table>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/mail.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="supriya.sachdev@gmail.com" disabled>
+                  <input type="text" class="pro-input" value="{{profile.email | NA}}" disabled>
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/phone.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="+9845246350" disabled>
+                  <input type="text" class="pro-input" value="{{profile.mobile | NA}}" disabled>
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/institute.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="Student at Sikkim Manipal University" disabled>
+                  <input type="text" class="pro-input" value="Student at {{profile.university_assoc}} " disabled>
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/location.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>H.No.3, second floor, Mayur Vihar Ph-2,New Delhi-110021,
-                    India</textarea>
+                  <textarea class="pro-txtarea" disabled>{{profile.location_full | NA}}</textarea>
                 </td>
               </tr>
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
                 <td class="pro-td2">
-                  <textarea class="pro-txtarea" disabled>www.linkedin.com/profile/view?id=172838163&trk=navresponsive_tab_profile</textarea>
+                  <textarea class="pro-txtarea" disabled>{{profile.facebook_link | NA}}</textarea>
+                </td>
+              </tr>
+              <tr ng-if="profile.twitter_link">
+                <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
+                <td class="pro-td2">
+                  <textarea class="pro-txtarea" disabled>{{profile.twitter_link}}</textarea>
+                </td>
+              </tr>
+              <tr ng-if="profile.linkedin_link">
+                <td class="pro-td1"><img src="images/myaccount/link.png" alt="img"></td>
+                <td class="pro-td2">
+                  <textarea class="pro-txtarea" disabled>{{profile.linkedin_link}}</textarea>
                 </td>
               </tr>
             </table>
@@ -84,6 +100,4 @@
       </div>
     </div>
   </div>
-  <!--Praise people Dialog-->
-
 </section>

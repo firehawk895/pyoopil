@@ -42,7 +42,7 @@ angular.module('uiApp')
         return self.messages;
       };
       self.removeMessage = function (message) {
-        var idx = self.messages.indexOf(message)
+        var idx = self.messages.indexOf(message);
         if (idx != -1)
           self.messages.splice(idx, 1);
       };

@@ -11,7 +11,8 @@
         <span class="label">Classrooms</span></a>
 
     <li class="pdiscover">
-      <a ui-sref="app.profile.my" class="lst-a flname"><span class="icon"><img src="images/chat1.jpg" alt="fname"></span>
+      <a ui-sref="app.profile.my" class="lst-a flname"><span class="icon"><img src="images/chat1.jpg"
+                                                                               alt="fname"></span>
         <span class="label">{{fullName}}</span></a>
     </li>
 
@@ -29,7 +30,7 @@
             <div class="scroll-pane" ui-jq="slider">
               <div infinite-scroll="updatePage()" style="margin-left: -28px">
                 <div ng-repeat="classroom in classrooms" class="scroll-content-item"><a
-                    ui-sref="app.rooms.announcements({ roomId:{{classroom.Classroom.id}} })">
+                    ui-sref="app.rooms.discussions({ roomId:{{classroom.Classroom.id}} })">
                   <div class="classouter">
                     <div class="doc-list">
                       <div class="doc-top">
