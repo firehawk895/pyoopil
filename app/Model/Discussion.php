@@ -164,14 +164,15 @@ class Discussion extends AppModel {
                     'AppUser' => array(
                         'fields' => array(
                             'fname',
-                            'lname'
+                            'lname',
                         )
                     )
                 ),
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
+                        'profile_img'
                     )
                 ),
                 'limit' => self::MAX_REPLIES,
@@ -186,12 +187,12 @@ class Discussion extends AppModel {
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
                     )
                 )
             ),
             'AppUser' => array(
-                'fields' => array('fname', 'lname')
+                'fields' => array('fname', 'lname', 'profile_img')
             ),
             'Foldeddiscussion'
         );
@@ -376,14 +377,15 @@ class Discussion extends AppModel {
                     'AppUser' => array(
                         'fields' => array(
                             'fname',
-                            'lname'
+                            'lname',
                         )
                     )
                 ),
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
+                        'profile_img'
                     )
                 ),
                 'limit' => self::MAX_REPLIES,
@@ -398,12 +400,12 @@ class Discussion extends AppModel {
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
                     )
                 )
             ),
             'AppUser' => array(
-                'fields' => array('fname', 'lname')
+                'fields' => array('fname', 'lname', 'profile_img')
             ),
             'Foldeddiscussion' => array(
                 'conditions' => array(

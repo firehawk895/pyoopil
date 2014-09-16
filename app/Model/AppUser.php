@@ -247,7 +247,7 @@ class AppUser extends User {
             'fields' => array(
                 'fname', 'lname', 'gender', 'dob', 'location',
                 'facebook_link', 'twitter_link', 'linkedin_link',
-                'email', 'mobile', 'university_assoc', 'location_full'
+                'email', 'mobile', 'university_assoc', 'location_full', 'profile_img'
             ),
             'conditions' => array(
                 'AppUser.id' => $userId

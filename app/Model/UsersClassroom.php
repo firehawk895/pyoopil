@@ -171,7 +171,7 @@ class UsersClassroom extends AppModel {
                     'fields' => array('id')
                 ),
                 'AppUser' => array(
-                    'fields' => array('id', 'fname', 'lname')
+                    'fields' => array('id', 'fname', 'lname', 'profile_img')
                 )
             ),
             'fields' => array('id', 'is_moderator', 'is_restricted', 'is_teaching'),
