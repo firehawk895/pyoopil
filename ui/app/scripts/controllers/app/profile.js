@@ -56,7 +56,7 @@ angular.module('uiApp')
         });
       };
       $scope.uploadPic = function () {
-
+        roomService.uploadPic($scope.vm.croppedImage);
       }
     }])
   .filter('NA', function () {

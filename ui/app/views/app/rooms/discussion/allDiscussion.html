@@ -1,5 +1,5 @@
 <div ng-if="canCreate" class="top-div">
-  <form name="formDiscussion">
+  <form>
     <span class="txt-count" ng-if="vm.discussionType">(<span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
     <input ng-if="vm.discussionType" class="add-topic" type="text" placeholder="Topic of  the discussion…"
            ng-maxlength=200 ng-trim="false"
@@ -117,7 +117,7 @@
            ng-click="toggleFold($index)"></a>
       </div>
       <div class="clear"></div>
-      <p class="ttxt wordwrap" ng-bind-html="discussion.Discussion.body | unsafe"></p>
+      <p class="ttxt wordwrap html_display" ng-bind-html="discussion.Discussion.body | unsafe"></p>
 
       <div class="clearfix" ng-if="discussion.Discussion.type=='poll'">
         <div class="poll-left">

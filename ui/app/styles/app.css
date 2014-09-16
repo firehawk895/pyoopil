@@ -228,8 +228,57 @@
   width: 39px;
 }
 
-strong {
+.html_display strong {
   font-weight: bold;
+}
+
+.html_display em {
+  font-style: italic;
+}
+
+.html_display ul li {
+  list-style-type: disc;
+  list-style-position: inside;
+  background: none;
+}
+
+.html_display ol li {
+  list-style-type: decimal;
+  list-style-position: inside;
+  background: none;
+}
+
+.html_display h1 {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.html_display h2 {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.html_display h3 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.html_display blockquote {
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 3px solid #ccc;
+}
+
+.html_display img {
+  max-width: 600px;
+  max-height: 600px;
+}
+
+.html_display pre {
+  font-family: monospace;
 }
 
 .hiring a {

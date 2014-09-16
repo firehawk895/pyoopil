@@ -212,5 +212,10 @@ angular.module('uiApp')
       };
       return restangular.all('Profiles').customPOST(data, 'addFullProfile.json');
     };
+    self.uploadPic = function (image) {
+      var formData = new FormData();
+
+    };
+
     return self;
   }]);

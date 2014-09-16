@@ -26,7 +26,7 @@
            ng-click="toggleFold($index)"></a>
       </div>
       <div class="clear"></div>
-      <p class="ttxt wordwrap" ng-bind-html="discussion.Discussion.body | unsafe"></p>
+      <p class="ttxt wordwrap html_display" ng-bind-html="discussion.Discussion.body | unsafe"></p>
 
       <div class="clearfix" ng-if="discussion.Discussion.type=='poll'">
         <div class="poll-left">
