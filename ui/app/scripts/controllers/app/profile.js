@@ -56,7 +56,7 @@ angular.module('uiApp')
         });
       };
       $scope.uploadPic = function () {
-  
+
       }
     }])
   .filter('NA', function () {

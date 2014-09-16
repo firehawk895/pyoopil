@@ -20,20 +20,20 @@ angular.module('uiApp')
             password: password
           }
         };
-        return restangular.all("").customPOST(data, "login.json");
+        return restangular.all('').customPOST(data, 'login.json');
       };
 
       self.validateSession = function () {
-        var token = localStorageService.get("token");
-        if (token != null && angular.isDefined(token)) {
+        var token = localStorageService.get('token');
+        if (token !== null && angular.isDefined(token)) {
           $http.defaults.headers.common = {'X-AuthTokenHeader': token};
           globalService.setIsAuthorised(true);
         }
       };
       //logout function
       self.logout = function () {
-        var token = localStorageService.get("token");
-        return restangular.all("").customPOST(token, "logout.json");
+        var token = localStorageService.get('token');
+        return restangular.all("").customPOST(token, 'logout.json');
       };
       return self;
     }]);
