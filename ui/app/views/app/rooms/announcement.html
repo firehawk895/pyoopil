@@ -57,7 +57,7 @@
           <div class="listbox" ng-repeat="announcement in announcements">
             <div class="imgbox">
               <a>
-                <img src="images/follow1.jpg"/>
+                <img ng-src="{{announcement.AppUser.profile_img}}"/>
               </a>
             </div>
             <div class="userinfo">
@@ -68,7 +68,7 @@
 
               <div class="datetime clearfix"><span ng-show="announcement.Announcement.filename"
                                                    class="attach-icon"></span>
-                {{announcement.Announcement.created  | amDateFormat:'LLL'}}
+                {{announcement.Announcement.created | amDateFormat:'LLL'}}
               </div>
 
             </div>

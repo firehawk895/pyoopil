@@ -94,7 +94,7 @@
 <li ng-class="{'lastli' :!discussion.Replies.length}">
   <div class="disc-box clearfix">
     <div class="disc-left">
-      <a href=""><img src="images/follow1.jpg" class="disc-img"></a>
+      <a href=""><img ng-src="{{discussion.AppUser.profile_img}}" class="disc-img"></a>
     </div>
     <div class="arrow_box">
       <span class="arrowbox-icon quest-icon" ng-if="discussion.Discussion.type=='question' "></span>
@@ -203,7 +203,7 @@
 <li ng-class="{'lastli' :$index == discussion.Replies.length-1}" ng-repeat="reply in discussion.Replies">
   <div class="disc-box clearfix">
     <div class="disc-left">
-      <a href="javascript:void(0)"><img src="images/chat2.png" class="disc-img"></a>
+      <a href="javascript:void(0)"><img ng-src="{{reply.AppUser.profile_img}}" class="disc-img"></a>
     </div>
     <div class="arrow_box">
       <div class="name-left">

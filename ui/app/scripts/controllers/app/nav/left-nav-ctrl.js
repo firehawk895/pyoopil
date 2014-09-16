@@ -9,6 +9,7 @@ angular.module('uiApp')
       $scope.classrooms = [];
       $scope.pageEnd = false;
       $scope.fullName = localStorageService.get("name");
+      $scope.profile_img=localStorageService.get("image");
       $scope.page = 1;
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
