@@ -68,6 +68,15 @@ class AppUsersController extends UsersController {
                 if ($this->AppUser->save($saveData, false)) {
                     $this->AppUser->updateLastActivity($user['AppUser']['id']);
                     $status = true;
+                    $theQuery = $this->AppUser->find('first', array(
+                        'conditions' => array(
+                            'AppUser.id' => $this->AppUser->id
+                        ),
+                        'fields' => array(
+                            'profile_img'
+                        )
+                    ));
+                    $data['profile_img'] = $theQuery['AppUser']['profile_img'];
                     $data['auth_token'] = $token;
                     $data['fullname'] = $this->AppUser->getFullName($user['AppUser']['id']);
                     $message = "Login successful";

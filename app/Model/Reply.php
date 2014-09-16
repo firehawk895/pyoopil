@@ -169,7 +169,8 @@ class Reply extends AppModel {
             'AppUser' => array(
                 'fields' => array(
                     'fname',
-                    'lname'
+                    'lname',
+                    'profile_img'
                 )
             ),
         );

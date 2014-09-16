@@ -95,7 +95,7 @@ class Announcement extends AppModel {
         $params = array(
             'contain' => array(
                 'AppUser' => array(
-                    'fields' => array('fname', 'lname')
+                    'fields' => array('fname', 'lname', 'profile_img')
                 )
             ),
             'conditions' => array(
@@ -125,7 +125,7 @@ class Announcement extends AppModel {
         $options = array(
             'contain' => array(
                 'AppUser' => array(
-                    'fields' => array('fname', 'lname')
+                    'fields' => array('fname', 'lname', 'profile_img')
                 )
             ),
             'conditions' => array(

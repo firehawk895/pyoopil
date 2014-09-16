@@ -83,7 +83,8 @@ class Foldeddiscussion extends AppModel {
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
+                        'profile_img'
                     )
                 ),
                 'limit' => self::MAX_REPLIES,
@@ -103,7 +104,7 @@ class Foldeddiscussion extends AppModel {
                 )
             ),
             'AppUser' => array(
-                'fields' => array('fname', 'lname')
+                'fields' => array('fname', 'lname', 'profile_img')
             ),
             'Foldeddiscussion' => array(
                 'conditions' => array(
