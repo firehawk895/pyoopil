@@ -4,8 +4,43 @@
  * (c) Pyoopil EduTech 2014
  */
 App::uses('User', 'Users.Model');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 class AppUser extends User {
+
+    public $actsAs = array(
+        'Utility.Enumerable',
+        'Containable',
+        'Uploader.Attachment' => array(
+            'profile_img' => array(
+                'overwrite' => true,
+                'transport' => array(
+                    'class' => AttachmentBehavior::S3,
+                    'region' => Aws\Common\Enum\Region::SINGAPORE,
+//                    'folder' => 'announcements/',
+                    'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
+                    'secretKey' => '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',
+                    'bucket' => 'pyoopil-files',
+                    //Dynamically add 'accesskey','secretKey','bucket'
+                ),
+                'metaColumns' => array(
+//                  'ext' => 'extension',
+//                  'type' => 'mimeType',
+//                    'size' => 'filesize',
+//                    'name' => 'filename'
+//                  'exif.model' => 'camera'
+                )
+            )
+        ),
+//        'Uploader.FileValidation' => array(
+//            'file_path' => array(
+////                'type' => 'image',
+////                'mimeType' => array('image/gif'),
+//                'filesize' => 2097152,
+//                'required' => false
+//            )
+//        )
+    );
 
     public $useTable = 'users';
 

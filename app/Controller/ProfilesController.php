@@ -45,36 +45,10 @@ class ProfilesController extends AppController {
 
         $this->loadModel("AppUser");
         $request = $this->request->data;
-        $data = array();
-        $status = false;
         $message = "";
 
-
-        /**
-         * Data Filtering, make sure only expected fields are modified
-         * Need a more concrete security strategy
-         * Don't like this approach
-         */
-        if (isset($request['AppUser']['fname'])) {
-            $filteredData['AppUser']['fname'] = $request['AppUser']['fname'];
-        }
-
-        if (isset($request['AppUser']['lname'])) {
-            $filteredData['AppUser']['lname'] = $request['AppUser']['lname'];
-        }
-
-        if (isset($request['AppUser']['dob'])) {
-            $filteredData['AppUser']['dob'] = $request['AppUser']['dob'];
-        }
-
-        if (isset($request['AppUser']['location'])) {
-            $filteredData['AppUser']['location'] = $request['AppUser']['location'];
-        }
-
-        $this->log($filteredData);
-
         $this->AppUser->id = AuthComponent::user('id');
-        if (empty($this->AppUser->save($filteredData, false))) {
+        if (empty($this->AppUser->save($request, false, array('fname', 'lname', 'dob', 'location')))) {
             $status = false;
         } else {
             $status = true;
@@ -97,41 +71,13 @@ class ProfilesController extends AppController {
 
         $this->loadModel("AppUser");
         $request = $this->request->data;
-        $data = array();
-        $status = false;
         $message = "";
 
-        /**
-         * Data Filtering, make sure only expected fields are modified
-         * Need a more concrete security strategy
-         * Don't like this approach
-         */
-        if (isset($request['AppUser']['mobile'])) {
-            $filteredData['AppUser']['mobile'] = $request['AppUser']['mobile'];
-        }
-
-        if (isset($request['AppUser']['university_assoc'])) {
-            $filteredData['AppUser']['university_assoc'] = $request['AppUser']['university_assoc'];
-        }
-
-        if (isset($request['AppUser']['location_full'])) {
-            $filteredData['AppUser']['location_full'] = $request['AppUser']['location_full'];
-        }
-
-        if (isset($request['AppUser']['linkedin_link'])) {
-            $filteredData['AppUser']['linkedin_link'] = $request['AppUser']['linkedin_link'];
-        }
-
-        if (isset($request['AppUser']['twitter_link'])) {
-            $filteredData['AppUser']['twitter_link'] = $request['AppUser']['twitter_link'];
-        }
-
-        if (isset($request['AppUser']['facebook_link'])) {
-            $filteredData['AppUser']['facebook_link'] = $request['AppUser']['facebook_link'];
-        }
-
         $this->AppUser->id = AuthComponent::user('id');
-        if (empty($this->AppUser->save($filteredData, false))) {
+        if (empty($this->AppUser->save($request, false, array(
+            'mobile', 'university_assoc', 'location_full', 'linkedin_link', 'twitter_link', 'facebook_link'
+        )))
+        ) {
             $status = false;
         } else {
             $status = true;
@@ -146,7 +92,23 @@ class ProfilesController extends AppController {
 
     }
 
-    public function deleteProfileItem() {
+    /**
+     * API : upload a profile pic
+     */
+    public function addProfilePic() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
 
+//        $data = array();
+        $status = false;
+        $message = "";
+
+        $this->loadModel("AppUser");
+        $this->AppUser->id = AuthComponent::user('id');
+        $data = $this->AppUser->save($this->request->data, false, array('profile_img'));
+
+        $this->set('data', $data);
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
 }
