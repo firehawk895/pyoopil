@@ -15,7 +15,7 @@
 
         <p class="tby"><a href="">by {{discussion.AppUser.fname}} {{discussion.AppUser.lname}}</a></p>
 
-        <p class="tby">{{discussion.Discussion.created}}</p>
+        <p class="tby">{{discussion.Discussion.created | amCalendar}}</p>
       </div>
       <div class="icon-right">
         <!--<a href="" class="vl-t tooltip" title="Share to My Room"><img src="images/disc-share.png"></a>-->
@@ -118,7 +118,7 @@
       <div class="name-left">
         <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.fname}}</a></p>
 
-        <p class="tby">{{reply.Reply.created}}</p>
+        <p class="tby">{{reply.Reply.created | amCalendar}}</p>
       </div>
       <div class="icon-right">
                   <span class="dd-block" ng-click="reply.isIconVisible=!reply.isIconVisible">

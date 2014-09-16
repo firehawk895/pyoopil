@@ -17,7 +17,7 @@
               </span>
 
             <div id="files" class="files"></div>
-            <img src="images/chat1.jpg" class="pro-img">
+            <img ng-src="{{profile.profile_img}}" class="pro-img">
           </div>
 
           <p class="pro-name"><a href="">{{profile.fname}} {{profile.lname}}</a>
@@ -64,7 +64,7 @@
               <tr>
                 <td class="pro-td1"><img src="images/myaccount/mail.png" alt="img"></td>
                 <td class="pro-td2">
-                  <input type="text" class="pro-input" value="{{profile.email | NA}}" disabled>
+                  <input type="text" class="pro-input" value="{{profile.email}}" disabled>
                 </td>
               </tr>
               <tr>

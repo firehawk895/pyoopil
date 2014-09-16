@@ -27,7 +27,7 @@ angular
     'highcharts-ng',
     'ngCkeditor',
     'ui.bootstrap',
-    'ngImgCrop'
+    'angularMoment'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
@@ -62,6 +62,11 @@ angular
           url: "/",
           templateUrl: "views/public/public.html",
           controller: "publicCtrl"
+        })
+        .state('register', {
+          url: '/register/',
+          templateUrl: 'views/public/register.html',
+          controller: "registerCtrl"
         })
         .state('app', {
           abstract: true,
@@ -146,6 +151,10 @@ angular
         });
 
     }])
+//  .constant('angularMomentConfig', {
+//    preprocess: 'unix', // optional
+//    timezone: 'Europe/London' // optional
+//  })
   .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
     $scope.showScroll = false;

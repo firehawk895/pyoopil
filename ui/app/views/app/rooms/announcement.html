@@ -1,13 +1,14 @@
 <!-- Right Content -->
 <section class="pagecontent clearfix">
   <div class="roomTitle">{{roomId}}<span class="title-arr hand" ng-click="showInfoPopup=true"></span>
-  <div class="arr-dd" ng-if="showInfoPopup" ng-blur="showInfoPopup=false">
-    <ul>
-      <li class="lastli"><a href="">Reset Access Code</a>
-      </li>
-    </ul>
+
+    <div class="arr-dd" ng-if="showInfoPopup" ng-blur="showInfoPopup=false">
+      <ul>
+        <li class="lastli"><a href="">Reset Access Code</a>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 
   <div class="content-wrapper">
     <!--content top-->
@@ -66,7 +67,8 @@
                 </span></h4>
 
               <div class="datetime clearfix"><span ng-show="announcement.Announcement.filename"
-                                                   class="attach-icon"></span>{{announcement.Announcement.created}}
+                                                   class="attach-icon"></span>
+                {{announcement.Announcement.created  | amDateFormat:'LLL'}}
               </div>
 
             </div>
