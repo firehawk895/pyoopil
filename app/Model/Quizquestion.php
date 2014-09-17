@@ -51,8 +51,8 @@ class Quizquestion extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Matchthecolumn' => array(
-			'className' => 'Matchthecolumn',
+		'Column' => array(
+			'className' => 'Column',
 			'foreignKey' => 'quizquestion_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -64,19 +64,19 @@ class Quizquestion extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Multiplechoice' => array(
-			'className' => 'Multiplechoice',
-			'foreignKey' => 'quizquestion_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
+//		'Multiplechoice' => array(
+//			'className' => 'Multiplechoice',
+//			'foreignKey' => 'quizquestion_id',
+//			'dependent' => false,
+//			'conditions' => '',
+//			'fields' => '',
+//			'order' => '',
+//			'limit' => '',
+//			'offset' => '',
+//			'exclusive' => '',
+//			'finderQuery' => '',
+//			'counterQuery' => ''
+//		)
 	);
 
 
@@ -84,21 +84,21 @@ class Quizquestion extends AppModel {
  * hasAndBelongsToMany associations
  *
  * @var array
- */
-	public $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'User',
-			'joinTable' => 'users_quizquestionsanswers',
-			'foreignKey' => 'quizquestion_id',
-			'associationForeignKey' => 'user_id',
-			'unique' => 'keepExisting',
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-		)
-	);
+ */git s
+//	public $hasAndBelongsToMany = array(
+//		'AppUser' => array(
+//			'className' => 'User',
+//			'joinTable' => 'users_quizquestionsanswers',
+//			'foreignKey' => 'quizquestion_id',
+//			'associationForeignKey' => 'user_id',
+//			'unique' => 'keepExisting',
+//			'conditions' => '',
+//			'fields' => '',
+//			'order' => '',
+//			'limit' => '',
+//			'offset' => '',
+//			'finderQuery' => '',
+//		)
+//	);
 
 }
