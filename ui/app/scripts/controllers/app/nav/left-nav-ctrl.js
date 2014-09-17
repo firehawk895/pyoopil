@@ -9,7 +9,7 @@ angular.module('uiApp')
       $scope.classrooms = [];
       $scope.pageEnd = false;
       $scope.fullName = localStorageService.get("name");
-      $scope.profile_img=localStorageService.get("image");
+      $scope.profile_img = localStorageService.get("image");
       $scope.page = 1;
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
@@ -23,6 +23,7 @@ angular.module('uiApp')
           $http.defaults.headers.common = {'X-AuthTokenHeader': ''};
           localStorageService.remove("token");
           localStorageService.remove("name");
+          localStorageService.remove("image");
           globalService.setIsAuthorised(false);
         });
       };

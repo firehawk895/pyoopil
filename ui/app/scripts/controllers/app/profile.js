@@ -41,6 +41,7 @@ angular.module('uiApp')
 
       $scope.vm.image = '';
       $scope.vm.croppedImage = '';
+
       $scope.file_changed = function (element) {
         var photofile = element.files[0];
         var reader = new FileReader();
@@ -57,7 +58,7 @@ angular.module('uiApp')
       };
       $scope.uploadPic = function () {
         roomService.uploadPic($scope.vm.croppedImage);
-      }
+      };
     }])
   .filter('NA', function () {
     return function (val, date) {

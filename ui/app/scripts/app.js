@@ -110,6 +110,11 @@ angular
           templateUrl: "views/app/rooms/people.html",
           controller: "peopleCtrl"
         })
+        .state('app.rooms.submissions', {
+          url: "submissions/",
+          templateUrl: "views/app/rooms/submission.html",
+          controller: "submissionCtrl"
+        })
         .state('app.roomsDash', {
           url: "room/",
           templateUrl: "views/app/roomsDash/roomsdash.html",
