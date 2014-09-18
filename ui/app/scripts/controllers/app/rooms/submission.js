@@ -9,12 +9,15 @@ angular.module('uiApp')
         {
           questionType: 'single-select',
           questionText: "",
+          answerValue: null,
           answerChoices: [
             {
-              choice: ""
+              choice: "",
+              answerValue: ""
             },
             {
-              choice: ""
+              choice: "",
+              answerValue: ""
             }
           ]
         }
@@ -58,10 +61,12 @@ angular.module('uiApp')
           questionText: "",
           answerChoices: [
             {
-              choice: ""
+              choice: "",
+              answerValue: ""
             },
             {
-              choice: ""
+              choice: "",
+              answerValue: ""
             }
 
           ]

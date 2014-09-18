@@ -5,7 +5,8 @@ angular.module('uiApp')
   .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', '$state', 'globalService', '$stateParams',
     function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, $state, globalService, $stateParams) {
       $scope.showJoin = true;
-      $scope.accessCode = "";
+      $scope.vm={};
+      $scope.vm.accessCode = "";
       $scope.classroom = {};
       $scope.page = 1;
       $scope.pageEnd = false;
@@ -29,12 +30,12 @@ angular.module('uiApp')
       };
 
       $scope.joinClassroom = function () {
-        roomService.joinClassroom($scope.accessCode).then(function (result) {
+        roomService.joinClassroom($scope.vm.accessCode).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
             $scope.showJoin = true;
             $scope.classrooms.unshift(result.data);
-            $scope.accessCode = null;
+            $scope.vm.accessCode = null;
           }
 
         });
