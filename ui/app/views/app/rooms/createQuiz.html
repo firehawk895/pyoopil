@@ -43,7 +43,7 @@
                              placeholder="Answer choice {{$index+1}}">
 
                       <div class="ans-radio">
-                        <input id="ans{{$index+1}}" type="radio" name="answer" value="ans{{$index+1}}"
+                        <input id="ans{{$index+1}}" type="radio" name="answer" value="{{$index}}"
                                ng-model="questionChoice.answerValue">
                         <label for="ans{{$index+1}}" class="radio-lbl"></label>
                       </div>
@@ -82,7 +82,7 @@
                     <label>True</label>
 
                     <div class="ans-radio">
-                      <input id="True" type="radio" name="corr-ans" value="True" ng-model="questionChoice.answerValue">
+                      <input id="True" type="radio" name="corr-ans" value="0" ng-model="questionChoice.answerValue">
                       <label for="True" class="radio-lbl"></label>
                     </div>
                   </div>
@@ -90,7 +90,7 @@
                     <label>False</label>
 
                     <div class="ans-radio">
-                      <input id="False" type="radio" name="corr-ans" value="False"
+                      <input id="False" type="radio" name="corr-ans" value="1"
                              ng-model="questionChoice.answerValue">
                       <label for="False" class="radio-lbl"></label>
                     </div>
@@ -103,12 +103,14 @@
                   <div class="match-opt">
                     <p class="correct-txt">Correct Answer</p>
 
-                    <div class="m-opt1 clearfix">
-                      <input class="pop-input" type="text" placeholder="Question{{$index+1}}">
-                      <input class="pop-input" type="text" placeholder="Answer choice{{$index+1}}">
+                    <div class="m-opt1 clearfix" ng-repeat="answerChoice in questionChoice.answerChoices">
+                      <input class="pop-input" type="text" placeholder="Question{{$index+1}}"
+                             ng-model="answerChoice.choice">
+                      <input class="pop-input alignMatchColumns" type="text" placeholder="Answer choice{{$index+1}}"
+                             ng-model="answerChoice.answerValue">
                     </div>
                   </div>
-                  <a href="javascript:void(0)" class="follow add-match">Add Answer Choice</a>
+                  <a href="" class="follow add-match" ng-click="addNewAnswerChoice(questionIndex)">Add Answer Choice</a>
                 </div>
               </div>
             </div>
@@ -125,7 +127,7 @@
           </div>
           <div class="quiz-footer clearfix">
             <div class="footer-btn">
-              <input type="button" class="sub-btn" value="Publish">
+              <input type="button" class="sub-btn" value="Publish" ng-click="createQuizAssignment()">
             </div>
           </div>
         </form>
