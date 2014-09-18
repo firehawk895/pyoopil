@@ -4,6 +4,7 @@
  * (c) Pyoopil EduTech 2014
  */
 App::uses('UsersController', 'Users.Controller');
+App::uses('CodeGenerator', 'Lib/Custom');
 
 class AppUsersController extends UsersController {
 
@@ -12,7 +13,7 @@ class AppUsersController extends UsersController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->authorize = array('Controller');
-        $this->Security->unlockedActions = array('login', 'logout');
+        $this->Security->unlockedActions = array('login', 'logout', 'add');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->Auth->allow('login', 'add', 'reset_password');
@@ -132,6 +133,35 @@ class AppUsersController extends UsersController {
             $this->Session->setFlash($e->getMessage());
             return $this->redirect('/');
         }
+    }
+
+    public function add() {
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+
+        $data = array();
+        $status = false;
+        $message = "";
+
+        $postData = $this->request->data;
+        if (!empty($postData)) {
+            $postData['AppUser']['username'] = CodeGenerator::accessCode('alpha', '10');
+            //The sweetest way to do this
+            $this->AppUser->set($postData);
+            if ($this->AppUser->validates()) {
+                $postData['AppUser']['password'] = $this->AppUser->hash($postData['AppUser']['password'], 'sha1', true);
+//                $this->AppUser->create();
+                $this->AppUser->save($postData, false);
+                $status = true;
+                $message = "Your account has been created.";
+            } else {
+                $message = $this->AppUser->validationErrors;
+            }
+        }
+
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     public function isAuthorized($user = null) {
