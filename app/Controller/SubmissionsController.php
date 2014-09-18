@@ -40,7 +40,7 @@ class SubmissionsController extends AppController {
         $data = $this->request->data;
         //store in seconds for easy handling later
         if (isset($data['hrs']) && $data['mins']) {
-            $data['Quiz'][0]['duration'] = ($data['hrs'] * 60 * 60) + ($data['mins'] * 60);
+            $data['Quiz']['duration'] = ($data['hrs'] * 60 * 60) + ($data['mins'] * 60);
             unset($data['hrs']);
             unset($data['mins']);
         }
