@@ -214,6 +214,11 @@ angular.module('uiApp')
     };
     self.uploadPic = function (image) {
       var formData = new FormData();
+      if (angular.isDefined(image))
+        formData.append("data[AppUser][profile_img]", image);
+      return restangular.all('Profiles')
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "addProfilePic.json", undefined, {'Content-Type': undefined});
 
     };
     self.createSubjectiveAssignment = function (subjective, roomId) {
@@ -230,7 +235,7 @@ angular.module('uiApp')
         .all("Submissions")
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "addsubjective.json", undefined, {'Content-Type': undefined});
-      return restangular.one('Classrooms', roomId).all('Submissions').customPOST(data, 'addsubjective.json');
+//      return restangular.one('Classrooms', roomId).all('Submissions').customPOST(data, 'addsubjective.json');
     };
     return self;
   }]);

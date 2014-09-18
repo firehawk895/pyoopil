@@ -1,19 +1,19 @@
 <section class="pagecontent clearfix">
   <div class="content-wrapper">
     <div class="profile-contt">
-      <div class="pro-complete">
-        <p class="pro-status">Your Profile completion 80% </p>
+      <!--<div class="pro-complete">-->
+        <!--<p class="pro-status">Your Profile completion 80% </p>-->
 
-        <div id="progressbar"></div>
-      </div>
+        <!--<div id="progressbar"></div>-->
+      <!--</div>-->
       <div class="myprofile clearfix">
         <div class="myprofile-left">
           <a href="" class="edit-pro msg-link" ng-if="vm.editProfile" ng-click="openLeftEditDialog()">Edit</a>
 
           <div class="profile-img" ng-class="{'hand' :vm.editProfile}">
               <span class="fileinput-button cam-icon" ng-if="vm.editProfile">
-              <input id="fileInput" type="file" name="files[]"
-                     onchange="angular.element(this).scope().file_changed(this)" ng-model="vm.image" accept="image/*">
+              <input type="file" name="files[]"
+                     onchange="angular.element(this).scope().file_changed(this)" accept="image/*">
               </span>
 
             <div id="files" class="files"></div>

@@ -24,26 +24,6 @@ angular.module('uiApp')
         {
           url: "",
           isVisible: true
-        },
-        {
-          url: "",
-          isVisible: false
-        },
-        {
-          url: "",
-          isVisible: false
-        },
-        {
-          url: "",
-          isVisible: false
-        },
-        {
-          url: "",
-          isVisible: false
-        },
-        {
-          url: "",
-          isVisible: false
         }
       ];
       $scope.isNewTopic = true;
@@ -53,12 +33,9 @@ angular.module('uiApp')
         $scope.topics = result.data;
         $scope.canUpload = result.permissions.allowCUD;
       });
-
-      roomService.getTopicsList($stateParams.roomId, $scope.page).then(function (result) {
+      roomService.getTopicsList($stateParams.roomId).then(function (result) {
         $scope.topicsList = result.data;
       });
-
-
       $scope.updatePage = function () {
         if (!$scope.pageEnd) {
           roomService.getTopics($stateParams.roomId, ++$scope.page).then(function (result) {
@@ -136,6 +113,20 @@ angular.module('uiApp')
         });
       };
       $scope.showStep1 = function () {
+
+        $scope.libraryUpload.id = null;
+        $scope.libraryUpload.name = "";
+        $scope.libraryUpload.files = [];
+        $scope.libraryUpload.links = [];
+        $scope.vm.files = ["file-0"];
+        $scope.vm.links = [
+          {
+            url: "",
+            isVisible: true
+          }
+        ];
+        $scope.isNewTopic = true;
+        $scope.uploadFileFlag = true;
         ngDialog.close();
         ngDialog.open({
           scope: $scope,
@@ -161,8 +152,8 @@ angular.module('uiApp')
       $scope.editTopic = function (name, id) {
         roomService.editTopic(name, id).then(function (result) {
           notificationService.show(result.status, result.message);
-          //          if (result.status)
-//            $scope.topics[index].Topic.name = $scope.newTopic;
+//                    if (result.status)
+//            $scope.topics[index].Topic.name =result.data.Topic.name;
         });
       };
       $scope.showStep2 = function () {
@@ -176,6 +167,7 @@ angular.module('uiApp')
           });
         }
       };
+
       $scope.checkNew = function () {
         if ($scope.libraryUpload.id) {
           $scope.isNewTopic = false;
@@ -193,7 +185,7 @@ angular.module('uiApp')
       $scope.uploadFiles = function () {
         var hasError = false;
         angular.forEach($scope.vm.links, function (value, key) {
-          if (value.url != "")
+          if (value.url !== "")
             $scope.libraryUpload.links.push(value.url);
         });
 
@@ -204,17 +196,12 @@ angular.module('uiApp')
             hasError = true;
             $scope.libraryUpload.files = [];
             $scope.vm.files = ["file-0"];
+            $scope.libraryUpload.links = [];
             return false;
           }
           else
             $scope.libraryUpload.files.push(file);
         });
-
-
-//        console.log($scope.libraryUpload.files);
-//        console.log($scope.libraryUpload.links);
-//        console.log($scope.vm.links);
-
         if (!hasError) {
           roomService.uploadFiles($stateParams.roomId, $scope.libraryUpload.id, $scope.libraryUpload.name, $scope.libraryUpload.files, $scope.libraryUpload.links).
             then(function (result) {
@@ -229,7 +216,6 @@ angular.module('uiApp')
                   $scope.topics[current] = result.data[0];
                 else
                   $scope.topics.push(result.data[0]);
-                $scope.libraryUpload = {};
               }
             });
         }
@@ -243,8 +229,11 @@ angular.module('uiApp')
       };
 
       $scope.addNewLink = function () {
-        $scope.linkIndex++;
-        $scope.vm.links[$scope.linkIndex].isVisible = true;
+        if ($scope.vm.links.length < 6)
+          $scope.vm.links.push({
+            url: ""
+          });
+
       };
 
       $scope.getLink = function (url) {

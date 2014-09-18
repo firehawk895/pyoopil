@@ -27,7 +27,8 @@ angular
     'highcharts-ng',
     'ngCkeditor',
     'ui.bootstrap',
-    'angularMoment'
+    'angularMoment',
+    'ngImgCrop'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {

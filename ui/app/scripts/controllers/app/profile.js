@@ -39,25 +39,26 @@ angular.module('uiApp')
           });
       };
 
-      $scope.vm.image = '';
-      $scope.vm.croppedImage = '';
-
       $scope.file_changed = function (element) {
-        var photofile = element.files[0];
+        $scope.vm.image = '';
+        $scope.vm.croppedImage = '';
+        var photoFile = element.files[0];
         var reader = new FileReader();
         reader.onload = function (e) {
           $scope.$apply(function () {
             $scope.vm.image = e.target.result;
           });
         };
-        reader.readAsDataURL(photofile);
+        reader.readAsDataURL(photoFile);
         ngDialog.open({
           template: 'views/app/profile/profilePicCropDialog.html',
           scope: $scope
         });
       };
       $scope.uploadPic = function () {
-        roomService.uploadPic($scope.vm.croppedImage);
+        roomService.uploadPic($scope.vm.croppedImage).then(function (result) {
+          $scope.profile.profile_img = result.data.AppUser.profile_img;
+        });
       };
     }])
   .filter('NA', function () {

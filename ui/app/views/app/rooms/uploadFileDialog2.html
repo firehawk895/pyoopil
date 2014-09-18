@@ -17,9 +17,11 @@
 
               <div class="tabpages">
                 <ul class="upload-tab">
-                  <li><a ng-click="uploadFileFlag=true" class="tab hand" ng-class="{'active' :uploadFileFlag}">Upload file</a>
+                  <li><a ng-click="uploadFileFlag=true" class="tab hand" ng-class="{'active' :uploadFileFlag}">Upload
+                    file</a>
                   </li>
-                  <li><a ng-click="uploadFileFlag=false" class="tab hand"  ng-class="{'active' :!uploadFileFlag}">Upload link</a>
+                  <li><a ng-click="uploadFileFlag=false" class="tab hand" ng-class="{'active' :!uploadFileFlag}">Upload
+                    link</a>
                   </li>
                 </ul>
                 <div ng-show="uploadFileFlag" id="file1" class="tab-contt">
@@ -56,17 +58,7 @@
                   <div class="upload-links">
                     <div class="add-links">
                       <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[0].url" ng-if="vm.links[0].isVisible">
-                      <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[1].url" ng-if="vm.links[1].isVisible">
-                      <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[2].url" ng-if="vm.links[2].isVisible">
-                      <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[3].url" ng-if="vm.links[3].isVisible">
-                      <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[4].url" ng-if="vm.links[4].isVisible">
-                      <input type="text" class="pop-input" placeholder="Upload links"
-                             ng-model="vm.links[5].url" ng-if="vm.links[5].isVisible">
+                             ng-model="link.url" ng-repeat="link in vm.links">
                     </div>
                   </div>
                   <span class="add-link" tooltip="Add Link" ng-click="addNewLink()"></span>
