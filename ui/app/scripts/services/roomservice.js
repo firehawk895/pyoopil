@@ -235,7 +235,53 @@ angular.module('uiApp')
         .all("Submissions")
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "addsubjective.json", undefined, {'Content-Type': undefined});
-//      return restangular.one('Classrooms', roomId).all('Submissions').customPOST(data, 'addsubjective.json');
     };
+
+    self.createQuizAssignment = function (quiz, roomId) {
+      var formData = new FormData();
+      formData.append("data[Submission][topic]", quiz.topic);
+      formData.append("data[Submission][description]", quiz.description);
+      formData.append("data[Submission][grading_policy]", quiz.gradingPolicy);
+      formData.append("data[hrs]", quiz.hours);
+      formData.append("data[mins]", quiz.minutes);
+      formData.append("data[Submission][due_date]", quiz.dueDate);
+      if (angular.isDefined(quiz.file))
+        formData.append("data[Pyoopilfile][0][file_path]", quiz.file);
+      angular.forEach(quiz.questionChoices, function (value, key) {
+        formData.append("data[Quiz][Quizquestion][" + key + "][marks]", value.maxMarks);
+        formData.append("data[Quiz][Quizquestion][" + key + "][type]", value.questionType);
+        formData.append("data[Quiz][Quizquestion][" + key + "][question]", value.questionText);
+        if (value.questionType == 'single-select') {
+          formData.append("data[Quiz][Quizquestion][" + key + "][Choice][" + value.answerValue + "][is_answer]", true);
+          angular.forEach(value.answerChoices, function (answerChoice, answerKey) {
+            formData.append("data[Quiz][Quizquestion][" + key + "][Choice][" + answerKey + "][description]", answerChoice.choice);
+          });
+        }
+        if (value.questionType == 'multi-select') {
+          angular.forEach(value.answerChoices, function (answerChoice, answerKey) {
+            formData.append("data[Quiz][Quizquestion][" + key + "][Choice][" + answerKey + "][description]", answerChoice.choice);
+            if (answerChoice.answerValue)
+              formData.append("data[Quiz][Quizquestion][" + key + "][Choice][" + answerKey + "][is_answer]", true);
+          });
+        }
+        if (value.questionType == 'true-false') {
+          formData.append("data[Quiz][Quizquestion][" + key + "][Choice][" + value.answerValue + "][is_answer]", true);
+        }
+        if (value.questionType == 'match-columns') {
+          var matchColumns = [];
+          angular.forEach(value.answerChoices, function (answerChoice, answerKey) {
+            formData.append("data[Quiz][Quizquestion][" + key + "][Column][" + matchColumns.length + "][text]", answerChoice.choice);
+            matchColumns.push(answerChoice.choice);
+            formData.append("data[Quiz][Quizquestion][" + key + "][Column][" + matchColumns.length + "][text]", answerChoice.answerValue);
+          });
+        }
+      });
+      return restangular.one("Classrooms", roomId)
+        .all("Submissions")
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "addquiz.json", undefined, {'Content-Type': undefined});
+    };
+
+
     return self;
   }]);

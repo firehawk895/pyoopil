@@ -200,7 +200,7 @@
 }
 
 .ng-dirty .ng-invalid {
-  border: 1px solid red;
+  border: 1px solid #f67e02;
 }
 
 .hand {
@@ -338,6 +338,13 @@ div.roomTitle {
   height: 600px;
 }
 
+button.disabled, button[disabled] {
+  opacity: 0.4;
+  cursor: default !important;
+  pointer-events: none;
+}
 
-
+.alignMatchColumns {
+  margin-left: 185px;
+}
 
