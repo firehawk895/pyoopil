@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ankan
- * Date: 11/9/14
- * Time: 6:27 PM
- */
 
+/**
+ * Class ProfilesController
+ */
 class ProfilesController extends AppController {
 
     public function isAuthorized($user) {

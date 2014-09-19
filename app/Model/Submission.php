@@ -1,5 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
+App::uses('CakeTime', 'Utility');
 /**
  * Submission Model
  *
@@ -10,6 +11,11 @@ App::uses('AppModel', 'Model');
  * @property AppUser $User
  */
 class Submission extends AppModel {
+
+    /**
+     * pagination limit count for "People" of a Classroom
+     */
+    const PAGINATION_LIMIT = 10;
 
     /**
      * Validation rules
@@ -161,6 +167,48 @@ class Submission extends AppModel {
 //        }
 //
 //        return $status;
+    }
+
+    public function getPaginatedSubmissions($classroomId, $page = 1, $onlylatest = false) {
+        //sanity check
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $options['conditions'] = array(
+            'Submission.classroom_id' => $classroomId
+        );
+        $options['recursive'] = -1;
+        $options['fields'] = array(
+            'id', 'topic', 'total_submitted', 'due_date', 'is_published'
+        );
+        $options['limit'] = self::PAGINATION_LIMIT;
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+        $options['offset'] = $offset;
+        $options['order'] = array(
+            'Submission.created' => 'desc'
+        );
+
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->find('all', $options);
+
+        foreach ($data as &$sub) {
+            if ($sub['Submission']['is_published'] === true) {
+                $sub['Submission']['status'] = "Graded";
+            } else {
+                if (CakeTime::isPast($sub['Submission']['due_date'])) {
+                    $sub['Submission']['status'] = "Pending Grading";
+                } else {
+                    $sub['Submission']['status'] = "In Progress";
+                }
+            }
+        }
+        unset($sub);
+        return $data;
     }
 
 }

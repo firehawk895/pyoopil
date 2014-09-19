@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nakul
- * Date: 6/11/14
- * Time: 5:15 PM
- */
 
+/**
+ * Class PeopleController
+ */
 class PeopleController extends AppController {
 
     /**

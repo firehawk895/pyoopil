@@ -17,6 +17,7 @@ class SubmissionsController extends AppController {
         if ($this->Submission->addSubjective($this->request->data, $classroomId)) {
             $status = true;
             $message = "Successfully created Subjective Assignment";
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
         } else {
             $status = false;
             $message = "Failed to create Subjective Assignment";
@@ -50,6 +51,10 @@ class SubmissionsController extends AppController {
         $options['deep'] = true;
         $options['validate'] = false;
         $status = $this->Submission->Quiz->saveAssociated($data, $options);
+
+        if ($status) {
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
+        }
 
         /*
         //Calculate
@@ -87,5 +92,22 @@ class SubmissionsController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    public function getSubmissions($classroomId) {
+        $this->request->onlyAllow('get');
+        $this->response->type('json');
 
+        $page = 1;
+        if (isset($this->params['url']['page'])) {
+            $page = $this->params['url']['page'];
+        }
+
+        $data = $this->Submission->getPaginatedSubmissions($classroomId, $page);
+        $status = true;
+        $message = "";
+
+        //output
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
 }

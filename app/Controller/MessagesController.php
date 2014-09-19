@@ -1,11 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nakul
- * Date: 6/24/14
- * Time: 12:23 AM
- */
 
+/**
+ * Class MessagesController
+ */
 class MessagesController extends AppController{
 
     public function index(){
