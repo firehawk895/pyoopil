@@ -178,9 +178,13 @@ class Submission extends AppModel {
         $options['conditions'] = array(
             'Submission.classroom_id' => $classroomId
         );
-        $options['recursive'] = -1;
+//        $options['recursive'] = -1;
+        $options['contain'] = array(
+            'UsersSubmission'
+        );
         $options['fields'] = array(
-            'id', 'topic', 'total_submitted', 'due_date', 'is_published', 'type'
+            'id', 'topic', 'description', 'grading_policy', 'total_submitted',
+            'due_date', 'is_published', 'type', 'subjective_scoring'
         );
         $options['limit'] = self::PAGINATION_LIMIT;
         $offset = self::PAGINATION_LIMIT * ($page - 1);
@@ -197,6 +201,7 @@ class Submission extends AppModel {
         $data = $this->find('all', $options);
 
         foreach ($data as &$sub) {
+            $sub['Submission']['is_submitted'] = false;
             if ($sub['Submission']['is_published'] === true) {
                 $sub['Submission']['status'] = "Graded";
             } else {

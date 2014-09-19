@@ -10,6 +10,15 @@ App::uses('AppController', 'Controller');
 
 class SubmissionsController extends AppController {
 
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function addSubjective($classroomId) {
         $this->request->onlyAllow('post');
         $data = array();
