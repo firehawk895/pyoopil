@@ -180,7 +180,7 @@ class Submission extends AppModel {
         );
         $options['recursive'] = -1;
         $options['fields'] = array(
-            'id', 'topic', 'total_submitted', 'due_date', 'is_published'
+            'id', 'topic', 'total_submitted', 'due_date', 'is_published', 'type'
         );
         $options['limit'] = self::PAGINATION_LIMIT;
         $offset = self::PAGINATION_LIMIT * ($page - 1);

@@ -9,15 +9,15 @@
     </div>
     <div class="pop-content clearfix">
       <div class="create-assign">
-        <form class="form-data  create-popup">
+        <form class="form-data  create-popup" name="formAssignment">
           <p>Please select type of assignment you want to create</p>
 
           <div class="tabpages">
             <ul class="upload-tab">
-              <li><a class="tab " ng-click="vm.typeIsSubjective=true"
+              <li><a class="tab hand" ng-click="makeTypeSubjective(true)"
                      ng-class="{'active' :vm.typeIsSubjective}">Subjective</a>
               </li>
-              <li><a class="tab" ng-click="vm.typeIsSubjective=false"
+              <li><a class="tab hand" ng-click="makeTypeSubjective(false)"
                      ng-class="{'active' :!vm.typeIsSubjective}">Quiz</a>
               </li>
             </ul>
@@ -25,12 +25,12 @@
               <div class="clearfix">
                 <div class="left-pop">
                   <label>Topic of the assignment</label>
-                  <input type="text" class="pop-input" ng-model="vm.topic">
+                  <input type="text" class="pop-input" ng-model="vm.topic" required>
 
                   <label>Description</label>
-                  <textarea class="pop-txtarea" ng-model="vm.description"></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.description" required></textarea>
                   <label>Grading Policy</label>
-                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy" required></textarea>
                   <label>Grading Type</label>
 
                   <div class="radio-btn">
@@ -42,12 +42,12 @@
                   <div class="marks-input" ng-if="vm.gradingType=='marked'">
                     <label>Enter Maximum Marks</label>
                     <input type="text" class="pop-input" value="" pattern="[0-9]{0,3}"
-                           tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks">
+                           tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks" required>
                   </div>
                   <label>Attachments</label>
 
                   <!--<div class="custom-upload" id="test0">-->
-                  <input type="file" id="fileupload" name="files[]">
+                  <input type="file" id="fileUploadSubjective" name="files[]">
 
                   <!--<div class="file-upload">-->
                   <!--<span class="file-txt">Select</span>-->
@@ -60,40 +60,43 @@
                     <div class="time-check">
                       <label>Due Date</label>
                     </div>
-                    <input type="datetime-local" ng-model="vm.dueDate">
+                    <input type="datetime-local" ng-model="vm.dueDate" required>
 
                   </div>
                 </div>
               </div>
               <div class="submit-btn">
-                <input type="submit" class="sub-btn" value="Publish" ng-click="createSubjectiveAssignment()">
+                <button class="sub-btn" ng-disabled="formAssignment.$invalid"
+                        ng-click="createSubjectiveAssignment()">Publish
+                </button>
               </div>
             </div>
             <div id="quiz" class="tab-contt" ng-if="!vm.typeIsSubjective">
               <div class="clearfix">
                 <div class="left-pop">
                   <label>Topic of the quiz</label>
-                  <input type="text" class="pop-input" ng-model="vm.topic">
+                  <input type="text" class="pop-input" ng-model="vm.topic" required>
                   <label>Quiz Description</label>
-                  <textarea class="pop-txtarea" ng-model="vm.description"></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.description" required></textarea>
                   <label>Grading Policy</label>
-                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy" required></textarea>
                   <label>Total Time</label>
 
-                  <input type="number" min="0" max="5" class="pop-dura" ng-model="vm.hours">
+                  <input type="number" min="0" max="5" class="pop-dura" ng-model="vm.hours" required>
 
                   Hours
-                  <input type="number" min="0" max="60" class="pop-dura" ng-model="vm.minutes">
+                  <input type="number" min="0" max="60" class="pop-dura" ng-model="vm.minutes" required>
                   Minutes
                   <label>Attachments</label>
 
                   <!--<div class="custom-upload" id="test0">-->
-                    <input type="file" id="fileupload" name="files[]">
+                  <input type="file" id="fileUploadQuiz" name="files[]"
+                         onchange="angular.element(this).scope().addFile()">
 
-                    <!--<div class="file-upload">-->
-                      <!--<span class="file-txt">Select</span>-->
-                      <!--<input disabled="disabled" value="No File Chosen">-->
-                    <!--</div>-->
+                  <!--<div class="file-upload">-->
+                  <!--<span class="file-txt">Select</span>-->
+                  <!--<input disabled="disabled" value="No File Chosen">-->
+                  <!--</div>-->
                   <!--</div>-->
                 </div>
                 <div class="right-pop">
@@ -101,13 +104,15 @@
                     <div class="time-check">
                       <label>Due Date</label>
                     </div>
-                    <input type="datetime-local" ng-model="vm.dueDate">
+                    <input type="datetime-local" ng-model="vm.dueDate" required>
                   </div>
 
                 </div>
               </div>
               <div class="submit-btn">
-                <input type="button" class="sub-btn" value="Create Quiz" id="quiz-link" ng-click="createQuizDialog()">
+                <button class="sub-btn" id="quiz-link" ng-click="createQuizDialog()"
+                        ng-disabled="formAssignment.$invalid">Create Quiz
+                </button>
               </div>
             </div>
           </div>
