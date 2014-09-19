@@ -348,3 +348,7 @@ button.disabled, button[disabled] {
   margin-left: 185px;
 }
 
+.submit-heading button.sub-btn {
+  width: 113px;
+  margin: 0px;
+}

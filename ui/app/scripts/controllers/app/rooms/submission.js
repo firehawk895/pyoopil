@@ -19,6 +19,10 @@ angular.module('uiApp')
         //        $scope.canPost = result.permissions.allowCreate;
       });
 
+      $scope.enableStatus = function (status) {
+        if (status == 'Pending Grading')
+          return true;
+      };
 
       $scope.createSubjectiveAssignment = function () {
         $scope.vm.file = document.getElementById("fileUploadSubjective").files[0];
@@ -26,8 +30,10 @@ angular.module('uiApp')
           notificationService.show(false, "Cannot upload more than 5 MB");
         else {
           roomService.createSubjectiveAssignment($scope.vm, $scope.roomId).then(function (result) {
-            if (result.status)
+            if (result.status) {
               notificationService.show(true, 'Assignment Created Successfully');
+              $scope.submissions.unshift(result.data[0]);
+            }
           });
           ngDialog.close();
         }
@@ -93,8 +99,10 @@ angular.module('uiApp')
       };
       $scope.createQuizAssignment = function () {
         roomService.createQuizAssignment($scope.vm, $scope.roomId).then(function (result) {
-          if (result.status)
+          if (result.status) {
             notificationService.show(true, 'Assignment Created Successfully');
+            $scope.submissions.unshift(result.data[0]);
+          }
         });
         ngDialog.close();
       };

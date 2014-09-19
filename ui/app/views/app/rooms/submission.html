@@ -13,19 +13,18 @@
           <th class="stbl-td4">Count</th>
           <th class="stbl-td5">Grading Status</th>
         </tr>
-        <!--<tbody ng-repeat="submission in submissions">-->
         <tr class="blank-td" ng-repeat-start="submission in submissions">
           <td colspan="4"></td>
         </tr>
         <tr ng-repeat-end>
           <td class="stbl-td1">{{submission.Submission.topic}}</td>
           <td class="stbl-td2">{{submission.Submission.due_date | amDateFormat:'MMM.DD.YYYY'}}</td>
-          <td class="stbl-td3">In progress</td>
-          <td class="stbl-td4">23/30</td>
-          <td class="stbl-td5"><a href="classroom-inside-submission.htm" class="sum-btn">{{submission.Submission.status}}</a>
+          <td class="stbl-td3">{{submission.Submission.type}}</td>
+          <td class="stbl-td4">{{submission.Submission.total_submitted}}/30</td>
+          <td class="stbl-td5">
+            <button class="sub-btn">{{submission.Submission.status}}</button>
           </td>
         </tr>
-        <!--</tbody>-->
       </table>
     </div>
   </div>

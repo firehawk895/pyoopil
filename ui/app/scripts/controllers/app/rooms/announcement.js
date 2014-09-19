@@ -39,6 +39,7 @@ angular.module('uiApp')
                 if (added.status) {
                   $scope.announcements.unshift(added.data);
                   $scope.vm = {};
+                  document.getElementById("formAnnouncementId").reset();
                 }
               });
           }
