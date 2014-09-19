@@ -2,6 +2,7 @@ angular.module('uiApp')
   .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog',
     function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog) {
       $scope.roomId = $stateParams.roomId;
+      $scope.page = 1;
       $scope.createNewAssignment = function () {
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;
@@ -12,6 +13,13 @@ angular.module('uiApp')
           scope: $scope
         });
       };
+
+      roomService.getSubmissions($stateParams.roomId, $scope.page).then(function (result) {
+        $scope.submissions = result.data;
+        //        $scope.canPost = result.permissions.allowCreate;
+      });
+
+
       $scope.createSubjectiveAssignment = function () {
         $scope.vm.file = document.getElementById("fileUploadSubjective").files[0];
         if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)

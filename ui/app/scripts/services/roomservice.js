@@ -42,6 +42,10 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Libraries").customGET("getTopicsList.json", {page: page});
     };
+    self.getSubmissions = function (roomId, page) {
+      page = page || 1;
+      return restangular.one("Classrooms", roomId).all("Submissions").customGET("getSubmissions.json", {page: page});
+    };
     self.createAnnouncement = function (roomId, subject, body, file) {
 
       var formData = new FormData();
