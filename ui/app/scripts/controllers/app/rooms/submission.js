@@ -3,6 +3,7 @@ angular.module('uiApp')
     function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog) {
       $scope.roomId = $stateParams.roomId;
       $scope.page = 1;
+      $scope.lastExpandedItemIndex = -1;
       $scope.createNewAssignment = function () {
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;
@@ -16,13 +17,9 @@ angular.module('uiApp')
 
       roomService.getSubmissions($stateParams.roomId, $scope.page).then(function (result) {
         $scope.submissions = result.data;
-        //        $scope.canPost = result.permissions.allowCreate;
+        $scope.canCreate = result.permissions.allowCreate;
+        $scope.studentCount = result.users_classroom_count;
       });
-
-      $scope.enableStatus = function (status) {
-        if (status == 'Pending Grading')
-          return true;
-      };
 
       $scope.createSubjectiveAssignment = function () {
         $scope.vm.file = document.getElementById("fileUploadSubjective").files[0];
@@ -106,4 +103,21 @@ angular.module('uiApp')
         });
         ngDialog.close();
       };
+
+      $scope.displayContent = function (index) {
+        if ($scope.lastExpandedItemIndex == -1) {
+          $scope.lastExpandedItemIndex = index;
+          $scope.submissions[index].showContent = true;
+        }
+        else if ($scope.lastExpandedItemIndex == index) {
+          $scope.lastExpandedItemIndex = -1;
+          $scope.submissions[index].showContent = false;
+        }
+        else {
+          $scope.submissions[$scope.lastExpandedItemIndex].showContent = false;
+          $scope.submissions[index].showContent = true;
+          $scope.lastExpandedItemIndex = index;
+        }
+      };
+
     }]);

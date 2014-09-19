@@ -230,7 +230,7 @@ angular.module('uiApp')
       formData.append("data[Submission][topic]", subjective.topic);
       formData.append("data[Submission][description]", subjective.description);
       formData.append("data[Submission][grading_policy]", subjective.gradingPolicy);
-      formData.append("data[Submission][scoring]", subjective.gradingType);
+      formData.append("data[Submission][subjective_scoring]", subjective.gradingType);
       formData.append("data[Submission][total_marks]", subjective.totalMarks);
       formData.append("data[Submission][due_date]", subjective.dueDate);
       if (angular.isDefined(subjective.file))

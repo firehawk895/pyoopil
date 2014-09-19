@@ -1,7 +1,8 @@
 <section class="pagecontent clearfix">
   <div class="library-wrapper submission">
     <div class="view-head clearfix">
-      <a class="new-assign dialogbox hand" tooltip="create-assign" ng-click="createNewAssignment()">Create New
+      <a class="new-assign dialogbox hand" tooltip="create-assign" ng-click="createNewAssignment()" ng-if="canCreate">Create
+        New
         Assignment</a>
     </div>
     <div class="submit-content">
@@ -16,13 +17,62 @@
         <tr class="blank-td" ng-repeat-start="submission in submissions">
           <td colspan="4"></td>
         </tr>
-        <tr ng-repeat-end>
+        <tr ng-class="{'active' :submission.showContent}">
           <td class="stbl-td1">{{submission.Submission.topic}}</td>
           <td class="stbl-td2">{{submission.Submission.due_date | amDateFormat:'MMM.DD.YYYY'}}</td>
           <td class="stbl-td3">{{submission.Submission.type}}</td>
-          <td class="stbl-td4">{{submission.Submission.total_submitted}}/30</td>
+          <td class="stbl-td4">{{submission.Submission.total_submitted}}/{{studentCount}}</td>
           <td class="stbl-td5">
-            <button class="sub-btn">{{submission.Submission.status}}</button>
+            <a class="sum-btn" ng-class="{'completed' :submission.Submission.status=='Graded'}" ng-click="displayContent($index)">{{submission.Submission.status}}</a>
+          </td>
+        </tr>
+        <tr ng-repeat-end ng-class="{'comm-hide' :!submission.showContent}">
+          <td colspan="5" class="clearfix">
+            <div class="stud-sub-step2">
+              <p class="sub-date"><span class="sbold-topic">Due by:</span> {{submission.Submission.due_date |
+                amDateFormat:'DD.MM.YY , HH:MM'}}hrs</p>
+
+              <p class="sub-txt">At has harum dissentias. Vis ea dicam copiosae electram, per lucilius vituperatoribus
+                in. Eam option singulis ex, vix te civibus volutpat euripidis, te cetero gubergren temporibus mei. Ut
+                labore qualisque est. Harum voluptua est et, vis vitae congue nemore cu.</p>
+
+              <div class="clearfix">
+                <div class="f-left">
+                  <div class="att-doc"><a href="javascript:void(0)" class="dlfile"><img src="images/ppt_icon.png"
+                                                                                        class="stud-att" alt="img">bill1.pptx.42kb</a>
+                  </div>
+                </div>
+                <a href="javascript:void(0)" class="follow active f-right open-answer">Submit Your Answer</a>
+
+                <div class="clear"></div>
+                <div class="submit-answer clearfix">
+                  <div class="stud-name">
+                    <a href="javascript:void(0)"><img src="images/follow1.jpg" class="sub-stud-img" alt="img"></a>
+                    <a href="javascript:void(0)">
+                      <p class="stud-name">Arushi Sharma</p>
+                    </a>
+                  </div>
+                  <div class="sub-txtarea-div">
+                    <textarea class="comment-txtarea" placeholder="Add comment here…"></textarea>
+                  </div>
+                  <div class="f-left msg-popup">
+                    <div class="attachmentbox">
+                          <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
+                          <span class="att-txt">Attach files <span class="att-size">(Max 100 mb)</span></span>
+                          <input id="fileupload" type="file" name="files[]">
+                          </span>
+
+                      <div id="files" class="files"></div>
+                    </div>
+                  </div>
+                  <div class="f-right">
+                    <a href="javascript:void(0)" class="follow active ">Submit</a>
+                    <a href="javascript:void(0)" class="follow open-answer">Cancel</a>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
       </table>

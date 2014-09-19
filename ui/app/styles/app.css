@@ -347,8 +347,3 @@ button.disabled, button[disabled] {
 .alignMatchColumns {
   margin-left: 185px;
 }
-
-.submit-heading button.sub-btn {
-  width: 113px;
-  margin: 0px;
-}
