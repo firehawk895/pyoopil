@@ -159,7 +159,7 @@ angular
     }])
 //  .constant('angularMomentConfig', {
 //    preprocess: 'unix', // optional
-//    timezone: 'Europe/London' // optional
+//    timezone: 'Asia/Kolkata' // optional
 //  })
   .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
