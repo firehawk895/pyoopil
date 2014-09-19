@@ -211,4 +211,20 @@ class Submission extends AppModel {
         return $data;
     }
 
+    public function getPermissions($userId, $classroomId) {
+
+        if ($this->Classroom->isOwner($userId, $classroomId)) {
+            $role = "Owner";
+            $allowCreate = true;
+        } else {
+            $role = "Student";
+            $allowCreate = false;
+        }
+        $permissions = array(
+            'role' => $role,
+            'allowCreate' => $allowCreate
+        );
+        return $permissions;
+    }
+
 }

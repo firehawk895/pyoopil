@@ -87,6 +87,7 @@ class SubmissionsController extends AppController {
         }
         */
         //output
+
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -105,9 +106,13 @@ class SubmissionsController extends AppController {
         $status = true;
         $message = "";
 
+        $permissions = $this->Submission->getPermissions(AuthComponent::user('id'), $classroomId);
+        $this->Submission->Classroom->id = $classroomId;
+        $users_classroom_count = $this->Submission->Classroom->field('users_classroom_count');
+
         //output
-        $this->set(compact('status', 'message'));
+        $this->set(compact('status', 'message', 'permissions', 'users_classroom_count'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'permissions', 'users_classroom_count', 'status', 'message'));
     }
 }
