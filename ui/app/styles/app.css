@@ -347,3 +347,11 @@ button.disabled, button[disabled] {
 .alignMatchColumns {
   margin-left: 185px;
 }
+
+.submit-answer {
+  display: block;
+}
+
+.hide-block {
+  display: none;
+}

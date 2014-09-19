@@ -2,6 +2,7 @@ angular.module('uiApp')
   .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog',
     function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog) {
       $scope.roomId = $stateParams.roomId;
+      $scope.vm = {};
       $scope.page = 1;
       $scope.lastExpandedItemIndex = -1;
       $scope.createNewAssignment = function () {
@@ -105,6 +106,7 @@ angular.module('uiApp')
       };
 
       $scope.displayContent = function (index) {
+        $scope.vm.addAnswer = false;
         if ($scope.lastExpandedItemIndex == -1) {
           $scope.lastExpandedItemIndex = index;
           $scope.submissions[index].showContent = true;

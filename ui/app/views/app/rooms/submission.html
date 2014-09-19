@@ -23,32 +23,34 @@
           <td class="stbl-td3">{{submission.Submission.type}}</td>
           <td class="stbl-td4">{{submission.Submission.total_submitted}}/{{studentCount}}</td>
           <td class="stbl-td5">
-            <a class="sum-btn" ng-class="{'completed' :submission.Submission.status=='Graded'}" ng-click="displayContent($index)">{{submission.Submission.status}}</a>
+            <a class="sum-btn hand" ng-class="{'completed' :submission.Submission.status=='Graded'}"
+               ng-click="displayContent($index)">{{submission.Submission.status}}</a>
           </td>
         </tr>
         <tr ng-repeat-end ng-class="{'comm-hide' :!submission.showContent}">
           <td colspan="5" class="clearfix">
             <div class="stud-sub-step2">
-              <p class="sub-date"><span class="sbold-topic">Due by:</span> {{submission.Submission.due_date |
-                amDateFormat:'DD.MM.YY , HH:MM'}}hrs</p>
+              <p class="sub-date"><span><span class="sbold-topic">Due by:</span> {{submission.Submission.due_date |
+                amDateFormat:'DD.MM.YY , HH:MM'}}hrs</span>
+                <span class="pull-right"><span class="sbold-topic">Grading Type:</span> {{submission.Submission.subjective_scoring}}</span>
+              </p>
 
-              <p class="sub-txt">At has harum dissentias. Vis ea dicam copiosae electram, per lucilius vituperatoribus
-                in. Eam option singulis ex, vix te civibus volutpat euripidis, te cetero gubergren temporibus mei. Ut
-                labore qualisque est. Harum voluptua est et, vis vitae congue nemore cu.</p>
+              <p class="sub-txt">{{submission.Submission.description}}</p>
 
               <div class="clearfix">
                 <div class="f-left">
-                  <div class="att-doc"><a href="javascript:void(0)" class="dlfile"><img src="images/ppt_icon.png"
-                                                                                        class="stud-att" alt="img">bill1.pptx.42kb</a>
+                  <div class="att-doc"><a href="" class="dlfile"><img src="images/ppt_icon.png"
+                                                                      class="stud-att" alt="img">bill1.pptx.42kb</a>
                   </div>
                 </div>
-                <a href="javascript:void(0)" class="follow active f-right open-answer">Submit Your Answer</a>
+                <a href="" class="follow active f-right open-answer"
+                   ng-if="!submission.Submission.is_submitted" ng-click="vm.addAnswer=!vm.addAnswer">Submit Your Answer</a>
 
                 <div class="clear"></div>
-                <div class="submit-answer clearfix">
+                <div class="clearfix submit-answer" ng-class="{'hide-block' :!vm.addAnswer}">
                   <div class="stud-name">
-                    <a href="javascript:void(0)"><img src="images/follow1.jpg" class="sub-stud-img" alt="img"></a>
-                    <a href="javascript:void(0)">
+                    <a href=""><img src="images/follow1.jpg" class="sub-stud-img" alt="img"></a>
+                    <a href="">
                       <p class="stud-name">Arushi Sharma</p>
                     </a>
                   </div>
@@ -66,8 +68,8 @@
                     </div>
                   </div>
                   <div class="f-right">
-                    <a href="javascript:void(0)" class="follow active ">Submit</a>
-                    <a href="javascript:void(0)" class="follow open-answer">Cancel</a>
+                    <a href="" class="follow active ">Submit</a>
+                    <a href="" class="follow open-answer">Cancel</a>
                   </div>
                   <div class="clear"></div>
                 </div>
