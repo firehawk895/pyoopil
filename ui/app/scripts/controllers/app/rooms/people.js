@@ -75,7 +75,7 @@ angular.module('uiApp')
       };
 
       $scope.setModerator = function () {
-        var setModIds = $("#ddlModeratorIds").select2("val");
+        var setModIds = $("#ddlModeratorIds").val(); //("val");
         roomService.setModerator($stateParams.roomId, setModIds).then(function (result) {
           if (result.status) {
             angular.forEach($scope.peoples, function (people) {
@@ -89,7 +89,7 @@ angular.module('uiApp')
       };
 
       $scope.setRestricted = function () {
-        var setRestrictIds = $("#ddlRestrictedIds").select2("val");
+        var setRestrictIds = $("#ddlRestrictedIds").val(); //.select2("val");
         roomService.setRestricted($stateParams.roomId, setRestrictIds).then(function (result) {
           if (result.status) {
             angular.forEach($scope.peoples, function (people) {
