@@ -126,31 +126,41 @@ class Submission extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
+        ),
+        'UsersSubmission' => array(
+            'className' => 'UsersSubmission',
+            'foreignKey' => 'submission_id',
         )
     );
 
 
     /**
      * hasAndBelongsToMany associations
-     *
+     * Convert to join model (hasMany)
      * @var array
      */
-    public $hasAndBelongsToMany = array(
-        'AppUser' => array(
-            'className' => 'AppUser',
-            'joinTable' => 'users_submissions',
-            'foreignKey' => 'submission_id',
-            'associationForeignKey' => 'user_id',
-            'unique' => 'keepExisting',
-            'conditions' => '',
-            'fields' => '',
-            'order' => '',
-            'limit' => '',
-            'offset' => '',
-            'finderQuery' => '',
-        )
-    );
+//    public $hasAndBelongsToMany = array(
+//        'AppUser' => array(
+//            'className' => 'AppUser',
+//            'joinTable' => 'users_submissions',
+//            'foreignKey' => 'submission_id',
+//            'associationForeignKey' => 'user_id',
+//            'unique' => 'keepExisting',
+//            'conditions' => '',
+//            'fields' => '',
+//            'order' => '',
+//            'limit' => '',
+//            'offset' => '',
+//            'finderQuery' => '',
+//        )
+//    );
 
+    /**
+     * Given post data from controller API, save the subjective submission
+     * @param $postData
+     * @param $classroomId
+     * @return mixed
+     */
     public function addSubjective($postData, $classroomId) {
         $postData['Submission']['classroom_id'] = $classroomId;
         $postData['Submission']['type'] = 'subjective';
@@ -159,7 +169,9 @@ class Submission extends AppModel {
         $options['deep'] = true;
         $options['validate'] = false;
 
-        return $this->Subjective->saveAssociated($postData, $options);
+        $this->log($postData);
+
+        return @$this->saveAssociated($postData, $options);
 //        if ($this->Subjective->saveAssociated($postData, $options)) {
 //            $status = true;
 //        } else {
@@ -169,6 +181,13 @@ class Submission extends AppModel {
 //        return $status;
     }
 
+    /**
+     * Returning the list of submissions for owner and for the student
+     * @param $classroomId
+     * @param int $page
+     * @param bool $onlylatest
+     * @return array
+     */
     public function getPaginatedSubmissions($classroomId, $page = 1, $onlylatest = false) {
         //sanity check
         if ($page < 1) {
@@ -180,10 +199,75 @@ class Submission extends AppModel {
         );
 //        $options['recursive'] = -1;
         $options['contain'] = array(
-            'UsersSubmission'
+            'UsersSubmission',
+            'Pyoopilfile' => array(
+                'fields' => array(
+                    'id', 'file_path', 'filename', 'filesize', 'thumbnail_path', 'mime_type'
+                )
+            )
         );
         $options['fields'] = array(
-            'id', 'topic', 'description', 'grading_policy', 'total_submitted',
+            'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
+            'due_date', 'is_published', 'type', 'subjective_scoring'
+        );
+        $options['limit'] = self::PAGINATION_LIMIT;
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+        $options['offset'] = $offset;
+        $options['order'] = array(
+            'Submission.created' => 'desc'
+        );
+
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->find('all', $options);
+
+        foreach ($data as &$sub) {
+            $sub['Submission']['is_submitted'] = false;
+            if ($sub['Submission']['is_published'] === true) {
+                $sub['Submission']['status'] = "Graded";
+            } else {
+                if (CakeTime::isPast($sub['Submission']['due_date'])) {
+                    $sub['Submission']['status'] = "Pending Grading";
+                } else {
+                    $sub['Submission']['status'] = "In Progress";
+                }
+            }
+        }
+        unset($sub);
+        return $data;
+    }
+
+    /**
+     * Returning the list of submissions for owner and for the student
+     * @param $classroomId
+     * @param int $page
+     * @param bool $onlylatest
+     * @return array
+     */
+    public function getPaginatedSubmissions2($classroomId, $page = 1, $onlylatest = false) {
+        //get submissions for the student
+        //sanity check
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $options['conditions'] = array(
+            'Submission.classroom_id' => $classroomId
+        );
+//        $options['recursive'] = -1;
+        $options['contain'] = array(
+            'UsersSubmission',
+            'Pyoopilfile' => array(
+                'fields' => array(
+                    'id', 'file_path', 'filename', 'filesize', 'thumbnail_path', 'mime_type'
+                )
+            )
+        );
+        $options['fields'] = array(
+            'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
             'due_date', 'is_published', 'type', 'subjective_scoring'
         );
         $options['limit'] = self::PAGINATION_LIMIT;
@@ -232,4 +316,29 @@ class Submission extends AppModel {
         return $permissions;
     }
 
+    /**
+     * Calculate the scores of a quiz attempted by a student
+     */
+    public function scoreTheQuiz() {
+
+    }
+
+    public function getQuiz($submissionId) {
+        //return error if invalid submissionId or submission is not a quiz
+        $options = array(
+            'conditions' => array(
+                'Submission.id' => $submissionId
+            ),
+            'contains' => array(
+                'Quiz' => array(
+                    'Quizquestion' => array(
+                        'Choice'
+                    )
+                )
+            )
+        );
+
+        $data = $this->find('first', $options);
+        $this->log($data);
+    }
 }

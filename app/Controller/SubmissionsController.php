@@ -10,6 +10,11 @@ App::uses('AppController', 'Controller');
 
 class SubmissionsController extends AppController {
 
+    /**
+     * Controller authorize framework
+     * @param $user
+     * @return bool
+     */
     public function isAuthorized($user) {
         if (parent::isAuthorized($user)) {
             //do role processing here
@@ -19,7 +24,17 @@ class SubmissionsController extends AppController {
         }
     }
 
+    /**
+     * API (POST):
+     * Add a new Subjective type assignment
+     * @param $classroomId
+     */
     public function addSubjective($classroomId) {
+
+        //TODO: add field restriction
+        //TODO: add model validation
+        //TODO: add Pyoopilfile support
+
         $this->request->onlyAllow('post');
         $data = array();
 
@@ -38,19 +53,25 @@ class SubmissionsController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * API (POST):
+     * Add a new quiz
+     * @param $classroomId
+     */
     public function addQuiz($classroomId) {
         $this->request->onlyAllow('post');
-        $this->log($this->request->data);
 
-        $data = array();
+        //TODO: add field restriction
+        //TODO: add model validation
+        //TODO: add Pyoopilfile support
+
         $status = false;
         $message = "";
-
 
         $data = $this->request->data;
         //store in seconds for easy handling later
         if (isset($data['hrs']) && $data['mins']) {
-            $data['Quiz']['duration'] = ($data['hrs'] * 60 * 60) + ($data['mins'] * 60);
+            $data['Quiz'][0]['duration'] = ($data['hrs'] * 60 * 60) + ($data['mins'] * 60);
             unset($data['hrs']);
             unset($data['mins']);
         }
@@ -59,6 +80,41 @@ class SubmissionsController extends AppController {
 
         $options['deep'] = true;
         $options['validate'] = false;
+        $options['atomic'] = true;
+
+        /*
+         * Use this for security
+        $options['fieldList'] = array(
+            'Submission' => array(
+                'topic', 'description', 'grading_policy'
+            ),
+            'Quizquestion' => array(
+                'marks', 'question', 'type',
+            )
+        );
+        */
+        $this->log(array(
+            'User' => array('email' => 'john-doe@cakephp.org'),
+            'Cart' => array(
+                array(
+                    'payment_status_id' => 2,
+                    'total_cost' => 250,
+                    'CartItem' => array(
+                        array(
+                            'cart_product_id' => 3,
+                            'quantity' => 1,
+                            'cost' => 100,
+                        ),
+                        array(
+                            'cart_product_id' => 5,
+                            'quantity' => 1,
+                            'cost' => 150,
+                        )
+                    )
+                )
+            )
+        ));
+        $this->log($data);
         $status = $this->Submission->Quiz->saveAssociated($data, $options);
 
         if ($status) {
@@ -102,9 +158,17 @@ class SubmissionsController extends AppController {
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * API (GET)
+     * Get submissions of a owner of classroom or a student
+     * @param $classroomId
+     */
     public function getSubmissions($classroomId) {
+        //
         $this->request->onlyAllow('get');
         $this->response->type('json');
+
+        $this->Submission->getQuiz(14);
 
         $page = 1;
         if (isset($this->params['url']['page'])) {
@@ -124,4 +188,67 @@ class SubmissionsController extends AppController {
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'permissions', 'users_classroom_count', 'status', 'message'));
     }
+
+    /**
+     * API (POST)
+     * A student answers a subjective assignment
+     */
+    public function answerSubjective() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $postData = $this->request->data;
+        $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
+
+        //output
+        $this->set(compact('status', 'message', 'permissions', 'users_classroom_count'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'permissions', 'users_classroom_count', 'status', 'message'));
+    }
+
+    /**
+     * API (POST)
+     * A students answers a assignment which is a quiz
+     */
+    public function answerQuiz() {
+
+    }
+
+    public function getQuiz() {
+        $this->request->onlyAllow('get');
+        $this->response->type('json');
+
+        $data = array();
+        $status = false;
+        $message = "";
+
+        if (isset($this->params['url']['id'])) {
+            $submissionId = $this->params['url']['id'];
+
+            $options = array(
+                'contain' => array(
+                    'Quiz' => array(
+                        'Quizquestion' => array(
+                            'Choice', 'Column'
+                        )
+                    )
+                )
+            );
+
+            $options['conditions'] = array(
+                'Submission.id' => array(
+                    $submissionId
+                )
+            );
+            $data = $this->Submission->find('first', $options);
+        }
+
+        //output
+        $this->set(compact('status', 'message', 'permissions', 'users_classroom_count'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'permissions', 'users_classroom_count', 'status', 'message'));
+    }
+
+
 }

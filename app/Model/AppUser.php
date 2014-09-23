@@ -23,8 +23,7 @@ class AppUser extends User {
                     'bucket' => 'pyoopil-files',
                     //Dynamically add 'accesskey','secretKey','bucket'
                 ),
-                'metaColumns' => array(
-//                  'ext' => 'extension',
+                'metaColumns' => array( //                  'ext' => 'extension',
 //                  'type' => 'mimeType',
 //                    'size' => 'filesize',
 //                    'name' => 'filename'

@@ -57,7 +57,8 @@ class UsersSubmission extends AppModel {
             'foreignKey' => 'submission_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
+            'counterCache' => true,
         ),
         'Pyoopilfile' => array(
             'className' => 'Pyoopilfile',
@@ -68,8 +69,19 @@ class UsersSubmission extends AppModel {
         )
     );
 
-    public function answerSubjective($submissionId, $userId) {
+    public function answerSubjective($userId, $postData) {
+        //submission_id is already in the post data
+        $postData['AppUser']['id'] = $userId;
 
+        if ($this->saveAssociated($postData, array(
+            'validate' => false,
+            'deep' => true
+        ))
+        ) {
+            $this->log("yes");
+        } else {
+            $this->log("behen");
+        }
     }
 
 }

@@ -10,60 +10,73 @@ App::uses('AppModel', 'Model');
  */
 class Quizquestion extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array(
-		'quiz_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-	);
+    /**
+     * Validation rules
+     *
+     * @var array
+     */
+//    public $validate = array(
+//        'quiz_id' => array(
+//            'numeric' => array(
+//                'rule' => array('numeric'),
+//                //'message' => 'Your custom message here',
+//                //'allowEmpty' => false,
+//                //'required' => false,
+//                //'last' => false, // Stop validation after this rule
+//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+//            ),
+//        ),
+//    );
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'Quiz' => array(
-			'className' => 'Quiz',
-			'foreignKey' => 'quiz_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    /**
+     * belongsTo associations
+     *
+     * @var array
+     */
+    public $belongsTo = array(
+        'Quiz' => array(
+            'className' => 'Quiz',
+            'foreignKey' => 'quiz_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
 
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'Column' => array(
-			'className' => 'Column',
-			'foreignKey' => 'quizquestion_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
+    /**
+     * hasMany associations
+     *
+     * @var array
+     */
+    public $hasMany = array(
+        'Column' => array(
+            'className' => 'Column',
+            'foreignKey' => 'quizquestion_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
+        'Choice' => array(
+            'className' => 'Choice',
+            'foreignKey' => 'quizquestion_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
 //		'Multiplechoice' => array(
 //			'className' => 'Multiplechoice',
 //			'foreignKey' => 'quizquestion_id',
@@ -77,14 +90,14 @@ class Quizquestion extends AppModel {
 //			'finderQuery' => '',
 //			'counterQuery' => ''
 //		)
-	);
+    );
 
 
-/**
- * hasAndBelongsToMany associations
- *
- * @var array
- */
+    /**
+     * hasAndBelongsToMany associations
+     *
+     * @var array
+     */
 //	public $hasAndBelongsToMany = array(
 //		'AppUser' => array(
 //			'className' => 'User',
