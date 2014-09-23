@@ -38,6 +38,7 @@ angular.module('uiApp')
           ngDialog.close();
         }
       };
+
       $scope.makeTypeSubjective = function (value) {
         $scope.vm = {};
         $scope.vm.gradingType = 'marked';
@@ -110,6 +111,7 @@ angular.module('uiApp')
       $scope.displayContent = function (index) {
         if (!$scope.canCreate) {
           $scope.vm.addAnswer = false;
+          $scope.vm.answerText = "";
           if ($scope.lastExpandedItemIndex == -1) {
             $scope.lastExpandedItemIndex = index;
             $scope.submissions[index].showContent = true;
@@ -138,8 +140,23 @@ angular.module('uiApp')
           return 'images/doc_icon.png';
         else if (/^application[//].*powerpoint$/.test(mimeType))
           return 'images/ppt_icon.png';
-      }
-      ;
-    }
-  ])
-;
+      };
+      $scope.answerSubjective = function (id) {
+        if ($scope.vm.answerText == "")
+          notificationService.show(false, "Cannot submit blank Answer");
+        else {
+          $scope.vm.file = document.getElementById("fileupload").files[0];
+          if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+            notificationService.show(false, "Cannot upload more than 5 MB");
+          else {
+            roomService.answerSubjective($scope.vm.answerText, $scope.vm.file, id).then(function (result) {
+              if (result.status) {
+                notificationService.show(true, 'Answer Submitted Successfully');
+//              $scope.submissions.unshift(result.data[0]);
+              }
+            });
+          }
+        }
+      };
+
+    }]);

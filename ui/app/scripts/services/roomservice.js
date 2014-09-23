@@ -285,7 +285,19 @@ angular.module('uiApp')
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "addquiz.json", undefined, {'Content-Type': undefined});
     };
+    self.answerSubjective = function (text, file, id) {
 
+      var formData = new FormData();
+      formData.append("data[Submission][id]", id);
+      formData.append("data[UsersSubmission][answer]", text);
+
+      if (angular.isDefined(file))
+        formData.append("data[Pyoopilfile][file_path]", file);
+      return restangular.all("Classrooms")
+        .all("Submissions")
+        .withHttpConfig({transformRequest: angular.identity})
+        .customPOST(formData, "answerSubjective.json", undefined, {'Content-Type': undefined});
+    };
 
     return self;
   }]);

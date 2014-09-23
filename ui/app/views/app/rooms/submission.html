@@ -48,10 +48,12 @@
                       ng-if="!checkIfPic(submission.Pyoopilfile.mime_type)"
                       ng-click="openDocViewerDialog(submission.Pyoopilfile.file_path)"
                       class="dlfile"><img ng-src="{{docIcon(submission.Pyoopilfile.mime_type)}}" class="stud-att"
-                                          alt="img">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize | bytes}}</a>
+                                          alt="img">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize
+                    | bytes}}</a>
                     <a ng-href="{{submission.Pyoopilfile.file_path}}"
                        ng-if="checkIfPic(submission.Pyoopilfile.mime_type)"
-                       class="dlfile" ui-jq="prettyPhoto">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize | bytes}}</a>
+                       class="dlfile" ui-jq="prettyPhoto">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize
+                      | bytes}}</a>
                   </div>
                 </div>
                 <a href="" class="follow active f-right open-answer"
@@ -70,20 +72,20 @@
                     </a>
                   </div>
                   <div class="sub-txtarea-div">
-                    <textarea class="comment-txtarea" placeholder="Add comment here…"></textarea>
+                    <textarea class="comment-txtarea" placeholder="Add comment here…" ng-model="vm.answerText"></textarea>
                   </div>
                   <div class="f-left msg-popup">
                     <div class="attachmentbox">
-                          <span class="btn btn-success fileinput-button changepicsbtn attach-mail">
-                          <span class="att-txt">Attach files <span class="att-size">(Max 100 mb)</span></span>
+                          <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+                          <!--<span class="att-txt">Attach files <span class="att-size">(Max 100 mb)</span></span>-->
                           <input id="fileupload" type="file" name="files[]">
-                          </span>
+                          <!--</span>-->
 
-                      <div id="files" class="files"></div>
+                      <!--<div id="files" class="files"></div>-->
                     </div>
                   </div>
                   <div class="f-right">
-                    <a href="" class="follow active ">Submit</a>
+                    <a href="" class="follow active " ng-click="answerSubjective(submission.Submission.id)">Submit</a>
                     <a href="" class="follow open-answer">Cancel</a>
                   </div>
                   <div class="clear"></div>
