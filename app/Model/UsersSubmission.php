@@ -73,7 +73,7 @@ class UsersSubmission extends AppModel {
         //submission_id is already in the post data
         $postData['AppUser']['id'] = $userId;
 
-        if ($this->saveAssociated($postData, array(
+        if (@$this->saveAssociated($postData, array(
             'validate' => false,
             'deep' => true
         ))
