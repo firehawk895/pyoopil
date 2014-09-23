@@ -21,7 +21,7 @@
           <td class="stbl-td1">{{submission.Submission.topic}}</td>
           <td class="stbl-td2">{{submission.Submission.due_date | amDateFormat:'MMM.DD.YYYY'}}</td>
           <td class="stbl-td3">{{submission.Submission.type}}</td>
-          <td class="stbl-td4">{{submission.Submission.total_submitted}}/{{studentCount}}</td>
+          <td class="stbl-td4">{{submission.Submission.users_submission_count}}/{{studentCount}}</td>
           <td class="stbl-td5">
             <a class="sum-btn hand" ng-class="{'completed' :submission.Submission.status=='Graded'}"
                ng-click="displayContent($index)">{{submission.Submission.status}}</a>
@@ -44,14 +44,15 @@
                   </div>
                 </div>
                 <a href="" class="follow active f-right open-answer"
-                   ng-if="!submission.Submission.is_submitted" ng-click="vm.addAnswer=!vm.addAnswer">Submit Your Answer</a>
+                   ng-if="!submission.Submission.is_submitted" ng-click="vm.addAnswer=!vm.addAnswer">Submit Your
+                  Answer</a>
 
                 <div class="clear"></div>
                 <div class="clearfix submit-answer" ng-class="{'hide-block' :!vm.addAnswer}">
                   <div class="stud-name">
-                    <a href=""><img src="images/follow1.jpg" class="sub-stud-img" alt="img"></a>
+                    <a href=""><img ng-src="{{profile_img}}" class="sub-stud-img" alt="img"></a>
                     <a href="">
-                      <p class="stud-name">Arushi Sharma</p>
+                      <p class="stud-name">{{fullName}}</p>
                     </a>
                   </div>
                   <div class="sub-txtarea-div">

@@ -1,7 +1,9 @@
 angular.module('uiApp')
-  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog) {
+  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService',
+    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService) {
       $scope.roomId = $stateParams.roomId;
+      $scope.fullName = localStorageService.get("name");
+      $scope.profile_img = localStorageService.get("image");
       $scope.vm = {};
       $scope.page = 1;
       $scope.lastExpandedItemIndex = -1;

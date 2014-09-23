@@ -234,7 +234,7 @@ angular.module('uiApp')
       formData.append("data[Submission][total_marks]", subjective.totalMarks);
       formData.append("data[Submission][due_date]", subjective.dueDate);
       if (angular.isDefined(subjective.file))
-        formData.append("data[Pyoopilfile][0][file_path]", subjective.file);
+        formData.append("data[Pyoopilfile][file_path]", subjective.file);
       return restangular.one("Classrooms", roomId)
         .all("Submissions")
         .withHttpConfig({transformRequest: angular.identity})
@@ -250,7 +250,7 @@ angular.module('uiApp')
       formData.append("data[mins]", quiz.minutes);
       formData.append("data[Submission][due_date]", quiz.dueDate);
       if (angular.isDefined(quiz.file))
-        formData.append("data[Pyoopilfile][0][file_path]", quiz.file);
+        formData.append("data[Pyoopilfile][file_path]", quiz.file);
       angular.forEach(quiz.questionChoices, function (value, key) {
         formData.append("data[Quiz][Quizquestion][" + key + "][marks]", value.maxMarks);
         formData.append("data[Quiz][Quizquestion][" + key + "][type]", value.questionType);
