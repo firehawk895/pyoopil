@@ -31,7 +31,7 @@ angular.module('uiApp')
         else {
           roomService.createSubjectiveAssignment($scope.vm, $scope.roomId).then(function (result) {
             if (result.status) {
-              notificationService.show(true, 'Assignment Created Successfully');
+              notificationService.show(result.status, result.message);
               $scope.submissions.unshift(result.data[0]);
             }
           });
@@ -101,7 +101,7 @@ angular.module('uiApp')
       $scope.createQuizAssignment = function () {
         roomService.createQuizAssignment($scope.vm, $scope.roomId).then(function (result) {
           if (result.status) {
-            notificationService.show(true, 'Assignment Created Successfully');
+            notificationService.show(result.status, result.message);
             $scope.submissions.unshift(result.data[0]);
           }
         });
@@ -110,6 +110,7 @@ angular.module('uiApp')
 
       $scope.displayContent = function (index) {
         if (!$scope.canCreate) {
+          $scope.vm.showAnswer = false;
           $scope.vm.addAnswer = false;
           $scope.vm.answerText = "";
           if ($scope.lastExpandedItemIndex == -1) {
@@ -141,7 +142,7 @@ angular.module('uiApp')
         else if (/^application[//].*powerpoint$/.test(mimeType))
           return 'images/ppt_icon.png';
       };
-      $scope.answerSubjective = function (id) {
+      $scope.answerSubjective = function (index, id) {
         if ($scope.vm.answerText == "")
           notificationService.show(false, "Cannot submit blank Answer");
         else {
@@ -152,7 +153,7 @@ angular.module('uiApp')
             roomService.answerSubjective($scope.vm.answerText, $scope.vm.file, id).then(function (result) {
               if (result.status) {
                 notificationService.show(true, 'Answer Submitted Successfully');
-//              $scope.submissions.unshift(result.data[0]);
+                $scope.submissions[index] = result.data[0];
               }
             });
           }
