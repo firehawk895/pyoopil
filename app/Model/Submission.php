@@ -182,27 +182,27 @@ class Submission extends AppModel {
     }
 
     /**
-     * Returning the list of submissions for owner and for the student
      * @param $classroomId
+     * @param $userId
      * @param int $page
      * @param bool $onlylatest
      * @return array
      */
-    public function getPaginatedSubmissions($classroomId, $page = 1, $onlylatest = false) {
+    public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $onlylatest = false) {
         //sanity check
         if ($page < 1) {
             $page = 1;
         }
 
         $options['conditions'] = array(
-            'Submission.classroom_id' => $classroomId
+            'Submission.classroom_id' => $classroomId,
+//            'UsersSubmission.user_id' => AuthComponent::user('id')
         );
 //        $options['recursive'] = -1;
         $options['contain'] = array(
-            'UsersSubmission',
             'Pyoopilfile' => array(
                 'fields' => array(
-                    'id', 'file_path', 'filename', 'filesize', 'thumbnail_path', 'mime_type'
+                    'id', 'file_path', 'filename', 'filesize', 'mime_type', 'created'
                 )
             )
         );
@@ -225,67 +225,16 @@ class Submission extends AppModel {
         $data = $this->find('all', $options);
 
         foreach ($data as &$sub) {
-            $sub['Submission']['is_submitted'] = false;
-            if ($sub['Submission']['is_published'] === true) {
-                $sub['Submission']['status'] = "Graded";
+
+            $usersSubmission = $this->UsersSubmission->getUsersSubmission($sub['Submission']['id'], $userId);
+
+            if (empty($usersSubmission)) {
+                $sub['Submission']['is_submitted'] = false;
             } else {
-                if (CakeTime::isPast($sub['Submission']['due_date'])) {
-                    $sub['Submission']['status'] = "Pending Grading";
-                } else {
-                    $sub['Submission']['status'] = "In Progress";
-                }
+                $sub['Submission']['is_submitted'] = true;
+                $sub['UsersSubmission'] = $usersSubmission;
             }
-        }
-        unset($sub);
-        return $data;
-    }
 
-    /**
-     * Returning the list of submissions for owner and for the student
-     * @param $classroomId
-     * @param int $page
-     * @param bool $onlylatest
-     * @return array
-     */
-    public function getPaginatedSubmissions2($classroomId, $page = 1, $onlylatest = false) {
-        //get submissions for the student
-        //sanity check
-        if ($page < 1) {
-            $page = 1;
-        }
-
-        $options['conditions'] = array(
-            'Submission.classroom_id' => $classroomId
-        );
-//        $options['recursive'] = -1;
-        $options['contain'] = array(
-            'UsersSubmission',
-            'Pyoopilfile' => array(
-                'fields' => array(
-                    'id', 'file_path', 'filename', 'filesize', 'thumbnail_path', 'mime_type'
-                )
-            )
-        );
-        $options['fields'] = array(
-            'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
-            'due_date', 'is_published', 'type', 'subjective_scoring'
-        );
-        $options['limit'] = self::PAGINATION_LIMIT;
-        $offset = self::PAGINATION_LIMIT * ($page - 1);
-        $options['offset'] = $offset;
-        $options['order'] = array(
-            'Submission.created' => 'desc'
-        );
-
-        if ($onlylatest) {
-            $options['limit'] = 1;
-            unset($options['offset']);
-        }
-
-        $data = $this->find('all', $options);
-
-        foreach ($data as &$sub) {
-            $sub['Submission']['is_submitted'] = false;
             if ($sub['Submission']['is_published'] === true) {
                 $sub['Submission']['status'] = "Graded";
             } else {

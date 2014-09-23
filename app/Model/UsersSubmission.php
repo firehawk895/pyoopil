@@ -78,10 +78,23 @@ class UsersSubmission extends AppModel {
             'deep' => true
         ))
         ) {
-            $this->log("yes");
+            return true;
         } else {
             $this->log("behen");
         }
+    }
+
+    public function getUsersSubmission($submissionId, $userId) {
+        $options['contain'] = array(
+            'Pyoopilfile'
+        );
+
+        $options['conditions'] = array(
+            'UsersSubmission.submission_id' => $submissionId,
+            'UsersSubmission.user_id' => $userId
+        );
+
+        return $this->find('first', $options);
     }
 
 }

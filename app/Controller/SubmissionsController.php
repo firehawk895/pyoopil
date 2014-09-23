@@ -41,7 +41,7 @@ class SubmissionsController extends AppController {
         if ($this->Submission->addSubjective($this->request->data, $classroomId)) {
             $status = true;
             $message = "Successfully created Subjective Assignment";
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, true);
         } else {
             $status = false;
             $message = "Failed to create Subjective Assignment";
@@ -118,7 +118,7 @@ class SubmissionsController extends AppController {
         $status = $this->Submission->Quiz->saveAssociated($data, $options);
 
         if ($status) {
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, true);
         }
 
         /*
@@ -168,14 +168,14 @@ class SubmissionsController extends AppController {
         $this->request->onlyAllow('get');
         $this->response->type('json');
 
-        $this->Submission->getQuiz(14);
+        $this->Submission->UsersSubmission->getUsersSubmission(40, AuthComponent::user('id'));
 
         $page = 1;
         if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
         }
 
-        $data = $this->Submission->getPaginatedSubmissions($classroomId, $page);
+        $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), $page);
         $status = true;
         $message = "";
 
@@ -199,7 +199,11 @@ class SubmissionsController extends AppController {
 
         $data = array();
         $postData = $this->request->data;
-        $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
+        $status = $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
+
+        if ($status) {
+//            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
+        }
 
         //output
         $this->set(compact('status', 'message', 'permissions', 'users_classroom_count'));
