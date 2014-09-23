@@ -47,7 +47,7 @@
                   <label>Attachments</label>
 
                   <!--<div class="custom-upload" id="test0">-->
-                  <input type="file" id="fileUploadSubjective" name="files[]">
+                  <input type="file" id="fileUploadSubjective" name="files[]" accept="{{getMimeTypes()}}">
 
                   <!--<div class="file-upload">-->
                   <!--<span class="file-txt">Select</span>-->
@@ -91,7 +91,7 @@
 
                   <!--<div class="custom-upload" id="test0">-->
                   <input type="file" id="fileUploadQuiz" name="files[]"
-                         onchange="angular.element(this).scope().addFile()">
+                         onchange="angular.element(this).scope().addFile()" accept="{{getMimeTypes()}}">
 
                   <!--<div class="file-upload">-->
                   <!--<span class="file-txt">Select</span>-->

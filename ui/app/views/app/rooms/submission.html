@@ -32,19 +32,33 @@
             <div class="stud-sub-step2">
               <p class="sub-date"><span><span class="sbold-topic">Due by:</span> {{submission.Submission.due_date |
                 amDateFormat:'DD.MM.YY , HH:MM'}}hrs</span>
-                <span class="pull-right"><span class="sbold-topic">Grading Type:</span> {{submission.Submission.subjective_scoring}}</span>
+                <span class="pull-right" ng-if="submission.Submission.status!=='Graded'">
+                  <span class="sbold-topic">Grading Type:</span> {{submission.Submission.subjective_scoring}}</span>
+                <span class="pull-right" ng-if="submission.Submission.status=='Graded' && submission.Submission.marks">
+                  <span class="sbold-topic">Your Score:</span> {{submission.UsersSubmission.marks}}</span>
+                <span class="pull-right" ng-if="submission.Submission.status=='Graded' && submission.Submission.grade">
+                  <span class="sbold-topic">Your Score:</span> {{submission.UsersSubmission.grade}}</span>
               </p>
 
               <p class="sub-txt">{{submission.Submission.description}}</p>
 
               <div class="clearfix">
                 <div class="f-left">
-                  <div class="att-doc"><a href="" class="dlfile"><img src="images/ppt_icon.png"
-                                                                      class="stud-att" alt="img">bill1.pptx.42kb</a>
+                  <div class="att-doc hand" ng-if="submission.Pyoopilfile.filename"><a
+                      ng-if="!checkIfPic(submission.Pyoopilfile.mime_type)"
+                      ng-click="openDocViewerDialog(submission.Pyoopilfile.file_path)"
+                      class="dlfile"><img ng-src="{{docIcon(submission.Pyoopilfile.mime_type)}}" class="stud-att"
+                                          alt="img">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize | bytes}}</a>
+                    <a ng-href="{{submission.Pyoopilfile.file_path}}"
+                       ng-if="checkIfPic(submission.Pyoopilfile.mime_type)"
+                       class="dlfile" ui-jq="prettyPhoto">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize | bytes}}</a>
                   </div>
                 </div>
                 <a href="" class="follow active f-right open-answer"
                    ng-if="!submission.Submission.is_submitted" ng-click="vm.addAnswer=!vm.addAnswer">Submit Your
+                  Answer</a>
+                <a href="" class="follow active f-right open-answer"
+                   ng-if="submission.Submission.is_submitted">View Your
                   Answer</a>
 
                 <div class="clear"></div>

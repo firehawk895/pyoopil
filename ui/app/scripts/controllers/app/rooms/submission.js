@@ -108,20 +108,38 @@ angular.module('uiApp')
       };
 
       $scope.displayContent = function (index) {
-        $scope.vm.addAnswer = false;
-        if ($scope.lastExpandedItemIndex == -1) {
-          $scope.lastExpandedItemIndex = index;
-          $scope.submissions[index].showContent = true;
-        }
-        else if ($scope.lastExpandedItemIndex == index) {
-          $scope.lastExpandedItemIndex = -1;
-          $scope.submissions[index].showContent = false;
-        }
-        else {
-          $scope.submissions[$scope.lastExpandedItemIndex].showContent = false;
-          $scope.submissions[index].showContent = true;
-          $scope.lastExpandedItemIndex = index;
+        if (!$scope.canCreate) {
+          $scope.vm.addAnswer = false;
+          if ($scope.lastExpandedItemIndex == -1) {
+            $scope.lastExpandedItemIndex = index;
+            $scope.submissions[index].showContent = true;
+          }
+          else if ($scope.lastExpandedItemIndex == index) {
+            $scope.lastExpandedItemIndex = -1;
+            $scope.submissions[index].showContent = false;
+          }
+          else {
+            $scope.submissions[$scope.lastExpandedItemIndex].showContent = false;
+            $scope.submissions[index].showContent = true;
+            $scope.lastExpandedItemIndex = index;
+          }
         }
       };
-
-    }]);
+      $scope.openDocViewerDialog = function (path) {
+        modalService.openDocViewerDialog($scope, path);
+      };
+      $scope.checkIfPic = function (mimeType) {
+        return /^image[//].*/.test(mimeType) || /^video[//].*/.test(mimeType);
+      };
+      $scope.docIcon = function (mimeType) {
+        if (/^application[//].*word.*/.test(mimeType))
+          return 'images/word_icon.png';
+        else if (mimeType == 'application/pdf')
+          return 'images/doc_icon.png';
+        else if (/^application[//].*powerpoint$/.test(mimeType))
+          return 'images/ppt_icon.png';
+      }
+      ;
+    }
+  ])
+;
