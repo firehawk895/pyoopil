@@ -188,7 +188,7 @@ class Submission extends AppModel {
      * @param bool $onlylatest
      * @return array
      */
-    public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $onlylatest = false) {
+    public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $submissionId = false) {
         //sanity check
         if ($page < 1) {
             $page = 1;
@@ -217,9 +217,12 @@ class Submission extends AppModel {
             'Submission.created' => 'desc'
         );
 
-        if ($onlylatest) {
+        if (!empty($submissionId)) {
             $options['limit'] = 1;
             unset($options['offset']);
+            $options['conditions'] = array(
+                'Submission.id' => $submissionId,
+            );
         }
 
         $data = $this->find('all', $options);

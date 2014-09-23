@@ -41,7 +41,8 @@ class SubmissionsController extends AppController {
         if ($this->Submission->addSubjective($this->request->data, $classroomId)) {
             $status = true;
             $message = "Successfully created Subjective Assignment";
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, true);
+            $lastSubmissionId = $this->Submission->getLastInsertId();
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
         } else {
             $status = false;
             $message = "Failed to create Subjective Assignment";
@@ -118,7 +119,8 @@ class SubmissionsController extends AppController {
         $status = $this->Submission->Quiz->saveAssociated($data, $options);
 
         if ($status) {
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, true);
+            $lastSubmissionId = $this->Submission->getLastInsertId();
+            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
         }
 
         /*
@@ -202,7 +204,7 @@ class SubmissionsController extends AppController {
         $status = $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
 
         if ($status) {
-//            $data = $this->Submission->getPaginatedSubmissions($classroomId, 1, true);
+            $data = $this->Submission->getPaginatedSubmissions(null, AuthComponent::user('id'), 1, $postData['Submission']['id']);
         }
 
         //output
