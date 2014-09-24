@@ -298,6 +298,10 @@ angular.module('uiApp')
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "answerSubjective.json", undefined, {'Content-Type': undefined});
     };
+    self.getGradeSubmissions = function (roomId, assignmentId, page) {
+      page = page || 1;
+      return restangular.one("Classrooms", roomId).all("Submissions").customGET("gradeSubmissions.json", {page: page, id: assignmentId});
+    };
 
     return self;
   }]);

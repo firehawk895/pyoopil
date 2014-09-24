@@ -112,9 +112,19 @@ angular
           controller: "peopleCtrl"
         })
         .state('app.rooms.submissions', {
+          abstract: true,
           url: "submissions/",
           templateUrl: "views/app/rooms/submission.html",
           controller: "submissionCtrl"
+        })
+        .state('app.rooms.submissions.main', {
+          url: "",
+          templateUrl: "views/app/rooms/submissionMain.html"
+        })
+        .state('app.rooms.submissions.grading', {
+          url: ":assignmentId/",
+          templateUrl: "views/app/rooms/grading.html",
+          controller: 'gradingCtrl'
         })
         .state('app.roomsDash', {
           url: "room/",

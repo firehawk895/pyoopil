@@ -1,11 +1,13 @@
 angular.module('uiApp')
-  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService) {
+  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
+    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+      $scope.submissions = [];
       $scope.roomId = $stateParams.roomId;
       $scope.fullName = localStorageService.get("name");
       $scope.profile_img = localStorageService.get("image");
       $scope.vm = {};
       $scope.page = 1;
+      $scope.pageEnd = false;
       $scope.lastExpandedItemIndex = -1;
       $scope.createNewAssignment = function () {
         $scope.vm = {};
@@ -107,7 +109,6 @@ angular.module('uiApp')
         });
         ngDialog.close();
       };
-
       $scope.displayContent = function (index) {
         if (!$scope.canCreate) {
           $scope.vm.showAnswer = false;
@@ -127,6 +128,8 @@ angular.module('uiApp')
             $scope.lastExpandedItemIndex = index;
           }
         }
+        else
+          $state.go("app.rooms.submissions.grading", {assignmentId: $scope.submissions[index].Submission.id});
       };
       $scope.openDocViewerDialog = function (path) {
         modalService.openDocViewerDialog($scope, path);
@@ -159,5 +162,14 @@ angular.module('uiApp')
           }
         }
       };
-
+      $scope.updatePage = function () {
+        if (!$scope.pageEnd) {
+          roomService.getSubmissions($stateParams.roomId, ++$scope.page).then(function (result) {
+            if (!result.data.length)
+              $scope.pageEnd = true;
+            else
+              $scope.submissions = $scope.submissions.concat(result.data);
+          });
+        }
+      };
     }]);

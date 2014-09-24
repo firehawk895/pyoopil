@@ -1,0 +1,121 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper inside-submit">
+    <div class="topbuttons">
+      <a ui-sref="app.rooms.submissions.main" class="follow hand">Back to Assignments</a>
+    </div>
+    <div class="submit-content">
+      <div class="assign-topic">
+        <div class="assign-head clearfix">
+          <p class="assgin-heading"><span class="attach-icon"></span>Name of the assignment </p>
+          <a href="javascript:void(0)" class="open-dd"></a>
+        </div>
+        <div class="assign-hide">
+          <p class="hide-txt">Lorem ipsum dolor sit amet, vel erat prima salutandi ut, ne dolorum instructior qui. Saepe
+            soluta ea pri, id indoctum sapientem mea, audiam epicuri ad vix. Dico euismod pri ut, nam te splendide
+            moderatius,
+            nominavi dissentiet reformidans no has. Eu nobis similique adversarium mei, epicuri partiendo imperdiet at
+            eos,
+            pri no tritani sadipscing. In tota apeirian quo, cu eos dolor detraxit, habeo libris liberavisse et sea.</p>
+          <a href="javascript:void(0)" class="assgin-att dialogbox" title="dialogbox0">bill1.pptx.65kb</a>
+          <!--popup-->
+          <div id="dialogbox0" class="create-popup doc-popup">
+            <div class="pop-wind clearfix">
+              <div class="pop-head clearfix">
+                <span>Document</span>
+                <a href="#" class="close-link">
+                    <span class="icon-cross">
+                    </span></a>
+              </div>
+              <div class="pop-content clearfix">
+                <iframe
+                    src="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true"
+                    width="100%" height="780"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="view-head clearfix">
+        <p class="view-heading">Student Submissions<!--<a href="" class="download-icon"></a>--> </p>
+        <span class="f-right">Max. Marks: 100</span>
+      </div>
+      <table class="submit-heading">
+        <tr>
+          <th class="ptbl-td1">Status</th>
+          <th class="ptbl-td2">Student Name</th>
+          <th class="ptbl-td3">Submission</th>
+          <th class="ptbl-td4">Grade/Marks</th>
+          <th class="ptbl-td5">Comments</th>
+        </tr>
+        <tr class="blank-td">
+          <td colspan="4"></td>
+        </tr>
+      </table>
+      <form>
+        <div class="assign-lst clearfix">
+          <div infinite-scroll="updatePage()">
+            <table class="submit-heading">
+              <tbody ng-repeat="gradeSubmission in gradeSubmissions">
+              <tr>
+                <td class="ptbl-td1">
+                  <div class="pend-icon" ng-if="!gradeSubmission.Submission.is_submitted"></div>
+                  <div class="done-icon" ng-if="gradeSubmission.Submission.is_submitted"></div>
+                </td>
+                <td class="ptbl-td2"><a href=""><img ng-src="{{gradeSubmission.AppUser.profile_img}}" class="assign-img"
+                                                     alt="img"><span
+                    class="name-txt">{{gradeSubmission.AppUser.fname}} {{gradeSubmission.AppUser.lname}}</span></a></td>
+                <td class="ptbl-td3">
+                  <a href="" class="sub-icon dialogbox" title="dialogbox1"
+                     ng-if="gradeSubmission.Submission.is_submitted && checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
+                     ui-jq="prettyPhoto"></a>
+                  <a href="" class="sub-icon dialogbox" title="dialogbox1"
+                     ng-if="gradeSubmission.Submission.is_submitted && !checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
+                     ng-click="openDocViewerDialog(gradeSubmission.UsersSubmission.Pyoopilfile.file_path)"></a>
+                </td>
+                <td class="ptbl-td4">
+                  <input type="text" class="assign-txtbx"
+                         ng-model="gradeSubmission.UsersSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
+                         maxlength="3" ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded">
+                </td>
+                <td class="ptbl-td5">
+                  <a href="" class="sum-btn comm-link" ng-if="!gradeSubmission.Submission.is_submitted">Add</a>
+                  <a href="" class="sum-btn comm-link" ng-if="gradeSubmission.Submission.is_submitted">View</a>
+                </td>
+              </tr>
+              <tr ng-if="displayContent && !gradeSubmission.Submission.is_submitted">
+                <td colspan="5" class="clearfix">
+                  <div class="txtarea-div">
+                    <textarea class="comment-txtarea" placeholder="Add comment here…"
+                              ng-model="vm.answerComment"></textarea>
+                  </div>
+                  <div class="comm-btns">
+                    <a href="" class="follow active comm-link">Save</a>
+                    <a href="" class="follow comm-link">Cancel</a>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if="displayContent && gradeSubmission.Submission.is_submitted">
+                <td colspan="5" class="clearfix">
+                  <div class="txtarea-div">
+                    <textarea
+                        class="comment-txtarea">{{gradeSubmission.UsersSubmission.UsersSubmission.answer}}</textarea>
+                  </div>
+
+                  <div class="comm-btns">
+                    <a href="" class="follow active comm-link">Save</a>
+                    <a href="" class="follow comm-link">Cancel</a>
+                  </div>
+                </td>
+              </tr>
+              <tr class="blank-td">
+                <td colspan="4"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <a href="" class="publish-btn">Publish Result</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
