@@ -170,7 +170,7 @@ class SubmissionsController extends AppController {
         $this->request->onlyAllow('get');
         $this->response->type('json');
 
-        $this->Submission->UsersSubmission->getUsersSubmission(40, AuthComponent::user('id'));
+//        $this->Submission->UsersSubmission->getUsersSubmission(40, AuthComponent::user('id'));
 
         $page = 1;
         if (isset($this->params['url']['page'])) {
@@ -256,5 +256,53 @@ class SubmissionsController extends AppController {
         $this->set('_serialize', array('data', 'permissions', 'users_classroom_count', 'status', 'message'));
     }
 
+    public function gradeSubmissions($classroomId) {
+        $this->request->onlyAllow('get');
+        $this->response->type('json');
 
+        $status = false;
+        $message = "";
+
+        if (isset($this->params['url']['id'])) {
+            $submissionId = $this->params['url']['id'];
+
+            $page = 1;
+            if (isset($this->params['url']['page'])) {
+                $page = $this->params['url']['page'];
+            }
+
+            $data = $this->Submission->Classroom->UsersClassroom->getPaginatedPeople($classroomId, $page);
+//            $this->log($data);
+
+            foreach ($data as &$sub) {
+                unset($sub['UsersClassroom']);
+                unset($sub['Classroom']);
+
+                $usersSubmission = $this->Submission->UsersSubmission->getUsersSubmission($submissionId, $sub['AppUser']['id']);
+                $this->log($usersSubmission);
+
+                if (empty($usersSubmission)) {
+                    $sub['Submission']['is_submitted'] = false;
+                } else {
+                    $sub['Submission']['is_submitted'] = true;
+                    $sub['UsersSubmission'] = $usersSubmission;
+                }
+
+//                if ($sub['Submission']['is_published'] === true) {
+//                    $sub['Submission']['status'] = "Graded";
+//                } else {
+//                    if (CakeTime::isPast($sub['Submission']['due_date'])) {
+//                        $sub['Submission']['status'] = "Pending Grading";
+//                    } else {
+//                        $sub['Submission']['status'] = "In Progress";
+//                    }
+//                }
+            }
+
+            //output
+            $this->set(compact('status', 'message'));
+            $this->set('data', $data);
+            $this->set('_serialize', array('data', 'status', 'message'));
+        }
+    }
 }

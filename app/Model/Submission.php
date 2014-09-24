@@ -185,7 +185,7 @@ class Submission extends AppModel {
      * @param $classroomId
      * @param $userId
      * @param int $page
-     * @param bool $onlylatest
+     * @param bool $submissionId
      * @return array
      */
     public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $submissionId = false) {
