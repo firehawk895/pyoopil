@@ -49,7 +49,8 @@
                   <div class="att-doc hand" ng-if="submission.Pyoopilfile.filename"><a
                       ng-if="!checkIfPic(submission.Pyoopilfile.mime_type)"
                       ng-click="openDocViewerDialog(submission.Pyoopilfile.file_path)"
-                      class="dlfile"><img ng-src="{{docIcon(submission.Pyoopilfile.mime_type)}}" class="stud-att"
+                      class="dlfile"><img ng-src="{{docIcon(submission.Pyoopilfile.mime_type)}}"
+                                          class="stud-att"
                                           alt="img">{{submission.Pyoopilfile.filename}}.{{submission.Pyoopilfile.filesize
                     | bytes}}</a>
                     <a ng-href="{{submission.Pyoopilfile.file_path}}"

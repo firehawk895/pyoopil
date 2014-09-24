@@ -6,38 +6,36 @@
     <div class="submit-content">
       <div class="assign-topic">
         <div class="assign-head clearfix">
-          <p class="assgin-heading"><span class="attach-icon"></span>Name of the assignment </p>
-          <a href="javascript:void(0)" class="open-dd"></a>
+          <p class="assgin-heading">{{submissionDetail.Submission.topic}}</p>
+          <a href="" class="open-dd" ng-click="vm.showSubmissionDetail=!vm.showSubmissionDetail"></a>
         </div>
-        <div class="assign-hide">
-          <p class="hide-txt">Lorem ipsum dolor sit amet, vel erat prima salutandi ut, ne dolorum instructior qui. Saepe
-            soluta ea pri, id indoctum sapientem mea, audiam epicuri ad vix. Dico euismod pri ut, nam te splendide
-            moderatius,
-            nominavi dissentiet reformidans no has. Eu nobis similique adversarium mei, epicuri partiendo imperdiet at
-            eos,
-            pri no tritani sadipscing. In tota apeirian quo, cu eos dolor detraxit, habeo libris liberavisse et sea.</p>
-          <a href="javascript:void(0)" class="assgin-att dialogbox" title="dialogbox0">bill1.pptx.65kb</a>
-          <!--popup-->
-          <div id="dialogbox0" class="create-popup doc-popup">
-            <div class="pop-wind clearfix">
-              <div class="pop-head clearfix">
-                <span>Document</span>
-                <a href="#" class="close-link">
-                    <span class="icon-cross">
-                    </span></a>
-              </div>
-              <div class="pop-content clearfix">
-                <iframe
-                    src="http://docs.google.com/viewer?url=https%3A%2F%2Ftrello-attachments.s3.amazonaws.com%2F53511011b047829e0d3fcccc%2F53511127392e0ca05e6b1d73%2F1d1e2f919ffa598c15336e8ac3ac2c1f%2FPYOOPIL_HTML_Schedule.xlsx&embedded=true"
-                    width="100%" height="780"></iframe>
-              </div>
-            </div>
+        <div ng-class="{'assign-hide' :!vm.showSubmissionDetail}">
+          <p class="hide-txt">{{submissionDetail.Submission.description}}</p>
+          <!--<a class="assgin-att dialogbox" title="dialogbox0"-->
+          <!--ng-if="submissionDetail.Pyoopilfile.filename && !checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
+          <!--ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
+          <!--| bytes}}</a>-->
+          <!--<a ng-href="{{submissionDetail.Pyoopilfile.file_path}}" class="assgin-att dialogbox" title="dialogbox0"-->
+          <!--ng-if="submissionDetail.Pyoopilfile.filename  && checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
+          <!--ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
+          <!--| bytes}}</a>-->
+          <div class="att-doc hand" ng-if="submissionDetail.Pyoopilfile.filename"><a
+              ng-if="!checkIfPic(submissionDetail.Pyoopilfile.mime_type)"
+              ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)"
+              class="dlfile"><img ng-src="{{docIcon(submissionDetail.Pyoopilfile.mime_type)}}"
+                                  class="stud-att"
+                                  alt="img">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize
+            | bytes}}</a>
+            <a ng-href="{{submissionDetail.Pyoopilfile.file_path}}"
+               ng-if="checkIfPic(submissionDetail.Pyoopilfile.mime_type)"
+               class="dlfile" ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize
+              | bytes}}</a>
           </div>
         </div>
       </div>
       <div class="view-head clearfix">
         <p class="view-heading">Student Submissions<!--<a href="" class="download-icon"></a>--> </p>
-        <span class="f-right">Max. Marks: 100</span>
+        <span class="f-right" ng-if="submissionDetail.Submission.subjective_scoring=='marked'">Max. Marks: {{submissionDetail.Submission.total_marks}}</span>
       </div>
       <table class="submit-heading">
         <tr>
@@ -45,7 +43,7 @@
           <th class="ptbl-td2">Student Name</th>
           <th class="ptbl-td3">Submission</th>
           <th class="ptbl-td4">Grade/Marks</th>
-          <th class="ptbl-td5">Comments</th>
+          <th class="ptbl-td5">Answers</th>
         </tr>
         <tr class="blank-td">
           <td colspan="4"></td>
@@ -65,10 +63,11 @@
                                                      alt="img"><span
                     class="name-txt">{{gradeSubmission.AppUser.fname}} {{gradeSubmission.AppUser.lname}}</span></a></td>
                 <td class="ptbl-td3">
-                  <a href="" class="sub-icon dialogbox" title="dialogbox1"
+                  <a ng-href="{{gradeSubmission.UsersSubmission.Pyoopilfile.file_path}}" class="sub-icon dialogbox"
+                     title="dialogbox1"
                      ng-if="gradeSubmission.Submission.is_submitted && checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
                      ui-jq="prettyPhoto"></a>
-                  <a href="" class="sub-icon dialogbox" title="dialogbox1"
+                  <a class="sub-icon dialogbox" title="dialogbox1"
                      ng-if="gradeSubmission.Submission.is_submitted && !checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
                      ng-click="openDocViewerDialog(gradeSubmission.UsersSubmission.Pyoopilfile.file_path)"></a>
                 </td>
@@ -78,32 +77,38 @@
                          maxlength="3" ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded">
                 </td>
                 <td class="ptbl-td5">
-                  <a href="" class="sum-btn comm-link" ng-if="!gradeSubmission.Submission.is_submitted">Add</a>
-                  <a href="" class="sum-btn comm-link" ng-if="gradeSubmission.Submission.is_submitted">View</a>
+                  <!--<a href="" class="sum-btn comm-link" ng-if="!gradeSubmission.Submission.is_submitted">Add</a>-->
+                  <a href="" class="sum-btn comm-link" ng-click="displayContent($index)">View</a>
                 </td>
               </tr>
-              <tr ng-if="displayContent && !gradeSubmission.Submission.is_submitted">
-                <td colspan="5" class="clearfix">
-                  <div class="txtarea-div">
-                    <textarea class="comment-txtarea" placeholder="Add comment here…"
-                              ng-model="vm.answerComment"></textarea>
-                  </div>
-                  <div class="comm-btns">
-                    <a href="" class="follow active comm-link">Save</a>
-                    <a href="" class="follow comm-link">Cancel</a>
-                  </div>
-                </td>
-              </tr>
-              <tr ng-if="displayContent && gradeSubmission.Submission.is_submitted">
+              <tr ng-if="gradeSubmission.showContent">
                 <td colspan="5" class="clearfix">
                   <div class="txtarea-div">
                     <textarea
-                        class="comment-txtarea">{{gradeSubmission.UsersSubmission.UsersSubmission.answer}}</textarea>
+                        class="comment-txtarea"
+                        readonly>{{gradeSubmission.UsersSubmission.UsersSubmission.answer}}</textarea>
                   </div>
-
                   <div class="comm-btns">
-                    <a href="" class="follow active comm-link">Save</a>
+                    <a href="" class="follow active comm-link"
+                       ng-if="!gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-click="vm.addComment=!vm.addComment">Add Comment</a>
+                    <a href="" class="follow active comm-link"
+                       ng-if="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-click="vm.showComment=!vm.showComment">Show Comment</a>
+                  </div>
+                  <div ng-if="vm.addComment">
+                    <textarea class="comment-txtarea" placeholder="Add comment here…"
+                              ng-model="vm.commentText"></textarea>
+                  </div>
+                  <div class="comm-btns" ng-if="vm.addComment">
+                    <a href="" class="follow active comm-link"
+                       ng-click="assignComment(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">Save</a>
                     <a href="" class="follow comm-link">Cancel</a>
+                  </div>
+                  <div ng-if="vm.showComment">
+                    <textarea class="comment-txtarea"
+                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                              readonly></textarea>
                   </div>
                 </td>
               </tr>

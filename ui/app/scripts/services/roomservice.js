@@ -302,6 +302,20 @@ angular.module('uiApp')
       page = page || 1;
       return restangular.one("Classrooms", roomId).all("Submissions").customGET("gradeSubmissions.json", {page: page, id: assignmentId});
     };
+    self.assignComment = function (submissionId, userId, comment) {
+      var data = {
+        Submission: {
+          id: submissionId
+        },
+        AppUser: {
+          id: userId
+        },
+        UsersSubmission: {
+          grade_comment: comment
+        }
+      };
+      return restangular.all('Classrooms').all('Submissions').customPOST(data, 'assignComment.json');
+    };
 
     return self;
   }]);
