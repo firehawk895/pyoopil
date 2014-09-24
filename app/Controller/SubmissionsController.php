@@ -266,6 +266,8 @@ class SubmissionsController extends AppController {
         if (isset($this->params['url']['id'])) {
             $submissionId = $this->params['url']['id'];
 
+            $submission = $this->Submission->getSubmissionById($submissionId);
+
             $page = 1;
             if (isset($this->params['url']['page'])) {
                 $page = $this->params['url']['page'];
@@ -299,10 +301,153 @@ class SubmissionsController extends AppController {
 //                }
             }
 
+            $status = true;
             //output
-            $this->set(compact('status', 'message'));
-            $this->set('data', $data);
-            $this->set('_serialize', array('data', 'status', 'message'));
         }
+        $this->set(compact('status', 'message', 'submission'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'submission', 'status', 'message'));
     }
+
+    public function assignGrade() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $status = false;
+        $message = "";
+
+        $postData = $this->request->data;
+
+        /**
+         * Validation:
+         */
+        if (
+            isset($postData['Submission']['id']) &&
+            isset($postData['AppUser']['id']) &&
+            (isset($postData['UsersSubmission']['grade']) || isset($postData['UsersSubmission']['marks']))
+        ) {
+            $data = $this->Submission->UsersSubmission->find('first', array(
+                'conditions' => array(
+                    'submission_id' => $postData['Submission']['id'],
+                    'user_id' => $postData['AppUser']['id']
+                ),
+                'recursive' => -1
+            ));
+
+            if (isset($postData['UsersSubmission']['grade'])) {
+                $type = "grade";
+                $value = $postData['UsersSubmission']['grade'];
+            } else {
+                $type = "marks";
+                $value = $postData['UsersSubmission']['marks'];
+            }
+
+            if (!empty($data)) {
+                $this->Submission->UsersSubmission->id = $data['UsersSubmission']['id'];
+                $this->Submission->UsersSubmission->set(array(
+                    'is_graded' => true,
+                    $type => $value
+                ));
+                $saveStatus = $this->Submission->UsersSubmission->save();
+            } else {
+                //TODO : Invalid data will break this
+                //Actually MySQL will not allow this to happen. muhahahah
+                $usersSubmissionData = array(
+                    'UsersSubmission' => array(
+                        'user_id' => $postData['AppUser']['id'],
+                        'submission_id' => $postData['Submission']['id'],
+                        $type => $value,
+                        'is_graded' => true
+                    )
+                );
+
+                $data = $this->Submission->UsersSubmission;
+                $this->Submission->UsersSubmission->create();
+                $saveStatus = $this->Submission->UsersSubmission->save($usersSubmissionData);
+//                $this->Submission->UsersSubmission->id = $this->Submission->UsersSubmission->getLastInsertId();
+            }
+
+            if (!empty($saveStatus)) {
+                $status = true;
+                $message = "Marks/Grade saved successfully";
+            } else {
+                $status = false;
+                $message = "Unable to save Marks/Grade";
+            }
+        }
+
+        $data = array();
+        //output
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    public function assignComment() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $status = false;
+        $message = "";
+
+        $postData = $this->request->data;
+
+        /**
+         * Validation:
+         */
+        if (
+            isset($postData['Submission']['id']) &&
+            isset($postData['AppUser']['id']) &&
+            isset($postData['UsersSubmission']['grade_comment'])
+        ) {
+            $data = $this->Submission->UsersSubmission->find('first', array(
+                'conditions' => array(
+                    'submission_id' => $postData['Submission']['id'],
+                    'user_id' => $postData['AppUser']['id']
+                ),
+                'recursive' => -1
+            ));
+
+            if (!empty($data)) {
+                $this->Submission->UsersSubmission->id = $data['UsersSubmission']['id'];
+                $this->Submission->UsersSubmission->set(array(
+                    'grade_comment' => $postData['UsersSubmission']['grade_comment'],
+                ));
+                $saveStatus = $this->Submission->UsersSubmission->save();
+            } else {
+                //TODO : Invalid data will break this
+                //Actually MySQL will not allow this to happen. muhahahah
+                $usersSubmissionData = array(
+                    'UsersSubmission' => array(
+                        'user_id' => $postData['AppUser']['id'],
+                        'submission_id' => $postData['Submission']['id'],
+                        'grade_comment' => $postData['UsersSubmission']['grade_comment']
+                    )
+                );
+
+                $data = $this->Submission->UsersSubmission;
+                $this->Submission->UsersSubmission->create();
+                $saveStatus = $this->Submission->UsersSubmission->save($usersSubmissionData);
+//                $this->Submission->UsersSubmission->id = $this->Submission->UsersSubmission->getLastInsertId();
+            }
+
+            if (!empty($saveStatus)) {
+                $status = true;
+                $message = "Comment saved successfully";
+            } else {
+                $status = false;
+                $message = "Unable to save Comment";
+            }
+        }
+
+        $data = array();
+        //output
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+
 }

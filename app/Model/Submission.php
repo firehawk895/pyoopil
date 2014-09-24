@@ -252,6 +252,21 @@ class Submission extends AppModel {
         return $data;
     }
 
+    public function getSubmissionById($submissionId) {
+        $options['conditions'] = array(
+            'Submission.id' => $submissionId,
+        );
+
+        $options['contain'] = array(
+            'Pyoopilfile' => array(
+                'fields' => array(
+                    'id', 'file_path', 'filename', 'filesize', 'mime_type', 'created'
+                )
+            )
+        );
+        return $this->find('first', $options);
+    }
+
     public function getPermissions($userId, $classroomId) {
 
         if ($this->Classroom->isOwner($userId, $classroomId)) {
