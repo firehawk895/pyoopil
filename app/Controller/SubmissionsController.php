@@ -66,8 +66,8 @@ class SubmissionsController extends AppController {
         //TODO: add model validation
         //TODO: add Pyoopilfile support
 
-        $status = false;
-        $message = "";
+//        $status = false;
+//        $message = "";
 
         $data = $this->request->data;
         //store in seconds for easy handling later
@@ -78,10 +78,10 @@ class SubmissionsController extends AppController {
         }
         $data['Submission']['type'] = 'quiz';
         $data['Submission']['classroom_id'] = $classroomId;
-
-        $options['deep'] = true;
-        $options['validate'] = false;
-        $options['atomic'] = true;
+//
+//        $options['deep'] = true;
+//        $options['validate'] = false;
+//        $options['atomic'] = true;
 
         /*
          * Use this for security
@@ -94,34 +94,42 @@ class SubmissionsController extends AppController {
             )
         );
         */
-        $this->log(array(
-            'User' => array('email' => 'john-doe@cakephp.org'),
-            'Cart' => array(
-                array(
-                    'payment_status_id' => 2,
-                    'total_cost' => 250,
-                    'CartItem' => array(
-                        array(
-                            'cart_product_id' => 3,
-                            'quantity' => 1,
-                            'cost' => 100,
-                        ),
-                        array(
-                            'cart_product_id' => 5,
-                            'quantity' => 1,
-                            'cost' => 150,
-                        )
-                    )
-                )
-            )
+//        $this->log(array(
+//            'User' => array('email' => 'john-doe@cakephp.org'),
+//            'Cart' => array(
+//                array(
+//                    'payment_status_id' => 2,
+//                    'total_cost' => 250,
+//                    'CartItem' => array(
+//                        array(
+//                            'cart_product_id' => 3,
+//                            'quantity' => 1,
+//                            'cost' => 100,
+//                        ),
+//                        array(
+//                            'cart_product_id' => 5,
+//                            'quantity' => 1,
+//                            'cost' => 150,
+//                        )
+//                    )
+//                )
+//            )
+//        ));
+//        $this->log($data);
+//        $status = $this->Submission->Quiz->saveAssociated($data, $options);
+//        $status = $this->Submission->Quiz->saveAll($data, $options);
+//        $this->log($this->Submission->getShi());
+//        $status = $this->Submission->saveAssociated($this->Submission->getShit(), array(
+//            'deep' => true
+//        ));
+        $status = $this->Submission->saveAssociated($data, array(
+            'deep' => true
         ));
-        $this->log($data);
-        $status = $this->Submission->Quiz->saveAssociated($data, $options);
 
-        if ($status) {
-            $lastSubmissionId = $this->Submission->getLastInsertId();
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
-        }
+//        if ($status) {
+//            $lastSubmissionId = $this->Submission->getLastInsertId();
+//            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
+//        }
 
         /*
         //Calculate
@@ -156,7 +164,7 @@ class SubmissionsController extends AppController {
         //output
 
         $this->set(compact('status', 'message'));
-        $this->set('data', $data);
+//        $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
