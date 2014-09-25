@@ -371,13 +371,14 @@ class SubmissionsController extends AppController {
             if (!empty($saveStatus)) {
                 $status = true;
                 $message = "Marks/Grade saved successfully";
+                $data = $this->Submission->getGradeSubmissionTile($postData['AppUser']['id'], $postData['Submission']['id']);
             } else {
                 $status = false;
                 $message = "Unable to save Marks/Grade";
+                $data = array();
             }
         }
 
-        $data = array();
         //output
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
@@ -436,18 +437,17 @@ class SubmissionsController extends AppController {
             if (!empty($saveStatus)) {
                 $status = true;
                 $message = "Comment saved successfully";
+                $data = $this->Submission->getGradeSubmissionTile($postData['AppUser']['id'], $postData['Submission']['id']);
             } else {
                 $status = false;
                 $message = "Unable to save Comment";
+                $data = array();
             }
         }
 
-        $data = array();
         //output
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
-
-
 }

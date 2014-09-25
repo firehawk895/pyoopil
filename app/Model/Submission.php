@@ -308,4 +308,28 @@ class Submission extends AppModel {
         $data = $this->find('first', $options);
         $this->log($data);
     }
+
+    public function getGradeSubmissionTile($userId, $submissionId) {
+        $appUser = $this->UsersSubmission->AppUser->find('first', array(
+            'recursive' => -1,
+            'conditions' => array(
+                'AppUser.id' => $userId
+            ),
+            'fields' => array(
+                'id', 'fname', 'lname', 'profile_img'
+            )
+        ));
+
+        $usersSubmission = $this->UsersSubmission->getUsersSubmission($submissionId, $userId);
+
+        if (empty($usersSubmission)) {
+            $sub['Submission']['is_submitted'] = false;
+        } else {
+            $sub['Submission']['is_submitted'] = true;
+        }
+        $sub['UsersSubmission'] = $usersSubmission;
+        $data = array_merge($appUser, $sub);
+
+        return $data;
+    }
 }
