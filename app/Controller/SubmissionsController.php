@@ -123,7 +123,8 @@ class SubmissionsController extends AppController {
 //            'deep' => true
 //        ));
         $status = $this->Submission->saveAssociated($data, array(
-            'deep' => true
+            'deep' => true,
+            'atomic' => true
         ));
 
 //        if ($status) {
@@ -237,14 +238,19 @@ class SubmissionsController extends AppController {
         $status = false;
         $message = "";
 
-        if (isset($this->params['url']['id'])) {
-            $submissionId = $this->params['url']['id'];
+        if (isset($this->params['url']['submission_id'])) {
+            $submissionId = $this->params['url']['submission_id'];
 
             $options = array(
                 'contain' => array(
                     'Quiz' => array(
                         'Quizquestion' => array(
-                            'Choice', 'Column'
+                            'Choice' => array(
+                                'fields' => array(
+                                    'id', 'quizquestion_id', 'description'
+                                )
+                            ),
+                            'Column'
                         )
                     )
                 )
@@ -255,7 +261,13 @@ class SubmissionsController extends AppController {
                     $submissionId
                 )
             );
+
             $data = $this->Submission->find('first', $options);
+            if (!empty($data)) {
+                $status = true;
+            } else {
+                $status = false;
+            }
         }
 
         //output
