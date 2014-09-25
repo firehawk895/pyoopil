@@ -13,7 +13,7 @@ angular.module('uiApp')
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;
         $scope.vm.gradingType = 'marked';
-        $scope.vm.file = null;
+//        $scope.vm.file = null;
         ngDialog.open({
           template: 'views/app/rooms/createAssignment.html',
           scope: $scope
@@ -44,7 +44,7 @@ angular.module('uiApp')
       $scope.makeTypeSubjective = function (value) {
         $scope.vm = {};
         $scope.vm.gradingType = 'marked';
-        $scope.vm.file = null;
+//        $scope.vm.file = null;
         $scope.vm.typeIsSubjective = value;
       };
       $scope.createQuizDialog = function () {
@@ -53,6 +53,7 @@ angular.module('uiApp')
             questionType: 'single-select',
             questionText: "",
             answerValue: null,
+            maxMarks: 0,
             answerChoices: [
               {
                 choice: "",
