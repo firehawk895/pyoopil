@@ -1,8 +1,10 @@
 angular.module('uiApp')
   .controller('gradingCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
     function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+
       $scope.page = 1;
       $scope.vm.showSubmissionDetail = false;
+      $scope.vm.editGrade = false;
       roomService.getGradeSubmissions($stateParams.roomId, $stateParams.assignmentId, $scope.page).then(function (result) {
         $scope.gradeSubmissions = result.data;
         $scope.submissionDetail = result.submission;
@@ -37,8 +39,31 @@ angular.module('uiApp')
       };
       $scope.assignComment = function (submissionId, userId, index) {
         roomService.assignComment(submissionId, userId, $scope.vm.commentText).then(function (result) {
+          notificationService.show(result.status, result.message);
           if (result.status)
-            $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade_comment = $scope.vm.commentText;
+            $scope.gradeSubmissions[index] = result.data;
         });
-      }
+      };
+      $scope.assignGrade = function (submissionId, userId, index) {
+//        if ($scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.marks || $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade) {
+        if ($scope.submissionDetail.Submission.subjective_scoring == 'marked') {
+          roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.marks, 'marked').then(function (result) {
+            if (result.status)
+              notificationService.show(true, result.message);
+            $scope.gradeSubmissions[index] = result.data;
+          });
+        }
+        else if ($scope.submissionDetail.Submission.subjective_scoring == 'graded') {
+          roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade, 'graded').then(function (result) {
+            if (result.status)
+              notificationService.show(true, result.message);
+            $scope.gradeSubmissions[index] = result.data;
+          });
+        }
+
+        $scope.vm.editGrade = false;
+//        }
+//        else
+//          notificationService.show(false, "Marks/Grade cannot be blank");
+      };
     }]);

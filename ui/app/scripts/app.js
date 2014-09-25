@@ -228,6 +228,19 @@ angular
         number = Math.floor(Math.log(bytes) / Math.log(1024));
       return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
     }
+  })
+  .directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+      element.bind("keydown keypress", function (event) {
+        if (event.which === 13) {
+//          scope.$apply(function () {
+            scope.$eval(attrs.ngEnter);
+//          });
+
+          event.preventDefault();
+        }
+      });
+    };
   });
 
 

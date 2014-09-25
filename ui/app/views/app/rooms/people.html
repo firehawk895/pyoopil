@@ -31,18 +31,20 @@
           <div class="relative clearfix">
             <div class="follow-left">
               <span ng-class="{'mod-icon' :people.UsersClassroom.is_moderator}"></span>
-              <a href="#"><img ng-src="{{people.AppUser.profile_img}}" alt="" class="follow-img"></a>
+              <a href=""><img ng-src="{{people.AppUser.profile_img}}" alt="" class="follow-img"></a>
               <!--<span class="online"></span>Online-->
             </div>
             <div class="follow-right">
               <p class="cname"><a href="">{{people.AppUser.fname}} {{people.AppUser.lname}}</a>
               </p>
 
-              <p class="cpost">Student</p>
+              <p class="cpost" ng-if="people.UsersClassroom.is_teaching">Teacher</p>
 
-              <p class="cpost">Degree</p>
+              <p class="cpost" ng-if="!people.UsersClassroom.is_teaching">Student</p>
 
-              <p class="cclg">Lovely Professional University</p>
+              <!--<p class="cpost">Degree</p>-->
+
+              <!--<p class="cclg">Lovely Professional University</p>-->
             </div>
           </div>
           <div class="follow-footer">
