@@ -173,4 +173,38 @@ angular.module('uiApp')
           });
         }
       };
+      $scope.openTakeQuizDialog = function (id) {
+        roomService.getQuiz(id).then(function (result) {
+          if (result.status)
+            $scope.quizDetails = result.data;
+        });
+        ngDialog.open({
+          template: 'views/app/rooms/submission/takeQuizDialog.html',
+          scope: $scope
+        });
+      };
+      $scope.openStartQuizDialog = function () {
+        ngDialog.close();
+        $scope.vm.quesIndex = 0;
+        $scope.vm.currentQuestion = $scope.quizDetails.Quiz[0].Quizquestion[0];
+        ngDialog.open({
+          scope: $scope,
+          template: 'views/app/rooms/submission/startQuizDialog.html'
+        })
+      };
+      $scope.showQuestion = function (index) {
+        $scope.vm.quesIndex = index;
+        $scope.vm.currentQuestion = $scope.quizDetails.Quiz[0].Quizquestion[index];
+      };
     }]);
+
+$(function () {
+  $('.quiz-slider').bxSlider({
+    minSlides: 9,
+    maxSlides: 9,
+    moveSlides: 1,
+    slideMargin: 6,
+    infiniteLoop: false,
+    mode: 'vertical'
+  });
+});

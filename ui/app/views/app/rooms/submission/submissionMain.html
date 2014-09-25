@@ -60,8 +60,20 @@
                   </div>
                 </div>
                 <a href="" class="follow active f-right open-answer"
-                   ng-if="!submission.Submission.is_submitted" ng-click="vm.addAnswer=!vm.addAnswer">Submit Your
+                   ng-if="!submission.Submission.is_submitted && submission.Submission.type=='subjective'"
+                   ng-click="vm.addAnswer=!vm.addAnswer">Submit Your
                   Answer</a>
+
+                <div class="quiz-btnryt"
+                     ng-if="!submission.Submission.is_submitted && submission.Submission.type=='quiz'">
+                  <a href="" class="follow active dialogbox hand" tooltip="Take quiz"
+                     ng-click="openTakeQuizDialog(submission.Submission.id)">Take
+                    Quiz</a>
+
+                  <p class="quiz-alerttxt">
+                    <span class="sbold-topic">Note:</span> If you plan to take quiz then you must finish it in one
+                    go.You cannot stop quiz in between . </p>
+                </div>
                 <a href="" class="follow active f-right open-answer"
                    ng-if="submission.Submission.is_submitted" ng-click="vm.showAnswer=!vm.showAnswer">View Your
                   Answer</a>

@@ -1,0 +1,91 @@
+<div class="take-quiz create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span class="quiz-hd f-left">{{quizDetails.Submission.topic}}</span>
+      <a class="pull-right" href="">Time Left {{quizDetails.Quiz[0].duration}}</a>
+    </div>
+    <div class="pop-content test-ques">
+      <form>
+        <div class="quiz-content clearfix">
+          <div class="quiz-left tabpages">
+            <div class="quiz-lftop">Questions</div>
+            <ul class="question-lst quiz-slider">
+              <li><a href="" class="tab" ng-repeat="quizQuestion in quizDetails.Quiz[0].Quizquestion"
+                     ng-click="showQuestion($index)">Q. {{$index+1}}</a>
+              </li>
+            </ul>
+          </div>
+          <div class="quiz-right">
+            <div class="pacs">
+              <div class="question-txt">
+                <p class="test-quesnum">Q. {{vm.quesIndex+1}}</p>
+
+                <p class="ques-numtxt">{{vm.currentQuestion.question}}</p>
+              </div>
+              <div class="answer-contt ans-scroll" ng-if="vm.currentQuestion.type=='match-columns'">
+                <div class="match-opt">
+                  <div class="m-opt1 clearfix" ng-repeat="choice in vm.currentQuestion.Choice">
+                    <label><span class="bold">{{$index+1}}.</span> Question choice 1</label>
+                    <input class="pop-match" type="text" placeholder="">
+                    <label><span class="bold">A.</span> Answer choice 1</label>
+                  </div>
+                </div>
+              </div>
+              <div class="answer-contt create-popup" ng-if="vm.currentQuestion.type=='single-select'">
+                <div class="add-ans-single">
+                  <div class="ans-lst clearfix" ng-repeat="choice in vm.currentQuestion.Choice">
+                    <label><span class="bold">{{$index+1}}.</span> {{choice.description}}</label>
+
+                    <div class="ans-radio">
+                      <input id="ans{{$index+1}}" type="radio" name="answer" value="{{$index}}">
+                      <label for="ans{{$index+1}}" class="radio-lbl"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="answer-contt create-popup" ng-if="vm.currentQuestion.type=='multi-select'"0>
+                <div class="add-ans-multiple">
+                  <div class="ans-mlst clearfix" ng-repeat="choice in vm.currentQuestion.Choice">
+                    <label><span class="bold">{{$index+1}}.</span> {{choice.description}}</label>
+
+                    <div class="ans-radio">
+                      <input id="mul{{$index+1}}" type="checkbox" name="mulple" value="mul1">
+                      <label for="mul{{$index+1}}" class="check-lbl"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="answer-contt create-popup" ng-if="vm.currentQuestion.type=='true-false'">
+                <div class="ans-tflst clearfix">
+                  <label>True</label>
+
+                  <div class="ans-radio">
+                    <input id="True" type="radio" name="corr-ans" value="True">
+                    <label for="True" class="radio-lbl"></label>
+                  </div>
+                </div>
+                <div class="ans-tflst clearfix">
+                  <label>False</label>
+
+                  <div class="ans-radio">
+                    <input id="False" type="radio" name="corr-ans" value="False">
+                    <label for="False" class="radio-lbl"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="nav-btns">
+                <button class="sub-btn cnl-btn hand" type="button" ng-click="showQuestion(vm.quesIndex-1)"
+                        ng-disabled="!vm.quesIndex">Back
+                </button>
+                <button class="sub-btn pcacs-tabs hand" ng-click="showQuestion(vm.quesIndex+1)"
+                        ng-disabled="vm.quesIndex+1==quizDetails.Quiz[0].Quizquestion.length">Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quiz-action"><input class="sub-btn" type="submit" value="Save & Quit"></div>
+      </form>
+    </div>
+  </div>
+</div>

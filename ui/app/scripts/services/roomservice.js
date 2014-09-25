@@ -345,5 +345,8 @@ angular.module('uiApp')
       }
       return restangular.all('Classrooms').all('Submissions').customPOST(data, 'assignGrade.json');
     };
+    self.getQuiz = function (id) {
+      return restangular.all('Classrooms').all('Submissions').customGET('getQuiz.json', {submission_id: id})
+    };
     return self;
   }]);

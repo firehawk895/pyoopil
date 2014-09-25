@@ -28,7 +28,8 @@ angular
     'ngCkeditor',
     'ui.bootstrap',
     'angularMoment',
-    'ngImgCrop'
+    'ngImgCrop',
+    'timer'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
@@ -114,16 +115,16 @@ angular
         .state('app.rooms.submissions', {
           abstract: true,
           url: "submissions/",
-          templateUrl: "views/app/rooms/submission.html",
+          templateUrl: "../views/app/rooms/submission/submission.html",
           controller: "submissionCtrl"
         })
         .state('app.rooms.submissions.main', {
           url: "",
-          templateUrl: "views/app/rooms/submissionMain.html"
+          templateUrl: "../views/app/rooms/submission/submissionMain.html"
         })
         .state('app.rooms.submissions.grading', {
           url: ":assignmentId/",
-          templateUrl: "views/app/rooms/grading.html",
+          templateUrl: "../views/app/rooms/submission/grading.html",
           controller: 'gradingCtrl'
         })
         .state('app.roomsDash', {
