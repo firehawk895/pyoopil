@@ -355,3 +355,13 @@ button.disabled, button[disabled] {
 .hide-block {
   display: none;
 }
+
+.pop-match {
+  width: 6%;
+  margin: 13px 18px 0px 18px;
+  height: 35px;
+}
+.time-style{
+  margin-right: 9px;
+  vertical-align: bottom;
+}

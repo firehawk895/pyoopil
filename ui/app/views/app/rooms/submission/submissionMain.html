@@ -75,7 +75,8 @@
                     go.You cannot stop quiz in between . </p>
                 </div>
                 <a href="" class="follow active f-right open-answer"
-                   ng-if="submission.Submission.is_submitted" ng-click="vm.showAnswer=!vm.showAnswer">View Your
+                   ng-if="submission.Submission.is_submitted && submission.Submission.type=='subjective'"
+                   ng-click="vm.showAnswer=!vm.showAnswer">View Your
                   Answer</a>
 
                 <div class="clear"></div>

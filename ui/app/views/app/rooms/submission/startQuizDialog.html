@@ -2,7 +2,9 @@
   <div class="pop-wind clearfix">
     <div class="pop-head clearfix">
       <span class="quiz-hd f-left">{{quizDetails.Submission.topic}}</span>
-      <a class="pull-right" href="">Time Left {{quizDetails.Quiz[0].duration}}</a>
+      <timer interval="1000" countdown="quizDetails.Quiz[0].duration" max-time-unit="hour">
+        <div class="pull-right"><img src="images/clock_icon.png" class="time-style"><span>Time Left {{hhours}}:{{mminutes}}:{{sseconds}}</span></div>
+      </timer>
     </div>
     <div class="pop-content test-ques">
       <form>
@@ -24,10 +26,12 @@
               </div>
               <div class="answer-contt ans-scroll" ng-if="vm.currentQuestion.type=='match-columns'">
                 <div class="match-opt">
-                  <div class="m-opt1 clearfix" ng-repeat="choice in vm.currentQuestion.Choice">
-                    <label><span class="bold">{{$index+1}}.</span> Question choice 1</label>
+
+                  <div class="m-opt1 clearfix" ng-repeat="choice in vm.currentQuestion.Column" ng-if="$even">
+                    <label class="wordwrap"><span class="bold">{{($index/2)+1}}.</span>{{choice.text}}</label>
                     <input class="pop-match" type="text" placeholder="">
-                    <label><span class="bold">A.</span> Answer choice 1</label>
+                    <label class="wordwrap"><span
+                        class="bold">A.</span>{{vm.currentQuestion.Column[$index+1].text}}</label>
                   </div>
                 </div>
               </div>
@@ -43,7 +47,7 @@
                   </div>
                 </div>
               </div>
-              <div class="answer-contt create-popup" ng-if="vm.currentQuestion.type=='multi-select'"0>
+              <div class="answer-contt create-popup" ng-if="vm.currentQuestion.type=='multi-select'">
                 <div class="add-ans-multiple">
                   <div class="ans-mlst clearfix" ng-repeat="choice in vm.currentQuestion.Choice">
                     <label><span class="bold">{{$index+1}}.</span> {{choice.description}}</label>
