@@ -2,7 +2,6 @@
 App::uses('AppModel', 'Model');
 /**
  * Column Model
- *
  * @property Matchthecolumn $Matchthecolumn
  */
 class Choice extends AppModel {
@@ -48,5 +47,13 @@ class Choice extends AppModel {
             'fields' => '',
             'order' => ''
         )
+    );
+
+    public $hasMany = array(
+        'Choicesanswer' => array(
+            'className' => 'Choicesanswer',
+            'foreignKey' => 'choice_id',
+            'dependent' => false,
+        ),
     );
 }

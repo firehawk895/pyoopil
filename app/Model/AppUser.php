@@ -156,6 +156,11 @@ class AppUser extends User {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
+        'Choicesanswer' => array(
+            'className' => 'Choicesanswer',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+        ),
         /**
          * HABTMs that are rightly hasMany:
          */

@@ -227,7 +227,66 @@ class SubmissionsController extends AppController {
      * A students answers a assignment which is a quiz
      */
     public function answerQuiz() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
 
+        $data = array();
+        $status = false;
+        $message = "";
+
+        $userId = AuthComponent::user('id');
+        //The great saveMany format
+//        $data = array(
+//            'Choicesanswer' => array(
+//                array(
+//                    'choice_id' => 56
+//                ),
+//                array(
+//                    'choice_id' => 59
+//                ),
+//                array(
+//                    'choice_id' => 60
+//                ),
+//            ),
+//            'Columnanswer' => array(
+//                array(
+//                    'column1_id' => 21,
+//                    'column2_id' => 22,
+//                ),
+//                array(
+//                    'column1_id' => 23,
+//                    'column2_id' => 24,
+//                ),
+//            )
+//        );
+
+        $postData = $this->request->data;
+
+        if (isset($postData['Choicesanswer'])) {
+            $choiceData = $postData['Choicesanswer'];
+            if (!empty($choiceData)) {
+                foreach ($choiceData as $key => &$choice) {
+                    $choice['user_id'] = $userId;
+                }
+                $status1 = $this->Submission->Quiz->Quizquestion->Choice->Choicesanswer->saveMany($choiceData, array('validate' => 'false'));
+                $status = $status1;
+            }
+        }
+
+        if (isset($postData['Columnanswer'])) {
+            $columnData = $postData['Columnanswer'];
+            if (!empty($columnData)) {
+                foreach ($columnData as $key => &$choice) {
+                    $choice['user_id'] = $userId;
+                }
+                $status2 = $this->Submission->Quiz->Quizquestion->Column->Columnanswer->saveMany($columnData);
+                $status = $status && $status2;
+            }
+        }
+
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     public function getQuiz() {
