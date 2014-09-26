@@ -43,9 +43,10 @@
                              placeholder="Answer choice {{$index+1}}">
 
                       <div class="ans-radio">
-                        <input id="ans{{$index+1}}" type="radio" name="answer" value="{{$index}}"
+                        <input id="ans{{$parent.$index}}{{$index}}" type="radio" name="answer{{$parent.$index}}"
+                               value="{{$index}}"
                                ng-model="questionChoice.answerValue">
-                        <label for="ans{{$index+1}}" class="radio-lbl"></label>
+                        <label for="ans{{$parent.$index}}{{$index}}" class="radio-lbl"></label>
                       </div>
                     </div>
                   </div>
@@ -64,8 +65,8 @@
                       <input type="text" class="pop-input" placeholder="Answer choice {{$index+1}}">
 
                       <div class="ans-radio">
-                        <input id="mul{{$index+1}}" type="checkbox" ng-model="answerChoice.answerValue">
-                        <label for="mul{{$index+1}}" class="check-lbl"></label>
+                        <input id="mul{{$parent.$index}}{{$index}}" type="checkbox" ng-model="answerChoice.answerValue">
+                        <label for="mul{{$parent.$index}}{{$index}}" class="check-lbl"></label>
                       </div>
                     </div>
                   </div>
@@ -82,17 +83,18 @@
                     <label>True</label>
 
                     <div class="ans-radio">
-                      <input id="True" type="radio" name="corr-ans" value="0" ng-model="questionChoice.answerValue">
-                      <label for="True" class="radio-lbl"></label>
+                      <input id="ans{{$parent.$index}}0" type="radio" name="corr-ans{{$parent.$index}}" value="0"
+                             ng-model="questionChoice.answerValue">
+                      <label for="ans{{$parent.$index}}0" class="radio-lbl"></label>
                     </div>
                   </div>
                   <div class="ans-tflst clearfix">
                     <label>False</label>
 
                     <div class="ans-radio">
-                      <input id="False" type="radio" name="corr-ans" value="1"
+                      <input id="ans{{$parent.$index}}1" type="radio" name="corr-ans{{$parent.$index}}" value="1"
                              ng-model="questionChoice.answerValue">
-                      <label for="False" class="radio-lbl"></label>
+                      <label for="ans{{$parent.$index}}1" class="radio-lbl"></label>
                     </div>
                   </div>
                 </div>

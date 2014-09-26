@@ -6,6 +6,7 @@ angular.module('uiApp')
       $scope.fullName = localStorageService.get("name");
       $scope.profile_img = localStorageService.get("image");
       $scope.vm = {};
+      $scope.vm.array_char = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
       $scope.page = 1;
       $scope.pageEnd = false;
       $scope.lastExpandedItemIndex = -1;
@@ -15,7 +16,7 @@ angular.module('uiApp')
         $scope.vm.gradingType = 'marked';
 //        $scope.vm.file = null;
         ngDialog.open({
-          template: 'views/app/rooms/createAssignment.html',
+          template: 'views/app/rooms/submission/createAssignment.html',
           scope: $scope
         });
       };
@@ -68,7 +69,7 @@ angular.module('uiApp')
         ];
         ngDialog.close();
         ngDialog.open({
-          template: 'views/app/rooms/createQuiz.html',
+          template: 'views/app/rooms/submission/createQuiz.html',
           scope: $scope
         });
       };
@@ -184,6 +185,7 @@ angular.module('uiApp')
         });
       };
       $scope.openStartQuizDialog = function () {
+        $scope.vm.evenArray = [];
         ngDialog.close();
         $scope.vm.quesIndex = 0;
         $scope.vm.currentQuestion = $scope.quizDetails.Quiz[0].Quizquestion[0];
@@ -194,17 +196,13 @@ angular.module('uiApp')
       };
       $scope.showQuestion = function (index) {
         $scope.vm.quesIndex = index;
-        $scope.vm.currentQuestion = $scope.quizDetails.Quiz[0].Quizquestion[index];
+        if ($scope.quizDetails.Quiz[0].Quizquestion[$scope.vm.quesIndex].type == 'match-columns') {
+          angular.forEach($scope.quizDetails.Quiz[0].Quizquestion[$scope.vm.quesIndex].Column, function (value, key) {
+            if (key % 2 !== 0)
+              $scope.vm.evenArray.push(value);
+          });
+        }
+        $scope.vm.evenArray = _.shuffle($scope.vm.evenArray);
+        console.log($scope.vm.evenArray);
       };
     }]);
-
-$(function () {
-  $('.quiz-slider').bxSlider({
-    minSlides: 9,
-    maxSlides: 9,
-    moveSlides: 1,
-    slideMargin: 6,
-    infiniteLoop: false,
-    mode: 'vertical'
-  });
-});
