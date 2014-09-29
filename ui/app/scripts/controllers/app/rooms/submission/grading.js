@@ -40,8 +40,9 @@ angular.module('uiApp')
       $scope.assignComment = function (submissionId, userId, index) {
         roomService.assignComment(submissionId, userId, $scope.vm.commentText).then(function (result) {
           notificationService.show(result.status, result.message);
-          if (result.status)
+          if (result.status) {
             $scope.gradeSubmissions[index] = result.data;
+          }
         });
       };
       $scope.assignGrade = function (submissionId, userId, index) {

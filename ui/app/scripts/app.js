@@ -153,18 +153,22 @@ angular
           controller: "publicCtrl"
         })
         .state('app.profile', {
-          url: "profile/",
+          url: "myprofile/",
           abstract: true,
           templateUrl: "views/app/profile/profile.html",
           controller: "profileCtrl"
         })
         .state('app.profile.my', {
-          url: 'my/',
+          url: '',
           templateUrl: "views/app/profile/myProfile.html"
         })
         .state('app.profile.feedback', {
           url: 'feedback/',
           templateUrl: "views/app/profile/feedback.html"
+        })
+        .state('app.publicProfile', {
+          url: 'profile/',
+          templateUrl: "views/app/profile/publicProfile.html"
         });
 
     }])
@@ -235,7 +239,7 @@ angular
       element.bind("keydown keypress", function (event) {
         if (event.which === 13) {
 //          scope.$apply(function () {
-            scope.$eval(attrs.ngEnter);
+          scope.$eval(attrs.ngEnter);
 //          });
 
           event.preventDefault();

@@ -67,7 +67,7 @@
                 <div class="quiz-btnryt"
                      ng-if="!submission.Submission.is_submitted && submission.Submission.type=='quiz'">
                   <a href="" class="follow active dialogbox hand" tooltip="Take quiz"
-                     ng-click="openTakeQuizDialog(submission.Submission.id)">Take
+                     ng-click="openTakeQuizDialog(submission.Submission.id,$index)">Take
                     Quiz</a>
 
                   <p class="quiz-alerttxt">

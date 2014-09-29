@@ -32,9 +32,10 @@
                   <div class="m-opt1 clearfix"
                        ng-repeat="choice in quizDetails.Quiz[0].Quizquestion[vm.quesIndex].Column" ng-if="$even">
                     <label class="wordwrap"><span class="bold">{{($index/2)+1}}.</span>{{choice.text}}</label>
-                    <input class="pop-match" type="text" placeholder="">
+                    <input class="pop-match" type="text" placeholder=""
+                           ng-model="quizDetails.Quiz[0].Quizquestion[vm.quesIndex].matchValues[$index/2]">
                     <label class="wordwrap"><span
-                        class="bold">{{vm.array_char[$index/2]}}.</span>{{vm.evenArray[$index/2].text}}</label>
+                        class="bold">{{vm.array_char[$index/2]}}.</span>{{quizDetails.Quiz[0].Quizquestion[vm.quesIndex].evenArray[$index/2].text}}</label>
                   </div>
                 </div>
               </div>
@@ -47,7 +48,7 @@
 
                     <div class="ans-radio">
                       <input id="ans{{$parent.$index}}{{$index}}" type="radio" name="answer{{$parent.$index}}"
-                             value="{{choice.id}}">
+                             value="{{choice.id}}" ng-model="vm.submitQuizAnswer[vm.quesIndex]">
                       <label for="ans{{$parent.$index}}{{$index}}" class="radio-lbl"></label>
                     </div>
                   </div>
@@ -61,7 +62,8 @@
                     <label><span class="bold">{{$index+1}}.</span> {{choice.description}}</label>
 
                     <div class="ans-radio">
-                      <input id="mul{{$parent.$index}}{{$index}}" type="checkbox" value="choice.id">
+                      <input id="mul{{$parent.$index}}{{$index}}" type="checkbox" value="true"
+                             ng-model="choice.isChecked">
                       <label for="mul{{$parent.$index}}{{$index}}" class="check-lbl"></label>
                     </div>
                   </div>
@@ -69,20 +71,15 @@
               </div>
               <div class="answer-contt create-popup"
                    ng-if="quizDetails.Quiz[0].Quizquestion[vm.quesIndex].type=='true-false'">
-                <div class="ans-tflst clearfix">
-                  <label>True</label>
+                <div class="ans-tflst clearfix"
+                     ng-repeat="choice in quizDetails.Quiz[0].Quizquestion[vm.quesIndex].Choice">
+                  <label>{{choice.description}}</label>
 
                   <div class="ans-radio">
-                    <input id="ans{{$parent.$index}}0" type="radio" name="corr-ans{{$parent.$index}}" value="choice.id">
-                    <label for="ans{{$parent.$index}}0" class="radio-lbl"></label>
-                  </div>
-                </div>
-                <div class="ans-tflst clearfix">
-                  <label>False</label>
-
-                  <div class="ans-radio">
-                    <input id="ans{{$parent.$index}}1" type="radio" name="corr-ans{{$parent.$index}}" value="choice.id">
-                    <label for="ans{{$parent.$index}}1" class="radio-lbl"></label>
+                    <input id="ans{{$parent.$index}}{{$index}}" type="radio" name="corr-ans{{$parent.$index}}"
+                           value="{{choice.id}}"
+                           ng-model="vm.submitQuizAnswer[vm.quesIndex]">
+                    <label for="ans{{$parent.$index}}{{$index}}" class="radio-lbl"></label>
                   </div>
                 </div>
               </div>
@@ -97,7 +94,8 @@
             </div>
           </div>
         </div>
-        <div class="quiz-action"><input class="sub-btn" type="submit" value="Save & Quit"></div>
+        <div class="quiz-action"><input class="sub-btn" type="submit" value="Save & Quit" ng-click="answerQuiz()">
+        </div>
       </form>
     </div>
   </div>

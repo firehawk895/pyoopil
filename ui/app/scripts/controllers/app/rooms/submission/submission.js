@@ -6,6 +6,7 @@ angular.module('uiApp')
       $scope.fullName = localStorageService.get("name");
       $scope.profile_img = localStorageService.get("image");
       $scope.vm = {};
+
       $scope.vm.array_char = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
       $scope.page = 1;
       $scope.pageEnd = false;
@@ -14,7 +15,7 @@ angular.module('uiApp')
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;
         $scope.vm.gradingType = 'marked';
-//        $scope.vm.file = null;
+        $scope.vm.areYouSure = false;
         ngDialog.open({
           template: 'views/app/rooms/submission/createAssignment.html',
           scope: $scope
@@ -49,12 +50,13 @@ angular.module('uiApp')
         $scope.vm.typeIsSubjective = value;
       };
       $scope.createQuizDialog = function () {
+        $scope.vm.areYouSure = false;
         $scope.vm.questionChoices = [
           {
             questionType: 'single-select',
             questionText: "",
             answerValue: null,
-            maxMarks: 0,
+//            maxMarks: null,
             answerChoices: [
               {
                 choice: "",
@@ -67,6 +69,7 @@ angular.module('uiApp')
             ]
           }
         ];
+        $scope.vm.totalMarks = 0;
         ngDialog.close();
         ngDialog.open({
           template: 'views/app/rooms/submission/createQuiz.html',
@@ -84,7 +87,7 @@ angular.module('uiApp')
           questionType: 'single-select',
           questionText: "",
           answerValue: null,
-          maxMarks: 0,
+//          maxMarks: null,
           answerChoices: [
             {
               choice: "",
@@ -174,10 +177,12 @@ angular.module('uiApp')
           });
         }
       };
-      $scope.openTakeQuizDialog = function (id) {
+      $scope.openTakeQuizDialog = function (id, index) {
+        $scope.vm.quizIndex = index;
         roomService.getQuiz(id).then(function (result) {
           if (result.status)
             $scope.quizDetails = result.data;
+          $scope.vm.submitQuizAnswer = [];
         });
         ngDialog.open({
           template: 'views/app/rooms/submission/takeQuizDialog.html',
@@ -185,10 +190,29 @@ angular.module('uiApp')
         });
       };
       $scope.openStartQuizDialog = function () {
-        $scope.vm.evenArray = [];
+        angular.forEach($scope.quizDetails.Quiz[0].Quizquestion, function (value, key) {
+          if (value.type == 'match-columns') {
+            value.evenArray = [];
+            value.matchValues = [];
+            angular.forEach(value.Column, function (result, key) {
+              if (key % 2 !== 0) {
+                value.evenArray.push(result);
+                value.matchValues.push('');
+              }
+            });
+          }
+          else if (value.type == 'multi-select') {
+            angular.forEach(value.Choice, function (value, key) {
+              value.isChecked = false;
+            });
+          }
+          value.evenArray = _.shuffle(value.evenArray);
+        });
         ngDialog.close();
         $scope.vm.quesIndex = 0;
-        $scope.vm.currentQuestion = $scope.quizDetails.Quiz[0].Quizquestion[0];
+        angular.forEach($scope.quizDetails, function (value, key) {
+          $scope.vm.submitQuizAnswer.push('');
+        });
         ngDialog.open({
           scope: $scope,
           template: 'views/app/rooms/submission/startQuizDialog.html'
@@ -196,13 +220,43 @@ angular.module('uiApp')
       };
       $scope.showQuestion = function (index) {
         $scope.vm.quesIndex = index;
-        if ($scope.quizDetails.Quiz[0].Quizquestion[$scope.vm.quesIndex].type == 'match-columns') {
-          angular.forEach($scope.quizDetails.Quiz[0].Quizquestion[$scope.vm.quesIndex].Column, function (value, key) {
-            if (key % 2 !== 0)
-              $scope.vm.evenArray.push(value);
-          });
-        }
-        $scope.vm.evenArray = _.shuffle($scope.vm.evenArray);
-        console.log($scope.vm.evenArray);
+      };
+      $scope.answerQuiz = function () {
+        $scope.vm.quizAnswers = {};
+        $scope.vm.quizAnswers.Choice = [];
+        $scope.vm.quizAnswers.Columns = [];
+        angular.forEach($scope.vm.submitQuizAnswer, function (value, key) {
+          if (value)
+            $scope.vm.quizAnswers.Choice.push(value);
+        });
+        angular.forEach($scope.quizDetails.Quiz[0].Quizquestion, function (value, key) {
+          if (value.type == 'multi-select') {
+            angular.forEach(value.Choice, function (value, key) {
+              if (value.isChecked)
+                $scope.vm.quizAnswers.Choice.push(value.id);
+            });
+          }
+          else if (value.type == 'match-columns') {
+            angular.forEach(value.matchValues, function (result, key) {
+              if (result) {
+                $scope.vm.quizAnswers.Columns.push(value.Column[2 * key].id);
+                $scope.vm.quizAnswers.Columns.push(value.evenArray[$scope.vm.array_char.indexOf(result)].id);
+              }
+            });
+          }
+        });
+        console.log($scope.vm.quizAnswers);
+        roomService.answerQuiz($scope.vm.quizAnswers).then(function (result) {
+          if (result.status) {
+            ngDialog.close();
+            $scope.submissions[$scope.vm.quizIndex].Submission.is_submitted = true;
+          }
+        });
+      };
+      $scope.calculateTotalMarks = function () {
+        $scope.vm.totalMarks = 0;
+        angular.forEach($scope.vm.questionChoices, function (value, key) {
+          $scope.vm.totalMarks += parseInt(value.maxMarks);
+        });
       };
     }]);

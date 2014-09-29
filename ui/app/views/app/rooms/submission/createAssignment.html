@@ -48,7 +48,6 @@
 
                   <!--<div class="custom-upload" id="test0">-->
                   <input type="file" id="fileUploadSubjective" name="files[]" accept="{{getMimeTypes()}}">
-
                   <!--<div class="file-upload">-->
                   <!--<span class="file-txt">Select</span>-->
                   <!--<input disabled="disabled" value="No File Chosen">-->
@@ -62,14 +61,19 @@
                     </div>
                     <input type="datetime-local" ng-model="vm.dueDate" required>
 
+                    <p class="wordwrap">Please enter the due date and time for the assignment</p>
                   </div>
                 </div>
               </div>
               <div class="submit-btn">
-                <button class="sub-btn" ng-disabled="formAssignment.$invalid"
-                        ng-click="createSubjectiveAssignment()">Publish
+                <button class="sub-btn" ng-disabled="formAssignment.$invalid || vm.areYouSure"
+                        ng-click="vm.areYouSure=true">Publish
                 </button>
               </div>
+            </div>
+            <div class="align-center" ng-if="vm.areYouSure"><label>Do you really want to Publish?</label>
+              <button class="sub-btn" id="quiz-link" ng-click="createSubjectiveAssignment()">Yes</button>
+              <button class="sub-btn" id="quiz-link" ng-click="vm.areYouSure=false">No</button>
             </div>
             <div id="quiz" class="tab-contt" ng-if="!vm.typeIsSubjective">
               <div class="clearfix">
@@ -105,13 +109,14 @@
                       <label>Due Date</label>
                     </div>
                     <input type="datetime-local" ng-model="vm.dueDate" required>
-                  </div>
 
+                    <p class="wordwrap">Please enter the due date and time for the assignment</p>
+                  </div>
                 </div>
               </div>
               <div class="submit-btn">
-                <button class="sub-btn" id="quiz-link" ng-click="createQuizDialog()"
-                        ng-disabled="formAssignment.$invalid">Create Quiz
+                <button class="sub-btn" id="quiz-link"
+                        ng-disabled="formAssignment.$invalid " ng-click="createQuizDialog()"> Create Quiz
                 </button>
               </div>
             </div>

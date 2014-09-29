@@ -77,15 +77,30 @@
                          maxlength="3"
                          ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"
                          ng-enter="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                         ng-blur="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                          ng-if="submissionDetail.Submission.subjective_scoring=='marked'"
                          ng-dblclick="vm.editGrade=true">
-                  <input type="text" class="assign-txtbx"
-                         ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
-                         maxlength="3"
-                         ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"
-                         ng-enter="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
-                         ng-if="submissionDetail.Submission.subjective_scoring=='graded'"
-                         ng-dblclick="vm.editGrade=true">
+                  <!--<input type="text" class="assign-txtbx"-->
+                  <!--ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"-->
+                  <!--maxlength="3"-->
+                  <!--ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"-->
+                  <!--ng-enter="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"-->
+                  <!--ng-blur="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"-->
+                  <!--ng-if="submissionDetail.Submission.subjective_scoring=='graded'"-->
+                  <!--ng-dblclick="vm.editGrade=true">-->
+                  <div class="create-popup">
+                    <div class="select-class">
+                      <select ui-jq="chosen"
+                              ng-if="submissionDetail.Submission.subjective_scoring=='graded'"
+                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
+                              ng-change="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">
+                        <option>A</option>
+                        <option>B</option>
+                        <option>C</option>
+                        <option>D</option>
+                      </select>
+                    </div>
+                  </div>
                 </td>
                 <td class="ptbl-td5">
                   <!--<a href="" class="sum-btn comm-link" ng-if="!gradeSubmission.Submission.is_submitted">Add</a>-->

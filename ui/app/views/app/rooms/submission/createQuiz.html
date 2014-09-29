@@ -8,7 +8,7 @@
     </div>
     <div class="pop-content">
       <div class="quest-popup">
-        <form class="form-data create-popup">
+        <form class="form-data create-popup" name="formQuiz">
           <div class="addques-here">
             <!-- Single Select -->
             <div class="ques-num" ng-repeat="questionChoice in vm.questionChoices" ng-init="questionIndex=$index">
@@ -17,7 +17,7 @@
 
                 <div class="ryt-title">Max. Marks
                   <input class="pop-dura" type="text" value="" pattern="[0-9]{0,3}" maxlength="3"
-                         ng-model="questionChoice.maxMarks">
+                         ng-model="questionChoice.maxMarks" ng-required="true" ng-blur="calculateTotalMarks()">
                 </div>
               </div>
               <div class="quest-lst-box">
@@ -123,14 +123,23 @@
           <a href="" class="add-ques" ng-click="addNewQuestionChoice()">+ Add Question</a>
 
           <div class="quest-title clearfix">
-            <div class="ryt-title">Total Marks
-              <input class="pop-dura" type="text" value="" pattern="[0-9]{0,3}" maxlength="3">
+            <div class="ryt-title">Total Marks: {{vm.totalMarks}}
             </div>
           </div>
           <div class="quiz-footer clearfix">
             <div class="footer-btn">
-              <input type="button" class="sub-btn" value="Publish" ng-click="createQuizAssignment()">
+              <button class="sub-btn" ng-disabled="formQuiz.$invalid || vm.areYouSure" ng-click="vm.areYouSure=true">
+                Publish
+              </button>
             </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="align-center" ng-if="vm.areYouSure">
+            <div>
+              <label>Do you really want to Publish?</label>
+            </div>
+            <button class="sub-btn" id="quiz-link" ng-click="createQuizAssignment()">Yes</button>
+            <button class="sub-btn" id="quiz-link" ng-click="vm.areYouSure=false">No</button>
           </div>
         </form>
       </div>

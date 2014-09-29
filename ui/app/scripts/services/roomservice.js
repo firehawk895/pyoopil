@@ -348,5 +348,19 @@ angular.module('uiApp')
     self.getQuiz = function (id) {
       return restangular.all('Classrooms').all('Submissions').customGET('getQuiz.json', {submission_id: id})
     };
+    self.answerQuiz = function (quizAnswers) {
+      var data = {
+        Choicesanswer: [],
+        Columnanswer: []
+      };
+      angular.forEach(quizAnswers.Choice, function (value, key) {
+        data.Choicesanswer.push({choice_id: value});
+      });
+      angular.forEach(quizAnswers.Columns, function (value, key) {
+        if (key % 2 == 0)
+          data.Columnanswer.push({column1_id: value}, {column2_id: quizAnswers.Columns[key + 1]});
+      });
+      return restangular.all('Classrooms').all('Submissions').customPOST(data, 'answerQuiz.json');
+    };
     return self;
   }]);
