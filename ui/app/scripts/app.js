@@ -116,17 +116,32 @@ angular
         .state('app.rooms.submissions', {
           abstract: true,
           url: "submissions/",
-          templateUrl: "../views/app/rooms/submission/submission.html",
+          templateUrl: "views/app/rooms/submission/submission.html",
           controller: "submissionCtrl"
         })
         .state('app.rooms.submissions.main', {
           url: "",
-          templateUrl: "../views/app/rooms/submission/submissionMain.html"
+          templateUrl: "views/app/rooms/submission/submissionMain.html"
         })
         .state('app.rooms.submissions.grading', {
           url: ":assignmentId/",
-          templateUrl: "../views/app/rooms/submission/grading.html",
+          templateUrl: "views/app/rooms/submission/grading.html",
           controller: 'gradingCtrl'
+        })
+        .state('app.rooms.reports', {
+          abstract: true,
+          url: "reports/",
+          templateUrl: "views/app/rooms/report/report.html"
+//          controller: "submissionCtrl"
+        })
+        .state('app.rooms.reports.main', {
+          url: "",
+          templateUrl: "views/app/rooms/report/reportMain.html"
+        })
+        .state('app.rooms.reports.engagement', {
+          url: "engagement/",
+          templateUrl: "../views/app/rooms/report/engagement.html"
+//          controller: 'gradingCtrl'
         })
         .state('app.roomsDash', {
           url: "room/",
