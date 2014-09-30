@@ -188,4 +188,25 @@ class UsersClassroom extends AppModel {
         $data = $this->find('all', $options);
         return $data;
     }
+
+    public function getEngagers($classroomId) {
+        $options = array(
+            'contain' => array(
+                'Classroom',
+                'AppUser' => array(
+                    'fields' => array('id', 'fname', 'lname', 'profile_img')
+                )
+            ),
+            'fields' => array('total_gamification'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId
+            ),
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
+            )
+        );
+
+        $data = $this->find('all', $options);
+        return $data;
+    }
 }
