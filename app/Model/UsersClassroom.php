@@ -214,13 +214,13 @@ class UsersClassroom extends AppModel {
         $options = array(
             'contain' => array(
                 'Classroom' => array(
-
+                    'classes_held', 'minimum_attendance_percentage', 'users_classroom_count'
                 ),
                 'AppUser' => array(
                     'fields' => array('id')
                 )
             ),
-            'fields' => array('total_gamification'),
+            'fields' => array('classes_attended'),
             'conditions' => array(
                 'Classroom.id' => $classroomId,
                 'AppUser.id' => $userId
@@ -230,5 +230,6 @@ class UsersClassroom extends AppModel {
             )
         );
 
+        return $this->find('first', $options);
     }
 }

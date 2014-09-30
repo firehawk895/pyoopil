@@ -90,5 +90,27 @@ class ReportsController extends AppController {
 
     }
 
+    public function attendance($classroomId) {
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+
+        //determine permissions
+        //determine whether educator(owner) or student view
+        $permissions = $this->Report->getPermissions(AuthComponent::user('id'), $classroomId);
+
+        //get Attendance data for student
+        $this->loadModel("UsersClassroom");
+        $data = $this->UsersClassroom->getAttendance(AuthComponent::user('id'), $classroomId);
+        $status = true;
+        $message = "";
+
+        /**
+         * _serialize
+         */
+        $this->set(compact('data', 'status', 'message', 'permissions'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
+    }
+
 
 } 
