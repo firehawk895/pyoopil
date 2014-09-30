@@ -209,4 +209,26 @@ class UsersClassroom extends AppModel {
         $data = $this->find('all', $options);
         return $data;
     }
+
+    public function getAttendance($userId, $classroomId) {
+        $options = array(
+            'contain' => array(
+                'Classroom' => array(
+
+                ),
+                'AppUser' => array(
+                    'fields' => array('id')
+                )
+            ),
+            'fields' => array('total_gamification'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId,
+                'AppUser.id' => $userId
+            ),
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
+            )
+        );
+
+    }
 }

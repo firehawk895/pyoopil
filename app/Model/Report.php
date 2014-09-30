@@ -26,4 +26,9 @@ class Report extends AppModel {
         return $permissions;
     }
 
+    public function getAttendance($userId, $classroomId) {
+        $classroom = new Classroom();
+
+    }
+
 }

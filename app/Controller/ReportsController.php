@@ -22,6 +22,22 @@ class ReportsController extends AppController {
         }
     }
 
+    public function index($classroomId) {
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+
+        $permissions = $this->Report->getPermissions(AuthComponent::user('id'), $classroomId);
+        $status = true;
+        $message = "";
+
+        /**
+         * _serialize
+         */
+        $this->set(compact('permissions', 'status', 'message'));
+        $this->set('_serialize', array('permissions', 'status', 'message'));
+    }
+
     public function engagement($classroomId) {
         $this->request->onlyAllow('get');
         $this->RequestHandler->renderAs($this, 'json');
