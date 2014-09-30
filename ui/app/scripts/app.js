@@ -55,7 +55,8 @@ angular
       //
       // Now set up the states
       ngDialogProvider.setDefaults({
-        showClose: false
+        showClose: false,
+        closeByDocument: false
       });
 
 
