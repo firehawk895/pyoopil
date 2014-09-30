@@ -108,7 +108,7 @@ angular.module('uiApp')
       $scope.createQuizAssignment = function () {
         roomService.createQuizAssignment($scope.vm, $scope.roomId).then(function (result) {
           if (result.status) {
-            notificationService.show(result.status, result.message);
+            notificationService.show(result.status, "Quiz Created Successfully");
             $scope.submissions.unshift(result.data[0]);
           }
         });
