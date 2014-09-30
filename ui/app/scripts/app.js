@@ -143,6 +143,11 @@ angular
           templateUrl: "views/app/rooms/report/engagement.html",
           controller: 'engagementCtrl'
         })
+        .state('app.rooms.reports.attendance', {
+          url: "attendance/",
+          templateUrl: "views/app/rooms/report/attendance.html",
+          controller: 'attendanceCtrl'
+        })
         .state('app.roomsDash', {
           url: "room/",
           templateUrl: "views/app/roomsDash/roomsdash.html",
@@ -203,7 +208,7 @@ angular
     $scope.hideScroller = function () {
       $scope.showScroll = false;
     };
-
+    $scope.gradesList = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
     $scope.getMimeTypes = function () {
       return ".xlsx,.xltx,.docx,.dotx,.xlam,.xlsb,application/excel,application/vnd.ms-excel,application/x-excel," +
         "application/x-msexcel,application/msword,.potx,.ppsx,.pptx,.sldx" +

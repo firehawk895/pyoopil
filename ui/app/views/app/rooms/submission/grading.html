@@ -93,11 +93,8 @@
                       <select ui-jq="chosen"
                               ng-if="submissionDetail.Submission.subjective_scoring=='graded'"
                               ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
-                              ng-change="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
+                              ng-change="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                              ng-options="grade for grade in gradesList">
                       </select>
                     </div>
                   </div>
