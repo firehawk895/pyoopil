@@ -97,4 +97,23 @@ class UsersSubmission extends AppModel {
         return $this->find('first', $options);
     }
 
+    /**
+     * Get submission details for student side report
+     * @param $userId
+     * @param $classroomId
+     */
+    public function getUsersSubmissionList($userId, $classroomId) {
+        $options = array(
+            'contain' => array(
+                'Submission' => array(
+                    'id', 'topic', 'total_marks', 'subjective_scoring', 'average_marks'
+                )
+            ),
+            'fields' => array(
+
+            )
+        );
+
+    }
+
 }

@@ -24,8 +24,8 @@ class ReportsController extends AppController {
 
     public function index($classroomId) {
         $this->request->onlyAllow('get');
-        $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
+        $this->RequestHandler->renderAs($this, 'json');
 
         $permissions = $this->Report->getPermissions(AuthComponent::user('id'), $classroomId);
         $status = true;
@@ -87,7 +87,15 @@ class ReportsController extends AppController {
     }
 
     public function academic($classroomId) {
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
 
+
+
+        /** _serialize */
+        $this->set(compact('data', 'graph', 'status', 'message', 'permissions'));
+        $this->set('_serialize', array('data', 'graph', 'status', 'message', 'permissions'));
     }
 
     public function attendance($classroomId) {
@@ -95,21 +103,23 @@ class ReportsController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
+        $userId = AuthComponent::user('id');
         //determine permissions
         //determine whether educator(owner) or student view
-        $permissions = $this->Report->getPermissions(AuthComponent::user('id'), $classroomId);
+        $permissions = $this->Report->getPermissions($userId, $classroomId);
 
         //get Attendance data for student
         $this->loadModel("UsersClassroom");
-        $data = $this->UsersClassroom->getAttendance(AuthComponent::user('id'), $classroomId);
+        $data = $this->UsersClassroom->getAttendance($userId, $classroomId);
         $status = true;
         $message = "";
 
-        /**
-         * _serialize
-         */
-        $this->set(compact('data', 'status', 'message', 'permissions'));
-        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
+        //get frequency attendance data
+        $graph = $this->UsersClassroom->getAttendanceFrequency($userId, $classroomId);
+
+        /** _serialize */
+        $this->set(compact('data', 'graph', 'status', 'message', 'permissions'));
+        $this->set('_serialize', array('data', 'graph', 'status', 'message', 'permissions'));
     }
 
 

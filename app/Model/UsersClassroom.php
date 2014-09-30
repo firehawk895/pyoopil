@@ -232,4 +232,35 @@ class UsersClassroom extends AppModel {
 
         return $this->find('first', $options);
     }
+
+    private function _getAttendance($classroomId) {
+        $options = array(
+            'contain' => array(
+                'Classroom',
+                'AppUser' => array(
+                    'fields' => array('id')
+                )
+            ),
+            'fields' => array('classes_attended'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId,
+            ),
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
+            )
+        );
+    }
+
+    public function getAttendanceFrequency($userId, $classroomId) {
+        $data['frequency'] = array(
+            '0-20%' => '0',
+            '20-40%' => '2',
+            '40-60%' => '14',
+            '60-80%' => '17',
+            '80-100%' => '5',
+        );
+
+        $data['marked'] = '40-60%';
+        return $data;
+    }
 }
