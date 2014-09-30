@@ -362,5 +362,11 @@ angular.module('uiApp')
       });
       return restangular.all('Classrooms').all('Submissions').customPOST(data, 'answerQuiz.json');
     };
+    self.getReports = function (roomId) {
+      return restangular.one('Classrooms', roomId).all('Reports').customGET('index');
+    };
+    self.getEngagementReports = function (roomId) {
+      return restangular.one('Classrooms', roomId).all('Reports').customGET('engagement');
+    };
     return self;
   }]);

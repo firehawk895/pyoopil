@@ -132,16 +132,16 @@ angular
           abstract: true,
           url: "reports/",
           templateUrl: "views/app/rooms/report/report.html"
-//          controller: "submissionCtrl"
         })
         .state('app.rooms.reports.main', {
           url: "",
-          templateUrl: "views/app/rooms/report/reportMain.html"
+          templateUrl: "views/app/rooms/report/reportMain.html",
+          controller: "reportCtrl"
         })
         .state('app.rooms.reports.engagement', {
           url: "engagement/",
-          templateUrl: "../views/app/rooms/report/engagement.html"
-//          controller: 'gradingCtrl'
+          templateUrl: "views/app/rooms/report/engagement.html",
+          controller: 'engagementCtrl'
         })
         .state('app.roomsDash', {
           url: "room/",

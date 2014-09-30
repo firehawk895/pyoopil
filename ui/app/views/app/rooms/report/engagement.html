@@ -1,0 +1,142 @@
+<section class="pagecontent clearfix">
+  <div class="content-wrapper inside-submit">
+    <div class="topbuttons">
+      <a ui-sref="app.rooms.reports.main" class="follow hand">Back to Reports</a>
+
+      <h1 class="roomreport-topic">My Engagement Credits</h1>
+    </div>
+    <div class="credits-lst">
+      <ul>
+        <li>
+          <div class="credit-icon">EN</div>
+          <p class="credit-num">{{engagementReport.UsersClassroom.en}}</p>
+
+          <p class="credit-txt">Engagement</p>
+        </li>
+        <li>
+          <div class="credit-icon">IN</div>
+          <p class="credit-num">{{engagementReport.UsersClassroom.in}}</p>
+
+          <p class="credit-txt">Intelligence</p>
+        </li>
+        <li>
+          <div class="credit-icon">CU</div>
+          <p class="credit-num">{{engagementReport.UsersClassroom.cu}}</p>
+
+          <p class="credit-txt">Curiosity</p>
+        </li>
+        <li>
+          <div class="credit-icon">CO</div>
+          <p class="credit-num">{{engagementReport.UsersClassroom.co}}</p>
+
+          <p class="credit-txt">Contribution</p>
+        </li>
+        <li>
+          <div class="credit-icon">ED</div>
+          <p class="credit-num">{{engagementReport.UsersClassroom.ed}}</p>
+
+          <p class="credit-txt">Endorsement</p>
+        </li>
+      </ul>
+    </div>
+    <div class="view-head clearfix">
+      <p class="view-heading">Engagement Report</a>
+      </p>
+      <span class="f-right">Total students: {{engagementReport.Classroom.users_classroom_count}}</span>
+    </div>
+    <div class="engagement-content">
+      <ul class="engament-lst">
+        <li>
+          <div class="enga-title"><img src="images/classroom/gold-img.jpg" alt="img"/>
+          </div>
+          <div class="assign-topic">
+            <div class="clearfix">
+              <ul class="img-lst">
+                <li ng-repeat="user in vm.gold" ng-if="$index<8"><a href=""><img
+                    ng-src="{{user.AppUser.profile_img}}" alt="img">
+
+                  <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+                </li>
+              </ul>
+              <a class="enga-link" ng-if="vm.gold.length>8" ng-click="showAll('gold')"
+                 ng-class="{'active' : vm.gold.viewAll}"><span class="view-icon"></span>
+
+                <p class="lst-name view-txt" ng-if="!vm.gold.viewAll">View All</p>
+
+                <p class="lst-name view-txt" ng-if="vm.gold.viewAll">Back</p>
+              </a>
+            </div>
+            <ul class="img-lst" ng-if="vm.gold.viewAll">
+              <li ng-repeat="user in vm.gold" ng-if="$index>8"><a href=""><img ng-src="{{user.AppUser.profile_img}}"
+                                                                               alt="img">
+
+                <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+              </li>
+
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="enga-title"><img src="images/classroom/silver.jpg" alt="img"/>
+          </div>
+          <div class="assign-topic">
+            <div class="clearfix">
+              <ul class="img-lst">
+                <li ng-repeat="user in vm.silver" ng-if="$index<8"><a><img ng-src="{{user.AppUser.profile_img}}"
+                                                                           alt="img">
+
+                  <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+                </li>
+
+              </ul>
+              <a class="enga-link" ng-if="vm.silver.length>8" ng-click="showAll('silver')"
+                 ng-class="{'active' : vm.silver.viewAll}"><span class="view-icon"></span>
+
+                <p class="lst-name view-txt" ng-if="!vm.silver.viewAll">View All</p>
+
+                <p class="lst-name view-txt" ng-if="vm.silver.viewAll">Back</p>
+              </a>
+            </div>
+            <ul class="img-lst" ng-if="vm.silver.viewAll">
+              <li ng-repeat="user in vm.silver" ng-if="$index>8"><a href=""><img ng-src="{{user.AppUser.profile_img}}"
+                                                                                 alt="img">
+
+                <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+              </li>
+            </ul>
+          </div>
+
+        </li>
+        <li>
+          <div class="enga-title"><img src="images/classroom/bronze.jpg" alt="img"/>
+          </div>
+          <div class="assign-topic">
+            <div class="clearfix">
+              <ul class="img-lst">
+                <li ng-repeat="user in vm.bronze" ng-if="$index<8"><a href=""><img ng-src="{{user.AppUser.profile_img}}"
+                                                                                   alt="img">
+
+                  <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+                </li>
+              </ul>
+              <a href="" class="enga-link" ng-if="vm.bronze.length>8" ng-click="showAll('bronze')"
+                 ng-class="{'active' : vm.bronze.viewAll}"><span class="view-icon"></span>
+
+                <p class="lst-name view-txt" ng-if="!vm.bronze.viewAll">View All</p>
+
+                <p class="lst-name view-txt" ng-if="vm.bronze.viewAll">Back</p>
+              </a>
+            </div>
+            <ul class="img-lst" ng-if="vm.bronze.viewAll">
+              <li ng-repeat="user in vm.bronze" ng-if="$index>8"><a href=""><img ng-src="{{user.AppUser.profile_img}}"
+                                                                                 alt="img">
+
+                <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
