@@ -370,8 +370,12 @@ angular.module('uiApp')
     self.getEngagementReports = function (roomId) {
       return restangular.one('Classrooms', roomId).all('Reports').customGET('engagement');
     };
+    self.getAcademicReport = function (roomId) {
+      return restangular.one('Classrooms', roomId).all('Reports').customGET('academic');
+    };
     self.getAttendanceReport = function (roomId) {
       return restangular.one('Classrooms', roomId).all('Reports').customGET('attendance');
     };
+
     return self;
   }]);
