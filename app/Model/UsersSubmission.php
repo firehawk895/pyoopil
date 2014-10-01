@@ -98,9 +98,10 @@ class UsersSubmission extends AppModel {
     }
 
     /**
-     * Get submission details for student side report
+     * Student side academic report
      * @param $userId
      * @param $classroomId
+     * @return array
      */
     public function getUsersSubmissionList($userId, $classroomId) {
         $options = array(
@@ -110,10 +111,15 @@ class UsersSubmission extends AppModel {
                 )
             ),
             'fields' => array(
-
+                'grade', 'marks', 'percentile', 'grade_frequency', 'grade_comment', 'is_graded'
+            ),
+            'conditions' => array(
+                'UsersSubmission.user_id' => $userId,
+                'Submission.classroom_id' => $classroomId,
             )
         );
 
+        return $this->find('all', $options);
     }
 
 }

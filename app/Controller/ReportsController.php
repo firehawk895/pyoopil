@@ -91,7 +91,182 @@ class ReportsController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
+        $this->loadModel("UsersSubmission");
 
+        $data = array(
+            array(
+                'UsersSubmission' => array(
+                    'grade' => null,
+                    'marks' => 24,
+                    'percentile' => "53.348",
+                    'grade_frequency' => null,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 74,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'marked',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => 'A',
+                    'marks' => null,
+                    'percentile' => null,
+                    'grade_frequency' => 3,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 75,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'graded',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => null,
+                    'marks' => 24,
+                    'percentile' => "53.348",
+                    'grade_frequency' => null,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 76,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'marked',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => 'A',
+                    'marks' => null,
+                    'percentile' => null,
+                    'grade_frequency' => 3,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 77,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'graded',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => null,
+                    'marks' => 24,
+                    'percentile' => "53.348",
+                    'grade_frequency' => null,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 78,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'marked',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => 'A',
+                    'marks' => null,
+                    'percentile' => null,
+                    'grade_frequency' => 3,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 79,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'graded',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => null,
+                    'marks' => 80,
+                    'percentile' => "53.348",
+                    'grade_frequency' => null,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 74,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'marked',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => 'A',
+                    'marks' => null,
+                    'percentile' => null,
+                    'grade_frequency' => 3,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 81,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'graded',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => null,
+                    'marks' => 24,
+                    'percentile' => "53.348",
+                    'grade_frequency' => null,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 82,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'marked',
+                    'average_marks' => null
+                ),
+            ),
+            array(
+                'UsersSubmission' => array(
+                    'grade' => 'A',
+                    'marks' => null,
+                    'percentile' => null,
+                    'grade_frequency' => 3,
+                    'grade_comment' => "some comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teachersome comment by the teacher",
+                    'is_graded' => true
+                ),
+                'Submission' => array(
+                    'id' => 83,
+                    'topic' => 'new topic',
+                    'total_marks' => '100',
+                    'subjective_scoring' => 'graded',
+                    'average_marks' => null
+                ),
+            ),
+        );
+
+//        $data = $this->UsersSubmission->getUsersSubmissionList(AuthComponent::user('id'), $classroomId);
 
         /** _serialize */
         $this->set(compact('data', 'graph', 'status', 'message', 'permissions'));
