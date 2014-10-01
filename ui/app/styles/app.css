@@ -380,3 +380,16 @@ button.disabled, button[disabled] {
 .quiz-footer {
   background-color: #ffffff;
 }
+
+.create-popup .quest-select .chosen-container-single .chosen-single {
+  width: 523px;
+}
+
+.question-input {
+  width: 523px;
+}
+
+.question-lst li a {
+  background-color: #A0A0A0;
+  border-bottom: 2px solid #ffffff;
+}

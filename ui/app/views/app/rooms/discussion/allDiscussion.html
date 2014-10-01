@@ -1,5 +1,5 @@
 <div ng-if="canCreate" class="top-div">
-  <form>
+  <form id="formDiscussion">
     <span class="txt-count" ng-if="vm.discussionType">(<span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
     <input ng-if="vm.discussionType" class="add-topic" type="text" placeholder="Topic of  the discussion…"
            ng-maxlength=200 ng-trim="false"

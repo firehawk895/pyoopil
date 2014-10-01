@@ -14,7 +14,7 @@
             <div class="quiz-lftop">Questions</div>
             <ul class="question-lst quiz-slider">
               <li><a href="" class="tab" ng-repeat="quizQuestion in quizDetails.Quiz[0].Quizquestion"
-                     ng-click="showQuestion($index)">Q. {{$index+1}}</a>
+                     ng-click="showQuestion($index)" ng-class="{'active' :vm.quesIndex==$index}">Q. {{$index+1}}</a>
               </li>
             </ul>
           </div>

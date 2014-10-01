@@ -245,7 +245,6 @@ angular.module('uiApp')
             });
           }
         });
-        console.log($scope.vm.quizAnswers);
         roomService.answerQuiz($scope.vm.quizAnswers).then(function (result) {
           if (result.status) {
             ngDialog.close();

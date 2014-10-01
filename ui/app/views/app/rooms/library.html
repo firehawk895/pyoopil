@@ -11,10 +11,12 @@
         <div class="doc-heading clearfix">
           <input type="text" class="doc-input" value="{{topic.Topic.name}}" maxlength="70"
                  ng-readonly="!vm.editTopicName"
-                 ng-blur="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id);">
+                 ng-enter="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id)"
+                 ng-blur="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id)"
+                 ng-model="topic.Topic.name">
 
           <div class="lib-right">
-            <a ng-click="vm.editTopicName=true" class="lib-edit hand" tooltip="Edit Topic"></a>
+            <a ng-click="vm.editTopicName=true" class="lib-edit hand" tooltip="Edit Topic" ng-if="canUpload"></a>
             <a ng-click="deleteTopic($index)" class="lib-delete hand" tooltip="Delete" ng-if="canUpload"></a>
             <!--<a href="javascript:void(0)" class="lib-download" tooltip="Download"></a>-->
             <div class="click-lib click-icon " tooltip="Click to slide" ng-click="displayContent($index)"
