@@ -15,7 +15,6 @@ angular.module('uiApp')
             chartData.push(parseInt(value));
             categoryData.push(key);
           });
-          console.log(chartData);
           $scope.donutChartConfig = {
             options: {
               chart: {
@@ -86,7 +85,7 @@ angular.module('uiApp')
             xAxis: {
               categories: categoryData,
               title: {
-                text: 'Mark Interval'
+                text: 'Attendance Interval'
               }
             },
             yAxis: {
@@ -112,8 +111,15 @@ angular.module('uiApp')
               }
             ]
           };
+          var obj = {
+            y: chartData[categoryData.indexOf(result.graph.marked)],
+            color: "#A0A0A0"
+          };
+          $scope.columnChartConfig.series[0].data[categoryData.indexOf(result.graph.marked)] = obj;
+
         }
 
       });
+
 
     }]);

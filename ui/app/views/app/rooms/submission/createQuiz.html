@@ -62,7 +62,8 @@
 
                   <div class="add-ans-multiple">
                     <div class="ans-lst clearfix" ng-repeat="answerChoice in questionChoice.answerChoices">
-                      <input type="text" class="pop-input" placeholder="Answer choice {{$index+1}}">
+                      <input type="text" class="pop-input" placeholder="Answer choice {{$index+1}}"
+                             ng-model="answerChoice.choice">
 
                       <div class="ans-radio">
                         <input id="mul{{$parent.$index}}{{$index}}" type="checkbox" ng-model="answerChoice.answerValue">

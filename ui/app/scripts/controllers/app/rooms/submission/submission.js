@@ -56,7 +56,7 @@ angular.module('uiApp')
             questionType: 'single-select',
             questionText: "",
             answerValue: null,
-//            maxMarks: null,
+            maxMarks: null,
             answerChoices: [
               {
                 choice: "",
@@ -87,7 +87,7 @@ angular.module('uiApp')
           questionType: 'single-select',
           questionText: "",
           answerValue: null,
-//          maxMarks: null,
+          maxMarks: null,
           answerChoices: [
             {
               choice: "",

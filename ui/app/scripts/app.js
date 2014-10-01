@@ -59,7 +59,7 @@ angular
         closeByDocument: false
       });
 
-
+//creating states or routes for the app
       $stateProvider
         .state('public', {
           url: "/",
@@ -142,6 +142,11 @@ angular
           url: "engagement/",
           templateUrl: "views/app/rooms/report/engagement.html",
           controller: 'engagementCtrl'
+        })
+        .state('app.rooms.reports.academic', {
+          url: "academic/",
+          templateUrl: "views/app/rooms/report/academic.html",
+          controller: 'academicCtrl'
         })
         .state('app.rooms.reports.attendance', {
           url: "attendance/",

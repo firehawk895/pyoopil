@@ -8,7 +8,8 @@
       </p>
           <span class="btn-right">
           		<!--<a class="report-download tooltip" title="Download" href="javascript:void(0)"></a>-->
-        		<a class="follow hand" ng-class="{'active' :vm.isPersonal}" ng-click="vm.isPersonal=true">Personal Report</a>
+        		<a class="follow hand" ng-class="{'active' :vm.isPersonal}" ng-click="vm.isPersonal=true">Personal
+              Report</a>
                 <a class="follow hand" ng-class="{'active' :!vm.isPersonal}" ng-click="vm.isPersonal=false">Relative to
                   Class</a>
         </span>
@@ -16,16 +17,20 @@
 
     <div class="clear"></div>
     <!--charts-->
-    <div class="chart-contt" ng-if="vm.isPersonal">
+    <div ng-hide="!vm.missed && !attendanceReport.UsersClassroom.classes_attended">
+      <div class="chart-contt" ng-if="vm.isPersonal">
 
-      <highchart config="donutChartConfig"></highchart>
+        <highchart config="donutChartConfig"></highchart>
 
+      </div>
+      <div class="chart-contt" ng-if="!vm.isPersonal">
+
+        <highchart config="columnChartConfig"></highchart>
+
+      </div>
     </div>
-    <div class="chart-contt" ng-if="!vm.isPersonal">
+    <p ng-if="!vm.missed && !attendanceReport.UsersClassroom.classes_attended">Seems like there is no data to show</p>
 
-      <highchart config="columnChartConfig"></highchart>
-
-    </div>
     <div class="attendence-tbl">
       <table class="enga-tbl stud-tbl">
         <tr>

@@ -269,6 +269,8 @@ angular.module('uiApp')
           });
         }
         if (value.questionType == 'true-false') {
+          formData.append("data[Quiz][0][Quizquestion][" + key + "][Choice][0][description]", 'True');
+          formData.append("data[Quiz][0][Quizquestion][" + key + "][Choice][1][description]", 'False');
           formData.append("data[Quiz][0][Quizquestion][" + key + "][Choice][" + value.answerValue + "][is_answer]", true);
         }
         if (value.questionType == 'match-columns') {
