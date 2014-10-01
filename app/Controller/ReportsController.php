@@ -91,8 +91,13 @@ class ReportsController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
-        $this->loadModel("UsersSubmission");
+        //determine permissions
+        //determine whether educator(owner) or student view
+        $permissions = $this->Report->getPermissions(AuthComponent::user('id'), $classroomId);
+        $status = true;
+        $message = "";
 
+        $this->loadModel("UsersSubmission");
         $data = array(
             array(
                 'UsersSubmission' => array(
@@ -267,10 +272,9 @@ class ReportsController extends AppController {
         );
 
 //        $data = $this->UsersSubmission->getUsersSubmissionList(AuthComponent::user('id'), $classroomId);
-
         /** _serialize */
-        $this->set(compact('data', 'graph', 'status', 'message', 'permissions'));
-        $this->set('_serialize', array('data', 'graph', 'status', 'message', 'permissions'));
+        $this->set(compact('data', 'status', 'message', 'permissions'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
     public function attendance($classroomId) {
@@ -295,6 +299,55 @@ class ReportsController extends AppController {
         /** _serialize */
         $this->set(compact('data', 'graph', 'status', 'message', 'permissions'));
         $this->set('_serialize', array('data', 'graph', 'status', 'message', 'permissions'));
+    }
+
+    public function academicStudentGraph() {
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+
+        $status = false;
+        $message = "";
+
+        if (isset($this->params['url']['submission_id'])) {
+            $submissionId = $this->params['url']['submission_id'];
+
+            $status = true;
+
+            if ($submissionId % 2 == 0) {
+                $graph = array(
+                    'points' => array(
+                        array('x' => 0.0, 'y' => 5),
+                        array('x' => 20.0, 'y' => 25),
+                        array('x' => 38.0, 'y' => 35),
+                        array('x' => 45.0, 'y' => 55),
+                        array('x' => 0.0, 'y' => 75),
+                        array('x' => 92.0, 'y' => 82),
+                        array('x' => 100.0, 'y' => 95),
+                    ),
+                    'marked' => array(
+                        'x' => 20.0,
+                        'y' => 25
+                    )
+                );
+            } else {
+                $graph = array(
+                    'frequency' => array(
+                        "A" => 5,
+                        "B" => 15,
+                        "C" => 5,
+                        "D" => 2,
+                        "E" => 1
+                    ),
+                    'marked' => 'B'
+                );
+            }
+        }
+
+
+        /** _serialize */
+        $this->set(compact('graph', 'status', 'message', 'permissions'));
+        $this->set('_serialize', array('graph', 'status', 'message', 'permissions'));
     }
 
 

@@ -50,6 +50,7 @@ Router::connect('/Announcements/add', array('controller' => 'announcements', 'ac
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
 Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => 'index'));
+Router::connect('/Classrooms/Reports/academic/student/graph', array('controller' => 'reports', 'action' => 'academicStudentGraph'));
 Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
 //--------------------------------------------------------------------------------------------------------------
 Router::connect(
