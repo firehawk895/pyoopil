@@ -204,4 +204,50 @@ class ClassroomsController extends AppController {
         $this->set(compact('data', 'status', 'message'));
         $this->set('_serialize', array('data', 'status', 'message'));
     }
+
+    public function info($classroomId) {
+        $this->request->onlyAllow('get'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
+        $this->response->type('json');
+
+        $data = array();
+        $status = true;
+        $message = "";
+
+        $options['contain'] = array(
+            'Campus' => array(
+                'id', 'name'
+            ),
+            'Degree' => array(
+                'id', 'name'
+            ),
+            'Department' => array(
+                'id', 'name'
+            ),
+        );
+
+        $options['fields'] = array(
+            'title',
+            'campus_id',
+            'department_id',
+            'degree_id',
+            'year',
+            'duration_start_date',
+            'duration_end_date',
+            'semester',
+            'is_private',
+            'description',
+            'link',
+            'minimum_attendance_percentage'
+        );
+
+        $options['conditions'] = array(
+            'Classroom.id' => $classroomId
+        );
+
+        $data = $this->Classroom->find('first', $options);
+
+        /*_serialize */
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
 }

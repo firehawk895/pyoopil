@@ -179,23 +179,41 @@ class DiscussionsController extends AppController {
         $savedData['Discussion']['user_id'] = $userId;
         $savedData['Discussion']['classroom_id'] = $classroomId;
 
-        if ($this->Discussion->saveAssociated($savedData)) {
+        /* security */
+        $options['fieldList'] = array(
+            'Discussion' => array(
+                'topic', 'body', 'type', 'user_id', 'classroom_id'
+            ),
+            'Pollchoice' => array(
+                'choice'
+            ),
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+            )
+        );
+
+
+        /* Validation
+           Now ofcourse you can use model->validates
+        */
+
+        /* Platform secret :
+           @ used to suppress warnings from Pyoopilfile beforeUpload callback.
+        */
+        if (@$this->Discussion->saveAssociated($savedData, $options)) {
             $status = true;
             $message = "";
 
-            $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, 1, true);
-//            $this->log($data);
+            $discussionId = $this->Discussion->getLastInsertId();
+            $data = $this->Discussion->getDiscussionById($discussionId);
             $data = $this->Discussion->processData($data, $userId);
-//            $this->log($data);
-//            $returnedData = $savedData;
         } else {
             $status = false;
             $message = "The Discussion could not be posted";
             $data = array(); //required for json consistency
         }
-        /**
-         * finalize and set the response for the json view
-         */
+
+        /** _serialize */
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -223,9 +241,7 @@ class DiscussionsController extends AppController {
             $message = "Could not post the reply";
         }
 
-        /**
-         * finalize and set the response for the json view
-         */
+        /** _serialize */
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));

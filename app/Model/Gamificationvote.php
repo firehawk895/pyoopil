@@ -1,5 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
+App::uses('CakeEvent', 'Event');
 /**
  * Gamificationvote Model
  *
@@ -128,7 +129,16 @@ class Gamificationvote extends AppModel {
                     )
                 );
 
-                return $this->saveAssociated($record);
+                $result = $this->saveAssociated($record);
+                if (!empty($result)) {
+                    $event = new CakeEvent('Gamificationvote.setGamificationVote', $this, array(
+                        'data' => $record
+                    ));
+                    $this->getEventManager()->dispatch($event);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 // duplicate vote error message
                 return false;
