@@ -132,8 +132,11 @@ class Gamificationvote extends AppModel {
                 $result = $this->saveAssociated($record);
                 if (!empty($result)) {
                     $event = new CakeEvent('Gamificationvote.setGamificationVote', $this, array(
-                        'data' => $record
-                    ));
+                        'id' => $id,
+                        'type' => $type,
+                        'vote' => $vote
+                        )
+                    );
                     $this->getEventManager()->dispatch($event);
                     return true;
                 } else {

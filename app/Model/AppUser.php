@@ -302,4 +302,42 @@ class AppUser extends User {
         }
         return $data;
     }
+
+    public function updateGamification($userId, $vote){
+
+        $options = array(
+            'fields' => array(
+                'in', 'cu', 'en', 'co', 'ed', 'display_praise', 'real_praise'
+            ),
+            'conditions' => array(
+                'AppUser.id' => $userId
+            )
+        );
+
+
+        if(in_array($vote,$this->Gamificationvote->votes)){
+            $data = $this->find('first',$options);
+
+            $voteValue = $date['AppUser'][$vote] + 1;
+            $displayPraise = $data['AppUser']['display_praise'] + 1;
+
+            if($vote == 'ed'){
+                $realPraise = $data['AppUser']['real_praise'] + 10;
+            }else{
+                $realPraise = $data['AppUser']['real_praise'] + 1;
+            }
+
+            $record = array(
+                    'id' => $userId,
+                    $vote => $voteValue,
+                    'display_praise' => $displayPraise,
+                    'real_praise' => $realPraise
+            );
+
+            $this->save($record,false);
+        }
+        else{
+            return false;
+        }
+    }
 }
