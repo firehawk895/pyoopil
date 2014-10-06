@@ -195,4 +195,16 @@ class Reply extends AppModel {
         $data = $this->find('all', $options);
         return $data;
     }
+
+    public function getReplyOwner($id){
+        $options = array(
+          'conditions' => array(
+              'Reply.id' => $id
+          )
+        );
+
+        $data = $this->find('first',$options);
+
+        return $data['Reply']['user_id'];
+    }
 }
