@@ -32,7 +32,7 @@ class GamificationTally implements CakeEventListener {
         }
 
         $this->AppUser->updateGamification($userId,$event->data['vote']);
-        $this->AppUser->UserClassroom->updateGamification($userId, $classroomId, $event->data['vote']);
+        $this->AppUser->UsersClassroom->updateGamification($userId, $classroomId, $event->data['vote']);
 
 
     }
