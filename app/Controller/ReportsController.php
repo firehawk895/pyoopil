@@ -22,6 +22,11 @@ class ReportsController extends AppController {
         }
     }
 
+    /**
+     * API: Reports/index.json
+     * determines owner(educator) or student view
+     * @param $classroomId
+     */
     public function index($classroomId) {
         $this->request->onlyAllow('get');
         $this->response->type('json');
@@ -38,7 +43,168 @@ class ReportsController extends AppController {
         $this->set('_serialize', array('permissions', 'status', 'message'));
     }
 
+    /**
+     * API: Reports/engagement.json
+     * engagement report for owner(educator) or student
+     * @param $classroomId
+     */
     public function engagement($classroomId) {
+
+        //Required contract (approx)
+//        {
+//            "data": {
+//            "UsersClassroom": {
+//                "en": "0",
+//            "in": "0",
+//            "cu": "0",
+//            "co": "0",
+//            "ed": "0"
+//        },
+//        "Classroom": {
+//                "id": "34",
+//            "users_classroom_count": "3"
+//        }
+//    },
+//    "gold": [
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "23",
+//                "fname": "Ankan",
+//                "lname": null,
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "20",
+//                "fname": "Harsh",
+//                "lname": "Tripathi",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "19",
+//                "fname": "Aaron",
+//                "lname": "Basaiawmoit",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        }
+//    ],
+//    "silver": [
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "23",
+//                "fname": "Ankan",
+//                "lname": null,
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "20",
+//                "fname": "Harsh",
+//                "lname": "Tripathi",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "19",
+//                "fname": "Aaron",
+//                "lname": "Basaiawmoit",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        }
+//    ],
+//    "bronze": [
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "23",
+//                "fname": "Ankan",
+//                "lname": null,
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "20",
+//                "fname": "Harsh",
+//                "lname": "Tripathi",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        },
+//        {
+//            "UsersClassroom": {
+//            "total_gamification": "0"
+//            },
+//            "AppUser": {
+//            "id": "19",
+//                "fname": "Aaron",
+//                "lname": "Basaiawmoit",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Classroom": {
+//            "id": "34"
+//            }
+//        }
+//    ],
+//    "status": true,
+//    "message": "",
+//    "permissions": {
+//            "role": "Owner",
+//        "allowCreate": true
+//    }
+//}
+
         $this->request->onlyAllow('get');
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
@@ -49,33 +215,41 @@ class ReportsController extends AppController {
         //determine whether educator(owner) or student view
         $permissions = $this->Report->getPermissions($userId, $classroomId);
 
-        //get engagement points for the user
-        $this->loadModel("UsersClassroom");
-        $data = $this->UsersClassroom->find('first', array(
-            'conditions' => array(
-                'UsersClassroom.user_id' => $userId,
-                'UsersClassroom.classroom_id' => $classroomId
-            ),
-            'contain' => array(
-                'Classroom' => array(
-                    'id', 'users_classroom_count'
-                )
-            ),
-            'fields' => array('en', 'in', 'cu', 'co', 'ed')
-        ));
-
-        if (!empty($data)) {
-            $status = true;
-            $message = "";
-        } else {
-            $message = "Unable to fetch data";
-            $status = false;
-        }
+        /**
+         * get engagement points for the user
+         * $this->loadModel('UsersClassroom');
+         * $data = $this->UsersClassroom->getUsersGamification($userId, $classroomId);
+         *
+         * $gold =
+         * $silver =
+         * $bronze =
+         */
+//        $this->loadModel("UsersClassroom");
+//        $data = $this->UsersClassroom->find('first', array(
+//            'conditions' => array(
+//                'UsersClassroom.user_id' => $userId,
+//                'UsersClassroom.classroom_id' => $classroomId
+//            ),
+//            'contain' => array(
+//                'Classroom' => array(
+//                    'id', 'users_classroom_count'
+//                )
+//            ),
+//            'fields' => array('en', 'in', 'cu', 'co', 'ed')
+//        ));
+//
+//        if (!empty($data)) {
+//            $status = true;
+//            $message = "";
+//        } else {
+//            $message = "Unable to fetch data";
+//            $status = false;
+//        }
 
         //get list of engagers
-        $gold = $this->UsersClassroom->getEngagers($classroomId);
-        $silver = $this->UsersClassroom->getEngagers($classroomId);
-        $bronze = $this->UsersClassroom->getEngagers($classroomId);
+//        $gold = $this->UsersClassroom->getEngagers($classroomId);
+//        $silver = $this->UsersClassroom->getEngagers($classroomId);
+//        $bronze = $this->UsersClassroom->getEngagers($classroomId);
 
         /**
          * Setting data for json view.

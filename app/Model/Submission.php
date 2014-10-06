@@ -275,30 +275,58 @@ class Submission extends AppModel {
 
         $data = $this->find('all', $options);
 
-        //Only applicable for students
         foreach ($data as &$sub) {
-
+            //Only applicable for students
+            //get permissions and execute this only if student (or non owner)
             $usersSubmission = $this->UsersSubmission->getUsersSubmission($sub['Submission']['id'], $userId);
-
             if (empty($usersSubmission)) {
                 $sub['Submission']['is_submitted'] = false;
             } else {
                 $sub['Submission']['is_submitted'] = true;
                 $sub['UsersSubmission'] = $usersSubmission;
             }
+            //------------------------------------------------------------------
 
-            if ($sub['Submission']['is_published'] === true) {
-                $sub['Submission']['status'] = "Graded";
-            } else {
-                if (CakeTime::isPast($sub['Submission']['due_date'])) {
-                    $sub['Submission']['status'] = "Pending Grading";
-                } else {
-                    $sub['Submission']['status'] = "In Progress";
-                }
-            }
+//            if ($sub['Submission']['is_published'] === true) {
+//                $sub['Submission']['status'] = "Graded";
+//            } else {
+//                if (CakeTime::isPast($sub['Submission']['due_date'])) {
+//                    $sub['Submission']['status'] = "Pending Grading";
+//                } else {
+//                    $sub['Submission']['status'] = "In Progress";
+//                }
+//            }
         }
         unset($sub);
         return $data;
+    }
+
+    /**
+     * update the 'status' field of all submissions
+     * ideally this should be time triggered
+     * @param $submissionId
+     */
+    private function _updateSubmissionsStatus($submissionId) {
+        //TODO:
+        //WARNING: this method will not scale for very large number of submissions
+        //either update on a paginated set or deffer it to a thread
+//        $this->id = $submissionId;
+//        $due_date = $this->field('due_date');
+//        $status = $this->field('status');
+//        $published = $this->field('is_published');
+//
+//        if ($published) {
+//            $newStatus = "Graded";
+//        } else if (CakeTime::isPast($due_date)) {
+//            $newStatus = "Pending Grading";
+//        } else {
+//            $newStatus = "In Progress";
+//        }
+//
+//        if ($newStatus !== $status) {
+//            $this->saveField('status', $newStatus);
+//        }
+
     }
 
     /**
@@ -349,7 +377,6 @@ class Submission extends AppModel {
         );
 
         $data = $this->find('first', $options);
-        $this->log($data);
     }
 
     public function getGradeSubmissionTile($userId, $submissionId) {
@@ -374,123 +401,5 @@ class Submission extends AppModel {
         $data = array_merge($appUser, $sub);
 
         return $data;
-    }
-
-    public function getShi() {
-//        $data = array(
-//            'User' => array('email' => 'john-doe@cakephp.org'),
-//            'Cart' => array(
-//                array(
-//                    'payment_status_id' => 2,
-//                    'total_cost' => 250,
-//                    'CartItem' => array(
-//                        array(
-//                            'cart_product_id' => 3,
-//                            'quantity' => 1,
-//                            'cost' => 100,
-//                        ),
-//                        array(
-//                            'cart_product_id' => 5,
-//                            'quantity' => 1,
-//                            'cost' => 150,
-//                        )
-//                    )
-//                )
-//            )
-//        );
-
-        $data = array(
-            'Submission' => array(
-                'topic' => 'some topic',
-                'description' => 'the description',
-                'grading_policy' => 'grade hard',
-                'due_date' => '2015-06-18T10:34:09',
-                'type' => 'quiz',
-                'classroom_id' => '13'
-            ),
-            'Quiz' => array(
-                array(
-                    'duration' => 8400,
-                    'Quizquestion' => array(
-                        array(
-                            'marks' => 2,
-                            'question' => 'this is the first question',
-                            'type' => 'single-select',
-                            'Choice' => array(
-                                array(
-                                    'description' => 'this is choice 1'
-                                ),
-                                array(
-                                    'description' => 'this is choice 2'
-                                ),
-                                array(
-                                    'description' => 'this is choice 3'
-                                ),
-                            )
-                        ),
-                        array(
-                            'marks' => 5,
-                            'question' => 'this is the second question',
-                            'type' => 'single-select',
-                        )
-                    )
-                )
-            ),
-        );
-
-        return $data;
-
-
-//        (
-//        [Submission] => Array
-//        (
-//            [topic] => new quiz
-//                [description] => descrption
-//            [grading_policy] => grade hard
-//            [due_date] => 2015 - 06 - 18T10:34:09
-//            [type] => quiz
-//            [classroom_id] => 13
-//        )
-//
-//    [Quiz] => Array
-//        (
-//            [0] => Array
-//            (
-//                [Quizquestion] => Array
-//                (
-//                    [0] => Array
-//                        (
-//                            [marks] => 2
-//                                    [question] => This is the first question
-//                                    [type] => single - select
-//                                    [Choice] => Array
-//        (
-//            [0] => Array
-//            (
-//                [description] => this is choice1
-//                                                )
-//
-//                                            [1] => Array
-//        (
-//            [description] => this is choice2(right answer)
-//                                                )
-//
-//                                            [2] => Array
-//        (
-//            [description] => this is choice3
-//                                                )
-//
-//                                        )
-//
-//                                )
-//
-//                        )
-//
-//                    [duration] => 8400
-//                )
-//
-//        )
-//
-//)
     }
 }
