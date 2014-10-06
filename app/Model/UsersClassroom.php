@@ -348,4 +348,49 @@ class UsersClassroom extends AppModel {
             return false;
         }
     }
+
+    public function updatePodiumStatus($classroomId){
+
+        $options = array(
+            'fields' => array(
+                'MIN(UsersClassroom.real_praise) as cMin', 'MAX(UsersClassroom.real_praise) as cMax'
+            ),
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        $mean = $data[0][0]['cMax'] - $data[0][0]['cMin'];
+
+        //retrieve all students in the classroom
+        $options = array(
+            'fields' => array(
+                'id', 'real_praise', 'podium'
+            ),
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        foreach($data as &$student){
+            $realPraise = $student['UsersClassroom']['real_praise'];
+            if($realPraise >= (2/3)*$mean){
+                $student['UsersClassroom']['podium'] = 'gold';
+            }else if($realPraise >= (1/3)*$mean){
+                $student['UsersClassroom']['podium'] = 'silver';
+            }else if($realPraise < (1/3)*$mean){
+                $student['UsersClassroom']['podium'] = 'bronze';
+            }
+        }
+
+        if($this->saveMany($data)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
