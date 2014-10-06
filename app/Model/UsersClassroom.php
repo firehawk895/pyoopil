@@ -193,66 +193,58 @@ class UsersClassroom extends AppModel {
      * get the engagement points
      * @param $userId
      * @param $classroomId
+     * @return array
      */
     public function getUsersGamification($userId, $classroomId) {
-//        "UsersClassroom": {
-//            "en": "0",
-//            "in": "0",
-//            "cu": "0",
-//            "co": "0",
-//            "ed": "0"
-//        },
-//        "Classroom": {
-//            "id": "34",
-//            "users_classroom_count": "3"
-//        }
+
+        $options = array(
+            'conditions' => array(
+                'UsersClassroom.user_id' => $userId,
+                'UsersClassroom.classroom_id' => $classroomId
+            ),
+            'fields' => array(
+                'en', 'in', 'cu', 'co', 'ed'
+            ),
+            'contain' => array(
+                'Classroom' => array(
+                    'fields' => array(
+                        'id', 'users_classroom_count'
+                    )
+                )
+            )
+        );
+
+        $data = $this->find('first', $options);
+        return $data;
     }
 
     /**
      * get the classroom podium
      * @param $classroomId
+     * @param $podiumType
+     * @return array
      */
-    public function getEngagers($classroomId) {
+    public function getEngagersByPodium($classroomId, $podiumType) {
 
-        /**
-         * after calculation of engagers,
-         * done in another method mostly
-         * organize data as
-         * array(
-         *  'gold' =>
-         *  'silver' =>
-         *  'bronze' =>
-         *
-         * format is
-         * "AppUser": {
-         * //            "id": "19",
-         * //                "fname": "Aaron",
-         * //                "lname": "Basaiawmoit",
-         * //                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
-         * //            },
-         * //            "Classroom": {
-         * //            "id": "34"
-         * //            }
-         */
+        $options = array(
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'id', 'fname', 'lname', 'profile_img'
+                    )
+                )
+            ),
+            'fields' => array(
+                'en', 'in', 'cu', 'co', 'ed','display_praise'
+            ),
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.podium' => $podiumType
+            )
+        );
 
-//        $options = array(
-//            'contain' => array(
-//                'Classroom',
-//                'AppUser' => array(
-//                    'fields' => array('id', 'fname', 'lname', 'profile_img')
-//                )
-//            ),
-//            'fields' => array('total_gamification'),
-//            'conditions' => array(
-//                'Classroom.id' => $classroomId
-//            ),
-//            'order' => array(
-//                'UsersClassroom.created' => 'desc'
-//            )
-//        );
-//
-//        $data = $this->find('all', $options);
-//        return $data;
+        $data = $this->find('all',$options);
+        return $data;
     }
 
     public function getAttendance($userId, $classroomId) {
