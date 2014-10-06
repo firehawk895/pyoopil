@@ -11,7 +11,6 @@ angular.module('uiApp')
   .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', '$sce', 'modalService',
     function ($scope, $stateParams, roomService, notificationService, ngDialog, $sce, modalService) {
       //todo : check if room id has access
-      $scope.showInfoPopup = false;
       $scope.page = 1;
       $scope.vm = {};
       $scope.vm.subject = "";

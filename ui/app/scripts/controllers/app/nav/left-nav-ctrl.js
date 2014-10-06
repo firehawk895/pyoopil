@@ -2,8 +2,8 @@
  * Created by himanshu on 26/8/14.
  */
 angular.module('uiApp')
-  .controller('leftNavCtrl', ['$scope', 'userService', 'notificationService', '$http', 'localStorageService', 'globalService', '$location', 'roomService', '$stateParams',
-    function ($scope, userService, notificationService, $http, localStorageService, globalService, $location, roomService, $stateParams) {
+  .controller('leftNavCtrl', ['$scope', 'userService', 'notificationService', '$http', 'localStorageService', 'globalService', '$location', 'roomService', '$stateParams', '$state',
+    function ($scope, userService, notificationService, $http, localStorageService, globalService, $location, roomService, $stateParams, $state) {
 
       $scope.showLogout = false;
       $scope.classrooms = [];
@@ -14,8 +14,6 @@ angular.module('uiApp')
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
       });
-
-
       $scope.logout = function () {
         userService.logout().then(function (result) {
           notificationService.show(result.status, result.message);
@@ -27,7 +25,6 @@ angular.module('uiApp')
           globalService.setIsAuthorised(false);
         });
       };
-
       $scope.updatePage = function () {
         if (!$scope.pageEnd) {
           roomService.getRooms(++$scope.page).then(function (result) {
@@ -38,5 +35,10 @@ angular.module('uiApp')
           });
         }
       };
-
+      $scope.goToClass = function (id, restricted) {
+        if (restricted)
+          notificationService.show(false, "Cannot Enter Classroom");
+        else
+          $state.go('app.rooms.discussions.all', { roomId: id });
+      };
     }]);

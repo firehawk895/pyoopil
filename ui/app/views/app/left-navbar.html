@@ -30,7 +30,7 @@
             <div class="scroll-pane" ui-jq="slider">
               <div infinite-scroll="updatePage()" style="margin-left: -28px">
                 <div ng-repeat="classroom in classrooms" class="scroll-content-item"><a
-                    ui-sref="app.rooms.discussions.all({ roomId:{{classroom.Classroom.id}} })">
+                    ng-click="goToClass(classroom.Classroom.id,classroom.UsersClassroom.is_restricted)">
                   <div class="classouter">
                     <div class="doc-list">
                       <div class="doc-top">

@@ -1,15 +1,5 @@
 <!-- Right Content -->
 <section class="pagecontent clearfix">
-  <div class="roomTitle">{{roomId}}<span class="title-arr hand" ng-click="showInfoPopup=true"></span>
-
-    <div class="arr-dd" ng-if="showInfoPopup" ng-blur="showInfoPopup=false">
-      <ul>
-        <li class="lastli"><a href="">Reset Access Code</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
   <div class="content-wrapper">
     <!--content top-->
     <form name="formAnnouncement" ng-if="canPost" id="formAnnouncementId">
@@ -78,6 +68,8 @@
               <a class="dlfile" ng-if="announcement.Announcement.filename"
                  ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook">
                 {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+
+
               <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
                  ng-if="announcement.Announcement.filename" target="_blank"></a>
             </p>

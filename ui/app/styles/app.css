@@ -393,3 +393,8 @@ button.disabled, button[disabled] {
   background-color: #A0A0A0;
   border-bottom: 2px solid #ffffff;
 }
+
+.arr-dd li a {
+  font-weight: normal;
+  font-size: 11px;
+}

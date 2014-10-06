@@ -379,6 +379,12 @@ angular.module('uiApp')
     self.getGraph = function (submissionId) {
       return restangular.all('Classrooms').all('Reports').all('academic').all('student').customGET('graph.json', {submission_id: submissionId});
     };
-
+    self.getClassInfo = function (roomId) {
+      return restangular.one('Classrooms', roomId).customGET('info.json');
+    };
+    self.resetAccessCode = function (roomId) {
+      var data = {};
+      return restangular.one('Classrooms', roomId).customPOST(data, 'resetcode.json');
+    };
     return self;
   }]);

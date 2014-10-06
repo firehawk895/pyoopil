@@ -17,7 +17,7 @@
 
     <div class="clear"></div>
     <!--charts-->
-    <div ng-hide="!vm.missed && !attendanceReport.UsersClassroom.classes_attended">
+    <div ng-hide="attendanceReport.Classroom.classes_held=='0'">
       <div class="chart-contt" ng-if="vm.isPersonal">
 
         <highchart config="donutChartConfig"></highchart>
@@ -29,7 +29,7 @@
 
       </div>
     </div>
-    <p ng-if="!vm.missed && !attendanceReport.UsersClassroom.classes_attended">Seems like there is no data to show</p>
+    <p ng-if="attendanceReport.Classroom.classes_held=='0'">Seems like there is no data to show</p>
 
     <div class="attendence-tbl">
       <table class="enga-tbl stud-tbl">
