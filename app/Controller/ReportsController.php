@@ -55,29 +55,27 @@ class ReportsController extends AppController {
         $this->response->type('json');
 
         $data = array();
+        $status = false;
 
         $userId = AuthComponent::user('id');
 
         //determine permissions
         //determine whether educator(owner) or student view
         $permissions = $this->Report->getPermissions($userId, $classroomId);
-        $this->log($permissions);
 
         $UsersClassroom = new UsersClassroom();
 
         if($permissions['role'] == 'Student'){
+            $status = true;
             $data = $UsersClassroom->getUsersGamification($userId, $classroomId);
+        }else if($permissions['role'] == 'Owner'){
+            $status = true;
         }
 
         $gold = $UsersClassroom->getEngagersByPodium($classroomId,'gold');
         $silver = $UsersClassroom->getEngagersByPodium($classroomId, 'silver');
         $bronze = $UsersClassroom->getEngagersByPodium($classroomId, 'bronze');
 
-        /**
-         * Setting data for json view.
-         * this code repeats
-         * two steps, set and then _serialize
-         */
         $this->set(compact('data', 'gold', 'silver', 'bronze', 'status', 'message', 'permissions'));
         $this->set('_serialize', array('data', 'gold', 'silver', 'bronze', 'status', 'message', 'permissions'));
     }
