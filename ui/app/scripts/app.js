@@ -79,8 +79,8 @@ angular
         .state('app.rooms', {
           url: "rooms/:roomId/",
           abstract: true,
-          templateUrl: "views/app/rooms/room.html"
-
+          templateUrl: "views/app/rooms/room.html",
+          controller: 'roomCtrl'
         })
         .state('app.rooms.discussions', {
           abstract: true,
@@ -205,11 +205,9 @@ angular
   .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
     $scope.showScroll = false;
-
     $scope.showScroller = function () {
       $scope.showScroll = true;
     };
-
     $scope.hideScroller = function () {
       $scope.showScroll = false;
     };
@@ -223,7 +221,17 @@ angular
         "image/x-rgb,image/x-xbitmap,image/x-xpixmap,image/x-xwindowdump,.zip,.rar,audio/mpeg,audio/wav, " +
         "audio/x-wav,video/mpeg,video/msvideo, video/avi, video/x-msvideo,application/x-tar";
     };
-
+    $scope.checkIfPic = function (mimeType) {
+      return /^image[//].*/.test(mimeType) || /^video[//].*/.test(mimeType);
+    };
+    $scope.docIcon = function (mimeType) {
+      if (/^application[//].*word.*/.test(mimeType))
+        return 'images/word_icon.png';
+      else if (mimeType == 'application/pdf')
+        return 'images/doc_icon.png';
+      else if (/^application[//].*powerpoint$/.test(mimeType))
+        return 'images/ppt_icon.png';
+    };
   }])
   //main run module for the whole application
   .run(['$http', 'globalService', 'Restangular', 'userService', '$location',

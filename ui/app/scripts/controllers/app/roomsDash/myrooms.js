@@ -56,7 +56,6 @@ angular.module('uiApp')
       };
       $scope.open = function () {
         $scope.classroom = {};
-
         ngDialog.open({
           template: 'views/app/roomsDash/createclassroom.html',
           scope: $scope

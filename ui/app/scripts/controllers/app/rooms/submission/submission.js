@@ -139,17 +139,8 @@ angular.module('uiApp')
       $scope.openDocViewerDialog = function (path) {
         modalService.openDocViewerDialog($scope, path);
       };
-      $scope.checkIfPic = function (mimeType) {
-        return /^image[//].*/.test(mimeType) || /^video[//].*/.test(mimeType);
-      };
-      $scope.docIcon = function (mimeType) {
-        if (/^application[//].*word.*/.test(mimeType))
-          return 'images/word_icon.png';
-        else if (mimeType == 'application/pdf')
-          return 'images/doc_icon.png';
-        else if (/^application[//].*powerpoint$/.test(mimeType))
-          return 'images/ppt_icon.png';
-      };
+
+
       $scope.answerSubjective = function (index, id) {
         if ($scope.vm.answerText == "")
           notificationService.show(false, "Cannot submit blank Answer");

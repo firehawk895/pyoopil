@@ -81,8 +81,8 @@ angular.module('uiApp')
         });
       };
 
-      $scope.deleteLink = function (topic, index) {
-        roomService.deleteLink(topic.Link[index].id, "link").then(function (result) {
+      $scope.deleteFile = function (topic, index) {
+        roomService.deleteFile(topic.Link[index].id, "Link").then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
             topic.Link.splice(index, 1);

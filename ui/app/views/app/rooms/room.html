@@ -1,4 +1,17 @@
+<div class="roomTitle">{{classInfo.Classroom.title}}<span class="title-arr hand"
+                                                          ng-click="vm.showInfoPopup=!vm.showInfoPopup"></span>
+
+  <div class="arr-dd" ng-if="vm.showInfoPopup">
+    <ul>
+      <li class="hand"><a ng-click="showClassInfo()">View Info</a>
+      </li>
+      <li class="lastli hand"><a ng-click="resetAccessCode()">Reset Access Code</a>
+      </li>
+    </ul>
+  </div>
+</div>
 <section class="pagesubnav">
+
   <div class="clearfix">
     <ul class="left-subnav clearfix">
       <li>
