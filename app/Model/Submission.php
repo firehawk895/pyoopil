@@ -65,7 +65,9 @@ class Submission extends AppModel {
         'topic' => array(
             'alphaNumeric' => array(
                 'rule' => array('minLength', 8),
-                'message' => 'Topic should be minimum 8 characters'
+                'message' => 'Topic should be minimum 8 characters',
+                'allowEmpty' => false,
+                'required' => true,
             ),
 //            'notEmpty' => arraY(
 //                'rule' => 'notEmpty',
@@ -300,12 +302,12 @@ class Submission extends AppModel {
     }
 
     /**
-     * get submission details by its id
      * @param $userId
      * @param $submissionId
+     * @return array
      */
     public function getSubmissionById($userId, $submissionId) {
-        $this->getPaginatedSubmissions(null, $userId, 1, $submissionId);
+        return $this->getPaginatedSubmissions(null, $userId, 1, $submissionId);
     }
 
     public function getPermissions($userId, $classroomId) {
