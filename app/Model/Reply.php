@@ -196,7 +196,7 @@ class Reply extends AppModel {
         return $data;
     }
 
-    public function getReplyOwner($id){
+    public function getReplyById($id){
         $options = array(
           'conditions' => array(
               'Reply.id' => $id
@@ -205,6 +205,6 @@ class Reply extends AppModel {
 
         $data = $this->find('first',$options);
 
-        return $data['Reply']['user_id'];
+        return $data;
     }
 }

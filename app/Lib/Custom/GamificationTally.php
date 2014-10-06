@@ -19,16 +19,20 @@ class GamificationTally implements CakeEventListener {
 
         if($event->data['type'] == 'Reply'){
             $this->Reply = ClassRegistry::init('Reply');
-            $userId = $this->Reply->getReplyOwner($event->data['id']);
+            $reply = $this->Reply->getReplyById($event->data['id']);
+            $userId = $reply['Reply']['user_id'];
+            $classroomId = $reply['Discussion']['classroom_id'];
 
         }else if($event->data['type'] == 'Discussion'){
             $this->Discussion = ClassRegistry::init('Discussion');
             $discussion = $this->Discussion->getDiscussionById($event->data['id']);
             $userId = $discussion[0]['Discussion']['user_id'];
+            $classroomId = $discussion[0]['Discussion']['classroom_id'];
 
         }
 
         $this->AppUser->updateGamification($userId,$event->data['vote']);
+        $this->AppUser->UserClassroom->updateGamification($userId, $classroomId, $event->data['vote']);
 
 
     }

@@ -318,7 +318,7 @@ class AppUser extends User {
         if(in_array($vote,$this->Gamificationvote->votes)){
             $data = $this->find('first',$options);
 
-            $voteValue = $date['AppUser'][$vote] + 1;
+            $voteValue = $data['AppUser'][$vote] + 1;
             $displayPraise = $data['AppUser']['display_praise'] + 1;
 
             if($vote == 'ed'){
@@ -334,7 +334,9 @@ class AppUser extends User {
                     'real_praise' => $realPraise
             );
 
-            $this->save($record,false);
+            if($this->save($record,false)){
+                return true;
+            }
         }
         else{
             return false;
