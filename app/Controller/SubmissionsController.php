@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nakul
- * Date: 7/4/14
- * Time: 12:36 PM
- */
 
 App::uses('AppController', 'Controller');
 
@@ -30,25 +24,35 @@ class SubmissionsController extends AppController {
      * @param $classroomId
      */
     public function addSubjective($classroomId) {
-
         //TODO: add field restriction
-        //TODO: add model validation
-        //TODO: add Pyoopilfile support
-
         $this->request->onlyAllow('post');
         $data = array();
+        $postData = $this->request->data;
 
-        if ($this->Submission->addSubjective($this->request->data, $classroomId)) {
-            $status = true;
-            $message = "Successfully created Subjective Assignment";
-            $lastSubmissionId = $this->Submission->getLastInsertId();
-            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
-        } else {
-            $status = false;
-            $message = "Failed to create Subjective Assignment";
+        //disable total marks validation when scoring is graded
+        if (isset($postData['Submission']['subjective_scoring'])) {
+            if ($postData['Submission']['subjective_scoring'] === "graded") {
+                $this->Submission->validator()->remove('total_marks');
+            }
         }
 
-        //output
+        //validate post data
+        $this->Submission->set($postData);
+        if ($this->Submission->validates()) {
+            if ($this->Submission->addSubjective($postData, $classroomId)) {
+                $status = true;
+                $message = "Successfully created Subjective Assignment";
+                $lastSubmissionId = $this->Submission->getLastInsertId();
+                $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $lastSubmissionId);
+            } else {
+                $message = "Failed to create Subjective Assignment";
+            }
+        } else {
+            $status = false;
+            $message = $this->Submission->validationErrors;
+        }
+
+        /* _serialize */
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -78,92 +82,12 @@ class SubmissionsController extends AppController {
         }
         $data['Submission']['type'] = 'quiz';
         $data['Submission']['classroom_id'] = $classroomId;
-//
-//        $options['deep'] = true;
-//        $options['validate'] = false;
-//        $options['atomic'] = true;
-
-        /*
-         * Use this for security
-        $options['fieldList'] = array(
-            'Submission' => array(
-                'topic', 'description', 'grading_policy'
-            ),
-            'Quizquestion' => array(
-                'marks', 'question', 'type',
-            )
-        );
-        */
-//        $this->log(array(
-//            'User' => array('email' => 'john-doe@cakephp.org'),
-//            'Cart' => array(
-//                array(
-//                    'payment_status_id' => 2,
-//                    'total_cost' => 250,
-//                    'CartItem' => array(
-//                        array(
-//                            'cart_product_id' => 3,
-//                            'quantity' => 1,
-//                            'cost' => 100,
-//                        ),
-//                        array(
-//                            'cart_product_id' => 5,
-//                            'quantity' => 1,
-//                            'cost' => 150,
-//                        )
-//                    )
-//                )
-//            )
-//        ));
-//        $this->log($data);
-//        $status = $this->Submission->Quiz->saveAssociated($data, $options);
-//        $status = $this->Submission->Quiz->saveAll($data, $options);
-//        $this->log($this->Submission->getShi());
-//        $status = $this->Submission->saveAssociated($this->Submission->getShit(), array(
-//            'deep' => true
-//        ));
         $status = $this->Submission->saveAssociated($data, array(
             'deep' => true,
             'atomic' => true
         ));
 
-//        if ($status) {
-//            $lastSubmissionId = $this->Submission->getLastInsertId();
-//            $data = $this->Submission->getPaginatedSubmissions($classroomId, AuthComponent::user('id'), 1, $lastSubmissionId);
-//        }
-
-        /*
-        //Calculate
-//        $data['Submission']['total_marks'] = 0;
-
-        $flattenData = Hash::flatten($data);
-        //loop
-
-        for ($i = 0; Hash::check($data, 'Quiz.0.Quizquestion.{$i}'); $i++) {
-            switch (Hash::get($data, 'Quiz.0.Quizquestion.{$i}.type')) {
-                case "single-select":
-                    $index = Hash::get($data, 'Quiz.0.Quizquestion.{$i}.Choice.answer_option');
-                    $data['Quiz'][0]['Quizquestion'][$i]['Choice'][$index]['is_answer'] = true;
-                    break;
-                case "true-false":
-                    $data['Quiz'][0]['Quizquestion'][$i]['Choice'][0]['description'] = 'true';
-                    $data['Quiz'][0]['Quizquestion'][$i]['Choice'][1]['description'] = 'false';
-                    $answer = Hash::get($data, 'Quiz.0.Quizquestion.{$i}.Choice.answer_option');
-                    if ($answer == 'true') {
-                        $data['Quiz'][0]['Quizquestion'][$i]['Choice'][0]['is_answer'] = true;
-                    } else if ($answer == 'false') {
-                        $data['Quiz'][0]['Quizquestion'][$i]['Choice'][1]['is_answer'] = true;
-                    }
-                    break;
-                case "match-columns":
-                    //no manipulations required as of now
-//                        for ($j = 0; Hash::check($data, 'Quiz.0.Quizquestion.{$i}.Matchthecolumn.0.Column.{$j}') && Hash::check($data, 'Quiz.0
-                    //                        }
-            }
-        }
-        */
-        //output
-
+        /* _serialize */
         $this->set(compact('status', 'message'));
 //        $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -192,7 +116,7 @@ class SubmissionsController extends AppController {
 
         $permissions = $this->Submission->getPermissions(AuthComponent::user('id'), $classroomId);
         $this->Submission->Classroom->id = $classroomId;
-        $users_classroom_count = $this->Submission->Classroom->field('users_classroom_count');
+        $users_classroom_count = $this->Submission->Classroom->field('users_classroom_count') - 1;
 
         //output
         $this->set(compact('status', 'message', 'permissions', 'users_classroom_count'));
@@ -235,7 +159,8 @@ class SubmissionsController extends AppController {
         $message = "";
 
         $userId = AuthComponent::user('id');
-        //The great saveMany format
+        //The great cakephp saveMany format
+        //keep this comment to make life easier
 //        $data = array(
 //            'Choicesanswer' => array(
 //                array(

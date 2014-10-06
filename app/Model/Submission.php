@@ -19,57 +19,93 @@ class Submission extends AppModel {
 
     /**
      * Validation rules
-     *
      * @var array
      */
-//	public $validate = array(
-//		'classroom_id' => array(
-//			'numeric' => array(
-//				'rule' => array('numeric'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//		'total_submitted' => array(
-//			'numeric' => array(
-//				'rule' => array('numeric'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//		'is_saved' => array(
-//			'boolean' => array(
-//				'rule' => array('boolean'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//		'is_published' => array(
-//			'boolean' => array(
-//				'rule' => array('boolean'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//        'topic' => array(
-//            'alphaNumeric' => array(
-//                'rule' => array('minLength', 8),
-//                'message' => 'f off'
+    public $validate = array(
+//        'classroom_id' => array(
+//            'numeric' => array(
+//                'rule' => array('numeric'),
+//                //'message' => 'Your custom message here',
+//                //'allowEmpty' => false,
+//                //'required' => false,
+//                //'last' => false, // Stop validation after this rule
+//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+//            ),
+//        ),
+//        'total_submitted' => array(
+//            'numeric' => array(
+//                'rule' => array('numeric'),
+//                //'message' => 'Your custom message here',
+//                //'allowEmpty' => false,
+//                //'required' => false,
+//                //'last' => false, // Stop validation after this rule
+//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+//            ),
+//        ),
+//        'is_saved' => array(
+//            'boolean' => array(
+//                'rule' => array('boolean'),
+//                //'message' => 'Your custom message here',
+//                //'allowEmpty' => false,
+//                //'required' => false,
+//                //'last' => false, // Stop validation after this rule
+//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+//            ),
+//        ),
+//        'is_published' => array(
+//            'boolean' => array(
+//                'rule' => array('boolean'),
+//                //'message' => 'Your custom message here',
+//                //'allowEmpty' => false,
+//                //'required' => false,
+//                //'last' => false, // Stop validation after this rule
+//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+//            ),
+//        ),
+        'topic' => array(
+            'alphaNumeric' => array(
+                'rule' => array('minLength', 8),
+                'message' => 'Topic should be minimum 8 characters'
+            ),
+//            'notEmpty' => arraY(
+//                'rule' => 'notEmpty',
+//                'allowEmpty' => false,
+//                'message' => 'topic cannot be empty'
 //            )
-//        )
-//	);
+        ),
+        'description' => array(
+            'alphaNumeric' => array(
+                'rule' => array('minLength', 8),
+                'message' => 'Description should be minimum 8 characters'
+            ),
+        ),
+        'subjective_scoring' => array(
+            'allowedChoice' => array(
+                'rule' => array('inList', array('marked', 'graded')),
+                'allowEmpty' => false,
+                'required' => true,
+                'message' => 'Should be either marked or graded'
+            )
+        ),
+        'total_marks' => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                'allowEmpty' => false,
+                'required' => true,
+                'message' => 'Marks must be a number',
+                //'last' => false, // Stop validation after this rule
+                //'on' => 'create', // Limit validation to 'create' or 'update' operations
+            ),
+        ),
+        'due_date' => array(
+            'isPast' => array(
+                'rule' => 'isPast',
+                'message' => 'Date must be valid and in the future',
+                'allowEmpty' => false,
+                'required' => true,
+            )
+        )
+    );
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 
@@ -156,6 +192,16 @@ class Submission extends AppModel {
 //    );
 
     /**
+     * Custom validation rule for model
+     * due_date of an assignment should be in the future
+     * @param $check
+     * @return bool
+     */
+    public function isPast($check) {
+        return !CakeTime::isPast($check['due_date']);
+    }
+
+    /**
      * Given post data from controller API, save the subjective submission
      * @param $postData
      * @param $classroomId
@@ -164,28 +210,23 @@ class Submission extends AppModel {
     public function addSubjective($postData, $classroomId) {
         $postData['Submission']['classroom_id'] = $classroomId;
         $postData['Submission']['type'] = 'subjective';
-//        $this->log($postData);
 
         $options['deep'] = true;
         $options['validate'] = false;
 
-        $this->log($postData);
-
         return @$this->saveAssociated($postData, $options);
-//        if ($this->Subjective->saveAssociated($postData, $options)) {
-//            $status = true;
-//        } else {
-//            $status = false;
-//        }
-//
-//        return $status;
     }
 
     /**
+     * get paginated submissions of $classroomId, requested by $userId, specified by $page
+     * OR
+     * a specific submission specified by $submissionId
+     * Note that this view handles both owner(educator) and student view
+     * as student view is a subset of educator view
      * @param $classroomId
-     * @param $userId
+     * @param $userId - used to get data specific to a students submission
      * @param int $page
-     * @param bool $submissionId
+     * @param bool $submissionId - used in the case of getting only one submission
      * @return array
      */
     public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $submissionId = false) {
@@ -208,7 +249,7 @@ class Submission extends AppModel {
         );
         $options['fields'] = array(
             'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
-            'due_date', 'is_published', 'type', 'subjective_scoring'
+            'due_date', 'is_published', 'status', 'type', 'subjective_scoring'
         );
         $options['limit'] = self::PAGINATION_LIMIT;
         $offset = self::PAGINATION_LIMIT * ($page - 1);
@@ -217,6 +258,11 @@ class Submission extends AppModel {
             'Submission.created' => 'desc'
         );
 
+        /**
+         * This is the case when this method is being used
+         * for getting a single submission
+         * refer public function getSubmissionById($userId, $submissionId)
+         */
         if (!empty($submissionId)) {
             $options['limit'] = 1;
             unset($options['offset']);
@@ -227,6 +273,7 @@ class Submission extends AppModel {
 
         $data = $this->find('all', $options);
 
+        //Only applicable for students
         foreach ($data as &$sub) {
 
             $usersSubmission = $this->UsersSubmission->getUsersSubmission($sub['Submission']['id'], $userId);
@@ -252,19 +299,13 @@ class Submission extends AppModel {
         return $data;
     }
 
-    public function getSubmissionById($submissionId) {
-        $options['conditions'] = array(
-            'Submission.id' => $submissionId,
-        );
-
-        $options['contain'] = array(
-            'Pyoopilfile' => array(
-                'fields' => array(
-                    'id', 'file_path', 'filename', 'filesize', 'mime_type', 'created'
-                )
-            )
-        );
-        return $this->find('first', $options);
+    /**
+     * get submission details by its id
+     * @param $userId
+     * @param $submissionId
+     */
+    public function getSubmissionById($userId, $submissionId) {
+        $this->getPaginatedSubmissions(null, $userId, 1, $submissionId);
     }
 
     public function getPermissions($userId, $classroomId) {
