@@ -152,3 +152,9 @@ CakePlugin::load('Utility', array('bootstrap' => true, 'routes' => true));
 CakePlugin::load('Authenticate');
 CakePlugin::load('Tools');
 CakePlugin::load('Queue');
+
+/*Attaching event listeners*/
+App::uses('ClassRegistry', 'Utility');
+App::uses('GamificationTally', 'Lib/Custom');
+$Gamificationvote = ClassRegistry::init('Gamificationvote');
+$Gamificationvote->getEventManager()->attach(new GamificationTally());

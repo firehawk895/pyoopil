@@ -308,4 +308,44 @@ class UsersClassroom extends AppModel {
         $data['marked'] = '40-60%';
         return $data;
     }
+
+    public function updateGamification($userId, $classroomId, $vote){
+
+        $options = array(
+            'fields' => array(
+                'in', 'cu', 'en', 'co', 'ed', 'display_praise', 'real_praise'
+            ),
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.user_id' => $userId
+            )
+        );
+
+        if(in_array($vote,$this->AppUser->Gamificationvote->votes)){
+            $data = $this->find('first',$options);
+
+            $voteValue = $data['UsersClassroom'][$vote] + 1;
+            $displayPraise = $data['UsersClassroom']['display_praise'] + 1;
+
+            if($vote == 'ed'){
+                $realPraise = $data['UsersClassroom']['real_praise'] + 10;
+            }else{
+                $realPraise = $data['UsersClassroom']['real_praise'] + 1;
+            }
+
+            $record = array(
+                'id' => $userId,
+                $vote => $voteValue,
+                'display_praise' => $displayPraise,
+                'real_praise' => $realPraise
+            );
+
+            if($this->save($record,false)){
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+    }
 }

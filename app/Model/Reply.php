@@ -195,4 +195,16 @@ class Reply extends AppModel {
         $data = $this->find('all', $options);
         return $data;
     }
+
+    public function getReplyById($id){
+        $options = array(
+          'conditions' => array(
+              'Reply.id' => $id
+          )
+        );
+
+        $data = $this->find('first',$options);
+
+        return $data;
+    }
 }
