@@ -306,15 +306,73 @@ class UsersClassroom extends AppModel {
         /**
          * Following is the expected Data format for the frequency graph
          */
-        $data['frequency'] = array(
-            '0-20%' => '0',
-            '20-40%' => '2',
-            '40-60%' => '14',
-            '60-80%' => '17',
-            '80-100%' => '5',
+
+        $options = array(
+            'conditions' => array(
+                'Classroom.id' => $classroomId
+            ),
+            'fields' => array(
+                'total_classes'
+            )
         );
 
-        $data['marked'] = '40-60%';
+        $data = $this->Classroom->find('first', $options);
+        $totalClasses = $data['Classroom']['total_classes'];
+
+        $options = array(
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId
+            ),
+            'fields' => array(
+                'user_id', 'classes_attended'
+            )
+        );
+
+        $attendance = $this->find('all', $options);
+
+        $data = array(
+            'frequency' => array(
+                '0-20%' => 0,
+                '20-40%' => 0,
+                '40-60%' => 0,
+                '60-80%' => 0,
+                '80-100%' => 0,
+            ),
+            'marked' => null
+        );
+
+        foreach($attendance as $value){
+
+            $frequency = $value['UsersClassroom']['classes_attended']/$totalClasses;
+
+            if($frequency <= 20){
+                $data['frequency']['0-20%']++;
+                if($value['UsersClassroom']['user_id'] == $userId){
+                    $data['marked'] = '0-20%';
+                }
+            }else if((20 < $frequency) && ($frequency >= 40)){
+                $data['frequency']['20-40%']++;
+                if($value['UsersClassroom']['user_id'] == $userId){
+                    $data['marked'] = '20-40%';
+                }
+            }else if((40 < $frequency) && ($frequency >= 60)){
+                $data['frequency']['40-60%']++;
+                if($value['UsersClassroom']['user_id'] == $userId){
+                    $data['marked'] = '40-60%';
+                }
+            }else if((60 < $frequency) && ($frequency >= 80)){
+                $data['frequency']['40-60%']++;
+                if($value['UsersClassroom']['user_id'] == $userId){
+                    $data['marked'] = '60-80%';
+                }
+            }else if((80 < $frequency) && ($frequency >= 100)){
+                $data['frequency']['40-60%']++;
+                if($value['UsersClassroom']['user_id'] == $userId){
+                    $data['marked'] = '80-100%';
+                }
+            }
+        }
+
         return $data;
     }
 
