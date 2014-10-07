@@ -31,4 +31,24 @@ class Attendance extends AppModel {
 //            'order' => ''
 //        )
     );
+
+    public function getAttendanceDates($classroomId){
+        $options = array(
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            ),
+            'fields' => array(
+                'DISTINCT (Attendance.date) AS dates'
+            )
+        );
+
+        $data = $this->find('all',$options);
+        $dates = array();
+
+        foreach($data as $date){
+            array_push($dates, $date['Attendance']['dates']);
+        }
+
+        return $dates;
+    }
 }
