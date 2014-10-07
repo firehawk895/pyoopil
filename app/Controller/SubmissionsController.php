@@ -99,12 +99,11 @@ class SubmissionsController extends AppController {
      * @param $classroomId
      */
     public function getSubmissions($classroomId) {
-        //
         $this->request->onlyAllow('get');
         $this->response->type('json');
 
-//        $this->Submission->UsersSubmission->getUsersSubmission(40, AuthComponent::user('id'));
-
+        $this->Submission->updateSubmissionsStatus($classroomId);
+        
         $page = 1;
         if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
@@ -133,11 +132,38 @@ class SubmissionsController extends AppController {
         $this->response->type('json');
 
         $data = array();
+        $message = "";
         $postData = $this->request->data;
-        $status = $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
+
+        /**
+         * Validation and error checking
+         */
+
+        if (
+            isset($postData['Submission']['id']) &&
+            isset($postData['UsersSubmission']['answer']) &&
+            strlen($postData['UsersSubmission']['answer']) > 20
+        ) {
+            //Check submission:
+            //Only if submission.status = "In Progress", you can submit an answer
+            if ($this->Submission->checkStatus($postData['Submission']['id']) === "In Progress") {
+                //add condition : /Only if you have not submitted a
+                //submission before you can submit an answer
+                $status = $this->Submission->UsersSubmission->answerSubjective(AuthComponent::user('id'), $postData);
+                if (!$status) {
+                    $message = "There was an error saving the answer";
+                }
+            } else {
+                $status = false;
+                $message = "You can only submit answers to submissions which are in progress";
+            }
+        } else {
+            $status = false;
+            $message = "Answer is too short to be submitted, or submission not selected";
+        }
 
         if ($status) {
-            $data = $this->Submission->getPaginatedSubmissions(null, AuthComponent::user('id'), 1, $postData['Submission']['id']);
+            $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $postData['Submission']['id']);
         }
 
         //output
@@ -261,38 +287,142 @@ class SubmissionsController extends AppController {
     }
 
     public function gradeSubmissions($classroomId) {
+
+//        {
+//            "data": [
+//        {
+//            "AppUser": {
+//            "id": "23",
+//                "fname": "Ankan",
+//                "lname": null,
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Submission": {
+//            "is_submitted": true
+//            },
+//            "UsersSubmission": {
+//            "UsersSubmission": {
+//                "id": "17",
+//                    "user_id": "23",
+//                    "submission_id": "22",
+//                    "grade": null,
+//                    "marks": null,
+//                    "percentile": "0.000",
+//                    "grade_frequency": null,
+//                    "answer": "this is my answer",
+//                    "grade_comment": null,
+//                    "submitted_date": null,
+//                    "is_graded": false,
+//                    "pyoopilfile_id": "75",
+//                    "is_submitted": false,
+//                    "created": "2014-10-05 22:13:24",
+//                    "modified": "2014-10-05 22:13:24"
+//                },
+//                "Pyoopilfile": {
+//                "id": "75",
+//                    "topic_id": null,
+//                    "file_path": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/libraries\/Screenshot-from-2014-07-11-00-07-19.png",
+//                    "filename": "Screenshot-from-2014-07-11-00-07-19",
+//                    "filesize": "20543",
+//                    "mime_type": "image\/png",
+//                    "thumbnail_path": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/libraries\/Screenshot-from-2014-07-11-00-07-19-resize-200x256-5431c284b965d-1.png",
+//                    "file_type": null,
+//                    "created": "2014-10-05 22:13:24"
+//                }
+//            }
+//        },
+//        {
+//            "AppUser": {
+//            "id": "20",
+//                "fname": "Harsh",
+//                "lname": "Tripathi",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Submission": {
+//            "is_submitted": false
+//            }
+//        },
+//        {
+//            "AppUser": {
+//            "id": "19",
+//                "fname": "Aaron",
+//                "lname": "Basaiawmoit",
+//                "profile_img": "https:\/\/s3-ap-southeast-1.amazonaws.com\/pyoopil-files\/default_profile_photo-1.png"
+//            },
+//            "Submission": {
+//            "is_submitted": false
+//            }
+//        }
+//    ],
+//    "submission": {
+//            "Submission": {
+//                "id": "22",
+//            "classroom_id": "34",
+//            "type": "subjective",
+//            "users_submission_count": "1",
+//            "topic": "asdad",
+//            "description": "asdasd",
+//            "grading_policy": "asdasd",
+//            "pyoopilfile_id": null,
+//            "due_date": "2014-10-09 01:00:00",
+//            "total_marks": "100",
+//            "is_saved": false,
+//            "is_published": false,
+//            "average_marks": null,
+//            "subjective_scoring": "marked",
+//            "status": "In Progress",
+//            "created": "2014-10-05 19:17:23",
+//            "modified": "2014-10-05 22:13:24"
+//        },
+//        "Pyoopilfile": {
+//                "id": null,
+//            "file_path": null,
+//            "filename": null,
+//            "filesize": null,
+//            "mime_type": null,
+//            "created": null
+//        }
+//    },
+//    "status": true,
+//    "message": ""
+//}
+
+
         $this->request->onlyAllow('get');
         $this->response->type('json');
 
         $status = false;
         $message = "";
+        $userId = AuthComponent::user('id');
 
         if (isset($this->params['url']['id'])) {
             $submissionId = $this->params['url']['id'];
-
-            $submission = $this->Submission->getSubmissionById($submissionId);
+            $submission = $this->Submission->getSubmissionById($userId, $submissionId);
 
             $page = 1;
             if (isset($this->params['url']['page'])) {
                 $page = $this->params['url']['page'];
             }
 
-            $data = $this->Submission->Classroom->UsersClassroom->getPaginatedPeople($classroomId, $page);
+            //if submission.status = "In Progress"
+            $data = $this->Submission->UsersSubmission->getSubmittedSubmissions($submissionId);
+
+//            $data = $this->Submission->Classroom->UsersClassroom->getPaginatedPeople($classroomId, $page);
 //            $this->log($data);
 
-            foreach ($data as &$sub) {
-                unset($sub['UsersClassroom']);
-                unset($sub['Classroom']);
-
-                $usersSubmission = $this->Submission->UsersSubmission->getUsersSubmission($submissionId, $sub['AppUser']['id']);
-                $this->log($usersSubmission);
-
-                if (empty($usersSubmission)) {
-                    $sub['Submission']['is_submitted'] = false;
-                } else {
-                    $sub['Submission']['is_submitted'] = true;
-                    $sub['UsersSubmission'] = $usersSubmission;
-                }
+//            foreach ($data as &$sub) {
+//                unset($sub['UsersClassroom']);
+//                unset($sub['Classroom']);
+//
+//                $usersSubmission = $this->Submission->UsersSubmission->getUsersSubmission($submissionId, $sub['AppUser']['id']);
+//                $this->log($usersSubmission);
+//
+//                if (empty($usersSubmission)) {
+//                    $sub['Submission']['is_submitted'] = false;
+//                } else {
+//                    $sub['Submission']['is_submitted'] = true;
+//                    $sub['UsersSubmission'] = $usersSubmission;
+//                }
 
 //                if ($sub['Submission']['is_published'] === true) {
 //                    $sub['Submission']['status'] = "Graded";
@@ -303,7 +433,7 @@ class SubmissionsController extends AppController {
 //                        $sub['Submission']['status'] = "In Progress";
 //                    }
 //                }
-            }
+//            }
 
             $status = true;
             //output

@@ -72,15 +72,25 @@ class UsersSubmission extends AppModel {
     public function answerSubjective($userId, $postData) {
         //submission_id is already in the post data
         $postData['AppUser']['id'] = $userId;
+        $postData['UsersSubmission']['is_submitted'] = true;
 
-        if (@$this->saveAssociated($postData, array(
+        $options = array(
             'validate' => false,
-            'deep' => true
-        ))
-        ) {
+            'deep' => true,
+            'fieldList' => array(
+                'AppUser' => array('id'),
+                'Submission' => array('id'),
+                'UsersSubmission' => array('answer', 'is_submitted'),
+                'Pyoopilfile' => array(
+                    'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+                )
+            )
+        );
+
+        if (@$this->saveAssociated($postData, $options)) {
             return true;
         } else {
-            $this->log("behen");
+            return false;
         }
     }
 
@@ -95,6 +105,33 @@ class UsersSubmission extends AppModel {
         );
 
         return $this->find('first', $options);
+    }
+
+    /**
+     * get all user's submitted submissions for a given submission
+     * that is used by GradeSubmissions API
+     * @param $submissionId
+     * @return array
+     */
+    public function getSubmittedSubmissions($submissionId) {
+        $options['contain'] = array(
+            'AppUser' => array(
+                'id', 'fname', 'lname', 'profile_img'
+            ),
+            'Pyoopilfile' => array(
+                'id', 'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+            )
+        );
+
+        $options['fields'] = array(
+            'grade', 'marks', 'answer', 'pyoopilfile_id', 'is_submitted', 'created'
+        );
+
+        $options['conditions'] = array(
+            'submission_id' => $submissionId
+        );
+
+        return $this->find('all', $options);
     }
 
     /**

@@ -113,7 +113,6 @@ class Submission extends AppModel {
 
     /**
      * belongsTo associations
-     *
      * @var array
      */
     public $belongsTo = array(
@@ -216,7 +215,14 @@ class Submission extends AppModel {
         $options['deep'] = true;
         $options['validate'] = false;
 
-        return @$this->saveAssociated($postData, $options);
+        $status = @$this->saveAssociated($postData, $options);
+
+        if ($status) {
+            //Create UsersSubmission entries
+
+            return $status;
+        }
+        return false;
     }
 
     /**
@@ -275,6 +281,17 @@ class Submission extends AppModel {
 
         $data = $this->find('all', $options);
 
+        /**
+         * so basically the field 'is_submitted' is being inserted into the "Submission" key
+         * this is to indicate, if and when this api is called by a student user,
+         * whether he has provided his answer of the submission or not
+         *
+         * not to be confused with the is_submitted of the UsersSubmission field
+         * which actually is a database field which indicates the same
+         *
+         * note that this field is of no use to the educator (owner)
+         * I don't like this field
+         */
         foreach ($data as &$sub) {
             //Only applicable for students
             //get permissions and execute this only if student (or non owner)
@@ -285,17 +302,6 @@ class Submission extends AppModel {
                 $sub['Submission']['is_submitted'] = true;
                 $sub['UsersSubmission'] = $usersSubmission;
             }
-            //------------------------------------------------------------------
-
-//            if ($sub['Submission']['is_published'] === true) {
-//                $sub['Submission']['status'] = "Graded";
-//            } else {
-//                if (CakeTime::isPast($sub['Submission']['due_date'])) {
-//                    $sub['Submission']['status'] = "Pending Grading";
-//                } else {
-//                    $sub['Submission']['status'] = "In Progress";
-//                }
-//            }
         }
         unset($sub);
         return $data;
@@ -303,30 +309,50 @@ class Submission extends AppModel {
 
     /**
      * update the 'status' field of all submissions
+     * from "In Progress" to "Pending Grading"
      * ideally this should be time triggered
-     * @param $submissionId
+     * @param $classroomId
      */
-    private function _updateSubmissionsStatus($submissionId) {
-        //TODO:
-        //WARNING: this method will not scale for very large number of submissions
-        //either update on a paginated set or deffer it to a thread
-//        $this->id = $submissionId;
-//        $due_date = $this->field('due_date');
-//        $status = $this->field('status');
-//        $published = $this->field('is_published');
-//
-//        if ($published) {
-//            $newStatus = "Graded";
-//        } else if (CakeTime::isPast($due_date)) {
-//            $newStatus = "Pending Grading";
-//        } else {
-//            $newStatus = "In Progress";
-//        }
-//
-//        if ($newStatus !== $status) {
-//            $this->saveField('status', $newStatus);
-//        }
+    public function updateSubmissionsStatus($classroomId) {
+        $db = $this->getDataSource();
 
+        //WARNING: refactor this code at your own risk
+        //cakephp documentation says some beautiful things:
+        //it says, you need to unbindall associations
+        //unless you want JOIN update queries, WTF
+
+        $this->unbindModel(array(
+            'belongsTo' => array(
+                'Classroom',
+                'Pyoopilfile'
+            )
+        ));
+        $this->unbindModel(array(
+            'hasMany' => array(
+                'Quiz',
+                'UsersSubmission'
+            )
+        ));
+
+        //I need the mySql server time for consistency
+        //Unfortunately you just can't use NOW()
+        //And even using $db->expression('NOW()') doesn't help because
+        //it unconveniently inserts a '=' before NOW()
+
+        $frustratedQuery = $db->fetchRow('SELECT NOW();');
+        //$this->log($frustratedQuery);
+        $this->updateAll(
+            array('Submission.status' => "'Pending Grading'"),
+            array(
+                'AND' => array(
+                    'Submission.classroom_id' => $classroomId,
+                    'Submission.status' => "In Progress",
+//                    'Submission.due_date' => $db->expression('NOW()') (doesn't help) see query
+                    'Submission.due_date <= ' => $frustratedQuery[0]['NOW()']
+                )
+            ));
+        //use this for viewing the query and making sense of what happened above
+        //$this->log($this->getDataSource()->getLog(false, false));
     }
 
     /**
@@ -401,5 +427,16 @@ class Submission extends AppModel {
         $data = array_merge($appUser, $sub);
 
         return $data;
+    }
+
+    /**
+     * check the status field of a submission
+     * "In Progress", "Pending Grading", "Graded"
+     * @param $submissionId
+     * @return string
+     */
+    public function checkStatus($submissionId) {
+        $this->id = $submissionId;
+        return $this->field('status');
     }
 }

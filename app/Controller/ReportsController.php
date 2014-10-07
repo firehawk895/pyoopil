@@ -64,15 +64,16 @@ class ReportsController extends AppController {
         $permissions = $this->Report->getPermissions($userId, $classroomId);
 
         $UsersClassroom = new UsersClassroom();
+        //need users_classroom_count for educator view also
+        //hence always being populated
+        $data = $UsersClassroom->getUsersGamification($userId, $classroomId);
 
-        if($permissions['role'] == 'Student'){
-            $status = true;
-            $data = $UsersClassroom->getUsersGamification($userId, $classroomId);
-        }else if($permissions['role'] == 'Owner'){
-            $status = true;
+        //exclude educator from count
+        if (isset($data['Classroom']['users_classroom_count'])) {
+            $data['Classroom']['users_classroom_count'] = $data['Classroom']['users_classroom_count'] - 1;
         }
 
-        $gold = $UsersClassroom->getEngagersByPodium($classroomId,'gold');
+        $gold = $UsersClassroom->getEngagersByPodium($classroomId, 'gold');
         $silver = $UsersClassroom->getEngagersByPodium($classroomId, 'silver');
         $bronze = $UsersClassroom->getEngagersByPodium($classroomId, 'bronze');
 

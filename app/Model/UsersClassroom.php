@@ -235,7 +235,7 @@ class UsersClassroom extends AppModel {
                 )
             ),
             'fields' => array(
-                'en', 'in', 'cu', 'co', 'ed','display_praise'
+                'en', 'in', 'cu', 'co', 'ed', 'display_praise'
             ),
             'conditions' => array(
                 'UsersClassroom.classroom_id' => $classroomId,
@@ -243,7 +243,7 @@ class UsersClassroom extends AppModel {
             )
         );
 
-        $data = $this->find('all',$options);
+        $data = $this->find('all', $options);
         return $data;
     }
 
@@ -301,7 +301,7 @@ class UsersClassroom extends AppModel {
         return $data;
     }
 
-    public function updateGamification($userId, $classroomId, $vote){
+    public function updateGamification($userId, $classroomId, $vote) {
 
         $options = array(
             'fields' => array(
@@ -313,15 +313,15 @@ class UsersClassroom extends AppModel {
             )
         );
 
-        if(in_array($vote,$this->AppUser->Gamificationvote->votes)){
-            $data = $this->find('first',$options);
+        if (in_array($vote, $this->AppUser->Gamificationvote->votes)) {
+            $data = $this->find('first', $options);
 
             $voteValue = $data['UsersClassroom'][$vote] + 1;
             $displayPraise = $data['UsersClassroom']['display_praise'] + 1;
 
-            if($vote == 'ed'){
+            if ($vote == 'ed') {
                 $realPraise = $data['UsersClassroom']['real_praise'] + 10;
-            }else{
+            } else {
                 $realPraise = $data['UsersClassroom']['real_praise'] + 1;
             }
 
@@ -332,16 +332,15 @@ class UsersClassroom extends AppModel {
                 'real_praise' => $realPraise
             );
 
-            if($this->save($record,false)){
+            if ($this->save($record, false)) {
                 return true;
             }
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public function updatePodiumStatus($classroomId){
+    public function updatePodiumStatus($classroomId) {
 
         $options = array(
             'fields' => array(
@@ -368,20 +367,20 @@ class UsersClassroom extends AppModel {
 
         $data = $this->find('all', $options);
 
-        foreach($data as &$student){
+        foreach ($data as &$student) {
             $realPraise = $student['UsersClassroom']['real_praise'];
-            if($realPraise >= (2/3)*$mean){
+            if ($realPraise >= (2 / 3) * $mean) {
                 $student['UsersClassroom']['podium'] = 'gold';
-            }else if($realPraise >= (1/3)*$mean){
+            } else if ($realPraise >= (1 / 3) * $mean) {
                 $student['UsersClassroom']['podium'] = 'silver';
-            }else if($realPraise < (1/3)*$mean){
+            } else if ($realPraise < (1 / 3) * $mean) {
                 $student['UsersClassroom']['podium'] = 'bronze';
             }
         }
 
-        if($this->saveMany($data)){
+        if ($this->saveMany($data)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
