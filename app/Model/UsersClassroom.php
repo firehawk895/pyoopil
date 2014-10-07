@@ -247,6 +247,12 @@ class UsersClassroom extends AppModel {
         return $data;
     }
 
+    /**
+     * get attendance of a user for personal attendance report
+     * @param $userId
+     * @param $classroomId
+     * @return array
+     */
     public function getAttendance($userId, $classroomId) {
         $options = array(
             'contain' => array(
@@ -340,8 +346,13 @@ class UsersClassroom extends AppModel {
         }
     }
 
+    /**
+     * Calculate Engagement report
+     * Class podium - gold, bronze and silver bracket
+     * @param $classroomId
+     * @return bool
+     */
     public function updatePodiumStatus($classroomId) {
-
         $options = array(
             'fields' => array(
                 'MIN(UsersClassroom.real_praise) as cMin', 'MAX(UsersClassroom.real_praise) as cMax'
@@ -383,5 +394,23 @@ class UsersClassroom extends AppModel {
         } else {
             return false;
         }
+    }
+
+    /**
+     * get strict role of a user in a classroom
+     * moderators are considered students itself
+     * role of moderators has not, at the time of writing this,
+     * exposed to the front end
+     * @param $userId
+     * @param $classroomId
+     * @return string
+     */
+    public function getRole($userId, $classroomId) {
+        if ($this->Classroom->isOwner($userId, $classroomId)) {
+            $role = "Owner";
+        } else {
+            $role = "Student";
+        }
+        return $role;
     }
 }

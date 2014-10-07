@@ -245,9 +245,10 @@ class ClassroomsController extends AppController {
         );
 
         $data = $this->Classroom->find('first', $options);
+        $permissions['role'] = $this->Classroom->UsersClassroom->getRole(AuthComponent::user('id'), $classroomId);
 
         /*_serialize */
-        $this->set(compact('data', 'status', 'message'));
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set(compact('data', 'status', 'permissions', 'message'));
+        $this->set('_serialize', array('data', 'permissions', 'status', 'message'));
     }
 }
