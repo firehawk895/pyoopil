@@ -182,21 +182,22 @@ class UsersSubmission extends AppModel {
         $data = $this->AppUser->UsersClassroom->find('all', $options);
         $returnData = array();
 
-        $classroom = new Classroom();
-        $ownerId = $classroom->getOwnerId($classroomId);
         foreach ($data as $value) {
-            //ensure the users_submission entry is not created for the owner(educator)
-            if ($value['UsersClassroom']['id'] != $ownerId) {
                 array_push($returnData, array(
                     'UsersSubmission' => array(
                         'submission_id' => $submissionId,
                         'user_id' => $value['UsersClassroom']['id'],
-                    )));
-            }
+                        )
+                    )
+                );
         }
-        $this->saveMany($returnData, array(
-            'validate' => false
-        ));
+
+        if($this->saveMany($returnData, array('validate' => false))){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
