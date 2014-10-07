@@ -55,7 +55,6 @@ class ReportsController extends AppController {
         $this->response->type('json');
 
         $data = array();
-        $status = false;
 
         $userId = AuthComponent::user('id');
 
@@ -67,6 +66,7 @@ class ReportsController extends AppController {
         //need users_classroom_count for educator view also
         //hence always being populated
         $data = $UsersClassroom->getUsersGamification($userId, $classroomId);
+        $status = true;
 
         //exclude educator from count
         if (isset($data['Classroom']['users_classroom_count'])) {
