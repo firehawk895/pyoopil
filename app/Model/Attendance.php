@@ -22,12 +22,13 @@ class Attendance extends AppModel {
             'order' => '',
             'counterCache' => true,
         ),
-        'Pyoopildate' => array(
-            'className' => 'Pyoopildate',
-            'foreignKey' => 'pyoopildate_id',
-            'conditions' => '',
-            'fields' => '',
-            'order' => ''
-        )
+        //If you had to normalize date
+//        'Pyoopildate' => array(
+//            'className' => 'Pyoopildate',
+//            'foreignKey' => 'pyoopildate_id',
+//            'conditions' => '',
+//            'fields' => '',
+//            'order' => ''
+//        )
     );
 }
