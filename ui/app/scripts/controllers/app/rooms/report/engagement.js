@@ -4,15 +4,17 @@ angular.module('uiApp')
       $scope.vm = {};
       $scope.roomId = $stateParams.roomId;
       roomService.getEngagementReports($scope.roomId).then(function (result) {
-        if (result.status) {
-          $scope.engagementReport = result.data;
-          $scope.vm.gold = result.gold;
-          $scope.vm.silver = result.silver;
-          $scope.vm.bronze = result.bronze;
-          $scope.vm.gold.viewAll = false;
-          $scope.vm.silver.viewAll = false;
-          $scope.vm.bronze.viewAll = false;
-        }
+//        if (result.status) {
+        $scope.engagementReport = result.data;
+        $scope.haveAccess = result.permissions.allowCreate;
+        $scope.vm.gold = result.gold;
+        $scope.vm.silver = result.silver;
+        $scope.vm.bronze = result.bronze;
+        $scope.vm.allStudents = $scope.vm.gold.concat($scope.vm.silver, $scope.vm.bronze);
+        $scope.vm.gold.viewAll = false;
+        $scope.vm.silver.viewAll = false;
+        $scope.vm.bronze.viewAll = false;
+//        }
       });
 
       $scope.showAll = function (type) {
