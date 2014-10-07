@@ -1,0 +1,35 @@
+<div class="create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span class="quiz-hd f-left">{{quizDetails.Submission.topic}}</span>
+      <timer interval="1000" countdown="quizDetails.Quiz[0].duration" autostart="false" max-time-unit="hour">
+
+        <div class="pull-right"><img src="images/clock_icon.png" class="time-style"><span> Time Left {{hhours}}:{{mminutes}}:{{sseconds}}</span>
+        </div>
+      </timer>
+    </div>
+    <div class="pop-content clearfix">
+      <div class="f-left quizcontent">
+        <h4>Quiz Instructions</h4>
+
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
+
+        <p class="note">(Note: if you plan to take quiz then you must finish it in one go. You cannot stop quiz in
+          between)</p>
+
+        <div class="buttonouter"><a href="" class="follow active" id="quiz-link" ng-click="openStartQuizDialog()">Start
+          Quiz</a></div>
+      </div>
+    </div>
+  </div>
+</div>

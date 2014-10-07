@@ -188,4 +188,229 @@ class UsersClassroom extends AppModel {
         $data = $this->find('all', $options);
         return $data;
     }
+
+    /**
+     * get the engagement points
+     * @param $userId
+     * @param $classroomId
+     * @return array
+     */
+    public function getUsersGamification($userId, $classroomId) {
+
+        $options = array(
+            'conditions' => array(
+                'UsersClassroom.user_id' => $userId,
+                'UsersClassroom.classroom_id' => $classroomId
+            ),
+            'fields' => array(
+                'en', 'in', 'cu', 'co', 'ed'
+            ),
+            'contain' => array(
+                'Classroom' => array(
+                    'fields' => array(
+                        'id', 'users_classroom_count'
+                    )
+                )
+            )
+        );
+
+        $data = $this->find('first', $options);
+        return $data;
+    }
+
+    /**
+     * get the classroom podium
+     * @param $classroomId
+     * @param $podiumType
+     * @return array
+     */
+    public function getEngagersByPodium($classroomId, $podiumType) {
+
+        $options = array(
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'id', 'fname', 'lname', 'profile_img'
+                    )
+                )
+            ),
+            'fields' => array(
+                'en', 'in', 'cu', 'co', 'ed', 'display_praise'
+            ),
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.podium' => $podiumType
+            )
+        );
+
+        $data = $this->find('all', $options);
+        return $data;
+    }
+
+    /**
+     * get attendance of a user for personal attendance report
+     * @param $userId
+     * @param $classroomId
+     * @return array
+     */
+    public function getAttendance($userId, $classroomId) {
+        $options = array(
+            'contain' => array(
+                'Classroom' => array(
+                    'classes_held', 'minimum_attendance_percentage', 'users_classroom_count'
+                ),
+                'AppUser' => array(
+                    'fields' => array('id')
+                )
+            ),
+            'fields' => array('classes_attended'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId,
+                'AppUser.id' => $userId
+            ),
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
+            )
+        );
+
+        return $this->find('first', $options);
+    }
+
+    private function _getAttendance($classroomId) {
+        $options = array(
+            'contain' => array(
+                'Classroom',
+                'AppUser' => array(
+                    'fields' => array('id')
+                )
+            ),
+            'fields' => array('classes_attended'),
+            'conditions' => array(
+                'Classroom.id' => $classroomId,
+            ),
+            'order' => array(
+                'UsersClassroom.created' => 'desc'
+            )
+        );
+    }
+
+    public function getAttendanceFrequency($userId, $classroomId) {
+        $data['frequency'] = array(
+            '0-20%' => '0',
+            '20-40%' => '2',
+            '40-60%' => '14',
+            '60-80%' => '17',
+            '80-100%' => '5',
+        );
+
+        $data['marked'] = '40-60%';
+        return $data;
+    }
+
+    public function updateGamification($userId, $classroomId, $vote) {
+
+        $options = array(
+            'fields' => array(
+                'in', 'cu', 'en', 'co', 'ed', 'display_praise', 'real_praise'
+            ),
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.user_id' => $userId
+            )
+        );
+
+        if (in_array($vote, $this->AppUser->Gamificationvote->votes)) {
+            $data = $this->find('first', $options);
+
+            $voteValue = $data['UsersClassroom'][$vote] + 1;
+            $displayPraise = $data['UsersClassroom']['display_praise'] + 1;
+
+            if ($vote == 'ed') {
+                $realPraise = $data['UsersClassroom']['real_praise'] + 10;
+            } else {
+                $realPraise = $data['UsersClassroom']['real_praise'] + 1;
+            }
+
+            $record = array(
+                'id' => $userId,
+                $vote => $voteValue,
+                'display_praise' => $displayPraise,
+                'real_praise' => $realPraise
+            );
+
+            if ($this->save($record, false)) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Calculate Engagement report
+     * Class podium - gold, bronze and silver bracket
+     * @param $classroomId
+     * @return bool
+     */
+    public function updatePodiumStatus($classroomId) {
+        $options = array(
+            'fields' => array(
+                'MIN(UsersClassroom.real_praise) as cMin', 'MAX(UsersClassroom.real_praise) as cMax'
+            ),
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        $mean = $data[0][0]['cMax'] - $data[0][0]['cMin'];
+
+        //retrieve all students in the classroom
+        $options = array(
+            'fields' => array(
+                'id', 'real_praise', 'podium'
+            ),
+            'conditions' => array(
+                'classroom_id' => $classroomId
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        foreach ($data as &$student) {
+            $realPraise = $student['UsersClassroom']['real_praise'];
+            if ($realPraise >= (2 / 3) * $mean) {
+                $student['UsersClassroom']['podium'] = 'gold';
+            } else if ($realPraise >= (1 / 3) * $mean) {
+                $student['UsersClassroom']['podium'] = 'silver';
+            } else if ($realPraise < (1 / 3) * $mean) {
+                $student['UsersClassroom']['podium'] = 'bronze';
+            }
+        }
+
+        if ($this->saveMany($data)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * get strict role of a user in a classroom
+     * moderators are considered students itself
+     * role of moderators has not, at the time of writing this,
+     * exposed to the front end
+     * @param $userId
+     * @param $classroomId
+     * @return string
+     */
+    public function getRole($userId, $classroomId) {
+        if ($this->Classroom->isOwner($userId, $classroomId)) {
+            $role = "Owner";
+        } else {
+            $role = "Student";
+        }
+        return $role;
+    }
 }

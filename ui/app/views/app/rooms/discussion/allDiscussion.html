@@ -1,5 +1,5 @@
 <div ng-if="canCreate" class="top-div">
-  <form>
+  <form id="formDiscussion">
     <span class="txt-count" ng-if="vm.discussionType">(<span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
     <input ng-if="vm.discussionType" class="add-topic" type="text" placeholder="Topic of  the discussion…"
            ng-maxlength=200 ng-trim="false"
@@ -132,10 +132,16 @@
 
       </div>
       <p class="cl">
-        <a class="dlfile hand" ng-show="discussion.Discussion.filename"
-           ng-click="openDocViewerDialog(discussion.Discussion.file_path)">{{discussion.Discussion.filename}}.{{discussion.Discussion.filesize}}</a>
-        <a ng-href="{{discussion.Discussion.file_path}}" class="down-icon"
-           ng-show="discussion.Discussion.filename" target="_blank"></a>
+        <a class="dlfile hand" ng-show="discussion.Pyoopilfile.filename"
+           ng-if="!checkIfPic(discussion.Pyoopilfile.mime_type)"
+           ng-click="openDocViewerDialog(discussion.Pyoopilfile.file_path)">{{discussion.Pyoopilfile.filename}}.{{discussion.Pyoopilfile.filesize
+          | bytes}}</a>
+        <a class="dlfile hand" ng-show="discussion.Pyoopilfile.filename"
+           ng-if="checkIfPic(discussion.Pyoopilfile.mime_type)"
+           ui-jq="prettyPhoto" ng-href="{{discussion.Pyoopilfile.file_path}}">{{discussion.Pyoopilfile.filename}}.{{discussion.Pyoopilfile.filesize
+          | bytes}}</a>
+        <a ng-href="{{discussion.Pyoopilfile.file_path}}" class="down-icon"
+           ng-show="discussion.Pyoopilfile.filename" target="_blank"></a>
       </p>
       <br>
 
@@ -207,7 +213,7 @@
     </div>
     <div class="arrow_box">
       <div class="name-left">
-        <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.fname}}</a></p>
+        <p class="tname"><a href="">{{reply.AppUser.fname}} {{reply.AppUser.lname}}</a></p>
 
         <p class="tby">{{reply.Reply.created | amCalendar}}</p>
       </div>

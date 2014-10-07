@@ -225,7 +225,7 @@
 }
 
 .create-popup input[type=radio] + .radio-lbl {
-  width: 39px;
+  width: 50px;
 }
 
 .html_display strong {
@@ -348,3 +348,57 @@ button.disabled, button[disabled] {
   margin-left: 185px;
 }
 
+.submit-answer {
+  display: block;
+}
+
+.hide-block {
+  display: none;
+}
+
+.pop-match {
+  width: 6%;
+  margin: 13px 18px 0px 18px;
+  height: 35px;
+}
+
+.time-style {
+  margin-right: 9px;
+  vertical-align: bottom;
+}
+
+.create-popup .select-class .chosen-container-single .chosen-single {
+  width: 165px !important;
+  height: 16px;
+}
+
+.create-popup .align-center {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.quiz-footer {
+  background-color: #ffffff;
+}
+
+.create-popup .quest-select .chosen-container-single .chosen-single {
+  width: 523px;
+}
+
+.question-input {
+  width: 523px;
+}
+
+.question-lst li a {
+  background-color: #A0A0A0;
+  border-bottom: 2px solid #ffffff;
+}
+
+.arr-dd li a {
+  font-weight: normal;
+  font-size: 11px;
+}
+
+.btn-style {
+  border: none;
+}

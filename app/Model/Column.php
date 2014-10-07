@@ -49,4 +49,18 @@ class Column extends AppModel {
             'order' => ''
         )
     );
+
+    public $hasMany = array(
+        'Columnanswer' => array(
+            'className' => 'Columnanswer'
+        ),
+        'Firstcolumnanswer' => array(
+            'className' => 'Columnanswer',
+            'foreignKey' => 'column1_id'
+        ),
+        'Secondcolumnanswer' => array(
+            'className' => 'Columnanswer',
+            'foreignKey' => 'column2_id'
+        )
+    );
 }

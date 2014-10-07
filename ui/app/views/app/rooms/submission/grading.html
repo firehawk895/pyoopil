@@ -1,0 +1,142 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper inside-submit">
+    <div class="topbuttons">
+      <a ui-sref="app.rooms.submissions.main" class="follow hand">Back to Assignments</a>
+    </div>
+    <div class="submit-content">
+      <div class="assign-topic">
+        <div class="assign-head clearfix">
+          <p class="assgin-heading">{{vm.submissionDetail.Submission.topic}}</p>
+          <a href="" class="open-dd" ng-click="vm.showSubmissionDetail=!vm.showSubmissionDetail"></a>
+        </div>
+        <div ng-class="{'assign-hide' :!vm.showSubmissionDetail}">
+          <p class="hide-txt">{{vm.submissionDetail.Submission.description}}</p>
+          <!--<a class="assgin-att dialogbox" title="dialogbox0"-->
+          <!--ng-if="submissionDetail.Pyoopilfile.filename && !checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
+          <!--ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
+          <!--| bytes}}</a>-->
+          <!--<a ng-href="{{submissionDetail.Pyoopilfile.file_path}}" class="assgin-att dialogbox" title="dialogbox0"-->
+          <!--ng-if="submissionDetail.Pyoopilfile.filename  && checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
+          <!--ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
+          <!--| bytes}}</a>-->
+          <div class="att-doc hand" ng-if="vm.submissionDetail.Pyoopilfile.filename"><a
+              ng-if="!checkIfPic(vm.submissionDetail.Pyoopilfile.mime_type)"
+              ng-click="openDocViewerDialog(vm.submissionDetail.Pyoopilfile.file_path)"
+              class="dlfile"><img ng-src="{{docIcon(vm.submissionDetail.Pyoopilfile.mime_type)}}"
+                                  class="stud-att"
+                                  alt="img">{{vm.submissionDetail.Pyoopilfile.filename}}.{{vm.submissionDetail.Pyoopilfile.filesize
+            | bytes}}</a>
+            <a ng-href="{{vm.submissionDetail.Pyoopilfile.file_path}}"
+               ng-if="checkIfPic(vm.submissionDetail.Pyoopilfile.mime_type)"
+               class="dlfile" ui-jq="prettyPhoto">{{vm.submissionDetail.Pyoopilfile.filename}}.{{vm.submissionDetail.Pyoopilfile.filesize
+              | bytes}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="view-head clearfix">
+        <p class="view-heading">Student Submissions<!--<a href="" class="download-icon"></a>--> </p>
+        <span class="f-right" ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'">Max. Marks: {{vm.submissionDetail.Submission.total_marks}}</span>
+      </div>
+      <table class="submit-heading">
+        <tr>
+          <th class="ptbl-td1">Status</th>
+          <th class="ptbl-td2">Student Name</th>
+          <th class="ptbl-td3">Submission</th>
+          <th class="ptbl-td4">Grade/Marks</th>
+          <th class="ptbl-td5">Answers</th>
+        </tr>
+        <tr class="blank-td">
+          <td colspan="4"></td>
+        </tr>
+      </table>
+      <form>
+        <div class="assign-lst clearfix">
+          <div infinite-scroll="updatePage()">
+            <table class="submit-heading">
+              <tbody ng-repeat="gradeSubmission in gradeSubmissions">
+              <tr>
+                <td class="ptbl-td1">
+                  <div class="pend-icon" ng-if="!gradeSubmission.Submission.is_submitted"></div>
+                  <div class="done-icon" ng-if="gradeSubmission.Submission.is_submitted"></div>
+                </td>
+                <td class="ptbl-td2"><a href=""><img ng-src="{{gradeSubmission.AppUser.profile_img}}" class="assign-img"
+                                                     alt="img"><span
+                    class="name-txt">{{gradeSubmission.AppUser.fname}} {{gradeSubmission.AppUser.lname}}</span></a></td>
+                <td class="ptbl-td3">
+                  <a ng-href="{{gradeSubmission.UsersSubmission.Pyoopilfile.file_path}}" class="sub-icon dialogbox"
+                     title="dialogbox1"
+                     ng-if="gradeSubmission.Submission.is_submitted && checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
+                     ui-jq="prettyPhoto"></a>
+                  <a class="sub-icon dialogbox" title="dialogbox1"
+                     ng-if="gradeSubmission.Submission.is_submitted && !checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
+                     ng-click="openDocViewerDialog(gradeSubmission.UsersSubmission.Pyoopilfile.file_path)"></a>
+                </td>
+                <td class="ptbl-td4">
+                  <input type="text" class="assign-txtbx"
+                         ng-model="gradeSubmission.UsersSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
+                         maxlength="3"
+                         ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"
+                         ng-enter="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                         ng-blur="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                         ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'"
+                         ng-dblclick="vm.editGrade=true">
+
+                  <div class="create-popup">
+                    <div class="select-class">
+                      <select ui-jq="chosen"
+                              ng-if="vm.submissionDetail.Submission.subjective_scoring=='graded'"
+                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
+                              ng-change="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                              ng-options="grade for grade in gradesList">
+                      </select>
+                    </div>
+                  </div>
+                </td>
+                <td class="ptbl-td5">
+                  <!--<a href="" class="sum-btn comm-link" ng-if="!gradeSubmission.Submission.is_submitted">Add</a>-->
+                  <a href="" class="sum-btn comm-link" ng-click="displayContent($index)">View</a>
+                </td>
+              </tr>
+              <tr ng-if="gradeSubmission.showContent">
+                <td colspan="5" class="clearfix">
+                  <div class="txtarea-div">
+                    <textarea
+                        class="comment-txtarea"
+                        readonly>{{gradeSubmission.UsersSubmission.UsersSubmission.answer}}</textarea>
+                  </div>
+                  <div class="comm-btns">
+                    <a href="" class="follow active comm-link"
+                       ng-if="!gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-click="vm.addComment=!vm.addComment">Add Comment</a>
+                    <a href="" class="follow active comm-link"
+                       ng-if="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-click="vm.showComment=!vm.showComment">Show Comment</a>
+                  </div>
+                  <div ng-if="vm.addComment">
+                    <textarea class="comment-txtarea" placeholder="Add comment here…"
+                              ng-model="vm.commentText"></textarea>
+                  </div>
+                  <div class="comm-btns" ng-if="vm.addComment">
+                    <a href="" class="follow active comm-link"
+                       ng-click="assignComment(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">Save</a>
+                    <a href="" class="follow comm-link">Cancel</a>
+                  </div>
+                  <div ng-if="vm.showComment">
+                    <textarea class="comment-txtarea"
+                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                              readonly></textarea>
+                  </div>
+                </td>
+              </tr>
+              <tr class="blank-td">
+                <td colspan="4"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <a href="" class="publish-btn">Publish Result</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

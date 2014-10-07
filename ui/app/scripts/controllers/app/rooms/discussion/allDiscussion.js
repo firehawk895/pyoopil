@@ -287,6 +287,7 @@ angular.module('uiApp')
                   $scope.vm.subject = "";
                   $scope.vm.body = "";
                   $scope.vm.file = null;
+                  document.getElementById("formDiscussion").reset();
                 }
               });
           }
@@ -370,6 +371,7 @@ angular.module('uiApp')
                     ];
                     $scope.choices = [];
                   }
+                  document.getElementById("formDiscussion").reset();
                 });
             }
           }
@@ -391,6 +393,7 @@ angular.module('uiApp')
                   $scope.vm.subject = "";
                   $scope.vm.body = "";
                   $scope.vm.file = null;
+                  document.getElementById("formDiscussion").reset();
                 }
 
               })

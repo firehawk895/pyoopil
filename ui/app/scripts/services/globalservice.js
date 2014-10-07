@@ -57,14 +57,8 @@ angular.module('uiApp')
           case '127.0.0.1':
             self.baseUrl = "http://api.pyoopil.localhost.com";
             break;
-          case 'trackin.getinsured.co.in':
-            self.baseUrl = "http://api.getinsured.co.in";
-            break;
-          case 'beta.trackin.getinsured.co.in':
-            self.baseUrl = "http://beta.api.getinsured.co.in";
-            break;
-          case 'beta-trackin-getinsured-co-in.s3-website-ap-southeast-1.amazonaws.com':
-            self.baseUrl = "http://beta.api.getinsured.co.in";
+          case 'beta.pyoopil.com':
+            self.baseUrl = "http://apibeta.pyoopil.com";
             break;
         }
         return self.baseUrl;

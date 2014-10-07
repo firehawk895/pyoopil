@@ -1,0 +1,53 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper inside-submit">
+    <div class="topbuttons">
+      <a ui-sref="app.rooms.reports.main.view" class="follow">Back to Reports</a>
+    </div>
+    <div class="view-head clearfix">
+      <p class="view-heading stud-headatt">Attendance Report</a>
+      </p>
+          <span class="btn-right">
+          		<!--<a class="report-download tooltip" title="Download" href="javascript:void(0)"></a>-->
+        		<a class="follow hand" ng-class="{'active' :vm.isPersonal}" ng-click="vm.isPersonal=true">Personal
+              Report</a>
+                <a class="follow hand" ng-class="{'active' :!vm.isPersonal}" ng-click="vm.isPersonal=false">Relative to
+                  Class</a>
+        </span>
+    </div>
+
+    <div class="clear"></div>
+    <!--charts-->
+    <div ng-hide="attendanceReport.Classroom.classes_held=='0'">
+      <div class="chart-contt" ng-if="vm.isPersonal">
+
+        <highchart config="donutChartConfig"></highchart>
+
+      </div>
+      <div class="chart-contt" ng-if="!vm.isPersonal">
+
+        <highchart config="columnChartConfig"></highchart>
+
+      </div>
+    </div>
+    <p ng-if="attendanceReport.Classroom.classes_held=='0'">Seems like there is no data to show</p>
+
+    <div class="attendence-tbl">
+      <table class="enga-tbl stud-tbl">
+        <tr>
+          <th>Total Classes Held</th>
+          <th>Attended</th>
+          <th>Absent</th>
+          <th>Min. Required</th>
+        </tr>
+        <tr class="lasttr">
+          <td><p>{{attendanceReport.Classroom.classes_held}}</p></td>
+          <td><p>{{attendanceReport.UsersClassroom.classes_attended}}</p></td>
+          <td><p>{{vm.missed}}</p></td>
+          <td><p>{{attendanceReport.Classroom.minimum_attendance_percentage*100}}%</p></td>
+        </tr>
+      </table>
+    </div>
+
+
+  </div>
+</section>

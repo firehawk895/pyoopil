@@ -7342,12 +7342,12 @@ body.fixedheader .mainnav li a {
   display: none;
 }
 
-.timer {
-  background: url("../images/clock_icon.png") no-repeat scroll left 0 rgba(0, 0, 0, 0);
-  float: right;
-  line-height: 25px;
-  padding: 0 0 0 30px;
-}
+/*.timer {*/
+  /*background: url("../images/clock_icon.png") no-repeat scroll left 0 rgba(0, 0, 0, 0);*/
+  /*float: right;*/
+  /*line-height: 25px;*/
+  /*padding: 0 0 0 30px;*/
+/*}*/
 
 .quizcontent {
   padding: 15px;

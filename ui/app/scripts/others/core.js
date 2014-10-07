@@ -196,9 +196,9 @@ $(document).click(function (e) {
   var r = $(e.target).closest('.prs-sp').length
   var s = $(e.target).closest('.logout').length
   var u = $(e.target).closest('.select-topic').length
-  if (!q) {
-    $(".arr-dd").css("display", "none");
-  }
+//  if (!q) {
+//    $(".arr-dd").css("display", "none");
+//  }
   if (!r) {
     $(".clk-tt").css("display", "none");
   }

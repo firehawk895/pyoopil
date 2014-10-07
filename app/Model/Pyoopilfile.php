@@ -31,8 +31,7 @@ class Pyoopilfile extends AppModel {
      * hasMany associations
      * @var array
      */
-    public $hasMany = array(
-//		'Announcement' => array(
+    public $hasMany = array( //		'Announcement' => array(
 //			'className' => 'Announcement',
 //			'foreignKey' => 'pyoopilfile_id',
 //			'dependent' => false,
@@ -94,7 +93,7 @@ class Pyoopilfile extends AppModel {
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
-                //Dynamically add 'accesskey','secretKey','bucket'
+                    //Dynamically add 'accesskey','secretKey','bucket'
                 ),
                 'metaColumns' => array(
 //                  'ext' => 'extension',
@@ -131,7 +130,7 @@ class Pyoopilfile extends AppModel {
 //        debug($options);
 //        debug($this->data);
 //        die();
-        if ($this->data['Pyoopilfile']['file_path']['type'] == 'image/jpeg') {
+        if ($this->data['Pyoopilfile']['file_path']['type'] == 'image/jpeg' || $this->data['Pyoopilfile']['file_path']['type'] == 'image/png') {
             $this->log("transformation detected");
 //            debug($options);
 //            $options['transforms'] = array(

@@ -89,6 +89,10 @@ class Discussion extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Pyoopilfile' => array(
+            'className' => 'Pyoopilfile',
+            'foreignKey' => 'pyoopilfile_id',
         )
     );
 
@@ -148,7 +152,7 @@ class Discussion extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
+        ),
     );
 
     /**
@@ -194,7 +198,10 @@ class Discussion extends AppModel {
             'AppUser' => array(
                 'fields' => array('fname', 'lname', 'profile_img')
             ),
-            'Foldeddiscussion'
+            'Foldeddiscussion',
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+            )
         );
 
         $discussion = $this->find('all', array(
@@ -411,6 +418,9 @@ class Discussion extends AppModel {
                 'conditions' => array(
                     'user_id' => $userId
                 )
+            ),
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
             )
         );
 

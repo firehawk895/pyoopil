@@ -23,8 +23,7 @@ class AppUser extends User {
                     'bucket' => 'pyoopil-files',
                     //Dynamically add 'accesskey','secretKey','bucket'
                 ),
-                'metaColumns' => array(
-//                  'ext' => 'extension',
+                'metaColumns' => array( //                  'ext' => 'extension',
 //                  'type' => 'mimeType',
 //                    'size' => 'filesize',
 //                    'name' => 'filename'
@@ -157,6 +156,11 @@ class AppUser extends User {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
+        'Choicesanswer' => array(
+            'className' => 'Choicesanswer',
+            'foreignKey' => 'user_id',
+            'dependent' => false,
+        ),
         /**
          * HABTMs that are rightly hasMany:
          */
@@ -174,6 +178,10 @@ class AppUser extends User {
         ),
         'UsersSubmission' => array(
             'className' => 'UsersSubmission',
+            'foreignKey' => 'user_id',
+        ),
+        'Attendance' => array(
+            'className' => 'Attendance',
             'foreignKey' => 'user_id',
         ),
         /**
@@ -297,5 +305,44 @@ class AppUser extends User {
             $data['AppUser']['age'] = CakeTime::timeAgoInWords($data['AppUser']['dob']);
         }
         return $data;
+    }
+
+    public function updateGamification($userId, $vote) {
+
+        $options = array(
+            'fields' => array(
+                'in', 'cu', 'en', 'co', 'ed', 'display_praise', 'real_praise'
+            ),
+            'conditions' => array(
+                'AppUser.id' => $userId
+            )
+        );
+
+
+        if (in_array($vote, $this->Gamificationvote->votes)) {
+            $data = $this->find('first', $options);
+
+            $voteValue = $data['AppUser'][$vote] + 1;
+            $displayPraise = $data['AppUser']['display_praise'] + 1;
+
+            if ($vote == 'ed') {
+                $realPraise = $data['AppUser']['real_praise'] + 10;
+            } else {
+                $realPraise = $data['AppUser']['real_praise'] + 1;
+            }
+
+            $record = array(
+                'id' => $userId,
+                $vote => $voteValue,
+                'display_praise' => $displayPraise,
+                'real_praise' => $realPraise
+            );
+
+            if ($this->save($record, false)) {
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 }

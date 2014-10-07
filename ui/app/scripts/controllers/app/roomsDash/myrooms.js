@@ -5,18 +5,16 @@ angular.module('uiApp')
   .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', '$state', 'globalService', '$stateParams',
     function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, $state, globalService, $stateParams) {
       $scope.showJoin = true;
-      $scope.vm={};
+      $scope.vm = {};
       $scope.vm.accessCode = "";
       $scope.classroom = {};
       $scope.page = 1;
       $scope.pageEnd = false;
-
       roomService.getRooms($scope.page).then(function (result) {
         $scope.classrooms = result.data;
         $scope.canCreate = result.permissions.allowCreate;
 
       });
-
       $scope.updatePage = function () {
         if (!$scope.pageEnd) {
           roomService.getRooms(++$scope.page).then(function (result) {
@@ -41,11 +39,11 @@ angular.module('uiApp')
         });
       };
       $scope.createClassroom = function () {
+        ngDialog.close();
         roomService.createClassroom($scope.classroom).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
 //            console.log($scope.classrooms);
-            ngDialog.close();
             $scope.classroom = result.data;
             ngDialog.open({
               template: 'views/app/roomsDash/classcreated.html',
@@ -58,7 +56,6 @@ angular.module('uiApp')
       };
       $scope.open = function () {
         $scope.classroom = {};
-
         ngDialog.open({
           template: 'views/app/roomsDash/createclassroom.html',
           scope: $scope

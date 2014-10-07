@@ -1,0 +1,78 @@
+<!--popup-->
+<div id="create-assign" class="create-popup ">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Class Info</span>
+      <a class="close-link hand" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <form name="formClassroom" class="form-data create-popup">
+        <div class="left-pop">
+          <label>Name of the classrom</label>
+          <input type="text" class="pop-input" ng-model="classInfo.Classroom.title" disabled>
+          <label>University Association</label>
+          <select class="chosen-select select_option" ui-jq="chosen" disabled>
+            <option selected>{{classInfo.Campus.name}}</option>
+          </select>
+          <label>Department</label>
+          <select class="chosen-select select_option" ui-jq="chosen" disabled>
+            <option selected>{{classInfo.Department.name}}</option>
+          </select>
+          <label>Year</label>
+
+          <select class="chosen-select select_option" ui-jq="chosen" disabled>
+            <option selected>{{classInfo.Classroom.year}}</option>
+          </select>
+
+
+          <label>Duration of the course</label>
+
+          <div class="calender create-date">
+            <input type="text" class="pop-dura date_popup hasDatepicker"
+                   value="{{classInfo.Classroom.duration_start_date}}" disabled>
+          </div>
+          <div class="calender create-date">
+            <input type="text" class="pop-dura date_popup hasDatepicker"
+                   value="{{classInfo.Classroom.duration_end_date}}"
+                   disabled>
+          </div>
+          <label>Semester</label>
+          <select class="chosen-select select_option" ui-jq="chosen" disabled>
+            <option selected>{{classInfo.Classroom.semester}}</option>
+          </select>
+        </div>
+        <div class="right-pop">
+          <label>Course Type</label>
+
+          <div class="radio-btn">
+            <input id="Public" type="radio" name="course" value="0"
+                   ng-model="classInfo.Classroom.is_private" disabled>
+            <label for="Public" class="radio-lbl">Public</label>
+            <input id="Private" type="radio" name="course" value="1"
+                   ng-model="classInfo.Classroom.is_private" disabled>
+            <label for="Private" class="radio-lbl">Private</label>
+          </div>
+          <label>Course Description</label>
+          <textarea class="pop-txtarea" ng-model="classInfo.Classroom.description" disabled></textarea>
+          <label>Degree</label>
+          <select class="chosen-select select_option" ui-jq="chosen" disabled>
+            <option selected>{{classInfo.Degree.name}}</option>
+          </select>
+          <label>You tube video link</label>
+          <input type="text" class="pop-input" ng-model="classInfo.Classroom.link" disabled>
+          <label>Minimum required attendance</label>
+          <input type="number" step="any" class="pop-dura"
+                 min="0" max="100" value="{{classInfo.Classroom.minimum_attendance_percentage*100}}" disabled> %
+
+        </div>
+        <div class="clear"></div>
+        <div class="submit-btn">
+          <button class="sub-btn" id="quiz-link" ng-click="closeThisDialog()">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

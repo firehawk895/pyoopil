@@ -1,0 +1,34 @@
+<div class="quizdia create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Code Reset Done</span>
+      <a class="close-link hand" href="" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content">
+      <div class="created-contt">
+        <p class="created-heading">The access code of your Class {{classInfo.Classroom.title}} has been successfully
+          reset.</p>
+
+        <p class="created-txt">Please find below your unique access code to the classroom. You can distribute the
+          password to your
+          friends so that they can join your Pyoopil classroom. </p>
+
+        <!--<p class="created-txt">An E-mail with the password has also been sent to you for your-->
+        <!--convenience.</p>-->
+
+        <p class="created-txt">Unique access code: <span class="code-txt">{{resetClass.Classroom.access_code}}</span>Please
+          note that the unique access code is case sensitive
+        </p>
+
+        <p class="created-txt">Now make your class more engaging with pyoopil. Kudos for setting up the
+          class. Have
+          a great session this semester with your students. Cheers!!</p>
+
+        <div class="pop-close">
+          <a class="sub-btn hand" ng-click="closeThisDialog()">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

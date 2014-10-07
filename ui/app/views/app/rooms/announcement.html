@@ -1,18 +1,8 @@
 <!-- Right Content -->
 <section class="pagecontent clearfix">
-  <div class="roomTitle">{{roomId}}<span class="title-arr hand" ng-click="showInfoPopup=true"></span>
-
-    <div class="arr-dd" ng-if="showInfoPopup" ng-blur="showInfoPopup=false">
-      <ul>
-        <li class="lastli"><a href="">Reset Access Code</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
   <div class="content-wrapper">
     <!--content top-->
-    <form name="formAnnouncement" ng-if="canPost">
+    <form name="formAnnouncement" ng-if="canPost" id="formAnnouncementId">
       <div class="top-div announcement">
           <span class="txt-count">(
           <span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
@@ -75,11 +65,13 @@
             <p class="wordwrap">{{announcement.Announcement.body}}</p>
 
             <p class="cl">
-              <a class="dlfile" ng-show="announcement.Announcement.filename"
+              <a class="dlfile" ng-if="announcement.Announcement.filename"
                  ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook">
                 {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+
+
               <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
-                 ng-show="announcement.Announcement.filename" target="_blank"></a>
+                 ng-if="announcement.Announcement.filename" target="_blank"></a>
             </p>
           </div>
         </div>

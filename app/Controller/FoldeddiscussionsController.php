@@ -1,13 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nakul
- * Date: 6/29/14
- * Time: 11:56 PM
- */
-
 App::uses('AppController', 'Controller');
 
+/**
+ * Class FoldeddiscussionsController
+ */
 class FoldeddiscussionsController extends AppController {
 
     /**

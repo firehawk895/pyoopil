@@ -28,10 +28,12 @@ angular
     'ngCkeditor',
     'ui.bootstrap',
     'angularMoment',
-    'ngImgCrop'
+    'ngImgCrop',
+    'timer',
+    'satellizer'
   ])
-  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
-    function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider', '$authProvider',
+    function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider, $authProvider) {
 
       $httpProvider.interceptors.push(['$q', '$window', function ($q, $window) {
         return {
@@ -54,10 +56,19 @@ angular
       //
       // Now set up the states
       ngDialogProvider.setDefaults({
-        showClose: false
+        showClose: false,
+        closeByDocument: false
       });
 
+      $authProvider.facebook({
+        clientId: '1461772397445027'
+      });
 
+      $authProvider.google({
+        clientId: '70596844330-v0ntmjak769bbim9bri47n6f41udnlhf.apps.googleusercontent.com'
+      });
+
+//creating states or routes for the app
       $stateProvider
         .state('public', {
           url: "/",
@@ -77,8 +88,8 @@ angular
         .state('app.rooms', {
           url: "rooms/:roomId/",
           abstract: true,
-          templateUrl: "views/app/rooms/room.html"
-
+          templateUrl: "views/app/rooms/room.html",
+          controller: 'roomCtrl'
         })
         .state('app.rooms.discussions', {
           abstract: true,
@@ -112,9 +123,53 @@ angular
           controller: "peopleCtrl"
         })
         .state('app.rooms.submissions', {
+          abstract: true,
           url: "submissions/",
-          templateUrl: "views/app/rooms/submission.html",
+          templateUrl: "views/app/rooms/submission/submission.html",
           controller: "submissionCtrl"
+        })
+        .state('app.rooms.submissions.main', {
+          url: "",
+          templateUrl: "views/app/rooms/submission/submissionMain.html"
+        })
+        .state('app.rooms.submissions.grading', {
+          url: ":assignmentId/",
+          templateUrl: "views/app/rooms/submission/grading.html",
+          controller: 'gradingCtrl'
+        })
+        .state('app.rooms.reports', {
+          abstract: true,
+          url: "reports/",
+          templateUrl: "views/app/rooms/report/report.html"
+        })
+        .state('app.rooms.reports.main', {
+          abstract: true,
+          url: "",
+          templateUrl: "views/app/rooms/report/reportMain.html",
+          controller: "reportCtrl"
+        })
+        .state('app.rooms.reports.main.view', {
+          url: "",
+          templateUrl: "views/app/rooms/report/reportView.html"
+        })
+        .state('app.rooms.reports.main.create', {
+          url: "create/",
+          templateUrl: "views/app/rooms/report/reportCreate.html"
+        })
+        .state('app.rooms.reports.engagement', {
+          url: "engagement/",
+          templateUrl: "views/app/rooms/report/engagement.html",
+          controller: 'engagementCtrl'
+        })
+        .state('app.rooms.reports.academic', {
+          url: "academic/",
+          templateUrl: "views/app/rooms/report/academic.html",
+          controller: 'academicCtrl'
+        })
+        .state('app.rooms.reports.attendance', {
+          url: "attendance/",
+          templateUrl: "views/app/rooms/report/attendance.html",
+          controller: 'attendanceCtrl'
         })
         .state('app.roomsDash', {
           url: "room/",
@@ -142,37 +197,39 @@ angular
           controller: "publicCtrl"
         })
         .state('app.profile', {
-          url: "profile/",
+          url: "myprofile/",
           abstract: true,
           templateUrl: "views/app/profile/profile.html",
           controller: "profileCtrl"
         })
         .state('app.profile.my', {
-          url: 'my/',
+          url: '',
           templateUrl: "views/app/profile/myProfile.html"
         })
         .state('app.profile.feedback', {
           url: 'feedback/',
           templateUrl: "views/app/profile/feedback.html"
+        })
+        .state('app.publicProfile', {
+          url: 'profile/',
+          templateUrl: "views/app/profile/publicProfile.html"
         });
 
     }])
 //  .constant('angularMomentConfig', {
 //    preprocess: 'unix', // optional
-//    timezone: 'Europe/London' // optional
+//    timezone: 'Asia/Kolkata' // optional
 //  })
   .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
     $scope.showScroll = false;
-
     $scope.showScroller = function () {
       $scope.showScroll = true;
     };
-
     $scope.hideScroller = function () {
       $scope.showScroll = false;
     };
-
+    $scope.gradesList = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
     $scope.getMimeTypes = function () {
       return ".xlsx,.xltx,.docx,.dotx,.xlam,.xlsb,application/excel,application/vnd.ms-excel,application/x-excel," +
         "application/x-msexcel,application/msword,.potx,.ppsx,.pptx,.sldx" +
@@ -182,7 +239,17 @@ angular
         "image/x-rgb,image/x-xbitmap,image/x-xpixmap,image/x-xwindowdump,.zip,.rar,audio/mpeg,audio/wav, " +
         "audio/x-wav,video/mpeg,video/msvideo, video/avi, video/x-msvideo,application/x-tar";
     };
-
+    $scope.checkIfPic = function (mimeType) {
+      return /^image[//].*/.test(mimeType) || /^video[//].*/.test(mimeType);
+    };
+    $scope.docIcon = function (mimeType) {
+      if (/^application[//].*word.*/.test(mimeType))
+        return 'images/word_icon.png';
+      else if (mimeType == 'application/pdf')
+        return 'images/doc_icon.png';
+      else if (/^application[//].*powerpoint$/.test(mimeType))
+        return 'images/ppt_icon.png';
+    };
   }])
   //main run module for the whole application
   .run(['$http', 'globalService', 'Restangular', 'userService', '$location',
@@ -209,5 +276,28 @@ angular
 
     };
 
+  })
+  .filter('bytes', function () {
+    return function (bytes, precision) {
+      if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '-';
+      if (typeof precision === 'undefined') precision = 1;
+      var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'],
+        number = Math.floor(Math.log(bytes) / Math.log(1024));
+      return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
+    }
+  })
+  .directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+      element.bind("keydown keypress", function (event) {
+        if (event.which === 13) {
+//          scope.$apply(function () {
+          scope.$eval(attrs.ngEnter);
+//          });
+
+          event.preventDefault();
+        }
+      });
+    };
   });
+
 

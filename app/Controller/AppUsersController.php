@@ -80,6 +80,7 @@ class AppUsersController extends UsersController {
                     $data['profile_img'] = $theQuery['AppUser']['profile_img'];
                     $data['auth_token'] = $token;
                     $data['fullname'] = $this->AppUser->getFullName($user['AppUser']['id']);
+                    $data['id'] = $user['AppUser']['id'];
                     $message = "Login successful";
                 }
             } else {

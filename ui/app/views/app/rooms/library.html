@@ -1,5 +1,4 @@
 <section class="pagecontent clearfix">
-  <div class="roomTitle">{{roomId}}<span class="title-arr hand"></span></div>
   <div class="library-wrapper library">
     <div class="topbuttons">
       <a ng-click="showStep1()" class="follow" ng-if="canUpload" href="">Upload</a>
@@ -11,13 +10,14 @@
         <div class="doc-heading clearfix">
           <input type="text" class="doc-input" value="{{topic.Topic.name}}" maxlength="70"
                  ng-readonly="!vm.editTopicName"
-                 ng-blur="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id);">
+                 ng-enter="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id)"
+                 ng-blur="vm.editTopicName=false;editTopic(topic.Topic.name,topic.Topic.id)"
+                 ng-model="topic.Topic.name">
 
           <div class="lib-right">
-            <a ng-click="vm.editTopicName=true" class="lib-edit hand" tooltip="Edit Topic"></a>
-            <a ng-click="deleteTopic($index)" class="lib-delete hand" tooltip="Delete"></a>
+            <a ng-click="vm.editTopicName=true" class="lib-edit hand" tooltip="Edit Topic" ng-if="canUpload"></a>
+            <a ng-click="deleteTopic($index)" class="lib-delete hand" tooltip="Delete" ng-if="canUpload"></a>
             <!--<a href="javascript:void(0)" class="lib-download" tooltip="Download"></a>-->
-
             <div class="click-lib click-icon " tooltip="Click to slide" ng-click="displayContent($index)"
                  ng-class="{'active' :topic.showContent}"></div>
           </div>
@@ -26,7 +26,7 @@
           <p class="classlibraryhd" ng-if="topic.Documents.length">Documents </p>
           <ul class="doc-list">
             <li ng-repeat="document in topic.Documents">
-              <a ng-click="deleteDoc(topic,$index)" class="del-lib"></a>
+              <a ng-click="deleteDoc(topic,$index)" class="del-lib" ng-if="canUpload"></a>
               <a href="" ng-click="openDocViewerDialog(document.file_path)">
                 <div class="doc-top hand">
                   <p class="wordwrap">{{showFileName(document.filename)}}</p>
@@ -47,7 +47,7 @@
           <ul class="doc-list imglist">
             <li ng-repeat="picture in topic.Pictures">
               <div class="img-wrapper">
-                <a ng-click="deletePicture(topic,$index)" class="del-lib"></a>
+                <a ng-click="deletePicture(topic,$index)" class="del-lib" ng-if="canUpload"></a>
                 <a ng-href="{{picture.file_path}}" ui-jq="prettyPhoto">
 
                   <img ng-src="{{picture.thumbnail_path}}">
@@ -62,7 +62,7 @@
           <p class="classlibraryhd" ng-if="topic.Presentations.length">Presentations</p>
           <ul class="doc-list">
             <li ng-repeat="presentation in topic.Presentations">
-              <a ng-click="deletePresentation(topic,$index)" class="del-lib"></a>
+              <a ng-click="deletePresentation(topic,$index)" class="del-lib" ng-if="canUpload"></a>
               <a ng-click="openDocViewerDialog(presentation.file_path)">
                 <div class="doc-top hand">
                   <p class="wordwrap">{{showFileName(presentation.filename)}}</p>
@@ -80,7 +80,7 @@
           <p class="classlibraryhd" ng-if="topic.Link.length">Links</p>
           <ul class="doc-list link-lst">
             <li ng-repeat="link in topic.Link">
-              <a ng-click="deleteLink(topic,$index)" class="del-lib"></a>
+              <a ng-click="deleteFile(topic,$index)" class="del-lib" ng-if="canUpload"></a>
               <a ng-href="{{getLink(link.linktext)}}" target="_blank">
                 <div class="doc-top">
                   <p class="wordwrap">Go To {{link.linktext}}</p>
@@ -98,7 +98,7 @@
           <ul class="doc-list imglist">
             <li ng-repeat="video in topic.Video">
               <div class="img-wrapper">
-                <a ng-click="deleteVideo(topic,$index)" class="del-lib hand"></a>
+                <a ng-click="deleteVideo(topic,$index)" class="del-lib hand" ng-if="canUpload"></a>
                 <a ng-href="{{video.linktext}}" ui-jq="prettyPhoto">
                   <img ng-src="{{showThumbnail(video.linktext)}}">
 
