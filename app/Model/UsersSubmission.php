@@ -173,8 +173,29 @@ class UsersSubmission extends AppModel {
         //get all users of that classroom excluding educator, who have not submitted :S
         //make users_submission entries for all of these
         //set is_submitted for all of this
+
         $this->Submission->id = $submissionId;
         $classroomId = $this->Submission->field('classroom_id');
+
+        $options = array(
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.is_teaching' => false
+            ),
+            'fields' => array(
+                'id'
+            )
+        );
+
+        $data = $this->AppUser->UsersClassroom->find('all', $options);
+        $returnData = array();
+
+        foreach($data as $value){
+            array_push($returnData, array('UsersSubmission' => array('submission_id' => $submissionId, 'user_id' => $value['UsersClassroom']['id'])));
+        }
+        $this->saveMany($returnData);
+
+
     }
 
     /**
