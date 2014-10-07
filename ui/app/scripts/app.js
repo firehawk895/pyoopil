@@ -29,10 +29,11 @@ angular
     'ui.bootstrap',
     'angularMoment',
     'ngImgCrop',
-    'timer'
+    'timer',
+    'satellizer'
   ])
-  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider',
-    function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider) {
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider', '$authProvider',
+    function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider, $authProvider) {
 
       $httpProvider.interceptors.push(['$q', '$window', function ($q, $window) {
         return {
@@ -57,6 +58,14 @@ angular
       ngDialogProvider.setDefaults({
         showClose: false,
         closeByDocument: false
+      });
+
+      $authProvider.facebook({
+        clientId: '1461772397445027'
+      });
+
+      $authProvider.google({
+        clientId: '70596844330-v0ntmjak769bbim9bri47n6f41udnlhf.apps.googleusercontent.com'
       });
 
 //creating states or routes for the app
@@ -134,9 +143,18 @@ angular
           templateUrl: "views/app/rooms/report/report.html"
         })
         .state('app.rooms.reports.main', {
+          abstract: true,
           url: "",
           templateUrl: "views/app/rooms/report/reportMain.html",
           controller: "reportCtrl"
+        })
+        .state('app.rooms.reports.main.view', {
+          url: "",
+          templateUrl: "views/app/rooms/report/reportView.html"
+        })
+        .state('app.rooms.reports.main.create', {
+          url: "create/",
+          templateUrl: "views/app/rooms/report/reportCreate.html"
         })
         .state('app.rooms.reports.engagement', {
           url: "engagement/",

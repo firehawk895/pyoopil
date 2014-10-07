@@ -60,7 +60,7 @@
                   </div>
                 </div>
                 <a href="" class="follow active f-right open-answer"
-                   ng-if="!submission.Submission.is_submitted && submission.Submission.type=='subjective'"
+                   ng-if="!submission.Submission.is_submitted && submission.Submission.type=='subjective' "
                    ng-click="vm.addAnswer=!vm.addAnswer">Submit Your
                   Answer</a>
 
@@ -88,24 +88,28 @@
                       <p class="stud-name">{{fullName}}</p>
                     </a>
                   </div>
-                  <div class="sub-txtarea-div">
-                    <textarea class="comment-txtarea" placeholder="Add comment here…"
-                              ng-model="vm.answerText"></textarea>
-                  </div>
-                  <div class="f-left msg-popup">
-                    <div class="attachmentbox">
-                      <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
-                      <!--<span class="att-txt">Attach files <span class="att-size">(Max 100 mb)</span></span>-->
-                      <input id="fileupload" type="file" name="files[]">
-                      <!--</span>-->
-
-                      <!--<div id="files" class="files"></div>-->
+                  <form>
+                    <div class="sub-txtarea-div">
+                      <textarea class="comment-txtarea" placeholder="Add comment here…"
+                                ng-model="vm.answerText"></textarea>
                     </div>
-                  </div>
-                  <div class="f-right">
-                    <a href="" class="follow active " ng-click="answerSubjective($index,submission.Submission.id)">Submit</a>
-                    <a href="" class="follow open-answer">Cancel</a>
-                  </div>
+                    <div class="f-left msg-popup">
+                      <div class="attachmentbox">
+                        <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+                        <!--<span class="att-txt">Attach files <span class="att-size">(Max 100 mb)</span></span>-->
+                        <input id="fileupload" type="file" name="files[]">
+                        <!--</span>-->
+
+                        <!--<div id="files" class="files"></div>-->
+                      </div>
+                    </div>
+                    <div class="f-right">
+                      <button href="" class="follow active btn-style"
+                              ng-click="answerSubjective($index,submission.Submission.id)">Submit
+                      </button>
+                      <button type="reset" href="" class="follow open-answer btn-style">Cancel</button>
+                    </div>
+                  </form>
                   <div class="clear"></div>
                 </div>
                 <div class="clearfix" ng-if="vm.showAnswer">

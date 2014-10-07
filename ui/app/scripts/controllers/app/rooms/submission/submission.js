@@ -11,6 +11,7 @@ angular.module('uiApp')
       $scope.page = 1;
       $scope.pageEnd = false;
       $scope.lastExpandedItemIndex = -1;
+
       $scope.createNewAssignment = function () {
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;
@@ -150,8 +151,8 @@ angular.module('uiApp')
             notificationService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.answerSubjective($scope.vm.answerText, $scope.vm.file, id).then(function (result) {
+              notificationService.show(result.status, result.message);
               if (result.status) {
-                notificationService.show(true, 'Answer Submitted Successfully');
                 $scope.submissions[index] = result.data[0];
               }
             });

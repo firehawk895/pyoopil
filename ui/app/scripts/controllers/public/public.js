@@ -1,10 +1,13 @@
 angular.module('uiApp')
-  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'notificationService', 'localStorageService', '$http', 'authService', 'globalService',
-    function ($scope, $location, userService, ngDialog, notificationService, localStorageService, $http, authService, globalService) {
+  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'notificationService', 'localStorageService', '$http', 'authService', 'globalService', '$auth',
+    function ($scope, $location, userService, ngDialog, notificationService, localStorageService, $http, authService, globalService, $auth) {
 
 //      if (globalService.getIsAuthorised())
 //        $location.path('/app/room/my/');
 
+      $scope.authenticate = function (provider) {
+        $auth.authenticate(provider);
+      };
       $scope.url = globalService.getBaseUrl();
       $scope.openLogin = function () {
         ngDialog.open({

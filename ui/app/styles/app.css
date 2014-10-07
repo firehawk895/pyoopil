@@ -398,3 +398,7 @@ button.disabled, button[disabled] {
   font-weight: normal;
   font-size: 11px;
 }
+
+.btn-style {
+  border: none;
+}

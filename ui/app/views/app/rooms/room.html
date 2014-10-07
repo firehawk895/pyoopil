@@ -3,9 +3,9 @@
 
   <div class="arr-dd" ng-if="vm.showInfoPopup">
     <ul>
-      <li class="hand"><a ng-click="showClassInfo()">View Info</a>
+      <li class="hand" ng-if="vm.role=='Owner'"><a ng-click="resetAccessCode()">Reset Access Code</a>
       </li>
-      <li class="lastli hand"><a ng-click="resetAccessCode()">Reset Access Code</a>
+      <li class="lastli hand"><a ng-click="showClassInfo()">View Info</a>
       </li>
     </ul>
   </div>
@@ -30,7 +30,7 @@
         <a ui-sref="app.rooms.submissions.main" ui-sref-active="active">Submissions</a>
       </li>
       <li>
-        <a ui-sref="app.rooms.reports.main" ui-sref-active="active">Reports</a>
+        <a ui-sref="app.rooms.reports.main.view" ui-sref-active="active">Reports</a>
       </li>
     </ul>
     <!--<div class="nav-right">-->
