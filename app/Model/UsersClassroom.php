@@ -294,7 +294,18 @@ class UsersClassroom extends AppModel {
         );
     }
 
+    /**
+     * Attendance frequency graph data for a given $classroomId
+     * $userId marks which frequency interval does this user belong to
+     * @param $userId
+     * @param $classroomId
+     * @return mixed
+     */
     public function getAttendanceFrequency($userId, $classroomId) {
+        //TODO: Calculate the frequency of the attendances over a loop
+        /**
+         * Following is the expected Data format for the frequency graph
+         */
         $data['frequency'] = array(
             '0-20%' => '0',
             '20-40%' => '2',
