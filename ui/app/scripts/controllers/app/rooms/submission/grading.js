@@ -7,7 +7,7 @@ angular.module('uiApp')
       $scope.vm.editGrade = false;
       roomService.getGradeSubmissions($stateParams.roomId, $stateParams.assignmentId, $scope.page).then(function (result) {
         $scope.gradeSubmissions = result.data;
-        $scope.submissionDetail = result.submission;
+        $scope.vm.submissionDetail = result.submission[0];
       });
       $scope.updatePage = function () {
         if (!$scope.pageEnd) {
@@ -47,14 +47,14 @@ angular.module('uiApp')
       };
       $scope.assignGrade = function (submissionId, userId, index) {
 //        if ($scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.marks || $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade) {
-        if ($scope.submissionDetail.Submission.subjective_scoring == 'marked') {
+        if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'marked') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.marks, 'marked').then(function (result) {
             if (result.status)
               notificationService.show(true, result.message);
             $scope.gradeSubmissions[index] = result.data;
           });
         }
-        else if ($scope.submissionDetail.Submission.subjective_scoring == 'graded') {
+        else if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'graded') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade, 'graded').then(function (result) {
             if (result.status)
               notificationService.show(true, result.message);

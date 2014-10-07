@@ -1,31 +1,10 @@
 <section class="pagecontent clearfix">
   <div class="library-wrapper reports">
     <div class="topbuttons" ng-if="haveAccess">
-      <a href="" class="follow active">View Reports</a>
-      <a href="" class="follow">Create/Edit Reports</a>
+      <a ui-sref="app.rooms.reports.main.view" class="follow" ui-sref-active="active">View Reports</a>
+      <a ui-sref="app.rooms.reports.main.create" class="follow" ui-sref-active="active">Create/Edit Reports</a>
       <a href="" class="follow">Take Attendence</a>
     </div>
-    <div class="clear"></div>
-    <div class="report-list">
-      <ul>
-        <li>
-          <a ui-sref="app.rooms.reports.engagement"><span class="podium-icon"></span>
-
-            <p class="report-title">Engagement Report</p></a>
-        </li>
-        <li>
-          <a ui-sref="app.rooms.reports.academic">
-            <span class="podium-icon report"></span>
-
-            <p class="report-title">Academic Reports</p></a>
-        </li>
-        <li>
-          <a ui-sref="app.rooms.reports.attendance">
-            <span class="podium-icon attend"></span>
-
-            <p class="report-title">Attendance Report</p></a>
-        </li>
-      </ul>
-    </div>
+    <div ui-view></div>
   </div>
 </section>

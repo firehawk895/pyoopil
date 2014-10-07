@@ -8,6 +8,7 @@ angular.module('uiApp')
       roomService.getClassInfo($scope.roomId).then(function (result) {
         if (result.status) {
           $scope.classInfo = result.data;
+          $scope.vm.role = result.permissions.role;
         }
       });
       $scope.resetAccessCode = function () {

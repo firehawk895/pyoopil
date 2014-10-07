@@ -11,6 +11,7 @@ angular.module('uiApp')
       $scope.page = 1;
       $scope.pageEnd = false;
       $scope.lastExpandedItemIndex = -1;
+
       $scope.createNewAssignment = function () {
         $scope.vm = {};
         $scope.vm.typeIsSubjective = true;

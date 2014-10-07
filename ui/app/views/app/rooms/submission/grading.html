@@ -6,11 +6,11 @@
     <div class="submit-content">
       <div class="assign-topic">
         <div class="assign-head clearfix">
-          <p class="assgin-heading">{{submissionDetail.Submission.topic}}</p>
+          <p class="assgin-heading">{{vm.submissionDetail.Submission.topic}}</p>
           <a href="" class="open-dd" ng-click="vm.showSubmissionDetail=!vm.showSubmissionDetail"></a>
         </div>
         <div ng-class="{'assign-hide' :!vm.showSubmissionDetail}">
-          <p class="hide-txt">{{submissionDetail.Submission.description}}</p>
+          <p class="hide-txt">{{vm.submissionDetail.Submission.description}}</p>
           <!--<a class="assgin-att dialogbox" title="dialogbox0"-->
           <!--ng-if="submissionDetail.Pyoopilfile.filename && !checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
           <!--ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
@@ -19,23 +19,23 @@
           <!--ng-if="submissionDetail.Pyoopilfile.filename  && checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
           <!--ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
           <!--| bytes}}</a>-->
-          <div class="att-doc hand" ng-if="submissionDetail.Pyoopilfile.filename"><a
-              ng-if="!checkIfPic(submissionDetail.Pyoopilfile.mime_type)"
-              ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)"
-              class="dlfile"><img ng-src="{{docIcon(submissionDetail.Pyoopilfile.mime_type)}}"
+          <div class="att-doc hand" ng-if="vm.submissionDetail.Pyoopilfile.filename"><a
+              ng-if="!checkIfPic(vm.submissionDetail.Pyoopilfile.mime_type)"
+              ng-click="openDocViewerDialog(vm.submissionDetail.Pyoopilfile.file_path)"
+              class="dlfile"><img ng-src="{{docIcon(vm.submissionDetail.Pyoopilfile.mime_type)}}"
                                   class="stud-att"
-                                  alt="img">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize
+                                  alt="img">{{vm.submissionDetail.Pyoopilfile.filename}}.{{vm.submissionDetail.Pyoopilfile.filesize
             | bytes}}</a>
-            <a ng-href="{{submissionDetail.Pyoopilfile.file_path}}"
-               ng-if="checkIfPic(submissionDetail.Pyoopilfile.mime_type)"
-               class="dlfile" ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize
+            <a ng-href="{{vm.submissionDetail.Pyoopilfile.file_path}}"
+               ng-if="checkIfPic(vm.submissionDetail.Pyoopilfile.mime_type)"
+               class="dlfile" ui-jq="prettyPhoto">{{vm.submissionDetail.Pyoopilfile.filename}}.{{vm.submissionDetail.Pyoopilfile.filesize
               | bytes}}</a>
           </div>
         </div>
       </div>
       <div class="view-head clearfix">
         <p class="view-heading">Student Submissions<!--<a href="" class="download-icon"></a>--> </p>
-        <span class="f-right" ng-if="submissionDetail.Submission.subjective_scoring=='marked'">Max. Marks: {{submissionDetail.Submission.total_marks}}</span>
+        <span class="f-right" ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'">Max. Marks: {{vm.submissionDetail.Submission.total_marks}}</span>
       </div>
       <table class="submit-heading">
         <tr>
@@ -76,17 +76,17 @@
                          ng-model="gradeSubmission.UsersSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
                          maxlength="3"
                          ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"
-                         ng-enter="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
-                         ng-blur="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
-                         ng-if="submissionDetail.Submission.subjective_scoring=='marked'"
+                         ng-enter="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                         ng-blur="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                         ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'"
                          ng-dblclick="vm.editGrade=true">
 
                   <div class="create-popup">
                     <div class="select-class">
                       <select ui-jq="chosen"
-                              ng-if="submissionDetail.Submission.subjective_scoring=='graded'"
+                              ng-if="vm.submissionDetail.Submission.subjective_scoring=='graded'"
                               ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
-                              ng-change="assignGrade(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
+                              ng-change="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                               ng-options="grade for grade in gradesList">
                       </select>
                     </div>
@@ -118,7 +118,7 @@
                   </div>
                   <div class="comm-btns" ng-if="vm.addComment">
                     <a href="" class="follow active comm-link"
-                       ng-click="assignComment(submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">Save</a>
+                       ng-click="assignComment(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)">Save</a>
                     <a href="" class="follow comm-link">Cancel</a>
                   </div>
                   <div ng-if="vm.showComment">
