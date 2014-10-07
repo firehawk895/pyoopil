@@ -302,11 +302,7 @@ class UsersClassroom extends AppModel {
      * @return mixed
      */
     public function getAttendanceFrequency($userId, $classroomId) {
-        //TODO: Calculate the frequency of the attendances over a loop
-        /**
-         * Following is the expected Data format for the frequency graph
-         */
-
+        
         $options = array(
             'conditions' => array(
                 'Classroom.id' => $classroomId
