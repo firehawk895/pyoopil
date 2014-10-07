@@ -39,14 +39,14 @@
         </li>
       </ul>
     </div>
-    <div class="view-head clearfix">
+    <div class="view-head clearfix" >
       <p class="view-heading">Engagement Report</a>
       </p>
       <span class="f-right">Total students: {{engagementReport.Classroom.users_classroom_count}}</span>
     </div>
     <div class="engagement-content">
       <ul class="engament-lst">
-        <li>
+        <li ng-if="vm.gold.length">
           <div class="enga-title"><img src="images/classroom/gold-img.jpg" alt="img"/>
           </div>
           <div class="assign-topic">
@@ -76,7 +76,7 @@
             </ul>
           </div>
         </li>
-        <li>
+        <li ng-if="vm.silver.length">
           <div class="enga-title"><img src="images/classroom/silver.jpg" alt="img"/>
           </div>
           <div class="assign-topic">
@@ -107,7 +107,7 @@
           </div>
 
         </li>
-        <li>
+        <li ng-if="vm.bronze.length">
           <div class="enga-title"><img src="images/classroom/bronze.jpg" alt="img"/>
           </div>
           <div class="assign-topic">
