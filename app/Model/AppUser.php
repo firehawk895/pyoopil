@@ -180,6 +180,10 @@ class AppUser extends User {
             'className' => 'UsersSubmission',
             'foreignKey' => 'user_id',
         ),
+        'Attendance' => array(
+            'className' => 'Attendance',
+            'foreignKey' => 'user_id',
+        ),
         /**
          * Already handled by plugin, perhaps:
          * 'UserDetail' => array(
@@ -303,7 +307,7 @@ class AppUser extends User {
         return $data;
     }
 
-    public function updateGamification($userId, $vote){
+    public function updateGamification($userId, $vote) {
 
         $options = array(
             'fields' => array(
@@ -315,30 +319,29 @@ class AppUser extends User {
         );
 
 
-        if(in_array($vote,$this->Gamificationvote->votes)){
-            $data = $this->find('first',$options);
+        if (in_array($vote, $this->Gamificationvote->votes)) {
+            $data = $this->find('first', $options);
 
             $voteValue = $data['AppUser'][$vote] + 1;
             $displayPraise = $data['AppUser']['display_praise'] + 1;
 
-            if($vote == 'ed'){
+            if ($vote == 'ed') {
                 $realPraise = $data['AppUser']['real_praise'] + 10;
-            }else{
+            } else {
                 $realPraise = $data['AppUser']['real_praise'] + 1;
             }
 
             $record = array(
-                    'id' => $userId,
-                    $vote => $voteValue,
-                    'display_praise' => $displayPraise,
-                    'real_praise' => $realPraise
+                'id' => $userId,
+                $vote => $voteValue,
+                'display_praise' => $displayPraise,
+                'real_praise' => $realPraise
             );
 
-            if($this->save($record,false)){
+            if ($this->save($record, false)) {
                 return true;
             }
-        }
-        else{
+        } else {
             return false;
         }
     }

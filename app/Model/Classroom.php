@@ -109,7 +109,11 @@ class Classroom extends AppModel {
         'UsersClassroom' => array(
             'className' => 'UsersClassroom',
             'foreignKey' => 'classroom_id'
-        )
+        ),
+        'Attendance' => array(
+            'className' => 'Attendance',
+            'foreignKey' => 'classroom_id'
+        ),
     );
 
     /**
@@ -375,7 +379,6 @@ class Classroom extends AppModel {
      * @return string
      */
     public function getEducatorName($classroomId) {
-
         $options['conditions'] = array(
             'classroom_id' => $classroomId,
             'is_teaching' => true
@@ -479,7 +482,6 @@ class Classroom extends AppModel {
 //                'id' => $data[$i]['Classroom']['id']
 //            )));
         }
-
         return $data;
     }
 

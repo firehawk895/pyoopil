@@ -46,7 +46,7 @@ class UsersSubmission extends AppModel {
      */
     public $belongsTo = array(
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
@@ -160,20 +160,12 @@ class UsersSubmission extends AppModel {
     }
 
     /**
-     * creating entries for student submissions
-     * Use cases:
-     * 1. Submission due date has passed and some users have not submitted anything
-     * 2. Create Report of an on offline submission requires usersSubmissions to be published
+     * creating entries for student submissions for easy tracking and maintainence
      * This must exclude the owner/educator
      * @param $submissionId
      * @return bool
      */
     public function createDummyUsersSubmissions($submissionId) {
-        //get parent classroom of this submission
-        //get all users of that classroom excluding educator, who have not submitted :S
-        //make users_submission entries for all of these
-        //set is_submitted for all of this
-
         $this->Submission->id = $submissionId;
         $classroomId = $this->Submission->field('classroom_id');
 
@@ -190,12 +182,21 @@ class UsersSubmission extends AppModel {
         $data = $this->AppUser->UsersClassroom->find('all', $options);
         $returnData = array();
 
-        foreach($data as $value){
-            array_push($returnData, array('UsersSubmission' => array('submission_id' => $submissionId, 'user_id' => $value['UsersClassroom']['id'])));
+        $classroom = new Classroom();
+        $ownerId = $classroom->getOwnerId($classroomId);
+        foreach ($data as $value) {
+            //ensure the users_submission entry is not created for the owner(educator)
+            if ($value['UsersClassroom']['id'] != $ownerId) {
+                array_push($returnData, array(
+                    'UsersSubmission' => array(
+                        'submission_id' => $submissionId,
+                        'user_id' => $value['UsersClassroom']['id'],
+                    )));
+            }
         }
-        $this->saveMany($returnData);
-
-
+        $this->saveMany($returnData, array(
+            'validate' => false
+        ));
     }
 
     /**
