@@ -66,7 +66,7 @@ angular.module('uiApp')
       formData.append("data[Discussion][body]", body);
       formData.append("data[Discussion][type]", type);
       if (angular.isDefined(file))
-        formData.append("data[Discussion][file_path]", file);
+        formData.append("data[Pyoopilfile][file_path]", file);
       if (angular.isDefined(choices)) {
         angular.forEach(choices, function (value, key) {
           if (angular.isDefined(value))
@@ -227,12 +227,18 @@ angular.module('uiApp')
     };
     self.createSubjectiveAssignment = function (subjective, roomId) {
       var formData = new FormData();
-      formData.append("data[Submission][topic]", subjective.topic);
-      formData.append("data[Submission][description]", subjective.description);
-      formData.append("data[Submission][grading_policy]", subjective.gradingPolicy);
-      formData.append("data[Submission][subjective_scoring]", subjective.gradingType);
-      formData.append("data[Submission][total_marks]", subjective.totalMarks);
-      formData.append("data[Submission][due_date]", subjective.dueDate);
+      if (angular.isDefined(subjective.topic))
+        formData.append("data[Submission][topic]", subjective.topic);
+      if (angular.isDefined(subjective.description))
+        formData.append("data[Submission][description]", subjective.description);
+      if (angular.isDefined(subjective.gradingPolicy))
+        formData.append("data[Submission][grading_policy]", subjective.gradingPolicy);
+      if (angular.isDefined(subjective.gradingType))
+        formData.append("data[Submission][subjective_scoring]", subjective.gradingType);
+      if (angular.isDefined(subjective.totalMarks))
+        formData.append("data[Submission][total_marks]", subjective.totalMarks);
+      if (angular.isDefined(subjective.dueDate))
+        formData.append("data[Submission][due_date]", subjective.dueDate);
       if (angular.isDefined(subjective.file))
         formData.append("data[Pyoopilfile][file_path]", subjective.file);
       return restangular.one("Classrooms", roomId)

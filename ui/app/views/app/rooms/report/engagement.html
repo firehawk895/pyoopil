@@ -52,10 +52,10 @@
           <div class="assign-topic">
             <div class="clearfix">
               <ul class="img-lst">
-                <li ng-repeat="user in vm.gold" ng-if="$index<8"><a href=""><img
+                <li class="align-top" ng-repeat="user in vm.gold" ng-if="$index<8"><a href=""><img
                     ng-src="{{user.AppUser.profile_img}}" alt="img">
 
-                  <p class="lst-name">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
+                  <p class="lst-name wordwrap">{{user.AppUser.fname}} {{user.AppUser.lname}}</p></a>
                 </li>
               </ul>
               <a class="enga-link" ng-if="vm.gold.length>8" ng-click="showAll('gold')"
@@ -149,8 +149,12 @@
           <th class="etd3">Points Breakup</th>
         </tr>
         <tr ng-class="{'lasttr' : $index+1==vm.allStudents.length}" ng-repeat="student in vm.allStudents">
-          <td class="etd1"><a href=""><img ng-src="{{student.AppUser.profile_img}}" class="assign-img" alt="img"><span
-              class="name-txt">{{student.AppUser.fname}} {{student.AppUser.lname}}</span></a></td>
+          <td class="etd1 align-left">
+            <div style="float: left"><img ng-src="{{student.AppUser.profile_img}}" class="assign-img hand"
+                      alt="img"></div>
+            <div  class="name-txt wordwrap">{{student.AppUser.fname}} {{student.AppUser.lname}}
+            </div>
+          </td>
           <td class="etd2"><p class="earn-icon">{{student.UsersClassroom.display_praise}}</p></td>
           <td class="etd3">
             <ul class="point-lst">

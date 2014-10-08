@@ -25,12 +25,12 @@
               <div class="clearfix">
                 <div class="left-pop">
                   <label>Topic of the assignment</label>
-                  <input type="text" class="pop-input" ng-model="vm.topic" required>
+                  <input type="text" class="pop-input" ng-model="vm.topic">
 
                   <label>Description</label>
-                  <textarea class="pop-txtarea" ng-model="vm.description" required></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.description"></textarea>
                   <label>Grading Policy</label>
-                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy" required></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
                   <label>Grading Type</label>
 
                   <div class="radio-btn">
@@ -42,7 +42,7 @@
                   <div class="marks-input" ng-if="vm.gradingType=='marked'">
                     <label>Enter Maximum Marks</label>
                     <input type="text" class="pop-input" value="" pattern="[0-9]{0,3}"
-                           tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks" required>
+                           tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks">
                   </div>
                   <label>Attachments</label>
 
@@ -59,14 +59,14 @@
                     <div class="time-check">
                       <label>Due Date</label>
                     </div>
-                    <input type="datetime-local" ng-model="vm.dueDate" required>
+                    <input type="datetime-local" ng-model="vm.dueDate">
 
                     <p class="wordwrap">Please enter the due date and time for the assignment</p>
                   </div>
                 </div>
               </div>
               <div class="submit-btn">
-                <button class="sub-btn" ng-disabled="formAssignment.$invalid || vm.areYouSure"
+                <button class="sub-btn" ng-disabled="vm.areYouSure"
                         ng-click="vm.areYouSure=true">Publish
                 </button>
               </div>

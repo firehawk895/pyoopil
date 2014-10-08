@@ -31,17 +31,23 @@ angular.module('uiApp')
 
       $scope.createSubjectiveAssignment = function () {
         $scope.vm.file = document.getElementById("fileUploadSubjective").files[0];
-        if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-          notificationService.show(false, "Cannot upload more than 5 MB");
-        else {
-          roomService.createSubjectiveAssignment($scope.vm, $scope.roomId).then(function (result) {
-            if (result.status) {
-              notificationService.show(result.status, result.message);
-              $scope.submissions.unshift(result.data[0]);
-            }
-          });
-          ngDialog.close();
-        }
+//        if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
+//          notificationService.show(false, "Cannot upload more than 5 MB");
+//        else {
+        roomService.createSubjectiveAssignment($scope.vm, $scope.roomId).then(function (result) {
+          if (result.status) {
+            notificationService.show(result.status, result.message);
+            $scope.submissions.unshift(result.data[0]);
+            ngDialog.close();
+          }
+          else {
+            var errorKey = Object.keys(result.message)[0];
+            notificationService.show(result.status, result.message[errorKey][0]);
+            $scope.vm.areYouSure = false;
+          }
+        });
+
+//        }
       };
 
       $scope.makeTypeSubjective = function (value) {
