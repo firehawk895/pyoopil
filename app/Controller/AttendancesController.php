@@ -47,15 +47,17 @@ class AttendancesController extends AppController {
      * take attendance for a particular date
      */
     public function add($classroomId) {
-        //input:
-        //classroom_id and date and userList
+        $this->request->onlyAllow('post');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
 
-        //remember that
+        $userIdsList = explode(",", $this->request->data['ids']);
+        $date = $this->request->data['date'];
 
-        //only comma seperated user ids of those users who are absent
-        //make entries for all users,
-        //only the users mentioned in the comma seperated values
-        //do an updateAll() and change is_present to false
+        $status = $this->Attendance->recordAttendance($classroomId,$userIdsList,$date);
+
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
@@ -65,5 +67,21 @@ class AttendancesController extends AppController {
      */
     public function view($classroomId) {
         //show attendance data for
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+
+        $date = $this->params['url']['date'];
+
+        $data = $this->Attendance->getAttendanceByDate($classroomId, $date);
+
+        if($data){
+            $status = true;
+        }else{
+            $status = false;
+        }
+
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 }

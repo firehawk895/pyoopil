@@ -48,4 +48,63 @@ class Attendance extends AppModel {
 
         return $data;
     }
+
+    public function recordAttendance($classroomId, $userIds, $date){
+        //mark all present
+        //update the absentees
+        $options = array(
+            'conditions' => array(
+                'UsersClassroom.classroom_id' => $classroomId,
+                'UsersClassroom.is_teaching' => false
+            ),
+            'fields' => array(
+                'id'
+            )
+        );
+
+        $data = $this->AppUser->UsersClassroom->find('all', $options);
+        $ids = Hash::extract($data, '{n}.UsersClassroom.id');
+
+        $saveData = array();
+        $this->log($userIds);
+
+        foreach($ids as $id){
+            array_push($saveData,array(
+                'user_id' => $id,
+                'classroom_id' => $classroomId,
+                'date' => $date,
+                'is_present' => true
+                )
+            );
+        }
+
+        if($this->saveMany($saveData)){
+            return $this->updateAll(
+                array('is_present' => false),
+                array('user_id' => $userIds)
+            );
+        }
+    }
+
+    public function getAttendanceByDate($classroomId, $date){
+
+        $options = array(
+            'conditions' => array(
+                'classroom_id' => $classroomId,
+                'date' => $date
+            ),
+            'fields' => array(
+                'is_present'
+            ),
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'id', 'fname', 'lname', 'profile_img'
+                    )
+                )
+            )
+        );
+
+        return $this->find('all',$options);
+    }
 }
