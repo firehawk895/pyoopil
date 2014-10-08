@@ -9,15 +9,15 @@
     <div class="pop-content clearfix">
       <form name="formClassroom" class="form-data create-popup">
         <div class="left-pop">
-          <label>Name of the classrom</label>
+          <label>Name of the classrom<span class="mandatory"> *</span></label>
           <input type="text" class="pop-input" ng-model="classroom.Classroom.title" ng-required="true" tabindex=1>
-          <label>University Association</label>
+          <label>University Association<span class="mandatory"> *</span></label>
           <select class="chosen-select select_option" ng-required="true"
                   ui-jq="chosen"
                   ng-model="classroom.Classroom.campus_id"
                   ng-options="key as campus for (key,campus) in campuses" tabindex=2>
           </select>
-          <label>Department</label>
+          <label>Department<span class="mandatory"> *</span></label>
           <select class="chosen-select select_option" ng-required="true"
                   ui-jq="chosen"
                   ng-model="classroom.Classroom.department_id"
@@ -35,7 +35,7 @@
             </select>
           </div>
 
-          <label>Duration of the course</label>
+          <label>Duration of the course<span class="mandatory"> *</span></label>
 
           <div class="calender create-date">
             <input type="text" class="pop-dura date_popup hand"
@@ -62,7 +62,7 @@
           </select>
         </div>
         <div class="right-pop">
-          <label>Course Type</label>
+          <label>Course Type<span class="mandatory"> *</span></label>
 
           <div class="radio-btn">
             <input id="Public" type="radio" name="course" value="0"
@@ -74,7 +74,7 @@
           </div>
           <label>Course Description</label>
           <textarea class="pop-txtarea" ng-model="classroom.Classroom.description"></textarea>
-          <label>Degree</label>
+          <label>Degree<span class="mandatory"> *</span></label>
           <select class="chosen-select select_option" ng-required="true"
                   ui-jq="chosen"
                   ng-model="classroom.Classroom.degree_id"
@@ -82,7 +82,7 @@
           </select>
           <label>You tube video link</label>
           <input type="text" class="pop-input" ng-model="classroom.Classroom.link">
-          <label>Minimum required attendance</label>
+          <label>Minimum required attendance<span class="mandatory"> *</span></label>
           <input type="number" step="any" class="pop-dura"
                  min="0" max="100" ng-model="classroom.Classroom.minimum_attendance" ng-required="true"> %
 

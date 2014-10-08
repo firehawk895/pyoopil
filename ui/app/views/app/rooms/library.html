@@ -34,9 +34,8 @@
               </a>
 
               <div class="doc-end clearfix">
-                <a title="dialogbox1" class="dialogbox"><img src="images/word_icon.png" class="m3-0"
-                                                             ng-if="document.mime_type== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ">
-                  <img src="images/doc-icon.png" class="m3-0" ng-if="document.mime_type=='application/pdf' "></a>
+                <a title="dialogbox1" class="dialogbox"><img ng-src="{{docIcon(document.mime_type)}}" class="m3-0">
+                </a>
 
                 <p class="f-right">Posted<br>
                   {{document.created | amDateFormat:'DD-MM-YY'}}</p>
@@ -83,7 +82,7 @@
               <a ng-click="deleteFile(topic,$index)" class="del-lib" ng-if="canUpload"></a>
               <a ng-href="{{getLink(link.linktext)}}" target="_blank">
                 <div class="doc-top">
-                  <p class="wordwrap">Go To {{link.linktext}}</p>
+                  <p class="wordwrap ellipsis">Go To<br> {{link.linktext}}</p>
                 </div>
                 <div class="doc-end clearfix">
                   <img src="images/link-icon.png" class="m3-0">

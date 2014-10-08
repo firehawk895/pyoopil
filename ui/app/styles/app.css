@@ -428,3 +428,21 @@ button.disabled, button[disabled] {
 .align-top {
   vertical-align: top;
 }
+
+.create-assign .pop-txtarea {
+  height: 80px;
+}
+
+.mandatory {
+  color: #f67e02;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-heading {
+  cursor: default;
+}
