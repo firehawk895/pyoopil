@@ -1,7 +1,7 @@
-<div class="roomTitle">{{classInfo.Classroom.title}}<span class="title-arr hand"
+<div class="roomTitle">{{classInfo.Classroom.title}}<span class="title-arr hand" id="dropDown"
                                                           ng-click="vm.showInfoPopup=!vm.showInfoPopup"></span>
 
-  <div class="arr-dd" ng-if="vm.showInfoPopup">
+  <div class="arr-dd" ng-if="vm.showInfoPopup" off-click="vm.showInfoPopup=false" off-click-filter="#dropDown">
     <ul>
       <li class="hand" ng-if="vm.role=='Owner'"><a ng-click="resetAccessCode()">Reset Access Code</a>
       </li>

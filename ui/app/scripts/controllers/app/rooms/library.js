@@ -216,6 +216,9 @@ angular.module('uiApp')
                   $scope.topics[current] = result.data[0];
                 else
                   $scope.topics.push(result.data[0]);
+                roomService.getTopicsList($stateParams.roomId).then(function (value) {
+                  $scope.topicsList = value.data;
+                });
               }
             });
         }

@@ -27,7 +27,8 @@
     "ngImgCrop": "~0.2.0",
     "angular-moment": "~0.8.2",
     "angular-timer": "~1.1.7",
-    "satellizer": "~0.7.1"
+    "satellizer": "~0.7.1",
+    "angular-off-click": "~0.0.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

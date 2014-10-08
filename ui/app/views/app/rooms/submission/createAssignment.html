@@ -24,14 +24,14 @@
             <div id="sub" class="tab-contt" ng-if="vm.typeIsSubjective">
               <div class="clearfix">
                 <div class="left-pop">
-                  <label>Topic of the assignment</label>
+                  <label>Topic of the assignment<span class="mandatory"> *</span></label>
                   <input type="text" class="pop-input" ng-model="vm.topic">
 
-                  <label>Description</label>
+                  <label>Description<span class="mandatory"> *</span></label>
                   <textarea class="pop-txtarea" ng-model="vm.description"></textarea>
                   <label>Grading Policy</label>
                   <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
-                  <label>Grading Type</label>
+                  <label>Grading Type<span class="mandatory"> *</span></label>
 
                   <div class="radio-btn">
                     <input id="Marks" type="radio" name="course" value="marked" ng-model="vm.gradingType">
@@ -41,7 +41,8 @@
                   </div>
                   <div class="marks-input" ng-if="vm.gradingType=='marked'">
                     <label>Enter Maximum Marks</label>
-                    <input type="text" class="pop-input" value="" pattern="[0-9]{0,3}"
+                    <input type="number" class="pop-input" value="" pattern="[0-9]{0,3}" maxlength="3" min="0"
+                           ng-maxlength="3"
                            tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks">
                   </div>
                   <label>Attachments</label>
@@ -57,11 +58,19 @@
                 <div class="right-pop">
                   <div class="time-bx">
                     <div class="time-check">
-                      <label>Due Date</label>
+                      <label>Due Date and Due time<span class="mandatory"> *</span></label>
                     </div>
                     <input type="datetime-local" ng-model="vm.dueDate">
 
-                    <p class="wordwrap">Please enter the due date and time for the assignment</p>
+                    <p>Please enter the due date and time for the assignment
+                      <br><br>
+                      e.g.
+                      <br>
+                      mm-dd-yyyy hh:mm (24hr format)
+                      <br>
+                      or
+                      <br>
+                      mm-dd-yyyy hh:mm am/pm</p>
                   </div>
                 </div>
               </div>
@@ -78,13 +87,13 @@
             <div id="quiz" class="tab-contt" ng-if="!vm.typeIsSubjective">
               <div class="clearfix">
                 <div class="left-pop">
-                  <label>Topic of the quiz</label>
+                  <label>Topic of the quiz<span class="mandatory"> *</span></label>
                   <input type="text" class="pop-input" ng-model="vm.topic" required>
-                  <label>Quiz Description</label>
+                  <label>Quiz Description<span class="mandatory"> *</span></label>
                   <textarea class="pop-txtarea" ng-model="vm.description" required></textarea>
                   <label>Grading Policy</label>
                   <textarea class="pop-txtarea" ng-model="vm.gradingPolicy" required></textarea>
-                  <label>Total Time</label>
+                  <label>Total Time<span class="mandatory"> *</span></label>
 
                   <input type="number" min="0" max="5" class="pop-dura" ng-model="vm.hours" required>
 
@@ -106,7 +115,7 @@
                 <div class="right-pop">
                   <div class="time-bx">
                     <div class="time-check">
-                      <label>Due Date and Due Time</label>
+                      <label>Due Date and Due Time<span class="mandatory"> *</span></label>
                     </div>
                     <input type="datetime-local" ng-model="vm.dueDate" required>
 

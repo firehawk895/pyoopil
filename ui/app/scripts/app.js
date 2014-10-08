@@ -30,7 +30,8 @@ angular
     'angularMoment',
     'ngImgCrop',
     'timer',
-    'satellizer'
+    'satellizer',
+    'offClick'
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider', '$authProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider, $authProvider) {
@@ -82,11 +83,11 @@ angular
         })
         .state('app', {
           abstract: true,
-          url: "/app/",
+          url: "/",
           templateUrl: "views/app/app.html"
         })
         .state('app.rooms', {
-          url: "rooms/:roomId/",
+          url: "Classrooms/:roomId/",
           abstract: true,
           templateUrl: "views/app/rooms/room.html",
           controller: 'roomCtrl'
@@ -98,7 +99,7 @@ angular
           controller: "discussionCtrl"
         })
         .state('app.rooms.discussions.all', {
-          url: "all/",
+          url: "",
           templateUrl: "views/app/rooms/discussion/allDiscussion.html",
           controller: "allDiscussionCtrl"
         })
@@ -172,12 +173,13 @@ angular
           controller: 'attendanceCtrl'
         })
         .state('app.roomsDash', {
-          url: "room/",
+          abstract: true,
+          url: "Classroom/",
           templateUrl: "views/app/roomsDash/roomsdash.html",
           controller: "myRoomCtrl"
         })
         .state('app.roomsDash.myroom', {
-          url: "my/",
+          url: "",
           templateUrl: "views/app/roomsDash/myroom.html"
         })
 //        .state('app.roomsDash.staffroom', {
@@ -231,7 +233,7 @@ angular
     };
     $scope.gradesList = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
     $scope.getMimeTypes = function () {
-      return ".xlsx,.xltx,.docx,.dotx,.xlam,.xlsb,application/excel,application/vnd.ms-excel,application/x-excel," +
+      return ".xls,.xlsx,.xltx,.docx,.dotx,.xlam,.xlsb,application/excel,application/vnd.ms-excel,application/x-excel," +
         "application/x-msexcel,application/msword,.potx,.ppsx,.pptx,.sldx" +
         "text/plain,application/pdf,image/bmp,image/cis-cod,image/gif,image/ief,image/jpeg,image/jpeg,image/jpeg," +
         "image/pipeg,image/svg+xml,image/tiff,image/tiff,image/x-cmu-raster,image/x-cmx,image/x-icon," +
@@ -249,6 +251,9 @@ angular
         return 'images/doc_icon.png';
       else if (/^application[//].*powerpoint$/.test(mimeType))
         return 'images/ppt_icon.png';
+      else if (/^application[//].*spreadsheet.*/.test(mimeType) || /^application[//].*excel.*/.test(mimeType))
+        return 'images/excel_icon.jpg';
+
     };
   }])
   //main run module for the whole application

@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'notificationService', 'localStorageService', '$http', 'authService', 'globalService', '$auth',
-    function ($scope, $location, userService, ngDialog, notificationService, localStorageService, $http, authService, globalService, $auth) {
+  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'notificationService', 'localStorageService', '$http', 'authService', 'globalService', '$auth','$state',
+    function ($scope, $location, userService, ngDialog, notificationService, localStorageService, $http, authService, globalService, $auth,$state) {
 
 //      if (globalService.getIsAuthorised())
 //        $location.path('/app/room/my/');
@@ -30,7 +30,8 @@ angular.module('uiApp')
             authService.loginConfirmed(result.data.auth_token);
             console.log(result.data.auth_token);
             //redirect to rooms on successful login
-            $location.path('/app/room/my/');
+//            $location.path('/Classroom/my/');
+            $state.go('app.roomsDash.myroom');
           }
         }, function (error) {
           //todo: log error
