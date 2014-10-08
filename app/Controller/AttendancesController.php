@@ -28,7 +28,17 @@ class AttendancesController extends AppController {
      */
     public function index($classroomId) {
         //TODO: paginate this, if we reach that many users per classroom :O
+        $this->request->onlyAllow('get');
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
 
+        $this->loadModel("UsersClassroom");
+
+        $data['dates'] = $this->Attendance->getAttendanceDates($classroomId);
+        $data ['students'] = $this->UsersClassroom->getStudentList($classroomId);
+
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**

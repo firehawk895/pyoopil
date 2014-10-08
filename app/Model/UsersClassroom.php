@@ -308,12 +308,12 @@ class UsersClassroom extends AppModel {
                 'Classroom.id' => $classroomId
             ),
             'fields' => array(
-                'total_classes'
+                'classes_held'
             )
         );
 
         $data = $this->Classroom->find('first', $options);
-        $totalClasses = $data['Classroom']['total_classes'];
+        $totalClasses = $data['Classroom']['classes_held'];
 
         $options = array(
             'conditions' => array(
@@ -477,5 +477,29 @@ class UsersClassroom extends AppModel {
             $role = "Student";
         }
         return $role;
+    }
+
+    public function getStudentList($classroomId){
+        $options = array(
+            'conditions' => array(
+                'classroom_id' => $classroomId,
+                'is_teaching' => false
+            ),
+            'fields' => array(
+                'id'
+            ),
+            'contain' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'id', 'fname', 'lname'
+                    )
+                )
+            )
+        );
+
+        $data = $this->find('all', $options);
+
+        return $data;
+
     }
 }

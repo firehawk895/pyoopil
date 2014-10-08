@@ -43,12 +43,9 @@ class Attendance extends AppModel {
         );
 
         $data = $this->find('all',$options);
-        $dates = array();
 
-        foreach($data as $date){
-            array_push($dates, $date['Attendance']['dates']);
-        }
+        $data = Hash::extract($data,'{n}.Attendance.dates');
 
-        return $dates;
+        return $data;
     }
 }
