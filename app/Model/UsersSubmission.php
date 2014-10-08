@@ -196,9 +196,13 @@ class UsersSubmission extends AppModel {
                     'user_id' => $value['UsersClassroom']['id'],
                 )));
         }
-        $this->saveMany($returnData, array(
-            'validate' => false
-        ));
+
+        if($this->saveMany($returnData, array('validate' => false))){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**

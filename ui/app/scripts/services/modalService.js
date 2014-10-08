@@ -15,7 +15,9 @@ angular.module('uiApp')
         scope.docPath = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=" + encodeURIComponent(path) + "&embedded=true");
         ngDialog.open({
           template: 'views/app/dialog-open-doc.html',
-          scope: scope
+          scope: scope,
+          showClose: true,
+          className: 'ngdialog-theme-plain'
         });
       };
       self.openLeftEditDialog = function (scope) {

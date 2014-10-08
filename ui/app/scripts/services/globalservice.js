@@ -60,6 +60,9 @@ angular.module('uiApp')
           case 'beta.pyoopil.com':
             self.baseUrl = "http://apibeta.pyoopil.com";
             break;
+          case 'www.pyoopil.com':
+            self.baseUrl = "http://api.pyoopil.com";
+            break;
         }
         return self.baseUrl;
       };
