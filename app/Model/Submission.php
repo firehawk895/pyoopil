@@ -219,7 +219,9 @@ class Submission extends AppModel {
 
         if ($status) {
             //Create UsersSubmission entries
-
+            //TODO: concurrency scaling bug
+            $submissionId = $this->getLastInsertId();
+            $this->UsersSubmission->createDummyUsersSubmissions($submissionId);
             return $status;
         }
         return false;

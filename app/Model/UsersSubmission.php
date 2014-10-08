@@ -69,6 +69,12 @@ class UsersSubmission extends AppModel {
         )
     );
 
+    /**
+     * Student submits an answer to a subjective assignment
+     * @param $userId
+     * @param $postData
+     * @return bool
+     */
     public function answerSubjective($userId, $postData) {
         //submission_id is already in the post data
         $postData['AppUser']['id'] = $userId;
@@ -169,6 +175,7 @@ class UsersSubmission extends AppModel {
         $this->Submission->id = $submissionId;
         $classroomId = $this->Submission->field('classroom_id');
 
+        //ensure the users_submission entry is not created for the owner(educator)
         $options = array(
             'conditions' => array(
                 'UsersClassroom.classroom_id' => $classroomId,
@@ -182,17 +189,12 @@ class UsersSubmission extends AppModel {
         $data = $this->AppUser->UsersClassroom->find('all', $options);
         $returnData = array();
 
-        $classroom = new Classroom();
-        $ownerId = $classroom->getOwnerId($classroomId);
         foreach ($data as $value) {
-            //ensure the users_submission entry is not created for the owner(educator)
-            if ($value['UsersClassroom']['id'] != $ownerId) {
-                array_push($returnData, array(
-                    'UsersSubmission' => array(
-                        'submission_id' => $submissionId,
-                        'user_id' => $value['UsersClassroom']['id'],
-                    )));
-            }
+            array_push($returnData, array(
+                'UsersSubmission' => array(
+                    'submission_id' => $submissionId,
+                    'user_id' => $value['UsersClassroom']['id'],
+                )));
         }
         $this->saveMany($returnData, array(
             'validate' => false

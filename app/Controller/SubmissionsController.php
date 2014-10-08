@@ -24,7 +24,8 @@ class SubmissionsController extends AppController {
      * @param $classroomId
      */
     public function addSubjective($classroomId) {
-        //TODO: add field restriction
+        //TODO: add field restriction for security
+
         $this->request->onlyAllow('post');
         $data = array();
         $postData = $this->request->data;
@@ -66,30 +67,34 @@ class SubmissionsController extends AppController {
     public function addQuiz($classroomId) {
         $this->request->onlyAllow('post');
 
+        $data = array();
+        $message = "";
+
         //TODO: add field restriction
         //TODO: add model validation
         //TODO: add Pyoopilfile support
 
-//        $status = false;
-//        $message = "";
-
-        $data = $this->request->data;
+        $postData = $this->request->data;
         //store in seconds for easy handling later
-        if (isset($data['hrs']) && $data['mins']) {
-            $data['Quiz'][0]['duration'] = ($data['hrs'] * 60 * 60) + ($data['mins'] * 60);
-            unset($data['hrs']);
-            unset($data['mins']);
+        if (isset($postData['hrs']) && $postData['mins']) {
+            $postData['Quiz'][0]['duration'] = ($postData['hrs'] * 60 * 60) + ($postData['mins'] * 60);
+            unset($postData['hrs']);
+            unset($postData['mins']);
         }
-        $data['Submission']['type'] = 'quiz';
-        $data['Submission']['classroom_id'] = $classroomId;
-        $status = $this->Submission->saveAssociated($data, array(
+
+        $postData['Submission']['type'] = 'quiz';
+        $postData['Submission']['classroom_id'] = $classroomId;
+        $postData['Submission']['subjective_scoring'] = "marked";
+
+        $status = $this->Submission->saveAssociated($postData, array(
             'deep' => true,
-            'atomic' => true
+            'atomic' => true,
+            'validate' => false
         ));
 
         /* _serialize */
         $this->set(compact('status', 'message'));
-//        $this->set('data', $data);
+        $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
     }
 
@@ -103,7 +108,7 @@ class SubmissionsController extends AppController {
         $this->response->type('json');
 
         $this->Submission->updateSubmissionsStatus($classroomId);
-        
+
         $page = 1;
         if (isset($this->params['url']['page'])) {
             $page = $this->params['url']['page'];
@@ -138,7 +143,6 @@ class SubmissionsController extends AppController {
         /**
          * Validation and error checking
          */
-
         if (
             isset($postData['Submission']['id']) &&
             isset($postData['UsersSubmission']['answer']) &&
