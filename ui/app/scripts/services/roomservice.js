@@ -382,6 +382,9 @@ angular.module('uiApp')
     self.getAttendanceReport = function (roomId) {
       return restangular.one('Classrooms', roomId).all('Reports').customGET('attendance');
     };
+    self.getAttendanceList = function (roomId) {
+      return restangular.one('Classrooms', roomId).all('Attendances').customGET('index.json');
+    };
     self.getGraph = function (submissionId) {
       return restangular.all('Classrooms').all('Reports').all('academic').all('student').customGET('graph.json', {submission_id: submissionId});
     };

@@ -157,6 +157,11 @@ angular
           url: "create/",
           templateUrl: "views/app/rooms/report/reportCreate.html"
         })
+        .state('app.rooms.reports.main.takeAttendance', {
+          url: "takeAttendance/",
+          templateUrl: "views/app/rooms/report/reportAttendance.html",
+          controller:'takeAttendanceCtrl'
+        })
         .state('app.rooms.reports.engagement', {
           url: "engagement/",
           templateUrl: "views/app/rooms/report/engagement.html",
