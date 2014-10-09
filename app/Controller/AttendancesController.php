@@ -33,12 +33,13 @@ class AttendancesController extends AppController {
         $this->response->type('json');
 
         $this->loadModel("UsersClassroom");
+        $dates = $this->Attendance->getAttendanceDates($classroomId);
+        $data = $this->UsersClassroom->getStudentList($classroomId);
+        $status = true;
+        $message = "";
 
-        $data['dates'] = $this->Attendance->getAttendanceDates($classroomId);
-        $data ['students'] = $this->UsersClassroom->getStudentList($classroomId);
-
-        $this->set(compact('data', 'status', 'message'));
-        $this->set('_serialize', array('data', 'status', 'message'));
+        $this->set(compact('data', 'dates', 'status', 'message'));
+        $this->set('_serialize', array('data', 'dates', 'status', 'message'));
     }
 
     /**
@@ -54,7 +55,7 @@ class AttendancesController extends AppController {
         $userIdsList = explode(",", $this->request->data['ids']);
         $date = $this->request->data['date'];
 
-        $status = $this->Attendance->recordAttendance($classroomId,$userIdsList,$date);
+        $status = $this->Attendance->recordAttendance($classroomId, $userIdsList, $date);
 
         $this->set(compact('data', 'status', 'message'));
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -75,9 +76,9 @@ class AttendancesController extends AppController {
 
         $data = $this->Attendance->getAttendanceByDate($classroomId, $date);
 
-        if($data){
+        if ($data) {
             $status = true;
-        }else{
+        } else {
             $status = false;
         }
 

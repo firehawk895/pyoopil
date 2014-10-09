@@ -302,7 +302,7 @@ class UsersClassroom extends AppModel {
      * @return mixed
      */
     public function getAttendanceFrequency($userId, $classroomId) {
-        
+
         $options = array(
             'conditions' => array(
                 'Classroom.id' => $classroomId
@@ -337,33 +337,33 @@ class UsersClassroom extends AppModel {
             'marked' => null
         );
 
-        foreach($attendance as $value){
+        foreach ($attendance as $value) {
 
-            $frequency = $value['UsersClassroom']['classes_attended']/$totalClasses;
+            $frequency = $value['UsersClassroom']['classes_attended'] / $totalClasses;
 
-            if($frequency <= 20){
+            if ($frequency <= 20) {
                 $data['frequency']['0-20%']++;
-                if($value['UsersClassroom']['user_id'] == $userId){
+                if ($value['UsersClassroom']['user_id'] == $userId) {
                     $data['marked'] = '0-20%';
                 }
-            }else if((20 < $frequency) && ($frequency >= 40)){
+            } else if ((20 < $frequency) && ($frequency >= 40)) {
                 $data['frequency']['20-40%']++;
-                if($value['UsersClassroom']['user_id'] == $userId){
+                if ($value['UsersClassroom']['user_id'] == $userId) {
                     $data['marked'] = '20-40%';
                 }
-            }else if((40 < $frequency) && ($frequency >= 60)){
+            } else if ((40 < $frequency) && ($frequency >= 60)) {
                 $data['frequency']['40-60%']++;
-                if($value['UsersClassroom']['user_id'] == $userId){
+                if ($value['UsersClassroom']['user_id'] == $userId) {
                     $data['marked'] = '40-60%';
                 }
-            }else if((60 < $frequency) && ($frequency >= 80)){
+            } else if ((60 < $frequency) && ($frequency >= 80)) {
                 $data['frequency']['40-60%']++;
-                if($value['UsersClassroom']['user_id'] == $userId){
+                if ($value['UsersClassroom']['user_id'] == $userId) {
                     $data['marked'] = '60-80%';
                 }
-            }else if((80 < $frequency) && ($frequency >= 100)){
+            } else if ((80 < $frequency) && ($frequency >= 100)) {
                 $data['frequency']['40-60%']++;
-                if($value['UsersClassroom']['user_id'] == $userId){
+                if ($value['UsersClassroom']['user_id'] == $userId) {
                     $data['marked'] = '80-100%';
                 }
             }
@@ -479,7 +479,13 @@ class UsersClassroom extends AppModel {
         return $role;
     }
 
-    public function getStudentList($classroomId){
+    /**
+     * array list of students in the classroom (therefore excluding owner)
+     * being used in AttendancesController
+     * @param $classroomId
+     * @return array
+     */
+    public function getStudentList($classroomId) {
         $options = array(
             'conditions' => array(
                 'classroom_id' => $classroomId,
@@ -491,15 +497,14 @@ class UsersClassroom extends AppModel {
             'contain' => array(
                 'AppUser' => array(
                     'fields' => array(
-                        'id', 'fname', 'lname'
+                        'id', 'fname', 'lname', 'profile_img'
                     )
                 )
             )
         );
 
         $data = $this->find('all', $options);
-
+        $data = Hash::remove($data, '{n}.UsersClassroom');
         return $data;
-
     }
 }

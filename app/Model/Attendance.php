@@ -32,7 +32,7 @@ class Attendance extends AppModel {
 //        )
     );
 
-    public function getAttendanceDates($classroomId){
+    public function getAttendanceDates($classroomId) {
         $options = array(
             'conditions' => array(
                 'classroom_id' => $classroomId
@@ -42,14 +42,14 @@ class Attendance extends AppModel {
             )
         );
 
-        $data = $this->find('all',$options);
+        $data = $this->find('all', $options);
 
-        $data = Hash::extract($data,'{n}.Attendance.dates');
+        $data = Hash::extract($data, '{n}.Attendance.dates');
 
         return $data;
     }
 
-    public function recordAttendance($classroomId, $userIds, $date){
+    public function recordAttendance($classroomId, $userIds, $date) {
         //mark all present
         //update the absentees
         $options = array(
@@ -58,27 +58,28 @@ class Attendance extends AppModel {
                 'UsersClassroom.is_teaching' => false
             ),
             'fields' => array(
-                'id'
+                'id', 'user_id', 'classroom_id'
             )
         );
 
         $data = $this->AppUser->UsersClassroom->find('all', $options);
-        $ids = Hash::extract($data, '{n}.UsersClassroom.id');
+        $this->log($data);
+        $ids = Hash::extract($data, '{n}.UsersClassroom.user_id');
 
         $saveData = array();
         $this->log($userIds);
 
-        foreach($ids as $id){
-            array_push($saveData,array(
-                'user_id' => $id,
-                'classroom_id' => $classroomId,
-                'date' => $date,
-                'is_present' => true
+        foreach ($ids as $id) {
+            array_push($saveData, array(
+                    'user_id' => $id,
+                    'classroom_id' => $classroomId,
+                    'date' => $date,
+                    'is_present' => true
                 )
             );
         }
 
-        if($this->saveMany($saveData)){
+        if ($this->saveMany($saveData)) {
             return $this->updateAll(
                 array('is_present' => false),
                 array('user_id' => $userIds)
@@ -86,7 +87,7 @@ class Attendance extends AppModel {
         }
     }
 
-    public function getAttendanceByDate($classroomId, $date){
+    public function getAttendanceByDate($classroomId, $date) {
 
         $options = array(
             'conditions' => array(
@@ -105,6 +106,6 @@ class Attendance extends AppModel {
             )
         );
 
-        return $this->find('all',$options);
+        return $this->find('all', $options);
     }
 }
