@@ -52,10 +52,27 @@ class AttendancesController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
-        $userIdsList = explode(",", $this->request->data['ids']);
-        $date = $this->request->data['date'];
+        $postData = $this->request->data;
+        $data = array();
+        $message = "";
 
-        $status = $this->Attendance->recordAttendance($classroomId, $userIdsList, $date);
+        if (isset($postData['ids']) && isset($postData['date'])) {
+            if (Validation::date($postData['date'], 'ymd') && CakeTime::isPast($postData['date'])) {
+                $userIdsList = explode(",", $postData['ids']);
+                if (empty($this->Attendance->recordAttendance($classroomId, $userIdsList, $postData['date']))) {
+                    $status = false;
+                    $message = "There was a problem saving the attendance";
+                } else {
+                    $status = true;
+                }
+            } else {
+                $status = false;
+                $message = "Date must be valid and a past date";
+            }
+        } else {
+            $status = false;
+            $message = "Students and/or date missing";
+        }
 
         $this->set(compact('data', 'status', 'message'));
         $this->set('_serialize', array('data', 'status', 'message'));
@@ -72,14 +89,12 @@ class AttendancesController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
-        $date = $this->params['url']['date'];
-
-        $data = $this->Attendance->getAttendanceByDate($classroomId, $date);
-
-        if ($data) {
-            $status = true;
+        if (isset($this->params['url']['date'])) {
+            $date = $this->params['url']['date'];
+            $status = !empty($this->Attendance->getAttendanceByDate($classroomId, $date));
         } else {
             $status = false;
+            $message = "Date not selected";
         }
 
         $this->set(compact('data', 'status', 'message'));

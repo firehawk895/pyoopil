@@ -43,7 +43,6 @@ class Attendance extends AppModel {
         );
 
         $data = $this->find('all', $options);
-
         $data = Hash::extract($data, '{n}.Attendance.dates');
 
         return $data;
@@ -63,11 +62,8 @@ class Attendance extends AppModel {
         );
 
         $data = $this->AppUser->UsersClassroom->find('all', $options);
-        $this->log($data);
         $ids = Hash::extract($data, '{n}.UsersClassroom.user_id');
-
         $saveData = array();
-        $this->log($userIds);
 
         foreach ($ids as $id) {
             array_push($saveData, array(
