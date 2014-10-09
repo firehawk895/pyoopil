@@ -443,3 +443,12 @@ button.disabled, button[disabled] {
 .doc-heading {
   cursor: default;
 }
+
+.tbl-attendance {
+  padding-left: 275px !important;
+}
+
+.date-picker {
+  width: 90% !important;
+  height: 15px;
+}

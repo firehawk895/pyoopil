@@ -7,7 +7,7 @@ angular.module('uiApp')
       $scope.vm.editGrade = false;
       roomService.getGradeSubmissions($stateParams.roomId, $stateParams.assignmentId, $scope.page).then(function (result) {
         $scope.gradeSubmissions = result.data;
-        $scope.vm.submissionDetail = result.submission[0];
+        $scope.vm.submissionDetail = result.submission;
       });
       $scope.updatePage = function () {
         if (!$scope.pageEnd) {

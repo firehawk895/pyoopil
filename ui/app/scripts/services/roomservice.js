@@ -354,7 +354,7 @@ angular.module('uiApp')
       return restangular.all('Classrooms').all('Submissions').customPOST(data, 'assignGrade.json');
     };
     self.getQuiz = function (id) {
-      return restangular.all('Classrooms').all('Submissions').customGET('getQuiz.json', {submission_id: id})
+      return restangular.all('Classrooms').all('Submissions').customGET('getQuiz.json', {submission_id: id});
     };
     self.answerQuiz = function (quizAnswers) {
       var data = {
@@ -385,6 +385,20 @@ angular.module('uiApp')
     self.getAttendanceList = function (roomId) {
       return restangular.one('Classrooms', roomId).all('Attendances').customGET('index.json');
     };
+    self.viewAttendance = function (roomId, date) {
+      return restangular.one('Classrooms', roomId).all('Attendances').customGET('view.json', {date: date});
+    };
+    self.addAttendance = function (roomId, ids, date) {
+      ids = ids.toString();
+      var data = {
+
+        ids: ids,
+
+        date: date
+
+      };
+      return restangular.one('Classrooms', roomId).all('Attendances').customPOST(data, 'add.json');
+    };
     self.getGraph = function (submissionId) {
       return restangular.all('Classrooms').all('Reports').all('academic').all('student').customGET('graph.json', {submission_id: submissionId});
     };
@@ -395,5 +409,8 @@ angular.module('uiApp')
       var data = {};
       return restangular.one('Classrooms', roomId).customPOST(data, 'resetcode.json');
     };
+
+
     return self;
-  }]);
+  }])
+;

@@ -1,66 +1,43 @@
 <p>The attendance for all students have been marked as present by default. Click on the icon to mark absent</p>
-<div class="academic-title">
+<div class="academic-title" style="float:left">
   <p class="aca-heading">Select Date</p>
 
   <div class="calender">
-    <input type="text" class="pop-dura date_popup" ui-jq="datepicker"
-           ui-options="{showOn: 'both', buttonImage: 'images/classroom/pop-cal.png', buttonImageOnly: true}">
+    <input type="text" class="pop-dura date_popup date-picker" ui-jq="datepicker"
+           ui-options="{showOn: 'both', buttonImage: 'images/classroom/pop-cal.png', buttonImageOnly: true,dateFormat:'yy-mm-dd'}"
+           ng-model="vm.attendanceDate" ng-change="viewAttendance()">
   </div>
 </div>
-<div class="submission-tbl">
+<div class="create-popup">
+  <select class="chosen-select select_option"
+          ng-model="vm.attendanceDate"
+          ng-options="date as date for date in vm.dates" ng-change="viewAttendance()">
+  </select>
+</div>
+<div class="submission-tbl" ng-if="vm.showAttendanceList">
   <table class="enga-tbl">
     <tr>
       <th class="etd1">Student Name</th>
       <th class="etd2">Present/Absent</th>
     </tr>
-    <tr>
-      <td class="etd1"><a href="javascript:void(0)"><img src="images/chat1.png" class="assign-img" alt="img"><span
-          class="name-txt">Ajay Kumar Kashyap</span></a></td>
-      <td class="etd2">
-        <div class="pres-chk"><input id="pre1" type="checkbox" name="pre1" value="pre1" checked><label for="pre1"
-                                                                                                       class="check-lbl"></label>
+    <tr ng-repeat="student in vm.currentStudents">
+      <td class="etd1 align-left tbl-attendance">
+        <div style="float: left"><img ng-src="{{student.AppUser.profile_img}}" class="assign-img hand"
+                                      alt="img"></div>
+        <div class="name-txt wordwrap">{{student.AppUser.fname}} {{student.AppUser.lname}}
         </div>
       </td>
-    </tr>
-    <tr>
-      <td class="etd1"><a href="javascript:void(0)"><img src="images/chat1.png" class="assign-img" alt="img"><span
-          class="name-txt">Ajay Kumar Kashyap</span></a></td>
       <td class="etd2">
-        <div class="pres-chk"><input id="pre2" type="checkbox" name="pre2" value="pre2" checked><label for="pre2"
-                                                                                                       class="check-lbl"></label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="etd1"><a href="javascript:void(0)"><img src="images/chat1.png" class="assign-img" alt="img"><span
-          class="name-txt">Ajay Kumar Kashyap</span></a></td>
-      <td class="etd2">
-        <div class="pres-chk"><input id="pre3" type="checkbox" name="pre3" value="pre3" checked><label for="pre3"
-                                                                                                       class="check-lbl"></label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="etd1"><a href="javascript:void(0)"><img src="images/chat1.png" class="assign-img" alt="img"><span
-          class="name-txt">Ajay Kumar Kashyap</span></a></td>
-      <td class="etd2">
-        <div class="pres-chk"><input id="pre4" type="checkbox" name="pre4" value="pre4"><label for="pre4"
-                                                                                               class="check-lbl"></label>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="etd1"><a href="javascript:void(0)"><img src="images/chat1.png" class="assign-img" alt="img"><span
-          class="name-txt">Ajay Kumar Kashyap</span></a></td>
-      <td class="etd2">
-        <div class="pres-chk"><input id="pre5" type="checkbox" name="pre4" value="pre5" checked><label for="pre5"
-                                                                                                       class="check-lbl"></label>
+        <div class="pres-chk"><input id="pre{{$index}}" type="checkbox" name="pre{{$index}}"
+                                     ng-checked="student.Attendance.is_present"
+                                     ng-model="student.Attendance.is_present"><label for="pre{{$index}}"
+                                                                                     class="check-lbl"></label>
         </div>
       </td>
     </tr>
   </table>
   <div class="submit-btn">
-    <input id="sub-nxt" class="sub-btn close-link" type="button" value="Save">
+    <input id="sub-nxt" class="sub-btn close-link" type="button" value="Save" ng-click="addAttendance()">
   </div>
 </div>
 <div class="clear"></div>
