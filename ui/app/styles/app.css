@@ -117,8 +117,7 @@
 
 .ngdialog.ngdialog-theme-default .ngdialog-content {
   padding: 0;
-  width: 700;
-  /*background: rgba(0, 0, 0, -0.6);*/
+  width: 700px;
 }
 
 .ngdialog.ngdialog-theme-plain {
@@ -126,16 +125,14 @@
 }
 
 .ngdialog.ngdialog-theme-plain .ngdialog-content {
-  padding: 30;
+  padding: 30px;
   width: 95%;
   background: rgba(0, 0, 0, -0.6);
 }
 
 .ngdialog.ngdialog-theme-plain .ngdialog-close:before {
-
   right: -15px;
   top: -15px;
-
 }
 
 .select2-drop {
