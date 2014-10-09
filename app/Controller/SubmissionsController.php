@@ -356,9 +356,8 @@ class SubmissionsController extends AppController {
 
     /**
      * grade submuissions view of the owner(educator) for a given $submissionId
-     * @param $classroomId
      */
-    public function gradeSubmissions($classroomId) {
+    public function gradeSubmissions() {
         $this->request->onlyAllow('get');
         $this->response->type('json');
 
@@ -501,6 +500,40 @@ class SubmissionsController extends AppController {
             $status = false;
             $message = "Submission and student not selected";
         }
+
+        //output
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * API(post)
+     */
+    public function publish() {
+        $this->request->onlyAllow('post');
+        $this->response->type('json');
+
+        $data = array();
+        $postData = $this->request->data;
+        if (isset($postData['Submission']['id'])) {
+            $submissionStatus = $this->Submission->checkStatus($postData['Submission']['id']);
+            if ($submissionStatus === "Pending Grading") {
+                if ($this->Submission->UsersSubmission->areAllGraded($postData['Submission']['id'])) {
+
+                } else {
+                    $status = false;
+                    $message = "You cannot publish without grading/marking all submissions";
+                }
+            } else {
+                $status = false;
+                $message = "Only a 'Pending Grading' submission can be published";
+            }
+        } else {
+            $status = false;
+            $message = "Submission id not selected";
+        }
+
 
         //output
         $this->set(compact('status', 'message'));

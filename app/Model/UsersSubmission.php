@@ -214,4 +214,26 @@ class UsersSubmission extends AppModel {
             return false;
         }
     }
+
+    /**
+     * Check if all the UsersSubmissions have been graded by the educator(owner)
+     * @param $submissionid
+     * @return bool
+     */
+    public function areAllGraded($submissionid) {
+        $options['conditions'] = array(
+            'submission_id' => $submissionid
+        );
+        $options['recursive'] = -1;
+
+        $total = $this->find('count', $options);
+        $options['conditions']['is_graded'] = true;
+        $graded = $this->find('count', $options);
+
+        if ($total == $graded) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

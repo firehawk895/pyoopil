@@ -388,4 +388,9 @@ class Submission extends AppModel {
         $this->id = $submissionId;
         return $this->field('status');
     }
+
+    public function publish($submissionId) {
+        $this->Submission->id = $submissionId;
+
+    }
 }
