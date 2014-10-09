@@ -236,4 +236,47 @@ class UsersSubmission extends AppModel {
             return false;
         }
     }
+
+    public function calculatePercentile($submissionId){
+
+        $query = 'SELECT a.submission_id, a.id,
+                  ROUND( 100.0 * ( SELECT COUNT(*) FROM users_submissions AS b WHERE b.marks <= a.marks ) / total.cnt, 1 )
+                  AS percentile FROM users_submissions a CROSS JOIN (SELECT COUNT(*) AS cnt FROM users_submissions) AS total WHERE a.submission_id = '.$submissionId.' ORDER BY percentile DESC';
+
+        $data = $this->query($query);
+
+        $saveData = array();
+
+        foreach($data as $d){
+            array_push($saveData,array(
+                'UsersSubmission' => array(
+                    'id' => $d['a']['id'],
+                    'percentile' => $d[0]['percentile']
+                )
+            ));
+        }
+
+        $this->saveMany($saveData);
+
+    }
+
+    public function calculateGradeFrequency($submissionId){
+
+        $options = array(
+            'conditions' => array(
+                'submission_id' => $submissionId
+            ),
+            'fields' => array(
+                'COUNT(*) AS frequency, grade'
+            ),
+            'group' => array(
+                'grade'
+            )
+        );
+
+        $data = $this->find('all',$options);
+
+        $result['GradeFrequency'] = Hash::combine($data,'{n}.UsersSubmission.grade','{n}.{n}.frequency');
+        return $result;
+    }
 }
