@@ -22,46 +22,6 @@ class Submission extends AppModel {
      * @var array
      */
     public $validate = array(
-//        'classroom_id' => array(
-//            'numeric' => array(
-//                'rule' => array('numeric'),
-//                //'message' => 'Your custom message here',
-//                //'allowEmpty' => false,
-//                //'required' => false,
-//                //'last' => false, // Stop validation after this rule
-//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-//            ),
-//        ),
-//        'total_submitted' => array(
-//            'numeric' => array(
-//                'rule' => array('numeric'),
-//                //'message' => 'Your custom message here',
-//                //'allowEmpty' => false,
-//                //'required' => false,
-//                //'last' => false, // Stop validation after this rule
-//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-//            ),
-//        ),
-//        'is_saved' => array(
-//            'boolean' => array(
-//                'rule' => array('boolean'),
-//                //'message' => 'Your custom message here',
-//                //'allowEmpty' => false,
-//                //'required' => false,
-//                //'last' => false, // Stop validation after this rule
-//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-//            ),
-//        ),
-//        'is_published' => array(
-//            'boolean' => array(
-//                'rule' => array('boolean'),
-//                //'message' => 'Your custom message here',
-//                //'allowEmpty' => false,
-//                //'required' => false,
-//                //'last' => false, // Stop validation after this rule
-//                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-//            ),
-//        ),
         'topic' => array(
             'alphaNumeric' => array(
                 'rule' => array('minLength', 8),
@@ -69,11 +29,6 @@ class Submission extends AppModel {
                 'allowEmpty' => false,
                 'required' => true,
             ),
-//            'notEmpty' => arraY(
-//                'rule' => 'notEmpty',
-//                'allowEmpty' => false,
-//                'message' => 'topic cannot be empty'
-//            )
         ),
         'description' => array(
             'alphaNumeric' => array(
@@ -108,8 +63,6 @@ class Submission extends AppModel {
             )
         )
     );
-
-    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
     /**
      * belongsTo associations
@@ -151,46 +104,12 @@ class Submission extends AppModel {
             'finderQuery' => '',
             'counterQuery' => ''
         ),
-//        'Subjective' => array(
-//            'className' => 'Subjective',
-//            'foreignKey' => 'submission_id',
-//            'dependent' => false,
-//            'conditions' => '',
-//            'fields' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'offset' => '',
-//            'exclusive' => '',
-//            'finderQuery' => '',
-//            'counterQuery' => ''
-//        ),
         'UsersSubmission' => array(
             'className' => 'UsersSubmission',
             'foreignKey' => 'submission_id',
         )
     );
 
-
-    /**
-     * hasAndBelongsToMany associations
-     * Convert to join model (hasMany)
-     * @var array
-     */
-//    public $hasAndBelongsToMany = array(
-//        'AppUser' => array(
-//            'className' => 'AppUser',
-//            'joinTable' => 'users_submissions',
-//            'foreignKey' => 'submission_id',
-//            'associationForeignKey' => 'user_id',
-//            'unique' => 'keepExisting',
-//            'conditions' => '',
-//            'fields' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'offset' => '',
-//            'finderQuery' => '',
-//        )
-//    );
 
     /**
      * Custom validation rule for model
@@ -222,24 +141,62 @@ class Submission extends AppModel {
             //TODO: concurrency scaling bug
             $submissionId = $this->getLastInsertId();
             $this->UsersSubmission->createDummyUsersSubmissions($submissionId);
-            return $status;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Given post data from controller API, save the subjective submission
+     * @param $postData
+     * @param $classroomId
+     * @return bool
+     */
+    public function addQuiz($postData, $classroomId) {
+        $postData['Submission']['classroom_id'] = $classroomId;
+//        $postData['Submission']['type'] = 'quiz';
+//        $postData['Submission']['subjective_scoring'] = "marked";
+
+        //calculate total marks
+        //sweet sweet code
+        $allMarks = Hash::extract($postData, 'Quiz.0.Quizquestion.{n}.marks');
+        $postData['Submission']['total_marks'] = array_sum($allMarks);
+
+        $options = array(
+            'deep' => true,
+            'validate' => false,
+            'atomic' => true
+        );
+        $status = @$this->saveAssociated($postData, $options);
+        if ($status) {
+            //TODO: Scalability issue
+            $submissionId = $this->getLastInsertID();
+            $this->UsersSubmission->createDummyUsersSubmissions($submissionId);
+            return true;
         }
         return false;
     }
 
     /**
      * get paginated submissions of $classroomId, requested by $userId, specified by $page
-     * OR
-     * a specific submission specified by $submissionId
      * Note that this view handles both owner(educator) and student view
-     * as student view is a subset of educator view
      * @param $classroomId
-     * @param $userId - used to get data specific to a students submission
+     * @param $userId
      * @param int $page
-     * @param bool $submissionId - used in the case of getting only one submission
      * @return array
      */
-    public function getPaginatedSubmissions($classroomId, $userId, $page = 1, $submissionId = false) {
+    public function getPaginatedSubmissions($classroomId, $userId, $page = 1) {
+        /**
+         * TODO: Design consideration
+         * seperate the methods for student and educator view,
+         * possibly "simpler" that way.
+         */
+
+        /**
+         * TODO: Probable optimization
+         * retrieve all usersSubmission for student view instead of queries inside loop
+         */
+
         //sanity check
         if ($page < 1) {
             $page = 1;
@@ -261,6 +218,7 @@ class Submission extends AppModel {
             'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
             'due_date', 'is_published', 'status', 'type', 'subjective_scoring'
         );
+
         $options['limit'] = self::PAGINATION_LIMIT;
         $offset = self::PAGINATION_LIMIT * ($page - 1);
         $options['offset'] = $offset;
@@ -268,43 +226,34 @@ class Submission extends AppModel {
             'Submission.created' => 'desc'
         );
 
-        /**
-         * This is the case when this method is being used
-         * for getting a single submission
-         * refer public function getSubmissionById($userId, $submissionId)
-         */
-        if (!empty($submissionId)) {
-            $options['limit'] = 1;
-            unset($options['offset']);
-            $options['conditions'] = array(
-                'Submission.id' => $submissionId,
-            );
-        }
-
         $data = $this->find('all', $options);
 
         /**
-         * so basically the field 'is_submitted' is being inserted into the "Submission" key
-         * this is to indicate, if and when this api is called by a student user,
-         * whether he has provided his answer of the submission or not
-         *
-         * not to be confused with the is_submitted of the UsersSubmission field
-         * which actually is a database field which indicates the same
-         *
-         * note that this field is of no use to the educator (owner)
-         * I don't like this field
+         * For student view:
+         * is_submitted field injected into 'Submission' key
+         * to determine if the student has submitted a submission
+         * UsersSubmission also has the same field with the same purpose
          */
-        foreach ($data as &$sub) {
-            //Only applicable for students
-            //get permissions and execute this only if student (or non owner)
-            $usersSubmission = $this->UsersSubmission->getUsersSubmission($sub['Submission']['id'], $userId);
-            if (empty($usersSubmission)) {
-                $sub['Submission']['is_submitted'] = false;
-            } else {
-                $sub['Submission']['is_submitted'] = true;
-                $sub['UsersSubmission'] = $usersSubmission;
+        if (!$this->Classroom->isOwner($userId, $classroomId)) {
+            foreach ($data as &$sub) {
+                //Only applicable for students
+                $usersSubmission = $this->UsersSubmission->getUsersSubmission($sub['Submission']['id'], $userId);
+                if ($usersSubmission['UsersSubmission']['is_submitted']) {
+                    $sub['Submission']['is_submitted'] = true;
+                    if (!$sub['Submission']['is_published']) {
+                        unset($usersSubmission['UsersSubmission']['grade']);
+                        unset($usersSubmission['UsersSubmission']['marks']);
+                        unset($usersSubmission['UsersSubmission']['percentile']);
+                        unset($usersSubmission['UsersSubmission']['grade_comment']);
+                        unset($usersSubmission['UsersSubmission']['is_graded']);
+                    }
+                    $sub['UsersSubmission'] = $usersSubmission;
+                } else {
+                    $sub['Submission']['is_submitted'] = false;
+                }
             }
         }
+        //php convention
         unset($sub);
         return $data;
     }
@@ -318,10 +267,9 @@ class Submission extends AppModel {
     public function updateSubmissionsStatus($classroomId) {
         $db = $this->getDataSource();
 
-        //WARNING: refactor this code at your own risk
-        //cakephp documentation says some beautiful things:
-        //it says, you need to unbindall associations
-        //unless you want JOIN update queries, WTF
+        //must unbind all associations
+        //otherwise updateAll will create joins
+        //refer cakePhp documentation
 
         $this->unbindModel(array(
             'belongsTo' => array(
@@ -336,12 +284,12 @@ class Submission extends AppModel {
             )
         ));
 
-        //I need the mySql server time for consistency
-        //Unfortunately you just can't use NOW()
-        //And even using $db->expression('NOW()') doesn't help because
-        //it unconveniently inserts a '=' before NOW()
+        //mySql server time required for consistency
+        //Unfortunately NOW() cannot be directly used
+        //using $db->expression('NOW()') doesn't help because
+        //it inserts a '=' before NOW()
 
-        $frustratedQuery = $db->fetchRow('SELECT NOW();');
+        $dbTime = $db->fetchRow('SELECT NOW();');
         //$this->log($frustratedQuery);
         $this->updateAll(
             array('Submission.status' => "'Pending Grading'"),
@@ -350,10 +298,10 @@ class Submission extends AppModel {
                     'Submission.classroom_id' => $classroomId,
                     'Submission.status' => "In Progress",
 //                    'Submission.due_date' => $db->expression('NOW()') (doesn't help) see query
-                    'Submission.due_date <= ' => $frustratedQuery[0]['NOW()']
+                    'Submission.due_date <= ' => $dbTime[0]['NOW()']
                 )
             ));
-        //use this for viewing the query and making sense of what happened above
+        //analyse query log
         //$this->log($this->getDataSource()->getLog(false, false));
     }
 
@@ -363,11 +311,34 @@ class Submission extends AppModel {
      * @return array
      */
     public function getSubmissionById($userId, $submissionId) {
-        return $this->getPaginatedSubmissions(null, $userId, 1, $submissionId);
+        $options['conditions'] = array(
+            'Submission.id' => $submissionId,
+        );
+
+        $options['fields'] = array(
+            'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
+            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'total_marks', 'status'
+        );
+
+        $options['contain'] = array(
+            'Pyoopilfile' => array(
+                'fields' => array(
+                    'id', 'file_path', 'filename', 'filesize', 'mime_type', 'created'
+                )
+            )
+        );
+
+        $data = $this->find('first', $options);
+        return $data;
     }
 
+    /**
+     * get role and create privilege of the user of a classroom (owner and student)
+     * @param $userId
+     * @param $classroomId
+     * @return array
+     */
     public function getPermissions($userId, $classroomId) {
-
         if ($this->Classroom->isOwner($userId, $classroomId)) {
             $role = "Owner";
             $allowCreate = true;
@@ -385,7 +356,7 @@ class Submission extends AppModel {
     /**
      * Calculate the scores of a quiz attempted by a student
      */
-    public function scoreTheQuiz() {
+    public function scoreQuiz() {
 
     }
 
@@ -405,30 +376,6 @@ class Submission extends AppModel {
         );
 
         $data = $this->find('first', $options);
-    }
-
-    public function getGradeSubmissionTile($userId, $submissionId) {
-        $appUser = $this->UsersSubmission->AppUser->find('first', array(
-            'recursive' => -1,
-            'conditions' => array(
-                'AppUser.id' => $userId
-            ),
-            'fields' => array(
-                'id', 'fname', 'lname', 'profile_img'
-            )
-        ));
-
-        $usersSubmission = $this->UsersSubmission->getUsersSubmission($submissionId, $userId);
-
-        if (empty($usersSubmission)) {
-            $sub['Submission']['is_submitted'] = false;
-        } else {
-            $sub['Submission']['is_submitted'] = true;
-        }
-        $sub['UsersSubmission'] = $usersSubmission;
-        $data = array_merge($appUser, $sub);
-
-        return $data;
     }
 
     /**

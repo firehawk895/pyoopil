@@ -15,7 +15,7 @@ class Quizquestion extends AppModel {
      *
      * @var array
      */
-//    public $validate = array(
+    public $validate = array(
 //        'quiz_id' => array(
 //            'numeric' => array(
 //                'rule' => array('numeric'),
@@ -26,7 +26,31 @@ class Quizquestion extends AppModel {
 //                //'on' => 'create', // Limit validation to 'create' or 'update' operations
 //            ),
 //        ),
-//    );
+        'marks' => array(
+            'numeric' => array(
+                'rule' => array('numeric'),
+                'message' => "Marks must be valid and present for all questions",
+                'allowEmpty' => false,
+                'required' => true
+            ),
+        ),
+        'question' => array(
+            'alphaNumeric' => array(
+                'rule' => array('minLength', 8),
+                'message' => 'all questions should be non-empty and 8 characters',
+                'allowEmpty' => false,
+                'required' => true,
+            ),
+        ),
+        'type' => array(
+            'allowedChoice' => array(
+                'rule' => array('inList', array('single-select', 'multi-select', 'true-false', 'match-columns')),
+                'allowEmpty' => false,
+                'required' => true,
+                'message' => 'Question type should be single-select, multi-select, true-false or match-columns'
+            )
+        )
+    );
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 

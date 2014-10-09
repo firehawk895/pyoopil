@@ -11,7 +11,7 @@ class Column extends AppModel {
      * Validation rules
      * @var array
      */
-//	public $validate = array(
+    public $validate = array(
 //		'matchthecolumn_id' => array(
 //			'numeric' => array(
 //				'rule' => array('numeric'),
@@ -32,7 +32,15 @@ class Column extends AppModel {
 //				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 //			),
 //		),
-//	);
+        'text' => array(
+            'alphaNumeric' => array(
+                'rule' => array('minLength', 8),
+                'message' => 'Column text should be non empty and at least 8 characters',
+                'allowEmpty' => false,
+                'required' => true,
+            ),
+        )
+    );
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 

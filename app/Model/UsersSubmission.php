@@ -10,38 +10,7 @@ App::uses('AppModel', 'Model');
 class UsersSubmission extends AppModel {
 
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-//	public $validate = array(
-//		'user_id' => array(
-//			'numeric' => array(
-//				'rule' => array('numeric'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//		'submission_id' => array(
-//			'numeric' => array(
-//				'rule' => array('numeric'),
-//				//'message' => 'Your custom message here',
-//				//'allowEmpty' => false,
-//				//'required' => false,
-//				//'last' => false, // Stop validation after this rule
-//				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-//			),
-//		),
-//	);
-
-    //The Associations below have been created with all possible keys, those that are not needed can be removed
-
-    /**
      * belongsTo associations
-     *
      * @var array
      */
     public $belongsTo = array(
@@ -58,7 +27,9 @@ class UsersSubmission extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => '',
-            'counterCache' => true,
+            'counterCache' => array(
+                'users_submission_count' => array('UsersSubmission.is_submitted' => 1)
+            )
         ),
         'Pyoopilfile' => array(
             'className' => 'Pyoopilfile',
@@ -80,13 +51,17 @@ class UsersSubmission extends AppModel {
         $postData['AppUser']['id'] = $userId;
         $postData['UsersSubmission']['is_submitted'] = true;
 
+        $this->log($postData);
+        $usersSubmissionId = $this->getUsersSubmissionId($postData['AppUser']['id'], $postData['Submission']['id']);
+        unset($postData['AppUser']);
+        unset($postData['Submission']);
+        $postData['UsersSubmission']['id'] = $usersSubmissionId;
+
         $options = array(
             'validate' => false,
             'deep' => true,
             'fieldList' => array(
-                'AppUser' => array('id'),
-                'Submission' => array('id'),
-                'UsersSubmission' => array('answer', 'is_submitted'),
+                'UsersSubmission' => array('id', 'answer', 'is_submitted'),
                 'Pyoopilfile' => array(
                     'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
                 )
@@ -100,6 +75,34 @@ class UsersSubmission extends AppModel {
         }
     }
 
+    /**
+     * returns a UsersSubmission record, that is guaranteed to exist
+     * because of createDummySubmissions()
+     * @param $userId
+     * @param $submissionId
+     * @return mixed
+     */
+    public function getUsersSubmissionId($userId, $submissionId) {
+        $usersSubmission = $this->find('first', array(
+            'conditions' => array(
+                'user_id' => $userId,
+                'submission_id' => $submissionId
+            ),
+            'recursive' => -1,
+            'fields' => array(
+                'id'
+            )
+        ));
+        return $usersSubmission['UsersSubmission']['id'];
+    }
+
+    /**
+     * Used for getting the submission details of a student
+     * injected in getSubmissions API
+     * @param $submissionId
+     * @param $userId
+     * @return array
+     */
     public function getUsersSubmission($submissionId, $userId) {
         $options['contain'] = array(
             'Pyoopilfile'
@@ -130,12 +133,20 @@ class UsersSubmission extends AppModel {
         );
 
         $options['fields'] = array(
-            'grade', 'marks', 'answer', 'pyoopilfile_id', 'is_submitted', 'created'
+            'grade', 'marks', 'answer', 'grade_comment', 'is_graded', 'pyoopilfile_id', 'is_submitted', 'created'
         );
 
         $options['conditions'] = array(
             'submission_id' => $submissionId
         );
+
+        //Only show the submissions of users who have submitted
+        //until Submissin status is "Pending Grading" or "Graded"
+        $this->Submission->id = $submissionId;
+        $status = $this->Submission->field('status');
+        if ($status === "In Progress") {
+            $options['conditions']['is_submitted'] = true;
+        }
 
         return $this->find('all', $options);
     }
@@ -182,7 +193,7 @@ class UsersSubmission extends AppModel {
                 'UsersClassroom.is_teaching' => false
             ),
             'fields' => array(
-                'id'
+                'id', 'user_id', 'is_teaching', 'classroom_id'
             )
         );
 
@@ -193,38 +204,14 @@ class UsersSubmission extends AppModel {
             array_push($returnData, array(
                 'UsersSubmission' => array(
                     'submission_id' => $submissionId,
-                    'user_id' => $value['UsersClassroom']['id'],
+                    'user_id' => $value['UsersClassroom']['user_id'],
                 )));
         }
 
-        if($this->saveMany($returnData, array('validate' => false))){
+        if ($this->saveMany($returnData, array('validate' => false))) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-
-    /**
-     *
-     * @param $classroomId
-     */
-    private function _getFilteredPeople($classroomId) {
-//        $usersSubmission = new UsersSubmission();
-//
-//        $options = array(
-//            'contains' => array(
-//                'AppUser' => array(
-//                    'id'
-//                )
-//            ),
-//            'conditions' => array(
-//                'classroom_id' => $classroomId,
-//            ),
-//            'fields' => array(
-//                'id'
-//            )
-//        );
-    }
-
 }
