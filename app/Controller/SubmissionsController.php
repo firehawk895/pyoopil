@@ -46,6 +46,7 @@ class SubmissionsController extends AppController {
             if ($this->Submission->addSubjective($postData, $classroomId)) {
                 $status = true;
                 $message = "Successfully created Subjective Assignment";
+                //Warning TODO: scaling issue
                 $lastSubmissionId = $this->Submission->getLastInsertId();
                 $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $lastSubmissionId);
             } else {
@@ -95,7 +96,11 @@ class SubmissionsController extends AppController {
             )
             ) {
                 //Successfully validated, now safely do a saveAssociated
-                if (!($status = $this->Submission->addQuiz($postData, $classroomId))) {
+                if (($status = $this->Submission->addQuiz($postData, $classroomId))) {
+                    //Warning TODO: Scaling issue
+                    $lastSubmissionId = $this->Submission->getLastInsertId();
+                    $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $lastSubmissionId);
+                } else {
                     $message = "Could not save the quiz";
                 }
             } else {
@@ -198,6 +203,7 @@ class SubmissionsController extends AppController {
 
         if ($status) {
             $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $postData['Submission']['id']);
+            $data['UsersSubmission'] = $this->Submission->UsersSubmission->getUsersSubmission($postData['Submission']['id'], AuthComponent::user('id'));
         }
 
         //output
@@ -520,7 +526,6 @@ class SubmissionsController extends AppController {
             if ($submissionStatus === "Pending Grading") {
                 if ($this->Submission->UsersSubmission->areAllGraded($postData['Submission']['id'])) {
                     $status = $this->Submission->publish($postData['Submission']['id']);
-
                     if ($status) {
                         $this->Submission->UsersSubmission->calculatePercentile($postData['Submission']['id']);
                         $message = "Submission has been published, and reports generated";
