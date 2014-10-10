@@ -59,11 +59,9 @@ class AttendancesController extends AppController {
         if (isset($postData['ids']) && isset($postData['date'])) {
             if (Validation::date($postData['date'], 'ymd') && CakeTime::isPast($postData['date'])) {
                 $userIdsList = explode(",", $postData['ids']);
-                if (empty($this->Attendance->recordAttendance($classroomId, $userIdsList, $postData['date']))) {
-                    $status = false;
+                if ($status = empty($this->Attendance->recordAttendance($classroomId, $userIdsList, $postData['date']))) {
                     $message = "There was a problem saving the attendance";
                 } else {
-                    $status = true;
                     $message = "Attendance was saved for " . $postData['date'];
                 }
             } else {
@@ -90,12 +88,12 @@ class AttendancesController extends AppController {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
 
-        if (isset($this->params['url']['date'])) {
+        if (isset($this->params['url']['date']) && Validation::date($this->params['date'], 'ymd')) {
             $date = $this->params['url']['date'];
             $status = !empty($data = $this->Attendance->getAttendanceByDate($classroomId, $date));
         } else {
             $status = false;
-            $message = "Date not selected";
+            $message = "Date not selected or invalid";
         }
 
         $this->set(compact('data', 'status', 'message'));

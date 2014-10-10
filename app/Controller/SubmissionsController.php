@@ -202,8 +202,10 @@ class SubmissionsController extends AppController {
         }
 
         if ($status) {
+            //logic leak for student submissions view
             $data = $this->Submission->getSubmissionById(AuthComponent::user('id'), $postData['Submission']['id']);
             $data['UsersSubmission'] = $this->Submission->UsersSubmission->getUsersSubmission($postData['Submission']['id'], AuthComponent::user('id'));
+            $data['Submission']['is_submitted'] = true;
         }
 
         //output

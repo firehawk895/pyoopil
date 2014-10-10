@@ -335,8 +335,8 @@ class Classroom extends AppModel {
 
     /**
      * check if the user($userId) is the owner of classroom($classroomId)
-     * @param $userId userId(pk) of given user
-     * @param $classroomId classroomId(pk) of classroom to be checked
+     * @param $userId int userId(pk) of given user
+     * @param $classroomId int classroomId(pk) of classroom to be checked
      * @return boolean
      */
     public function isOwner($userId, $classroomId) {
