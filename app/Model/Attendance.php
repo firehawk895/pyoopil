@@ -49,37 +49,54 @@ class Attendance extends AppModel {
     }
 
     public function recordAttendance($classroomId, $userIds, $date) {
-        //mark all present
-        //update the absentees
+
         $options = array(
             'conditions' => array(
-                'UsersClassroom.classroom_id' => $classroomId,
-                'UsersClassroom.is_teaching' => false
-            ),
-            'fields' => array(
-                'id', 'user_id', 'classroom_id'
+                'classroom_id' => $classroomId,
+                'date' => $date
             )
         );
 
-        $data = $this->AppUser->UsersClassroom->find('all', $options);
-        $ids = Hash::extract($data, '{n}.UsersClassroom.user_id');
-        $saveData = array();
+        $attendance = $this->find('all',$options);
 
-        foreach ($ids as $id) {
-            array_push($saveData, array(
-                    'user_id' => $id,
-                    'classroom_id' => $classroomId,
-                    'date' => $date,
-                    'is_present' => true
+        if(!$attendance){
+            $options = array(
+                'conditions' => array(
+                    'UsersClassroom.classroom_id' => $classroomId,
+                    'UsersClassroom.is_teaching' => false
+                ),
+                'fields' => array(
+                    'id', 'user_id', 'classroom_id'
                 )
             );
-        }
 
-        if ($this->saveMany($saveData)) {
-            return $this->updateAll(
-                array('is_present' => false),
-                array('user_id' => $userIds)
-            );
+            $data = $this->AppUser->UsersClassroom->find('all', $options);
+            $ids = Hash::extract($data, '{n}.UsersClassroom.user_id');
+            $saveData = array();
+
+            foreach ($ids as $id) {
+                array_push($saveData, array(
+                        'user_id' => $id,
+                        'classroom_id' => $classroomId,
+                        'date' => $date,
+                        'is_present' => true
+                    )
+                );
+            }
+
+            if ($this->saveMany($saveData)) {
+                return $this->updateAll(
+                    array('is_present' => false),
+                    array(
+                        'user_id' => $userIds,
+                        'classroom_id' => $classroomId,
+                        'date' => $data
+                    )
+                );
+            }
+        }
+        else{
+            return false;
         }
     }
 
