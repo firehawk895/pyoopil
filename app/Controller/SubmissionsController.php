@@ -116,14 +116,11 @@ class SubmissionsController extends AppController {
     private function _validateChoicesAndAnswers($quizQuestion) {
         /**
          * case:
-         * "single-select":
+         * "single-select": AND "multi-select":
          * at least 2 choices present
          * 1 choice is selected as answer
-         * "multi-select":
-         * at least 2 choices present
-         * at least 1 choice is selected as answer
          * "true-false":
-         * 2 choices present, one is true, one is false
+         * exactly 2 choices present, one is true, one is false
          * 1 choice is selected as answer
          * "match-column":
          * At least 2 pairs of columns present
@@ -375,7 +372,7 @@ class SubmissionsController extends AppController {
             }
 
             //if submission.status = "In Progress"
-            $data = $this->Submission->UsersSubmission->getSubmittedSubmissions($submissionId);
+            $data = $this->Submission->UsersSubmission->getSubmittedSubmissions($submissionId, $page);
 
             $status = true;
         }
@@ -444,6 +441,7 @@ class SubmissionsController extends AppController {
             );
             if ($this->Submission->UsersSubmission->save($usersSubmission)) {
                 $status = true;
+                $message = "The Grade/Marks have been applied";
             } else {
                 $status = false;
                 $message = "Error in grading the Submission";
@@ -488,6 +486,7 @@ class SubmissionsController extends AppController {
                 );
                 if ($this->Submission->UsersSubmission->save($usersSubmission)) {
                     $status = true;
+                    $message = "the comment has been saved";
                 } else {
                     $status = false;
                     $message = "Error in adding the comment";
@@ -533,7 +532,6 @@ class SubmissionsController extends AppController {
             $status = false;
             $message = "Submission id not selected";
         }
-
 
         //output
         $this->set(compact('status', 'message'));

@@ -2,12 +2,16 @@
 App::uses('AppModel', 'Model');
 /**
  * UsersSubmission Model
- *
  * @property User $User
  * @property Submission $Submission
  * @property Pyoopilfile $Pyoopilfile
  */
 class UsersSubmission extends AppModel {
+
+    /**
+     * gradeSubmissions pagination limit
+     */
+    const PAGINATION_LIMIT = 10;
 
     /**
      * belongsTo associations
@@ -120,9 +124,14 @@ class UsersSubmission extends AppModel {
      * get all user's submitted submissions for a given submission
      * that is used by GradeSubmissions API
      * @param $submissionId
+     * @param $page
      * @return array
      */
-    public function getSubmittedSubmissions($submissionId) {
+    public function getSubmittedSubmissions($submissionId, $page) {
+        if ($page < 1) {
+            $page = 1;
+        }
+
         $options['contain'] = array(
             'AppUser' => array(
                 'id', 'fname', 'lname', 'profile_img'
@@ -139,6 +148,11 @@ class UsersSubmission extends AppModel {
         $options['conditions'] = array(
             'submission_id' => $submissionId
         );
+
+        //pagination
+        $options['limit'] = self::PAGINATION_LIMIT;
+        $offset = self::PAGINATION_LIMIT * ($page - 1);
+        $options['offset'] = $offset;
 
         //Only show the submissions of users who have submitted
         //until Submissin status is "Pending Grading" or "Graded"
@@ -237,18 +251,18 @@ class UsersSubmission extends AppModel {
         }
     }
 
-    public function calculatePercentile($submissionId){
+    public function calculatePercentile($submissionId) {
 
         $query = 'SELECT a.submission_id, a.id,
                   ROUND( 100.0 * ( SELECT COUNT(*) FROM users_submissions AS b WHERE b.marks <= a.marks ) / total.cnt, 1 )
-                  AS percentile FROM users_submissions a CROSS JOIN (SELECT COUNT(*) AS cnt FROM users_submissions) AS total WHERE a.submission_id = '.$submissionId.' ORDER BY percentile DESC';
+                  AS percentile FROM users_submissions a CROSS JOIN (SELECT COUNT(*) AS cnt FROM users_submissions) AS total WHERE a.submission_id = ' . $submissionId . ' ORDER BY percentile DESC';
 
         $data = $this->query($query);
 
         $saveData = array();
 
-        foreach($data as $d){
-            array_push($saveData,array(
+        foreach ($data as $d) {
+            array_push($saveData, array(
                 'UsersSubmission' => array(
                     'id' => $d['a']['id'],
                     'percentile' => $d[0]['percentile']
@@ -260,7 +274,7 @@ class UsersSubmission extends AppModel {
 
     }
 
-    public function calculateGradeFrequency($submissionId){
+    public function calculateGradeFrequency($submissionId) {
 
         $options = array(
             'conditions' => array(
@@ -274,9 +288,9 @@ class UsersSubmission extends AppModel {
             )
         );
 
-        $data = $this->find('all',$options);
+        $data = $this->find('all', $options);
 
-        $result['GradeFrequency'] = Hash::combine($data,'{n}.UsersSubmission.grade','{n}.{n}.frequency');
+        $result['GradeFrequency'] = Hash::combine($data, '{n}.UsersSubmission.grade', '{n}.{n}.frequency');
         return $result;
     }
 }
