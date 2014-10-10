@@ -452,3 +452,17 @@ button.disabled, button[disabled] {
   width: 90% !important;
   height: 15px;
 }
+
+.chosen-attndc .chosen-container-single .chosen-single {
+  height: 15px !important;
+  width: 254px;
+  margin-left: 30px;
+}
+
+.chosen-attndc .chosen-container {
+  width: 50% !important;
+}
+
+.chosen-attndc {
+  padding-left: 175px;
+}

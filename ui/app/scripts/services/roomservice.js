@@ -306,9 +306,9 @@ angular.module('uiApp')
         .withHttpConfig({transformRequest: angular.identity})
         .customPOST(formData, "answerSubjective.json", undefined, {'Content-Type': undefined});
     };
-    self.getGradeSubmissions = function (roomId, assignmentId, page) {
+    self.getGradeSubmissions = function (assignmentId, page) {
       page = page || 1;
-      return restangular.one("Classrooms", roomId).all("Submissions").customGET("gradeSubmissions.json", {page: page, id: assignmentId});
+      return restangular.all("Classrooms").all("Submissions").customGET("gradeSubmissions.json", {page: page, id: assignmentId});
     };
     self.assignComment = function (submissionId, userId, comment) {
       var data = {

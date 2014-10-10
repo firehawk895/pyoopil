@@ -1,6 +1,6 @@
 <p>The attendance for all students have been marked as present by default. Click on the icon to mark absent</p>
 <div class="academic-title" style="float:left">
-  <p class="aca-heading">Select Date</p>
+  <p class="aca-heading">Take attendance</p>
 
   <div class="calender">
     <input type="text" class="pop-dura date_popup date-picker" ui-jq="datepicker"
@@ -8,11 +8,15 @@
            ng-model="vm.attendanceDate" ng-change="viewAttendance()">
   </div>
 </div>
-<div class="create-popup">
-  <select class="chosen-select select_option"
-          ng-model="vm.attendanceDate"
-          ng-options="date as date for date in vm.dates" ng-change="viewAttendance()">
-  </select>
+<!--<div class="create-popup">-->
+<div class="create-popup chosen-attndc right-pop" style="float:left">
+  <span><p class="aca-heading">Select Date</p></span>
+  <span><select class="chosen-select select_option " chosen
+                ng-model="vm.attendanceDate"
+                ng-options="date as date for date in vm.dates" ng-change="viewAttendance()"
+      >
+    <option value=''>Select a date</option>
+  </select></span>
 </div>
 <div class="submission-tbl" ng-if="vm.showAttendanceList">
   <table class="enga-tbl">

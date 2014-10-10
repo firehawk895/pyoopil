@@ -11,14 +11,7 @@
         </div>
         <div ng-class="{'assign-hide' :!vm.showSubmissionDetail}">
           <p class="hide-txt">{{vm.submissionDetail.Submission.description}}</p>
-          <!--<a class="assgin-att dialogbox" title="dialogbox0"-->
-          <!--ng-if="submissionDetail.Pyoopilfile.filename && !checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
-          <!--ng-click="openDocViewerDialog(submissionDetail.Pyoopilfile.file_path)">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
-          <!--| bytes}}</a>-->
-          <!--<a ng-href="{{submissionDetail.Pyoopilfile.file_path}}" class="assgin-att dialogbox" title="dialogbox0"-->
-          <!--ng-if="submissionDetail.Pyoopilfile.filename  && checkIfPic(submissionDetail.Pyoopilfile.mime_type)"-->
-          <!--ui-jq="prettyPhoto">{{submissionDetail.Pyoopilfile.filename}}.{{submissionDetail.Pyoopilfile.filesize-->
-          <!--| bytes}}</a>-->
+
           <div class="att-doc hand" ng-if="vm.submissionDetail.Pyoopilfile.filename"><a
               ng-if="!checkIfPic(vm.submissionDetail.Pyoopilfile.mime_type)"
               ng-click="openDocViewerDialog(vm.submissionDetail.Pyoopilfile.file_path)"
@@ -56,26 +49,26 @@
               <tbody ng-repeat="gradeSubmission in gradeSubmissions">
               <tr>
                 <td class="ptbl-td1">
-                  <div class="pend-icon" ng-if="!gradeSubmission.Submission.is_submitted"></div>
-                  <div class="done-icon" ng-if="gradeSubmission.Submission.is_submitted"></div>
+                  <div class="pend-icon" ng-if="!gradeSubmission.UsersSubmission.is_submitted"></div>
+                  <div class="done-icon" ng-if="gradeSubmission.UsersSubmission.is_submitted"></div>
                 </td>
                 <td class="ptbl-td2"><a href=""><img ng-src="{{gradeSubmission.AppUser.profile_img}}" class="assign-img"
                                                      alt="img"><span
                     class="name-txt">{{gradeSubmission.AppUser.fname}} {{gradeSubmission.AppUser.lname}}</span></a></td>
                 <td class="ptbl-td3">
-                  <a ng-href="{{gradeSubmission.UsersSubmission.Pyoopilfile.file_path}}" class="sub-icon dialogbox"
+                  <a ng-href="{{gradeSubmission.Pyoopilfile.file_path}}" class="sub-icon dialogbox"
                      title="dialogbox1"
-                     ng-if="gradeSubmission.Submission.is_submitted && checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
+                     ng-if="gradeSubmission.UsersSubmission.is_submitted && checkIfPic(gradeSubmission.Pyoopilfile.mime_type)"
                      ui-jq="prettyPhoto"></a>
                   <a class="sub-icon dialogbox" title="dialogbox1"
-                     ng-if="gradeSubmission.Submission.is_submitted && !checkIfPic(gradeSubmission.UsersSubmission.Pyoopilfile.mime_type)"
-                     ng-click="openDocViewerDialog(gradeSubmission.UsersSubmission.Pyoopilfile.file_path)"></a>
+                     ng-if="gradeSubmission.UsersSubmission.is_submitted && !checkIfPic(gradeSubmission.Pyoopilfile.mime_type)"
+                     ng-click="openDocViewerDialog(gradeSubmission.Pyoopilfile.file_path)"></a>
                 </td>
                 <td class="ptbl-td4">
                   <input type="text" class="assign-txtbx"
-                         ng-model="gradeSubmission.UsersSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
+                         ng-model="gradeSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
                          maxlength="3"
-                         ng-readonly="gradeSubmission.UsersSubmission.UsersSubmission.is_graded && !vm.editGrade"
+                         ng-readonly="gradeSubmission.UsersSubmission.is_graded && !vm.editGrade"
                          ng-enter="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                          ng-blur="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                          ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'"
@@ -85,7 +78,7 @@
                     <div class="select-class">
                       <select ui-jq="chosen"
                               ng-if="vm.submissionDetail.Submission.subjective_scoring=='graded'"
-                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade"
+                              ng-model="gradeSubmission.UsersSubmission.grade"
                               ng-change="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                               ng-options="grade for grade in gradesList">
                       </select>
@@ -102,14 +95,14 @@
                   <div class="txtarea-div">
                     <textarea
                         class="comment-txtarea"
-                        readonly>{{gradeSubmission.UsersSubmission.UsersSubmission.answer}}</textarea>
+                        readonly>{{gradeSubmission.UsersSubmission.answer}}</textarea>
                   </div>
                   <div class="comm-btns">
                     <a href="" class="follow active comm-link"
-                       ng-if="!gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-if="!gradeSubmission.UsersSubmission.grade_comment"
                        ng-click="vm.addComment=!vm.addComment">Add Comment</a>
                     <a href="" class="follow active comm-link"
-                       ng-if="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                       ng-if="gradeSubmission.UsersSubmission.grade_comment"
                        ng-click="vm.showComment=!vm.showComment">Show Comment</a>
                   </div>
                   <div ng-if="vm.addComment">
@@ -123,7 +116,7 @@
                   </div>
                   <div ng-if="vm.showComment">
                     <textarea class="comment-txtarea"
-                              ng-model="gradeSubmission.UsersSubmission.UsersSubmission.grade_comment"
+                              ng-model="gradeSubmission.UsersSubmission.grade_comment"
                               readonly></textarea>
                   </div>
                 </td>

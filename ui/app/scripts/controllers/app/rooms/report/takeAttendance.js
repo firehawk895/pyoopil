@@ -38,7 +38,7 @@ angular.module('uiApp')
         roomService.addAttendance($scope.roomId, $scope.vm.absentList, $scope.vm.attendanceDate).then(function (result) {
           if (result.status) {
 //            $scope.vm.currentStudents = result.data;
-//            $scope.vm.dates=result.dates;
+            $scope.vm.dates.push($scope.vm.attendanceDate);
           }
         });
       };

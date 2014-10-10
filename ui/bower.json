@@ -28,7 +28,8 @@
     "angular-moment": "~0.8.2",
     "angular-timer": "~1.1.7",
     "satellizer": "~0.7.1",
-    "angular-off-click": "~0.0.2"
+    "angular-off-click": "~0.0.2",
+    "angular-chosen-localytics": "~1.0.6"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",
