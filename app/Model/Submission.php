@@ -3,7 +3,6 @@ App::uses('AppModel', 'Model');
 App::uses('CakeTime', 'Utility');
 /**
  * Submission Model
- *
  * @property Classroom $Classroom
  * @property Pyoopilfile $Pyoopilfile
  * @property Quiz $Quiz
@@ -195,6 +194,9 @@ class Submission extends AppModel {
         /**
          * TODO: Probable optimization
          * retrieve all usersSubmission for student view instead of queries inside loop
+         * its easy, write the condition inside contain
+         * contain => array(
+         *  'UsersSubmission' => ..
          */
 
         //sanity check
@@ -206,7 +208,6 @@ class Submission extends AppModel {
             'Submission.classroom_id' => $classroomId,
 //            'UsersSubmission.user_id' => AuthComponent::user('id')
         );
-//        $options['recursive'] = -1;
         $options['contain'] = array(
             'Pyoopilfile' => array(
                 'fields' => array(
@@ -216,7 +217,7 @@ class Submission extends AppModel {
         );
         $options['fields'] = array(
             'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
-            'due_date', 'is_published', 'status', 'type', 'subjective_scoring'
+            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'pyoopilfile_id'
         );
 
         $options['limit'] = self::PAGINATION_LIMIT;
@@ -252,9 +253,9 @@ class Submission extends AppModel {
                     $sub['Submission']['is_submitted'] = false;
                 }
             }
+            //php convention
+            unset($sub);
         }
-        //php convention
-        unset($sub);
         return $data;
     }
 
@@ -290,7 +291,6 @@ class Submission extends AppModel {
         //it inserts a '=' before NOW()
 
         $dbTime = $db->fetchRow('SELECT NOW();');
-        //$this->log($frustratedQuery);
         $this->updateAll(
             array('Submission.status' => "'Pending Grading'"),
             array(
@@ -303,6 +303,28 @@ class Submission extends AppModel {
             ));
         //analyse query log
         //$this->log($this->getDataSource()->getLog(false, false));
+
+        //http://book.cakephp.org/2.0/en/models/associations-linking-models-together.html
+        // "NOTE: unbindModel only affects the very next
+        // find function. An additional find call will use
+        // the configured association information."
+        //
+        // Since a find was not called here, the next find anywhere will be without
+        // associations, causing difficult to trace bugs
+        // hence rebind them here.
+
+        $this->bindModel(array(
+            'belongsTo' => array(
+                'Classroom',
+                'Pyoopilfile'
+            )
+        ));
+        $this->bindModel(array(
+            'hasMany' => array(
+                'Quiz',
+                'UsersSubmission'
+            )
+        ));
     }
 
     /**
@@ -317,7 +339,7 @@ class Submission extends AppModel {
 
         $options['fields'] = array(
             'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
-            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'total_marks', 'status'
+            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'total_marks', 'status', 'pyoopilfile_id'
         );
 
         $options['contain'] = array(
@@ -389,8 +411,13 @@ class Submission extends AppModel {
         return $this->field('status');
     }
 
+    /**
+     * publish a submission
+     * @param $submissionId
+     * @return bool
+     */
     public function publish($submissionId) {
-        $this->Submission->id = $submissionId;
-
+        $this->id = $submissionId;
+        return $this->saveField('is_published', true);
     }
 }
