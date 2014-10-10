@@ -64,10 +64,11 @@ class AttendancesController extends AppController {
                     $message = "There was a problem saving the attendance";
                 } else {
                     $status = true;
+                    $message = "Attendance was saved for " . $postData['date'];
                 }
             } else {
                 $status = false;
-                $message = "Date must be valid and a past date";
+                $message = $postData['date'] . " must be a valid past date";
             }
         } else {
             $status = false;
@@ -91,7 +92,7 @@ class AttendancesController extends AppController {
 
         if (isset($this->params['url']['date'])) {
             $date = $this->params['url']['date'];
-            $status = !empty($this->Attendance->getAttendanceByDate($classroomId, $date));
+            $status = !empty($data = $this->Attendance->getAttendanceByDate($classroomId, $date));
         } else {
             $status = false;
             $message = "Date not selected";

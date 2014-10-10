@@ -32,6 +32,11 @@ class Attendance extends AppModel {
 //        )
     );
 
+    /**
+     * get dates for a classroom for which attendance has been taken
+     * @param $classroomId
+     * @return array
+     */
     public function getAttendanceDates($classroomId) {
         $options = array(
             'conditions' => array(
@@ -48,18 +53,39 @@ class Attendance extends AppModel {
         return $data;
     }
 
-    public function recordAttendance($classroomId, $userIds, $date) {
+    /**
+     * Saving the attendance of a classroom on a date
+     * @param $classroomId classroom for which attendance taken
+     * @param $userIdList userIds to be marked absent
+     * @param $date date for which attendance is taken
+     * @return bool
+     */
+    public function recordAttendance($classroomId, $userIdList, $date) {
+        //TODO : use transactions for integrity
+        /**
+         * if attendance taken before
+         *      updateAll to present
+         * else
+         *      createAll
+         * endif
+         * updateAll in usersIdList to absent
+         */
 
-        $options = array(
-            'conditions' => array(
-                'classroom_id' => $classroomId,
-                'date' => $date
-            )
+        $conditions = array(
+            'classroom_id' => $classroomId,
+            'date' => $date
         );
+        $attendanceTaken = $this->hasAny($conditions);
 
-        $attendance = $this->find('all',$options);
-
-        if(!$attendance){
+        if ($attendanceTaken) {
+            $status = $this->updateAll(
+                array('is_present' => true),
+                array(
+                    'classroom_id' => $classroomId,
+                    'date' => $date
+                )
+            );
+        } else {
             $options = array(
                 'conditions' => array(
                     'UsersClassroom.classroom_id' => $classroomId,
@@ -67,7 +93,8 @@ class Attendance extends AppModel {
                 ),
                 'fields' => array(
                     'id', 'user_id', 'classroom_id'
-                )
+                ),
+                'recursive' => -1
             );
 
             $data = $this->AppUser->UsersClassroom->find('all', $options);
@@ -83,25 +110,31 @@ class Attendance extends AppModel {
                     )
                 );
             }
+            $status = !empty($this->saveMany($saveData));
+        }
 
-            if ($this->saveMany($saveData)) {
-                return $this->updateAll(
-                    array('is_present' => false),
-                    array(
-                        'user_id' => $userIds,
-                        'classroom_id' => $classroomId,
-                        'date' => $data
-                    )
-                );
-            }
+        if ($status) {
+            $status = $this->updateAll(
+                array('is_present' => false),
+                array(
+                    'user_id' => $userIdList,
+                    'classroom_id' => $classroomId,
+                    'date' => $date
+                )
+            );
         }
-        else{
-            return false;
-        }
+        $this->log($this->getDataSource()->getLog(false, false));
+        return $status;
     }
 
-    public function getAttendanceByDate($classroomId, $date) {
-
+    /**
+     * view the attendance for a classroom on a particular date
+     * @param $classroomId
+     * @param $date
+     * @return array
+     */
+    public
+    function getAttendanceByDate($classroomId, $date) {
         $options = array(
             'conditions' => array(
                 'classroom_id' => $classroomId,
@@ -118,7 +151,6 @@ class Attendance extends AppModel {
                 )
             )
         );
-
         return $this->find('all', $options);
     }
 }

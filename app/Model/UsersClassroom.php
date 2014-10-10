@@ -137,11 +137,6 @@ class UsersClassroom extends AppModel {
                 'AND' => array(
                     'UsersClassroom.classroom_id' => $classroomId
                 )));
-        /**
-         * study the SQL log with the following commands,
-         * and land up "sneaking" the IN clause into the ORM
-         * .Genius.
-         */
 //        $this->log($status);
 //        $this->log($this->getDataSource()->getLog(false, false));
         return $status;
