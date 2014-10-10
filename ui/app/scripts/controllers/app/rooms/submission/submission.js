@@ -112,14 +112,22 @@ angular.module('uiApp')
         if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
           notificationService.show(false, "Cannot upload more than 5 MB");
       };
+
       $scope.createQuizAssignment = function () {
+
         roomService.createQuizAssignment($scope.vm, $scope.roomId).then(function (result) {
           if (result.status) {
-            notificationService.show(result.status, "Quiz Created Successfully");
+            notificationService.show(result.status, result.message);
             $scope.submissions.unshift(result.data[0]);
+            ngDialog.close();
+          }
+          else {
+            var errorKey = Object.keys(result.message)[0];
+            notificationService.show(result.status, result.message[errorKey]);
+            $scope.vm.areYouSure = false;
           }
         });
-        ngDialog.close();
+
       };
       $scope.displayContent = function (index) {
         if (!$scope.canCreate) {
@@ -147,7 +155,6 @@ angular.module('uiApp')
         modalService.openDocViewerDialog($scope, path);
       };
 
-
       $scope.answerSubjective = function (index, id) {
         if ($scope.vm.answerText == "")
           notificationService.show(false, "Cannot submit blank Answer");
@@ -159,7 +166,7 @@ angular.module('uiApp')
             roomService.answerSubjective($scope.vm.answerText, $scope.vm.file, id).then(function (result) {
               notificationService.show(result.status, result.message);
               if (result.status) {
-                $scope.submissions[index] = result.data[0];
+                $scope.submissions[index] = result.data;
               }
             });
           }

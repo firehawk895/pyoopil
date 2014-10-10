@@ -8,7 +8,7 @@
     </div>
     <div class="pop-content">
       <div class="quest-popup">
-        <form class="form-data create-popup" name="formQuiz">
+        <form class="form-data create-popup">
           <div class="addques-here">
             <!-- Single Select -->
             <div class="ques-num" ng-repeat="questionChoice in vm.questionChoices" ng-init="questionIndex=$index">
@@ -17,7 +17,7 @@
 
                 <div class="ryt-title">Max. Marks
                   <input class="pop-dura" type="text" value="" pattern="[0-9]{0,3}" maxlength="3"
-                         ng-model="questionChoice.maxMarks" ng-required="true" ng-blur="calculateTotalMarks()">
+                         ng-model="questionChoice.maxMarks" ng-blur="calculateTotalMarks()">
                 </div>
               </div>
               <div class="quest-lst-box">
@@ -129,7 +129,7 @@
           </div>
           <div class="quiz-footer clearfix">
             <div class="footer-btn">
-              <button class="sub-btn" ng-disabled="formQuiz.$invalid || vm.areYouSure" ng-click="vm.areYouSure=true">
+              <button class="sub-btn" ng-disabled="vm.areYouSure" ng-click="vm.areYouSure=true">
                 Publish
               </button>
             </div>

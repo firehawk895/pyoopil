@@ -25,10 +25,10 @@
               <div class="clearfix">
                 <div class="left-pop">
                   <label>Topic of the assignment<span class="mandatory"> *</span></label>
-                  <input type="text" class="pop-input" ng-model="vm.topic">
+                  <input type="text" class="pop-input" ng-model="vm.topic" tooltip="Min. 8 characters">
 
                   <label>Description<span class="mandatory"> *</span></label>
-                  <textarea class="pop-txtarea" ng-model="vm.description"></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.description" tooltip="Min. 8 characters"></textarea>
                   <label>Grading Policy</label>
                   <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
                   <label>Grading Type<span class="mandatory"> *</span></label>
@@ -60,7 +60,7 @@
                     <div class="time-check">
                       <label>Due Date and Due time<span class="mandatory"> *</span></label>
                     </div>
-                    <input type="datetime-local" ng-model="vm.dueDate">
+                    <input type="datetime-local" ng-model="vm.dueDate" tooltip="Date should be in future">
 
                     <p>Please enter the due date and time for the assignment
                       <br><br>
@@ -88,11 +88,13 @@
               <div class="clearfix">
                 <div class="left-pop">
                   <label>Topic of the quiz<span class="mandatory"> *</span></label>
-                  <input type="text" class="pop-input" ng-model="vm.topic" required>
+                  <input type="text" class="pop-input" ng-model="vm.topic" required ng-minlength="8"
+                         tooltip="Min. 8 characters">
                   <label>Quiz Description<span class="mandatory"> *</span></label>
-                  <textarea class="pop-txtarea" ng-model="vm.description" required></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.description" required ng-minlength="8"
+                            tooltip="Min. 8 characters"></textarea>
                   <label>Grading Policy</label>
-                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy" required></textarea>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
                   <label>Total Time<span class="mandatory"> *</span></label>
 
                   <input type="number" min="0" max="5" class="pop-dura" ng-model="vm.hours" required>
@@ -117,9 +119,17 @@
                     <div class="time-check">
                       <label>Due Date and Due Time<span class="mandatory"> *</span></label>
                     </div>
-                    <input type="datetime-local" ng-model="vm.dueDate" required>
+                    <input type="datetime-local" ng-model="vm.dueDate" required tooltip="Date should be in future">
 
-                    <p class="wordwrap">Please enter the due date and time for the assignment</p>
+                    <p>Please enter the due date and time for the assignment
+                      <br><br>
+                      e.g.
+                      <br>
+                      mm-dd-yyyy hh:mm (24hr format)
+                      <br>
+                      or
+                      <br>
+                      mm-dd-yyyy hh:mm am/pm</p>
                   </div>
                 </div>
               </div>

@@ -68,11 +68,11 @@
                   <input type="text" class="assign-txtbx"
                          ng-model="gradeSubmission.UsersSubmission.marks" pattern="[0,9]{0,3}"
                          maxlength="3"
-                         ng-readonly="gradeSubmission.UsersSubmission.is_graded && !vm.editGrade"
+                         ng-readonly="gradeSubmission.UsersSubmission.is_graded && !gradeSubmission.editGrade"
                          ng-enter="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                          ng-blur="assignGrade(vm.submissionDetail.Submission.id,gradeSubmission.AppUser.id,$index)"
                          ng-if="vm.submissionDetail.Submission.subjective_scoring=='marked'"
-                         ng-dblclick="vm.editGrade=true">
+                         ng-dblclick="gradeSubmission.editGrade=true">
 
                   <div class="create-popup">
                     <div class="select-class">

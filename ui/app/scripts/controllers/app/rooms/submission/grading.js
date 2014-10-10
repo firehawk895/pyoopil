@@ -4,9 +4,11 @@ angular.module('uiApp')
 
       $scope.page = 1;
       $scope.vm.showSubmissionDetail = false;
-      $scope.vm.editGrade = false;
       roomService.getGradeSubmissions($stateParams.assignmentId, $scope.page).then(function (result) {
         $scope.gradeSubmissions = result.data;
+        angular.forEach($scope.gradeSubmissions, function (value, key) {
+          value.editGrade = false;
+        });
         $scope.vm.submissionDetail = result.submission;
       });
       $scope.updatePage = function () {
@@ -16,6 +18,9 @@ angular.module('uiApp')
               $scope.pageEnd = true;
             else
               $scope.gradeSubmissions = $scope.gradeSubmissions.concat(result.data);
+            angular.forEach($scope.gradeSubmissions, function (value, key) {
+              value.editGrade = false;
+            });
           });
         }
       };
@@ -41,7 +46,8 @@ angular.module('uiApp')
         roomService.assignComment(submissionId, userId, $scope.vm.commentText).then(function (result) {
           notificationService.show(result.status, result.message);
           if (result.status) {
-            $scope.gradeSubmissions[index] = result.data;
+            $scope.gradeSubmissions[index].UsersSubmission.grade_comment = $scope.vm.commentText;
+//            $scope.gradeSubmissions[index] = result.data;
           }
         });
       };
@@ -64,7 +70,7 @@ angular.module('uiApp')
           });
         }
 
-        $scope.vm.editGrade = false;
+        $scope.gradeSubmissions[index].editGrade = false;
 //        }
 //        else
 //          notificationService.show(false, "Marks/Grade cannot be blank");
