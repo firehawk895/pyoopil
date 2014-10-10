@@ -251,14 +251,17 @@ class UsersSubmission extends AppModel {
         }
     }
 
+    /**
+     * Calculate and save percentile of marked assignments
+     * @param $submissionId
+     * @return bool
+     */
     public function calculatePercentile($submissionId) {
-
         $query = 'SELECT a.submission_id, a.id,
                   ROUND( 100.0 * ( SELECT COUNT(*) FROM users_submissions AS b WHERE b.marks <= a.marks ) / total.cnt, 1 )
                   AS percentile FROM users_submissions a CROSS JOIN (SELECT COUNT(*) AS cnt FROM users_submissions) AS total WHERE a.submission_id = ' . $submissionId . ' ORDER BY percentile DESC';
 
         $data = $this->query($query);
-
         $saveData = array();
 
         foreach ($data as $d) {
@@ -269,13 +272,18 @@ class UsersSubmission extends AppModel {
                 )
             ));
         }
-
-        $this->saveMany($saveData);
-
+        return !empty($this->saveMany($saveData));
     }
 
+    /**
+     * Calculate and return grade frequency
+     * @param $submissionId
+     * @return mixed
+     */
     public function calculateGradeFrequency($submissionId) {
-
+        /**
+         * Cache this query, wont change after publishing
+         */
         $options = array(
             'conditions' => array(
                 'submission_id' => $submissionId
@@ -287,7 +295,6 @@ class UsersSubmission extends AppModel {
                 'grade'
             )
         );
-
         $data = $this->find('all', $options);
 
         $result['GradeFrequency'] = Hash::combine($data, '{n}.UsersSubmission.grade', '{n}.{n}.frequency');

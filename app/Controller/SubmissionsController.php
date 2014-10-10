@@ -519,7 +519,14 @@ class SubmissionsController extends AppController {
             $submissionStatus = $this->Submission->checkStatus($postData['Submission']['id']);
             if ($submissionStatus === "Pending Grading") {
                 if ($this->Submission->UsersSubmission->areAllGraded($postData['Submission']['id'])) {
+                    $status = $this->Submission->publish($postData['Submission']['id']);
 
+                    if ($status) {
+                        $this->Submission->UsersSubmission->calculatePercentile($postData['Submission']['id']);
+                        $message = "Submission has been published, and reports generated";
+                    } else {
+                        $message = "Failed to publish submission";
+                    }
                 } else {
                     $status = false;
                     $message = "You cannot publish without grading/marking all submissions";

@@ -3,7 +3,6 @@ App::uses('AppModel', 'Model');
 App::uses('CakeTime', 'Utility');
 /**
  * Submission Model
- *
  * @property Classroom $Classroom
  * @property Pyoopilfile $Pyoopilfile
  * @property Quiz $Quiz
@@ -292,7 +291,6 @@ class Submission extends AppModel {
         //it inserts a '=' before NOW()
 
         $dbTime = $db->fetchRow('SELECT NOW();');
-        //$this->log($frustratedQuery);
         $this->updateAll(
             array('Submission.status' => "'Pending Grading'"),
             array(
@@ -341,7 +339,7 @@ class Submission extends AppModel {
 
         $options['fields'] = array(
             'id', 'topic', 'description', 'grading_policy', 'users_submission_count',
-            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'total_marks', 'status','pyoopilfile_id'
+            'due_date', 'is_published', 'status', 'type', 'subjective_scoring', 'total_marks', 'status', 'pyoopilfile_id'
         );
 
         $options['contain'] = array(
@@ -413,8 +411,13 @@ class Submission extends AppModel {
         return $this->field('status');
     }
 
+    /**
+     * publish a submission
+     * @param $submissionId
+     * @return bool
+     */
     public function publish($submissionId) {
-        $this->Submission->id = $submissionId;
-
+        $this->id = $submissionId;
+        return $this->saveField('is_published', true);
     }
 }
