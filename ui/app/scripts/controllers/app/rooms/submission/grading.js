@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('gradingCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('gradingCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'modalService', 'ngDialog', 'localStorageService', '$state',
+    function ($scope, $stateParams, roomService, toastService, modalService, ngDialog, localStorageService, $state) {
 
       $scope.page = 1;
       $scope.vm.showSubmissionDetail = false;
@@ -44,7 +44,7 @@ angular.module('uiApp')
       };
       $scope.assignComment = function (submissionId, userId, index) {
         roomService.assignComment(submissionId, userId, $scope.vm.commentText).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             $scope.gradeSubmissions[index].UsersSubmission.grade_comment = $scope.vm.commentText;
 //            $scope.gradeSubmissions[index] = result.data;
@@ -56,7 +56,7 @@ angular.module('uiApp')
         if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'marked') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.marks, 'marked').then(function (result) {
             if (result.status)
-              notificationService.show(true, result.message);
+              toastService.show(true, result.message);
 //            $scope.gradeSubmissions[index] = result.data;
             $scope.gradeSubmissions[index].UsersSubmission.is_graded = true; //model update instead of replacing the object
           });
@@ -64,7 +64,7 @@ angular.module('uiApp')
         else if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'graded') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.grade, 'graded').then(function (result) {
             if (result.status)
-              notificationService.show(true, result.message);
+              toastService.show(true, result.message);
 //            $scope.gradeSubmissions[index] = result.data;
             $scope.gradeSubmissions[index].UsersSubmission.is_graded = true;
           });
@@ -73,6 +73,6 @@ angular.module('uiApp')
         $scope.gradeSubmissions[index].editGrade = false;
 //        }
 //        else
-//          notificationService.show(false, "Marks/Grade cannot be blank");
+//          toastService.show(false, "Marks/Grade cannot be blank");
       };
     }]);

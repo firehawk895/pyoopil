@@ -1,0 +1,34 @@
+<section class="pagesubnav">
+  <div class="clearfix">
+    <ul class="left-subnav clearfix">
+      <li><a ui-sref="app.notifications" ui-sref-active="active">My Notifications</a>
+      </li>
+    </ul>
+    <div class="nav-right">
+      <a href="" class="nav-search"></a>
+
+      <!--<div class="search-input">-->
+      <!--<div class="search-panel">-->
+      <!--<input type="text" placeholder="Search">-->
+      <!--<a href="" class="search-btn"></a>-->
+      <!--</div>-->
+      <!--</div>-->
+    </div>
+  </div>
+</section>
+<!-- Right Content -->
+<section class="pagecontent">
+  <div class="library-wrapper clearfix">
+    <div class="fullnoti-lst">
+      <ul>
+        <li class="lastli"
+            ng-class="{'unread-noti' : !notification.is_clicked,'lastli' :$index==vm.notifications.length}"
+            ng-repeat="notification in vm.notifications">
+          <p class="fullnoti-date">{{notification.created | amCalendar}}</p>
+          <a ng-href="{{vm.url}}/{{notification.link}}">
+            <p class="fullnoti-txt" ng-bind-html="notification.title | unsafe"></p></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

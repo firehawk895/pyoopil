@@ -2,8 +2,8 @@
  * Created by greenapple on 19/8/14.
  */
 angular.module('uiApp')
-  .controller('myRoomCtrl', ['$scope' , 'roomService', 'notificationService', 'ngDialog', 'userService', 'localStorageService', '$state', 'globalService', '$stateParams',
-    function ($scope, roomService, notificationService, ngDialog, userService, localStorageService, $state, globalService, $stateParams) {
+  .controller('myRoomCtrl', ['$scope' , 'roomService', 'toastService', 'ngDialog', 'userService', 'localStorageService', '$state', 'globalService', '$stateParams',
+    function ($scope, roomService, toastService, ngDialog, userService, localStorageService, $state, globalService, $stateParams) {
       $scope.showJoin = true;
       $scope.vm = {};
       $scope.vm.accessCode = "";
@@ -29,7 +29,7 @@ angular.module('uiApp')
 
       $scope.joinClassroom = function () {
         roomService.joinClassroom($scope.vm.accessCode).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             $scope.showJoin = true;
             $scope.classrooms.unshift(result.data);
@@ -41,7 +41,7 @@ angular.module('uiApp')
       $scope.createClassroom = function () {
         ngDialog.close();
         roomService.createClassroom($scope.classroom).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
 //            console.log($scope.classrooms);
             $scope.classroom = result.data;
@@ -64,7 +64,7 @@ angular.module('uiApp')
 
       $scope.goToClass = function (id, restricted) {
         if (restricted)
-          notificationService.show(false, "Cannot Enter Classroom");
+          toastService.show(false, "Cannot Enter Classroom");
         else
           $state.go('app.rooms.discussions.all', { roomId: id });
       };

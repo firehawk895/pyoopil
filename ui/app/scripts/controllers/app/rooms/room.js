@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('roomCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', '$sce', 'modalService',
-    function ($scope, $stateParams, roomService, notificationService, ngDialog, $sce, modalService) {
+  .controller('roomCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'ngDialog', '$sce', 'modalService',
+    function ($scope, $stateParams, roomService, toastService, ngDialog, $sce, modalService) {
       $scope.vm = {};
       $scope.roomId = $stateParams.roomId;
       $scope.vm.showInfoPopup = false;
@@ -13,7 +13,7 @@ angular.module('uiApp')
       });
       $scope.resetAccessCode = function () {
         roomService.resetAccessCode($scope.roomId).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             $scope.vm.showInfoPopup = false;
             $scope.resetClass = result.data;

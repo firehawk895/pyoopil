@@ -8,8 +8,8 @@
  * Controller of the uiApp
  */
 angular.module('uiApp')
-  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', '$sce', 'modalService',
-    function ($scope, $stateParams, roomService, notificationService, ngDialog, $sce, modalService) {
+  .controller('announcementCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'ngDialog', '$sce', 'modalService',
+    function ($scope, $stateParams, roomService, toastService, ngDialog, $sce, modalService) {
       //todo : check if room id has access
       $scope.page = 1;
       $scope.vm = {};
@@ -26,15 +26,15 @@ angular.module('uiApp')
 
       $scope.createAnnouncement = function () {
         if ($scope.vm.subject == "" || $scope.vm.body == "")
-          notificationService.show(false, "Cannot Create Announcement");
+          toastService.show(false, "Cannot Create Announcement");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
           if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-            notificationService.show(false, "Cannot upload more than 5 MB");
+            toastService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createAnnouncement($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file)
               .then(function (added) {
-                notificationService.show(added.status, added.message);
+                toastService.show(added.status, added.message);
                 if (added.status) {
                   $scope.announcements.unshift(added.data);
                   $scope.vm = {};

@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc service
- * @name uiApp.Notificationservice
+ * @name uiApp.toastservice
  * @description
- * # Notificationservice
+ * # toastservice
  * Service in the uiApp.
  */
 angular.module('uiApp')
-  .factory('notificationService', function () {
+  .factory('toastService', function () {
 
     var self = this;
 

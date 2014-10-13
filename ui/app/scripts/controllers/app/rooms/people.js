@@ -2,8 +2,8 @@
  * Created by himanshu on 21/8/14.
  */
 angular.module('uiApp')
-  .controller('peopleCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', 'modalService',
-    function ($scope, $stateParams, roomService, notificationService, ngDialog, modalService) {
+  .controller('peopleCtrl', ['$scope', '$stateParams' , 'roomService', 'ngDialog', 'modalService',
+    function ($scope, $stateParams, roomService, ngDialog, modalService) {
 
       $scope.people = {};
       $scope.page = 1;

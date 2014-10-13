@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('submissionCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'modalService', 'ngDialog', 'localStorageService', '$state',
+    function ($scope, $stateParams, roomService, toastService, modalService, ngDialog, localStorageService, $state) {
       $scope.submissions = [];
       $scope.roomId = $stateParams.roomId;
       $scope.fullName = localStorageService.get("name");
@@ -32,17 +32,17 @@ angular.module('uiApp')
       $scope.createSubjectiveAssignment = function () {
         $scope.vm.file = document.getElementById("fileUploadSubjective").files[0];
 //        if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-//          notificationService.show(false, "Cannot upload more than 5 MB");
+//          toastService.show(false, "Cannot upload more than 5 MB");
 //        else {
         roomService.createSubjectiveAssignment($scope.vm, $scope.roomId).then(function (result) {
           if (result.status) {
-            notificationService.show(result.status, result.message);
+            toastService.show(result.status, result.message);
             $scope.submissions.unshift(result.data[0]);
             ngDialog.close();
           }
           else {
             var errorKey = Object.keys(result.message)[0];
-            notificationService.show(result.status, result.message[errorKey][0]);
+            toastService.show(result.status, result.message[errorKey][0]);
             $scope.vm.areYouSure = false;
           }
         });
@@ -110,20 +110,20 @@ angular.module('uiApp')
       $scope.addFile = function () {
         $scope.vm.file = document.getElementById("fileUploadQuiz").files[0];
         if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-          notificationService.show(false, "Cannot upload more than 5 MB");
+          toastService.show(false, "Cannot upload more than 5 MB");
       };
 
       $scope.createQuizAssignment = function () {
 
         roomService.createQuizAssignment($scope.vm, $scope.roomId).then(function (result) {
           if (result.status) {
-            notificationService.show(result.status, result.message);
+            toastService.show(result.status, result.message);
             $scope.submissions.unshift(result.data[0]);
             ngDialog.close();
           }
           else {
             var errorKey = Object.keys(result.message)[0];
-            notificationService.show(result.status, result.message[errorKey]);
+            toastService.show(result.status, result.message[errorKey]);
             $scope.vm.areYouSure = false;
           }
         });
@@ -157,14 +157,14 @@ angular.module('uiApp')
 
       $scope.answerSubjective = function (index, id) {
         if ($scope.vm.answerText == "")
-          notificationService.show(false, "Cannot submit blank Answer");
+          toastService.show(false, "Cannot submit blank Answer");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
           if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-            notificationService.show(false, "Cannot upload more than 5 MB");
+            toastService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.answerSubjective($scope.vm.answerText, $scope.vm.file, id).then(function (result) {
-              notificationService.show(result.status, result.message);
+              toastService.show(result.status, result.message);
               if (result.status) {
                 $scope.submissions[index] = result.data;
               }

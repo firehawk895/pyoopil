@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('takeAttendanceCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('takeAttendanceCtrl', ['$scope', '$stateParams' , 'roomService',
+    function ($scope, $stateParams, roomService) {
       $scope.roomId = $stateParams.roomId;
       $scope.vm = {};
       $scope.vm.attendanceDate = "";

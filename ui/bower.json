@@ -29,11 +29,16 @@
     "angular-timer": "~1.1.7",
     "satellizer": "~0.7.1",
     "angular-off-click": "~0.0.2",
-    "angular-chosen-localytics": "~1.0.6"
+    "angular-chosen-localytics": "~1.0.6",
+    "firebase": "~1.1.1",
+    "angularfire": "~0.8.2"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",
     "angular-scenario": "1.2.16"
   },
-  "appPath": "app"
+  "appPath": "app",
+  "resolutions": {
+    "firebase": "~1.1.1"
+  }
 }

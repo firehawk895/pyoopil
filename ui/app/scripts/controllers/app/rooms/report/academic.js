@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('academicCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('academicCtrl', ['$scope', '$stateParams' , 'roomService',
+    function ($scope, $stateParams, roomService) {
       $scope.roomId = $stateParams.roomId;
       $scope.lastExpandedItemIndex = -1;
       $scope.currentGraphIndex = 0;

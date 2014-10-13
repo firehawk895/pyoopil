@@ -2,8 +2,8 @@
  * Created by himanshu on 26/8/14.
  */
 angular.module('uiApp')
-  .controller('leftNavCtrl', ['$scope', 'userService', 'notificationService', '$http', 'localStorageService', 'globalService', '$location', 'roomService', '$stateParams', '$state',
-    function ($scope, userService, notificationService, $http, localStorageService, globalService, $location, roomService, $stateParams, $state) {
+  .controller('leftNavCtrl', ['$scope', 'userService', 'toastService', '$http', 'localStorageService', 'globalService', '$location', 'roomService', '$stateParams', '$state',
+    function ($scope, userService, toastService, $http, localStorageService, globalService, $location, roomService, $stateParams, $state) {
 
       $scope.showLogout = false;
       $scope.classrooms = [];
@@ -16,7 +16,7 @@ angular.module('uiApp')
       });
       $scope.logout = function () {
         userService.logout().then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           $location.path('/logout/');
           $http.defaults.headers.common = {'X-AuthTokenHeader': ''};
           localStorageService.remove("token");
@@ -37,7 +37,7 @@ angular.module('uiApp')
       };
       $scope.goToClass = function (id, restricted) {
         if (restricted)
-          notificationService.show(false, "Cannot Enter Classroom");
+          toastService.show(false, "Cannot Enter Classroom");
         else
           $state.go('app.rooms.discussions.all', { roomId: id });
       };

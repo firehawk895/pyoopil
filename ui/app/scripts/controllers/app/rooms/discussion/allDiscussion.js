@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('allDiscussionCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService',
-    function ($scope, $stateParams, roomService, notificationService, modalService) {
+  .controller('allDiscussionCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'modalService',
+    function ($scope, $stateParams, roomService, toastService, modalService) {
       $scope.page = 1;
       $scope.discussions = [];
       roomService.getDiscussions($stateParams.roomId, $scope.page).then(function (result) {
@@ -134,7 +134,7 @@ angular.module('uiApp')
         roomService.getReplies($scope.discussions[index].Discussion.id, $scope.discussions[index].currentPage).then(function (result) {
           if (result.status) {
             if (!result.data.length)
-              notificationService.show(false, "No more replies to load");
+              toastService.show(false, "No more replies to load");
             else if ($scope.discussions[index].currentPage == 1) {
               $scope.discussions[index].Replies = result.data.reverse();
               $scope.discussions[index].currentPage++;
@@ -149,7 +149,7 @@ angular.module('uiApp')
       };
       $scope.deleteDiscussion = function (index) {
         roomService.deleteInDiscussion($scope.discussions[index].Discussion.id, "Discussion").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status)
             $scope.discussions.splice(index, 1);
         });
@@ -157,21 +157,21 @@ angular.module('uiApp')
       $scope.deleteReply = function (parentIndex, index) {
 
         roomService.deleteInDiscussion($scope.discussions[parentIndex].Replies[index].Reply.id, "Reply").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status)
             $scope.discussions[parentIndex].Replies.splice(index, 1);
         });
       };
       $scope.toggleFold = function (index) {
         roomService.toggleFold($scope.discussions[index].Discussion.id).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status)
             $scope.discussions[index].Discussion.isFolded = !$scope.discussions[index].Discussion.isFolded;
         });
       };
       $scope.addReply = function (index) {
         roomService.addReply($scope.discussions[index].Discussion.id, $scope.discussions[index].newReply).then(function (result) {
-          notificationService.show(result.status, "Comments Posted");
+          toastService.show(result.status, "Comments Posted");
           if (result.status) {
             $scope.discussions[index].Replies = $scope.discussions[index].Replies || [];
 
@@ -263,7 +263,7 @@ angular.module('uiApp')
           })
         }
         else
-          notificationService.show(false, "Cannot vote on poll")
+          toastService.show(false, "Cannot vote on poll")
       };
       $scope.getNames = function (arr) {
         return arr.join('\n');
@@ -273,15 +273,15 @@ angular.module('uiApp')
       };
       $scope.createDiscussionQuestion = function () {
         if ($scope.vm.subject == "" || $scope.vm.body == "")
-          notificationService.show(false, "Cannot Create Discussion");
+          toastService.show(false, "Cannot Create Discussion");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
           if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-            notificationService.show(false, "Cannot upload more than 5 MB");
+            toastService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "question")
               .then(function (added) {
-                notificationService.show(true, "Discussion Created Successfully");
+                toastService.show(true, "Discussion Created Successfully");
                 if (added.status) {
                   $scope.discussions.unshift(added.data[0]);
                   $scope.vm.subject = "";
@@ -295,22 +295,22 @@ angular.module('uiApp')
       };
       $scope.createDiscussionPoll = function () {
         if ($scope.vm.subject == "" || $scope.vm.body == "")
-          notificationService.show(false, "Cannot Create Discussion");
+          toastService.show(false, "Cannot Create Discussion");
         else {
           angular.forEach($scope.vm.answerChoices, function (value, key) {
             if (value.choice != "")
               $scope.choices.push(value.choice);
           });
           if ($scope.choices.length < 2)
-            notificationService.show(false, "Cannot Create Discussion. Enter minimum two choices");
+            toastService.show(false, "Cannot Create Discussion. Enter minimum two choices");
           else {
             $scope.vm.file = document.getElementById("fileupload").files[0];
             if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-              notificationService.show(false, "Cannot upload more than 5 MB");
+              toastService.show(false, "Cannot upload more than 5 MB");
             else {
               roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "poll", $scope.choices)
                 .then(function (added) {
-                  notificationService.show(true, "Discussion Created Successfully");
+                  toastService.show(true, "Discussion Created Successfully");
                   if (added.status) {
                     var choiceCategories = [];
                     var choiceData = [];
@@ -379,15 +379,15 @@ angular.module('uiApp')
       };
       $scope.createDiscussionNote = function () {
         if ($scope.vm.subject == "" || $scope.vm.body == "")
-          notificationService.show(false, "Cannot Create Discussion");
+          toastService.show(false, "Cannot Create Discussion");
         else {
           $scope.vm.file = document.getElementById("fileupload").files[0];
           if (angular.isDefined($scope.vm.file) && $scope.vm.file.size > 5242880)
-            notificationService.show(false, "Cannot upload more than 5 MB");
+            toastService.show(false, "Cannot upload more than 5 MB");
           else {
             roomService.createDiscussion($stateParams.roomId, $scope.vm.subject, $scope.vm.body, $scope.vm.file, "note").
               then(function (added) {
-                notificationService.show(true, "Discussion Created Successfully");
+                toastService.show(true, "Discussion Created Successfully");
                 if (added.status) {
                   $scope.discussions.unshift(added.data[0]);
                   $scope.vm.subject = "";
@@ -410,7 +410,7 @@ angular.module('uiApp')
       };
       $scope.removeChoice = function (index) {
         if ($scope.vm.answerChoices.length == 2) {
-          notificationService.show(true, "Cannot have less than two choices");
+          toastService.show(true, "Cannot have less than two choices");
           return false;
         }
         $scope.vm.answerChoices.splice(index, 1);

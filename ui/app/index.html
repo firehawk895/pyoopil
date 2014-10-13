@@ -22,12 +22,12 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
-  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
-  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
-  <link rel="stylesheet" href="bower_components/select2/select2.css" />
-  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-  <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
+  <link rel="stylesheet" href="bower_components/toastr/toastr.css"/>
+  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css"/>
+  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css"/>
+  <link rel="stylesheet" href="bower_components/select2/select2.css"/>
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css"/>
+  <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css"/>
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -95,6 +95,10 @@
 <script src="bower_components/satellizer/satellizer.js"></script>
 <script src="bower_components/angular-off-click/offClick.js"></script>
 <script src="bower_components/angular-chosen-localytics/chosen.js"></script>
+<script src="bower_components/firebase/firebase.js"></script>
+<script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
+<script src="bower_components/mockfirebase/dist/mockfirebase.js"></script>
+<script src="bower_components/angularfire/dist/angularfire.min.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -122,9 +126,14 @@
 <script src="scripts/services/globalservice.js"></script>
 <script src="scripts/services/userservice.js"></script>
 <script src="scripts/services/roomservice.js"></script>
+<script src="scripts/services/toastService.js"></script>
+<script src="scripts/services/notificationService.js"></script>
+<script src="scripts/services/modalService.js"></script>
 <script src="scripts/controllers/public/public.js"></script>
 <script src="scripts/controllers/register.js"></script>
 <script src="scripts/controllers/app/nav/left-nav-ctrl.js"></script>
+<script src="scripts/controllers/app/topRightHeader.js"></script>
+<script src="scripts/controllers/app/notification.js"></script>
 <script src="scripts/controllers/app/rooms/room.js"></script>
 <script src="scripts/controllers/app/rooms/discussion.js"></script>
 <script src="scripts/controllers/app/rooms/discussion/allDiscussion.js"></script>
@@ -141,8 +150,7 @@
 <script src="scripts/controllers/app/rooms/report/attendance.js"></script>
 <script src="scripts/controllers/app/roomsDash/myrooms.js"></script>
 <script src="scripts/controllers/app/profile.js"></script>
-<script src="scripts/services/notificationservice.js"></script>
-<script src="scripts/services/modalService.js"></script>
+
 <!-- endbuild -->
 
 </body>

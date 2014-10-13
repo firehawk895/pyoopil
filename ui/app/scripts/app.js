@@ -32,7 +32,9 @@ angular
     'timer',
     'satellizer',
     'offClick',
-    'localytics.directives'
+    'localytics.directives',
+    'firebase'
+
   ])
   .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'ngDialogProvider', '$httpProvider', '$authProvider',
     function ($stateProvider, $urlRouterProvider, $locationProvider, ngDialogProvider, $httpProvider, $authProvider) {
@@ -86,6 +88,11 @@ angular
           abstract: true,
           url: "/",
           templateUrl: "views/app/app.html"
+        })
+        .state('app.notifications', {
+          url: "notifications/",
+          templateUrl: "views/app/notification.html",
+          controller:'notificationCtrl'
         })
         .state('app.rooms', {
           url: "Classrooms/:roomId/",
@@ -228,8 +235,17 @@ angular
 //    preprocess: 'unix', // optional
 //    timezone: 'Asia/Kolkata' // optional
 //  })
-  .controller('MainController', ['$scope', 'globalService', function ($scope, globalService) {
+  .controller('MainController', ['$scope', 'globalService', '$window', function ($scope, globalService, $window) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
+
+    $scope.a3 = $window.innerHeight;
+    $scope.w1 = $window.innerWidth;
+    $scope.w2 = $scope.w1 - 575;
+    $scope.w3 = $scope.w2 - 20;
+    $scope.s1 = $scope.a3 - 200;
+    $scope.msg = $scope.a3 - 149;
+
+
     $scope.showScroll = false;
     $scope.showScroller = function () {
       $scope.showScroll = true;

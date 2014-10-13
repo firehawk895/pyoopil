@@ -2,8 +2,8 @@
  * Created by himanshu on 21/8/14.
  */
 angular.module('uiApp')
-  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'ngDialog', 'modalService',
-    function ($scope, $stateParams, roomService, notificationService, ngDialog, modalService) {
+  .controller('libraryCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'ngDialog', 'modalService',
+    function ($scope, $stateParams, roomService, toastService, ngDialog, modalService) {
 
       $scope.page = 1;
       $scope.pageEnd = false;
@@ -55,7 +55,7 @@ angular.module('uiApp')
       };
       $scope.deleteDoc = function (topic, index) {
         roomService.deleteFile(topic.Documents[index].id, "File").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             topic.Documents.splice(index, 1);
           }
@@ -65,7 +65,7 @@ angular.module('uiApp')
 
       $scope.deletePicture = function (topic, index) {
         roomService.deleteFile(topic.Pictures[index].id, "File").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             topic.Pictures.splice(index, 1);
           }
@@ -74,7 +74,7 @@ angular.module('uiApp')
 
       $scope.deletePresentation = function (topic, index) {
         roomService.deleteFile(topic.Presentations[index].id, "File").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             topic.Presentations.splice(index, 1);
           }
@@ -83,7 +83,7 @@ angular.module('uiApp')
 
       $scope.deleteFile = function (topic, index) {
         roomService.deleteFile(topic.Link[index].id, "Link").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             topic.Link.splice(index, 1);
           }
@@ -98,7 +98,7 @@ angular.module('uiApp')
 
       $scope.deleteTopic = function (index) {
         roomService.deleteTopic($scope.topics[index].Topic.id).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status)
             $scope.topics.splice(index, 1);
         });
@@ -107,7 +107,7 @@ angular.module('uiApp')
 
       $scope.deleteVideo = function (topic, index) {
         roomService.deleteFile(topic.Video[index].id, "File").then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status)
             topic.Video.splice(index, 1);
         });
@@ -151,14 +151,14 @@ angular.module('uiApp')
       };
       $scope.editTopic = function (name, id) {
         roomService.editTopic(name, id).then(function (result) {
-          notificationService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
 //                    if (result.status)
 //            $scope.topics[index].Topic.name =result.data.Topic.name;
         });
       };
       $scope.showStep2 = function () {
         if ($scope.libraryUpload.id == null && $scope.libraryUpload.name == "")
-          notificationService.show(false, "Enter topic Name or choose a topic");
+          toastService.show(false, "Enter topic Name or choose a topic");
         else {
           ngDialog.close();
           ngDialog.open({
@@ -192,7 +192,7 @@ angular.module('uiApp')
         angular.forEach($scope.vm.files, function (value, key) {
           var file = document.getElementById(value).files[0];
           if (angular.isDefined(file) && file.size > 5242880) {
-            notificationService.show(false, "Cannot Upload more than 5 MB");
+            toastService.show(false, "Cannot Upload more than 5 MB");
             hasError = true;
             $scope.libraryUpload.files = [];
             $scope.vm.files = ["file-0"];
@@ -228,7 +228,7 @@ angular.module('uiApp')
         if ($scope.vm.files.length < 5)
           $scope.vm.files.push("file-" + $scope.vm.files.length);
         else
-          notificationService.show(false, "Max 5 files can be uploaded");
+          toastService.show(false, "Max 5 files can be uploaded");
       };
 
       $scope.addNewLink = function () {

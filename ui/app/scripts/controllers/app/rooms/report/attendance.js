@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('attendanceCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('attendanceCtrl', ['$scope', '$stateParams' , 'roomService',
+    function ($scope, $stateParams, roomService) {
       $scope.vm = {};
       $scope.vm.isPersonal = true;
       $scope.roomId = $stateParams.roomId;

@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('engagementCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog', 'localStorageService', '$state',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog, localStorageService, $state) {
+  .controller('engagementCtrl', ['$scope', '$stateParams' , 'roomService',
+    function ($scope, $stateParams, roomService) {
       $scope.vm = {};
       $scope.roomId = $stateParams.roomId;
       roomService.getEngagementReports($scope.roomId).then(function (result) {

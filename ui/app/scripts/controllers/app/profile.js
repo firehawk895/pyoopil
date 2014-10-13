@@ -1,6 +1,6 @@
 angular.module('uiApp')
-  .controller('profileCtrl', ['$scope', '$stateParams' , 'roomService', 'notificationService', 'modalService', 'ngDialog',
-    function ($scope, $stateParams, roomService, notificationService, modalService, ngDialog) {
+  .controller('profileCtrl', ['$scope', '$stateParams' , 'roomService', 'toastService', 'modalService', 'ngDialog',
+    function ($scope, $stateParams, roomService, toastService, modalService, ngDialog) {
       $scope.vm = {};
       $scope.vm.editProfile = false;
       $scope.vm.editFullProfile = false;
