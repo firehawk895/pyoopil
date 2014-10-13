@@ -493,4 +493,21 @@ class Classroom extends AppModel {
     public function allowCreate($userId) {
         return $this->UsersClassroom->AppUser->UsersCampus->isEducator($userId);
     }
+
+    public function getClassroomTitle($classroomId){
+        $options = array(
+            'conditions' => array(
+                'Classroom.id' => $classroomId
+            ),
+            'fields' => array(
+                'title'
+            )
+        );
+
+        $data = $this->find('first',$options);
+
+        if($data){
+            return $data['Classroom']['title'];
+        }
+    }
 }
