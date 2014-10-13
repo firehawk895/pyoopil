@@ -18,10 +18,20 @@ class AnnouncementNotifier implements CakeEventListener{
 
         $studentList = $this->UsersClassroom->getStudentList($event->data['classroomId']);
 
+        $userIdList = Hash::extract($studentList,'{n}.AppUser.id');
+
         $announcement = $this->Announcement->getAnnouncementById($event->data['announcementId']);
         $classroomTitle = $this->UsersClassroom->Classroom->getClassroomTitle($event->data['classroomId']);
 
-        $notification = "Announcement in classroom: {$classroomTitle}"." {$announcement['Announcement']['subject']}";
+        $notification = array(
+            'title' => "Announcement in classroom: {$classroomTitle}"." {$announcement['Announcement']['subject']}",
+            'is_read' => false,
+            'link' => "Classroom/{$event->data['classroomId']}/announcements",
+            'is_clicked' => false,
+            'created' => $announcement['Announcement']['created']
+        );
+
+        //exec to external script for push and set
 
     }
 
