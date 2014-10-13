@@ -2,7 +2,7 @@
 
 class NotificationFactory {
 
-    public static function getNotificayableObject() {
+    public static function getNotifiableObject() {
         return new FirebaseWrapper();
     }
 }

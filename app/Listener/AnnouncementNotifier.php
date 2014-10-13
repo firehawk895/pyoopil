@@ -33,8 +33,17 @@ class AnnouncementNotifier implements CakeEventListener {
             'created' => $announcement['Announcement']['created']
         );
         //exec to external script for push and set
-        $notifier = NotificationFactory::getNotificayableObject();
+        /**
+         * you will probably put this in a seperate php file
+         * and exec this
+         * exec("doTask.php $arg1 $arg2 $arg3 >/dev/null 2>&1 &");
+         * The new php script must accept command line arguments for accepting
+         * $notification, $userIdList
+         * yes async php isn't attractive
+         */
+        $notifier = NotificationFactory::getNotifiableObject();
         $notifier->push($notification, $userIdList);
+        //---two lines of exec code ends
     }
 
 } 
