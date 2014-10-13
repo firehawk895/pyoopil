@@ -1,6 +1,6 @@
 <?php
 
-class FirebaseWrapper implements NotifyableInterface {
+class FirebasePushWrapper implements NotifyableInterface {
 
     /**
      *
