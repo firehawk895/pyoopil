@@ -1,4 +1,5 @@
 <?php
+App::uses('FirebasePushWrapper', 'Lib/FirebasePushWrapper');
 
 class NotificationFactory {
 

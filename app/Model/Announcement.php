@@ -160,6 +160,14 @@ class Announcement extends AppModel {
         $data['Announcement']['user_id'] = $userId;
 
         if ($this->save($data)) {
+            $announcementId = $this->getLastInsertID();
+            $event = new CakeEvent('Announcement.created', $this, array(
+                    'classroomId' => $classroomId,
+                    'announcementId' => $announcementId
+                )
+            );
+            $this->getEventManager()->dispatch($event);
+
             return true;
         } else {
             return false;

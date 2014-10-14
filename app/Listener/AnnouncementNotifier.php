@@ -1,6 +1,7 @@
 <?php
 App::uses('CakeEventListener', 'Event');
 App::uses('CakeLog', 'Utility');
+App::uses('NotificationFactory', 'Lib/Custom');
 
 
 class AnnouncementNotifier implements CakeEventListener {
@@ -32,7 +33,7 @@ class AnnouncementNotifier implements CakeEventListener {
             'id' => $event->data['announcementId'],
             'created' => $announcement['Announcement']['created']
         );
-        //exec to external script for push and set
+
         /**
          * you will probably put this in a seperate php file
          * and exec this

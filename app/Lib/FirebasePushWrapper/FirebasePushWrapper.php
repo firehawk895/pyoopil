@@ -1,5 +1,8 @@
 <?php
 
+App::uses('NotifyableInterface', 'Lib/Interfaces');
+App::uses('Firebase', 'Lib/ktamas77/firebase-php');
+
 class FirebasePushWrapper implements NotifyableInterface {
 
     /**

@@ -158,3 +158,7 @@ App::uses('ClassRegistry', 'Utility');
 App::uses('GamificationTally', 'Lib/Custom');
 $Gamificationvote = ClassRegistry::init('Gamificationvote');
 $Gamificationvote->getEventManager()->attach(new GamificationTally());
+
+App::uses('AnnouncementNotifier', 'Listener');
+$Announcement = ClassRegistry::init('Announcement');
+$Announcement->getEventManager()->attach(new AnnouncementNotifier());
