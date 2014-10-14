@@ -92,7 +92,7 @@ angular
         .state('app.notifications', {
           url: "notifications/",
           templateUrl: "views/app/notification.html",
-          controller:'notificationCtrl'
+          controller: 'notificationCtrl'
         })
         .state('app.rooms', {
           url: "Classrooms/:roomId/",

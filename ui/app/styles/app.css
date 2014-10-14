@@ -243,42 +243,42 @@
   width: 50px;
 }
 
-.html_display strong, .noti-txt strong {
+.html_display strong {
   font-weight: bold;
 }
 
-.fullnoti-txt strong {
+.fullnoti-txt strong,.noti-txt strong {
   font-weight: bold;
   color: #f68005;
 }
 
-.html_display em, .noti-txt em {
+.html_display em {
   font-style: italic;
 }
 
-.html_display ul li, .noti-txt ul li {
+.html_display ul li {
   list-style-type: disc;
   list-style-position: inside;
   background: none;
 }
 
-.html_display ol li, .noti-txt ol li {
+.html_display ol li {
   list-style-type: decimal;
   list-style-position: inside;
   background: none;
 }
 
-.html_display h1, .noti-txt h1 {
+.html_display h1 {
   font-weight: bold;
   font-size: 32px;
 }
 
-.html_display h2, .noti-txt h2 {
+.html_display h2 {
   font-weight: bold;
   font-size: 24px;
 }
 
-.html_display h3, .noti-txt h3 {
+.html_display h3 {
   font-weight: bold;
   font-size: 18px;
 }

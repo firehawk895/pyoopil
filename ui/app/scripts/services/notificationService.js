@@ -3,36 +3,47 @@ angular.module('uiApp')
 
     var self = this;
     var id = localStorageService.get("id");
-//    todo:Make it general for logged in user
-    var notificationsRef = new Firebase("https://vivid-torch-3610.firebaseio.com/19");
+    var ref = new Firebase("https://vivid-torch-3610.firebaseio.com/" + id);
+    var unreadNotificationsCountRef = $firebase(ref.child('unread'));
+    var initialNotificationsRef = $firebase(ref.child('nof').limit(20));
+    var notificationsRef = $firebase(ref.child('nof'));
+    var unreadNotificationsCount = unreadNotificationsCountRef.$asObject();
+    var initialNotifications = initialNotificationsRef.$asArray();
+    var notifications = notificationsRef.$asArray();
+
 
     self.getUnreadNotificationsCount = function () {
       var deferred = $q.defer();
-      var unreadNotificationsCount = $firebase(notificationsRef.child('unread')).$asObject();
       unreadNotificationsCount.$loaded().then(function () {
-        deferred.resolve(unreadNotificationsCount.$value);
+        deferred.resolve(unreadNotificationsCount);
       });
       return deferred.promise;
     };
 
     self.getInitialNotifications = function () {
       var deferred = $q.defer();
-      var initialNotifications = $firebase(notificationsRef.child('nof').limit(10)).$asArray();
+      unreadNotificationsCountRef.$set("0");
       initialNotifications.$loaded().then(function () {
         deferred.resolve(initialNotifications);
       });
       return deferred.promise;
     };
+
     self.getNotifications = function () {
       var deferred = $q.defer();
-      var notifications = $firebase(notificationsRef.child('nof')).$asArray();
       notifications.$loaded().then(function () {
         deferred.resolve(notifications);
       });
       return deferred.promise;
     };
+
+    self.setClickedInitial = function (index) {
+      initialNotifications.$save(index);
+    };
+    self.setClicked = function (index) {
+      notifications.$save(index);
+    };
+
     return self;
-
-
     // AngularJS will instantiate a singleton by calling "new" on this function
   }]);
