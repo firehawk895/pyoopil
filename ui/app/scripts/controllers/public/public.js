@@ -1,13 +1,22 @@
 angular.module('uiApp')
-  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'toastService', 'localStorageService', '$http', 'authService', 'globalService', '$auth','$state',
-    function ($scope, $location, userService, ngDialog, toastService, localStorageService, $http, authService, globalService, $auth,$state) {
+  .controller('publicCtrl', ['$scope', '$location', 'userService', 'ngDialog', 'toastService', 'localStorageService', '$http', 'authService', 'globalService', '$auth', '$state',
+    function ($scope, $location, userService, ngDialog, toastService, localStorageService, $http, authService, globalService, $auth, $state) {
 
 //      if (globalService.getIsAuthorised())
 //        $location.path('/app/room/my/');
 
       $scope.authenticate = function (provider) {
-        $auth.authenticate(provider);
+
+        $auth.authenticate(provider)
+          .then(function () {
+            alert("Logged in ");
+          })
+          .catch(function (response) {
+            console.log(response.data);
+
+          });
       };
+
       $scope.url = globalService.getBaseUrl();
       $scope.openLogin = function () {
         ngDialog.open({
@@ -20,7 +29,7 @@ angular.module('uiApp')
       $scope.vm.password = "";
       $scope.doLogin = function () {
         userService.login($scope.vm.email, $scope.vm.password).then(function (result) {
-         toastService.show(result.status, result.message);
+          toastService.show(result.status, result.message);
           if (result.status) {
             ngDialog.close();
             localStorageService.add("token", result.data.auth_token);

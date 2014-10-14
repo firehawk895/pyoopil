@@ -57,15 +57,17 @@ angular
       }]);
 //      $locationProvider.html5Mode(true);
       $urlRouterProvider.otherwise("/");
-      //
+
       // Now set up the states
       ngDialogProvider.setDefaults({
         showClose: false,
         closeByDocument: false
       });
 
+//social login keys
       $authProvider.facebook({
-        clientId: '1461772397445027'
+//        clientId: '716318768442666'
+        clientId: '716330241774852'
       });
 
       $authProvider.google({
@@ -77,12 +79,26 @@ angular
         .state('public', {
           url: "/",
           templateUrl: "views/public/public.html",
-          controller: "publicCtrl"
+          controller: "publicCtrl",
+          resolve: {
+            authenticated: ['$location', 'globalService', function($location, globalService) {
+              if (globalService.getIsAuthorised()) {
+                return $location.path('/Classroom/');
+              }
+            }]
+          }
         })
         .state('register', {
           url: '/register/',
           templateUrl: 'views/public/register.html',
-          controller: "registerCtrl"
+          controller: "registerCtrl",
+          resolve: {
+            authenticated: ['$state', 'globalService', function($state, globalService) {
+              if (globalService.getIsAuthorised()) {
+                return $state.go('app.roomsDash.myroom');
+              }
+            }]
+          }
         })
         .state('app', {
           abstract: true,
@@ -195,21 +211,17 @@ angular
           url: "",
           templateUrl: "views/app/roomsDash/myroom.html"
         })
-//        .state('app.roomsDash.staffroom', {
-//          url: "staffroom/",
-//          templateUrl: "views/app/roomsDash/staffroom.html"
-////          controller: "myRoomCtrl"
-//        })
-//        .state('app.roomsDash.archived', {
-//          url: "archived/",
-//          templateUrl: "views/app/roomsDash/archived.html"
-////          controller: "myRoomCtrl"
-//        })
-
         .state('logout', {
           url: "/logout/",
           templateUrl: "views/app/logout.html",
-          controller: "publicCtrl"
+          controller: "publicCtrl",
+          resolve: {
+            authenticated: ['$state', 'globalService', function($state, globalService) {
+              if (globalService.getIsAuthorised()) {
+                return $state.go('app.roomsDash.myroom');
+              }
+            }]
+          }
         })
         .state('app.profile', {
           url: "myprofile/",
