@@ -260,7 +260,7 @@ angular
     $scope.w2 = $scope.w1 - 575;
     $scope.w3 = $scope.w2 - 20;
     $scope.s1 = $scope.a3 - 200;
-    $scope.msg = $scope.a3 - 149;
+    $scope.msg = $scope.a3 - 189;
 
 
     $scope.showScroll = false;

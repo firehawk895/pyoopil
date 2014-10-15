@@ -46,12 +46,12 @@
           <!--initialising jquery function slimScroll-->
           <div class="noti-lst noti-scroll"
                ui-jq="slimScroll"
-               ui-options="{height: msg+'px' ,color:'#575757'}">
+               ui-options="{height: msg+'px' ,color:'#575757',wheelStep:100}">
             <ul>
               <li ng-class="{'unread-noti' :!notification.is_clicked}"
                   ng-repeat="notification in vm.initialNotifications">
-                <a ng-href="{{vm.url}}/{{notification.link}}" ng-click="openNotification($index)"
-                   class="noti-block">
+                <a ng-click="openNotification($index)"
+                   class="noti-block hand">
                   <p class="fullnoti-date">{{notification.created | amDateFormat :'DD/MM/YYYY hh:mma'}}</p>
 
                   <p class="noti-txt" ng-bind-html="notification.title | unsafe"></p></a>

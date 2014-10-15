@@ -15,10 +15,9 @@ angular.module('uiApp')
       };
 
       $scope.openNotification = function (index) {
-        $location.path($scope.vm.url + '/' + $scope.vm.initialNotifications[index].link);
+        $location.path('/' + $scope.vm.initialNotifications[index].link + '/');
         $scope.vm.initialNotifications[index].is_clicked = true;
-        notificationService.setClickedInitial(index).then(function (result) {
-        });
+        notificationService.setClickedInitial(index);
       };
 
     }]);

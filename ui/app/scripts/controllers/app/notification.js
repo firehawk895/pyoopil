@@ -8,7 +8,7 @@ angular.module('uiApp')
       });
 
       $scope.openNotification = function (index) {
-        $location.path($scope.vm.url + '/' + $scope.vm.notifications[index].link);
+        $location.path('/' + $scope.vm.notifications[index].link + '/');
         $scope.vm.notifications[index].is_clicked = true;
         notificationService.setClicked(index);
       };
