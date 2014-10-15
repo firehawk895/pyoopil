@@ -24,6 +24,7 @@
     </div>
     <div class="clear"></div>
     <div class="people-lst">
+      <div infinite-scroll="updatePage()">
       <ul>
         <li class="follow-box" ng-repeat="people in peoples"
             ng-class="{'restrict' :people.UsersClassroom.is_restricted}">
@@ -57,6 +58,7 @@
           </div>
         </li>
       </ul>
+        </div>
     </div>
   </div>
 </section>

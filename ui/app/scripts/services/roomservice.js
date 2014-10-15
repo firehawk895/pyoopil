@@ -191,6 +191,27 @@ angular.module('uiApp')
     self.getProfile = function () {
       return restangular.all("Profiles").customGET("getprofile.json");
     };
+    self.getAccount = function () {
+      return restangular.all("users").customGET("account.json");
+    };
+    self.updateEmail = function (email) {
+      var data = {
+        AppUser: {
+          email: email
+        }
+      };
+      return restangular.all('users').all('email').customPOST(data, 'change.json');
+    };
+    self.updatePassword = function (currentPassword, password, confirmPassword) {
+      var data = {
+        AppUser: {
+          old_password: currentPassword,
+          password: password,
+          temppassword: confirmPassword
+        }
+      };
+      return restangular.all('users').all('password').customPOST(data, 'new.json');
+    };
     self.saveMinProfile = function (fname, lname, gender, dob, location) {
       var data = {
         AppUser: {

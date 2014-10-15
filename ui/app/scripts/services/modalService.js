@@ -5,11 +5,14 @@ angular.module('uiApp')
     function (ngDialog, $sce) {
       var self = {};
 
-      self.openModeratorDialog = function (scope) {
+      self.openDialog = function (scope, path) {
         ngDialog.open({
-          template: 'views/app/rooms/moderatorDialog.html',
+          template: path,
           scope: scope
         });
+      };
+      self.closeDialog = function () {
+        ngDialog.close();
       };
       self.openDocViewerDialog = function (scope, path) {
         scope.docPath = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=" + encodeURIComponent(path) + "&embedded=true");

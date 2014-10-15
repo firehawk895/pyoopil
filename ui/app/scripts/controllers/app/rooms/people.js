@@ -2,8 +2,8 @@
  * Created by himanshu on 21/8/14.
  */
 angular.module('uiApp')
-  .controller('peopleCtrl', ['$scope', '$stateParams' , 'roomService', 'ngDialog', 'modalService',
-    function ($scope, $stateParams, roomService, ngDialog, modalService) {
+  .controller('peopleCtrl', ['$scope', '$stateParams' , 'roomService', 'modalService',
+    function ($scope, $stateParams, roomService, modalService) {
 
       $scope.people = {};
       $scope.page = 1;
@@ -12,7 +12,7 @@ angular.module('uiApp')
       $scope.roomId = $stateParams.roomId;
       $scope.canModerate = false;
       $scope.canRestrict = false;
-      $scope.pageEnd=false;
+      $scope.pageEnd = false;
 
       $scope.ids = "";
 
@@ -64,14 +64,11 @@ angular.module('uiApp')
       };
 
       $scope.openModerateDialog = function () {
-        modalService.openModeratorDialog($scope);
+        modalService.openDialog($scope, 'views/app/rooms/moderatorDialog.html');
       };
 
       $scope.openRestrictDialog = function () {
-        ngDialog.open({
-          template: 'views/app/rooms/restrictDialog.html',
-          scope: $scope
-        });
+        modalService.openDialog($scope, 'views/app/rooms/restrictDialog.html');
       };
 
       $scope.setModerator = function () {
@@ -83,8 +80,10 @@ angular.module('uiApp')
                 people.UsersClassroom.is_moderator = true;
               }
             });
-            ngDialog.close();
+//            ngDialog.close();
+            modalService.closeDialog();
           }
+
         });
       };
 
@@ -97,7 +96,8 @@ angular.module('uiApp')
                 people.UsersClassroom.is_restricted = true;
               }
             });
-            ngDialog.close();
+            modalService.closeDialog();
+//            ngDialog.close();
           }
 
         });

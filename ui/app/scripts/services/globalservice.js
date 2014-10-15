@@ -25,7 +25,7 @@ angular.module('uiApp')
         }, 1000);
 
       self.setIsAuthorised = function (loginStatus) {
-        self.isAuthorised = loginStatus
+        self.isAuthorised = loginStatus;
       };
       self.getIsAuthorised = function () {
         return self.isAuthorised;

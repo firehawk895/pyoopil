@@ -247,7 +247,7 @@
   font-weight: bold;
 }
 
-.fullnoti-txt strong,.noti-txt strong {
+.fullnoti-txt strong, .noti-txt strong {
   font-weight: bold;
   color: #f68005;
 }
@@ -478,4 +478,8 @@ button.disabled, button[disabled] {
 
 .dock-bk.lastli {
   display: block
+}
+
+.settingdiv .post-edit-pnl {
+  top: -36px;
 }
