@@ -82,7 +82,7 @@ class AppUsersController extends UsersController {
                     $data['auth_token'] = $token;
                     $data['fullname'] = $this->AppUser->getFullName($user['AppUser']['id']);
                     $data['id'] = $user['AppUser']['id'];
-                    $message = "Login successful";
+                    $message = "Please call/message/whatsApp/email us at +919643713143 or info@pyoopil.com for problems, ideas or feedback. <br /><br />We would love to hear from you :)";
                 }
             } else {
                 $message = "Login unsuccessful";
@@ -207,10 +207,10 @@ class AppUsersController extends UsersController {
                 if ($status) {
                     $message = "Password successfully changed";
                 } else {
-                    $message = "Your password could not be changed";
+                    $message['password'] = "Your password could not be changed";
                 }
             } else {
-                $message = "Your old password is incorrect";
+                $message['password'] = "Your old password is incorrect";
                 $status = false;
             }
         } else {
