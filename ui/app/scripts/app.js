@@ -83,7 +83,7 @@ angular
           resolve: {
             authenticated: ['$location', 'globalService', function ($location, globalService) {
               if (globalService.getIsAuthorised()) {
-                return $location.path('/Classroom/');
+                return $location.path('/Classrooms/');
               }
             }]
           }
@@ -93,9 +93,9 @@ angular
           templateUrl: 'views/public/register.html',
           controller: "registerCtrl",
           resolve: {
-            authenticated: ['$state', 'globalService', function ($state, globalService) {
+            authenticated: ['$location', 'globalService', function ($location, globalService) {
               if (globalService.getIsAuthorised()) {
-                return $state.go('app.roomsDash.myroom');
+                return $location.path('/Classrooms/');
               }
             }]
           }
@@ -111,7 +111,7 @@ angular
           controller: 'notificationCtrl'
         })
         .state('app.rooms', {
-          url: "Classrooms/:roomId/",
+          url: "Classroom/:roomId/",
           abstract: true,
           templateUrl: "views/app/rooms/room.html",
           controller: 'roomCtrl'
@@ -132,10 +132,18 @@ angular
           templateUrl: "views/app/rooms/discussion/foldedDiscussion.html",
           controller: "foldedDiscussionCtrl"
         })
+        .state('app.rooms.discussions.specific', {
+          url: ":discussionId/",
+          templateUrl: "views/app/rooms/discussion/specificDiscussion.html"
+        })
         .state('app.rooms.announcements', {
           url: "announcements/",
           templateUrl: "views/app/rooms/announcement.html",
           controller: "announcementCtrl"
+        })
+        .state('app.rooms.announcements.specific', {
+          url: ":announcementId/",
+          templateUrl: "views/app/rooms/announcement.html"
         })
         .state('app.rooms.library', {
           url: "library/",
@@ -203,7 +211,7 @@ angular
         })
         .state('app.roomsDash', {
           abstract: true,
-          url: "Classroom/",
+          url: "Classrooms/",
           templateUrl: "views/app/roomsDash/roomsdash.html",
           controller: "myRoomCtrl"
         })

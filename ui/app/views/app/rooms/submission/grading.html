@@ -127,7 +127,8 @@
               </tbody>
             </table>
           </div>
-          <a href="" class="publish-btn">Publish Result</a>
+          <a href="" class="publish-btn" ng-click="publishResult() "
+             ng-if="!vm.submissionDetail.Submission.is_published">Publish Result</a>
         </div>
       </form>
     </div>

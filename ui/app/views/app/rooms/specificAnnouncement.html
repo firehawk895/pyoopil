@@ -1,0 +1,34 @@
+<div class="announcement-outer">
+  <div class="middivouter">
+    <div class="listbox" ng-repeat="announcement in announcements">
+      <div class="imgbox">
+        <a>
+          <img ng-src="{{announcement.AppUser.profile_img}}"/>
+        </a>
+      </div>
+      <div class="userinfo">
+        <h4>{{announcement.Announcement.subject}}
+                <span>
+                  <a href="profile-view.htm">by {{announcement.AppUser.fname}} {{announcement.AppUser.lname}}</a>
+                </span></h4>
+
+        <div class="datetime clearfix"><span ng-show="announcement.Announcement.filename"
+                                             class="attach-icon"></span>
+          {{announcement.Announcement.created | amDateFormat:'LLL'}}
+        </div>
+
+      </div>
+      <p class="wordwrap">{{announcement.Announcement.body}}</p>
+
+      <p class="cl">
+        <a class="dlfile" ng-if="announcement.Announcement.filename"
+           ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook">
+          {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+
+
+        <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
+           ng-if="announcement.Announcement.filename" target="_blank"></a>
+      </p>
+    </div>
+  </div>
+</div>

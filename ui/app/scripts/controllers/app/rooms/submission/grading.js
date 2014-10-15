@@ -55,18 +55,18 @@ angular.module('uiApp')
 //        if ($scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.marks || $scope.gradeSubmissions[index].UsersSubmission.UsersSubmission.grade) {
         if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'marked') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.marks, 'marked').then(function (result) {
+            toastService.show(result.status, result.message);
             if (result.status)
-              toastService.show(true, result.message);
+              $scope.gradeSubmissions[index].UsersSubmission.is_graded = true; //model update instead of replacing the object
 //            $scope.gradeSubmissions[index] = result.data;
-            $scope.gradeSubmissions[index].UsersSubmission.is_graded = true; //model update instead of replacing the object
           });
         }
         else if ($scope.vm.submissionDetail.Submission.subjective_scoring == 'graded') {
           roomService.assignGrade(submissionId, userId, $scope.gradeSubmissions[index].UsersSubmission.grade, 'graded').then(function (result) {
+            toastService.show(result.status, result.message);
             if (result.status)
-              toastService.show(true, result.message);
-//            $scope.gradeSubmissions[index] = result.data;
-            $scope.gradeSubmissions[index].UsersSubmission.is_graded = true;
+              $scope.gradeSubmissions[index].UsersSubmission.is_graded = true;
+            //            $scope.gradeSubmissions[index] = result.data;
           });
         }
 
@@ -74,5 +74,12 @@ angular.module('uiApp')
 //        }
 //        else
 //          toastService.show(false, "Marks/Grade cannot be blank");
+      };
+      $scope.publishResult = function () {
+        roomService.publishResult($scope.vm.submissionDetail.Submission.id).then(function (result) {
+          toastService.show(result.status, result.message);
+          if (result.status)
+            $scope.vm.submissionDetail.Submission.is_published = true;
+        });
       };
     }]);
