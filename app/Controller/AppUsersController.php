@@ -13,7 +13,7 @@ class AppUsersController extends UsersController {
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->authorize = array('Controller');
-        $this->Security->unlockedActions = array('login', 'logout', 'add');
+        $this->Security->unlockedActions = array('login', 'logout', 'add', 'changePassword', 'changeEmail');
         $this->User = ClassRegistry::init('AppUser');
         $this->set('model', 'AppUser');
         $this->Auth->allow('login', 'add', 'reset_password');
@@ -54,6 +54,7 @@ class AppUsersController extends UsersController {
 
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
+        $this->request->onlyAllow('post');
 
         $data = array();
         $status = false;
@@ -96,6 +97,7 @@ class AppUsersController extends UsersController {
     public function logout() {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
+        $this->request->onlyAllow('post');
 
         $data = array();
         $status = false;
@@ -136,9 +138,13 @@ class AppUsersController extends UsersController {
         }
     }
 
+    /**
+     * API: register a new user
+     */
     public function add() {
         $this->RequestHandler->renderAs($this, 'json');
         $this->response->type('json');
+        $this->request->onlyAllow('post');
 
         $data = array();
         $status = false;
@@ -160,6 +166,123 @@ class AppUsersController extends UsersController {
             }
         }
 
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * API: change to a new password
+     */
+    public function changePassword() {
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+        $this->request->onlyAllow('post');
+        $data = array();
+
+        $postData = $this->request->data;
+        $this->AppUser->set($postData);
+
+        $validates = $this->AppUser->validates(array(
+            'fieldList' => array('password', 'temppassword'
+            )));
+        if ($validates) {
+            $this->AppUser->id = AuthComponent::user('id');
+            $password = $this->AppUser->field('password');
+            if ($postData['AppUser']['old_password']) {
+                $receivedPassword = $this->AppUser->hash($postData['AppUser']['old_password'], 'sha1', true);
+            }
+
+            if ($password === $receivedPassword) {
+                unset($postData['AppUser']['old_password']);
+                unset($postData['AppUser']['temppassword']);
+                $postData['AppUser']['password'] = $this->AppUser->hash($postData['AppUser']['password'], 'sha1', true);
+                $postData['AppUser']['id'] = AuthComponent::user('id');
+                $status = !empty($this->AppUser->save($postData, array(
+                    'validate' => false,
+                    'fieldList' => array(
+                        'password'
+                    )
+                )));
+                if ($status) {
+                    $message = "Password successfully changed";
+                } else {
+                    $message = "Your password could not be changed";
+                }
+            } else {
+                $message = "Your old password is incorrect";
+                $status = false;
+            }
+        } else {
+            $message = $this->AppUser->validationErrors;
+        }
+
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * API : change users email
+     */
+    public function changeEmail() {
+        //TODO: add the process of email verification
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+        $this->request->onlyAllow('post');
+        $data = array();
+
+        $postData = $this->request->data;
+        $this->AppUser->set($postData);
+
+        $validates = $this->AppUser->validates(array(
+            'fieldList' => array('email')));
+
+        if ($validates) {
+            $postData['AppUser']['id'] = AuthComponent::user('id');
+            $status = !empty($this->AppUser->save($postData, array(
+                'validate' => false,
+                'fieldList' => array(
+                    'email'
+                ))));
+            if ($status) {
+                $message = "Your email has been successfully changed";
+            } else {
+                $message = "There was a problem changing your email";
+            }
+        } else {
+            $status = false;
+            $message = $this->AppUser->validationErrors;
+        }
+
+        /*_serialize */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    /**
+     * API : Account settings view
+     */
+    public function getAccount() {
+        $this->RequestHandler->renderAs($this, 'json');
+        $this->response->type('json');
+        $this->request->onlyAllow('get');
+
+        $data = $this->AppUser->find('first', array(
+            'conditions' => array(
+                'id' => AuthComponent::user('id')
+            ),
+            'fields' => array(
+                'id', 'email'
+            ),
+            'recursive' => -1
+        ));
+
+        $status = !empty($data);
+        $message = "";
+
+        /*_serialize */
         $this->set(compact('status', 'message'));
         $this->set('data', $data);
         $this->set('_serialize', array('data', 'status', 'message'));
