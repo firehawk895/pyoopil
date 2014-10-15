@@ -81,7 +81,7 @@ angular
           templateUrl: "views/public/public.html",
           controller: "publicCtrl",
           resolve: {
-            authenticated: ['$location', 'globalService', function($location, globalService) {
+            authenticated: ['$location', 'globalService', function ($location, globalService) {
               if (globalService.getIsAuthorised()) {
                 return $location.path('/Classroom/');
               }
@@ -93,7 +93,7 @@ angular
           templateUrl: 'views/public/register.html',
           controller: "registerCtrl",
           resolve: {
-            authenticated: ['$state', 'globalService', function($state, globalService) {
+            authenticated: ['$state', 'globalService', function ($state, globalService) {
               if (globalService.getIsAuthorised()) {
                 return $state.go('app.roomsDash.myroom');
               }
@@ -216,7 +216,7 @@ angular
           templateUrl: "views/app/logout.html",
           controller: "publicCtrl",
           resolve: {
-            authenticated: ['$state', 'globalService', function($state, globalService) {
+            authenticated: ['$state', 'globalService', function ($state, globalService) {
               if (globalService.getIsAuthorised()) {
                 return $state.go('app.roomsDash.myroom');
               }
@@ -236,6 +236,11 @@ angular
         .state('app.profile.feedback', {
           url: 'feedback/',
           templateUrl: "views/app/profile/feedback.html"
+        })
+        .state('app.profile.account', {
+          url: 'account/',
+          templateUrl: "views/app/profile/accountSettings.html",
+          controller: 'accountSettingsCtrl'
         })
         .state('app.publicProfile', {
           url: 'profile/',

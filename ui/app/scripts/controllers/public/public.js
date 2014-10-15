@@ -29,7 +29,7 @@ angular.module('uiApp')
       $scope.vm.password = "";
       $scope.doLogin = function () {
         userService.login($scope.vm.email, $scope.vm.password).then(function (result) {
-          toastService.show(result.status, result.message);
+
           if (result.status) {
             ngDialog.close();
             localStorageService.add("token", result.data.auth_token);
@@ -42,7 +42,11 @@ angular.module('uiApp')
             //redirect to rooms on successful login
 //            $location.path('/Classroom/my/');
             $state.go('app.roomsDash.myroom');
+            toastService.show(result.status, result.message, 'Feedback');  //if logged in successfully show feedback message
           }
+          else
+            toastService.show(result.status, result.message);
+
         }, function (error) {
           //todo: log error
         });

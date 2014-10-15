@@ -17,12 +17,14 @@ angular.module('uiApp')
       $scope.logout = function () {
         userService.logout().then(function (result) {
           toastService.show(result.status, result.message);
+          globalService.setIsAuthorised(false);
           $location.path('/logout/');
           $http.defaults.headers.common = {'X-AuthTokenHeader': ''};
           localStorageService.remove("token");
           localStorageService.remove("name");
           localStorageService.remove("image");
-          globalService.setIsAuthorised(false);
+          localStorageService.remove("id");
+
         });
       };
       $scope.updatePage = function () {
