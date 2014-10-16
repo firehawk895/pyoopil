@@ -66,8 +66,8 @@ angular
 
 //social login keys
       $authProvider.facebook({
-//        clientId: '716318768442666'
         clientId: '716330241774852'
+        //  url: 'http://jsonplaceholder.typicode.com/todos'    
       });
 
       $authProvider.google({
@@ -83,7 +83,7 @@ angular
           resolve: {
             authenticated: ['$location', 'globalService', function ($location, globalService) {
               if (globalService.getIsAuthorised()) {
-                return $location.path('/Classrooms/');
+//                return $location.path('/Classrooms/');
               }
             }]
           }
@@ -95,7 +95,7 @@ angular
           resolve: {
             authenticated: ['$location', 'globalService', function ($location, globalService) {
               if (globalService.getIsAuthorised()) {
-                return $location.path('/Classrooms/');
+//                return $location.path('/Classrooms/');
               }
             }]
           }
@@ -256,10 +256,6 @@ angular
         });
 
     }])
-//  .constant('angularMomentConfig', {
-//    preprocess: 'unix', // optional
-//    timezone: 'Asia/Kolkata' // optional
-//  })
   .controller('MainController', ['$scope', 'globalService', '$window', function ($scope, globalService, $window) {
     $scope.isLoggedIn = globalService.getIsAuthorised();
 
@@ -310,13 +306,6 @@ angular
       //set base path for restangular
       restangular.setBaseUrl(globalService.getBaseUrl());
       userService.validateSession();
-
-//      if (globalService.getIsAuthorised()) {
-//        $location.path('/app/room/my/');
-//      }
-//      else
-//        $location.path('/');
-
 
 //      $idle.watch();
     }])

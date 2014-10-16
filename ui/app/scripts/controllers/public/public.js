@@ -8,12 +8,11 @@ angular.module('uiApp')
       $scope.authenticate = function (provider) {
 
         $auth.authenticate(provider)
-          .then(function () {
-            alert("Logged in ");
+          .then(function (response) {
+            console.log(response);
           })
           .catch(function (response) {
-            console.log(response.data);
-
+            console.log(response.id);
           });
       };
 
