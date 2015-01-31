@@ -210,8 +210,10 @@ class Library extends AppModel {
     public function deleteItem($type, $id) {
 
         if ($type == 'File') {
+            $this->log("Deleting a File");
             return @$this->Topic->Pyoopilfile->delete($id);
         } elseif ($type == 'Link') {
+            $this->log("Deleting a link");
             return @$this->Topic->Link->delete($id);
         }
     }
@@ -228,7 +230,10 @@ class Library extends AppModel {
         $pattern = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Video'] = array();
-            for ($j = 0; $j < count($data[$i]['Link']); $j++) {
+
+            //crucial line because the array is being modified during iteration!
+            $totalLinks = count($data[$i]['Link']);
+            for ($j = 0; $j < $totalLinks; $j++) {
                 $linkText = $data[$i]['Link'][$j]['linktext'];
                 if (preg_match($pattern, $linkText)) {
                     $youtubeLink = array(
@@ -238,6 +243,8 @@ class Library extends AppModel {
                         'created' => $data[$i]['Link'][$j]['created']
                     );
                     array_push($data[$i]['Video'], $youtubeLink);
+
+                    //Very very risky maneuver to unset while iterating!
                     unset($data[$i]['Link'][$j]);
                 }
             }

@@ -106,7 +106,7 @@ angular.module('uiApp')
       };
 
       $scope.deleteVideo = function (topic, index) {
-        roomService.deleteFile(topic.Video[index].id, "File").then(function (result) {
+        roomService.deleteFile(topic.Video[index].id, "Link").then(function (result) {
           toastService.show(result.status, result.message);
           if (result.status)
             topic.Video.splice(index, 1);
