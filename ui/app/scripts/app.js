@@ -66,7 +66,7 @@ angular
 
 //social login keys
       $authProvider.facebook({
-        clientId: '716330241774852'
+        clientId: '716318768442666'
         //  url: 'http://jsonplaceholder.typicode.com/todos'    
       });
 
