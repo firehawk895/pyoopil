@@ -191,8 +191,8 @@ angular.module('uiApp')
 
         angular.forEach($scope.vm.files, function (value, key) {
           var file = document.getElementById(value).files[0];
-          if (angular.isDefined(file) && file.size > 5242880) {
-            toastService.show(false, "Cannot Upload more than 5 MB");
+          if (angular.isDefined(file) && file.size > 2097152) {
+            toastService.show(false, "Cannot Upload more than 2 MB");
             hasError = true;
             $scope.libraryUpload.files = [];
             $scope.vm.files = ["file-0"];
