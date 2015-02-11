@@ -15,13 +15,13 @@ angular.module('uiApp')
         ngDialog.close();
       };
       self.openDocViewerDialog = function (scope, path) {
+          scope.docPath = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=" + encodeURIComponent(path) + "&embedded=true");
         ngDialog.open({
           template: 'views/app/dialog-open-doc.html',
           scope: scope,
           showClose: true,
           className: 'ngdialog-theme-plain'
         });
-          scope.docPath = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=" + encodeURIComponent(path) + "&embedded=true");
       };
       self.openLeftEditDialog = function (scope) {
         ngDialog.open({
