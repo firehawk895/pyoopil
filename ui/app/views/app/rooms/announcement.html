@@ -1,0 +1,81 @@
+<!-- Right Content -->
+<section class="pagecontent clearfix">
+  <div class="content-wrapper">
+    <!--content top-->
+    <form name="formAnnouncement" ng-if="canPost" id="formAnnouncementId">
+      <div class="top-div announcement">
+          <span class="txt-count">(
+          <span id="rem_count">{{200-vm.subject.length}}</span>/200 characters left)</span>
+        <input class="add-topic" type="text" placeholder="Subject" ng-maxlength=200 maxlength="200"
+               ng-model="vm.subject" ng-trim="false" ng-required="true">
+
+        <div class="ques-box">
+          <textarea class="txt-area" placeholder="Type announcement text here…"
+                    ng-model="vm.body" ng-required="true"></textarea>
+
+
+          <div class="att-box clearfix">
+            <div class="disc-room f-left">
+              <div class="attachmentbox">
+                <input id="fileupload" type="file" name="files[]"
+                       class="i_file" accept="{{getMimeTypes()}}">
+                <!--<span class="btn btn-success fileinput-button changepicsbtn attach-mail">-->
+                <!--<!--todo:Style add files button-->
+                <!--<!--<span class="att-txt">Add files -->
+                <!--<!--<span class="att-size">(Max 100 mb)</span></span>-->
+
+                <!--</span>-->
+
+                <!--<div id="files" class="files"></div>-->
+              </div>
+            </div>
+            <div class="f-right">
+              <button type="reset" class="sub-btn cnl-btn hand">Cancel</button>
+              <button class="sub-btn chk-file" ng-click="createAnnouncement()">Create
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--content list-->
+    <div class="announcement-outer">
+      <div class="middivouter">
+        <div infinite-scroll="updatePage()">
+
+          <div class="listbox" ng-repeat="announcement in announcements">
+            <div class="imgbox">
+              <a>
+                <img ng-src="{{announcement.AppUser.profile_img}}"/>
+              </a>
+            </div>
+            <div class="userinfo">
+              <h4>{{announcement.Announcement.subject}}
+                <span>
+                  <a href="profile-view.htm">by {{announcement.AppUser.fname}} {{announcement.AppUser.lname}}</a>
+                </span></h4>
+
+              <div class="datetime clearfix"><span ng-show="announcement.Announcement.filename"
+                                                   class="attach-icon"></span>
+                {{announcement.Announcement.created | amDateFormat:'LLL'}}
+              </div>
+
+            </div>
+            <p class="wordwrap">{{announcement.Announcement.body}}</p>
+
+            <p class="cl">
+              <a class="dlfile" ng-if="announcement.Announcement.filename"
+                 ng-click="openDocViewerDialog(announcement.Announcement.file_path)" ng-dialog-class="dialogLook">
+                {{announcement.Announcement.filename}}.{{announcement.Announcement.filesize}}</a>
+
+
+              <a ng-href="{{announcement.Announcement.file_path}}" class="down-icon"
+                 ng-if="announcement.Announcement.filename" target="_blank"></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

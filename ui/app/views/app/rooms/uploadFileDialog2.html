@@ -1,0 +1,77 @@
+<div class="create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Upload</span>
+      <a href="" class="close-link" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <form class="form-data">
+        <div class="upload-form clearfix">
+
+          <div id="form2">
+            <p class="up-heading">Step 2 of 2</p>
+
+            <div class="select-topic">
+              <p class="sub-sel">Topic Name: <span>{{libraryUpload.name}}</span></p>
+
+              <div class="tabpages">
+                <ul class="upload-tab">
+                  <li><a ng-click="uploadFileFlag=true" class="tab hand" ng-class="{'active' :uploadFileFlag}">Upload
+                    file</a>
+                  </li>
+                  <li><a ng-click="uploadFileFlag=false" class="tab hand" ng-class="{'active' :!uploadFileFlag}">Upload
+                    link</a>
+                  </li>
+                </ul>
+                <div ng-show="uploadFileFlag" id="file1" class="tab-contt">
+                  <p>Select file to upload</p>
+
+                  <input type="file" name="files[]" id='{{file}}'
+                         ng-repeat="file in vm.files" accept="{{getMimeTypes()}}">
+
+                  <span class="add-more" tooltip="Add File" ng-click="addNewFile()"></span>
+                  <!--todo:style add files and put error limit-->
+                  <!--<div class="upload-files">-->
+                  <!--<div class="add-upload clearfix">-->
+                  <!--<div class="custom-upload" id="test0">-->
+                  <!--<input type="file" name="files[]">-->
+
+                  <!--<div class="file-upload">-->
+                  <!--<span class="file-txt">Select file</span>-->
+                  <!--<input disabled="disabled" value="No File Chosen">-->
+                  <!--</div>-->
+                  <!--<div class="size-txt">(Max. 00 mb)</div>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                  <!--<span class="add-more tooltip" title="Add File"></span>-->
+                  <!--</div>-->
+                  <!--<div class="error-txt">-->
+                  <!--<p>! File exceeded max. limit. </p>-->
+
+                  <!--<p>Select another file or reduce size and upload again</p>-->
+                  <!--</div>-->
+                </div>
+                <div ng-show="!uploadFileFlag" id="link1" class="tab-contt">
+                  <p>Paste link here</p>
+
+                  <div class="upload-links">
+                    <div class="add-links">
+                      <input type="text" class="pop-input" placeholder="Upload links"
+                             ng-model="link.url" ng-repeat="link in vm.links">
+                    </div>
+                  </div>
+                  <span class="add-link" tooltip="Add Link" ng-click="addNewLink()"></span>
+                </div>
+              </div>
+              <div class="nav-btn">
+                <input type="button" class="follow backto1" value="Oops !" ng-click="showStep1()">
+                <input type="button" class="follow active" value="Save" ng-click="uploadFiles()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

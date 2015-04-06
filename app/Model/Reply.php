@@ -19,7 +19,7 @@ class Reply extends AppModel {
      */
     public $belongsTo = array(
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
@@ -30,7 +30,8 @@ class Reply extends AppModel {
             'foreignKey' => 'discussion_id',
             'conditions' => '',
             'fields' => '',
-            'order' => ''
+            'order' => '',
+            'counterCache' => true
         )
     );
 
@@ -54,22 +55,43 @@ class Reply extends AppModel {
         )
     );
 
+    /**
+     * Post a reply for a given discussion
+     * @param $discussionId
+     * @param $comment
+     * @param $userId
+     * @return mixed
+     */
     public function postReply($discussionId, $comment, $userId) {
+//        not working:
+//        $data = array(
+//            'AppUser' => array(
+//                'id' => $userId
+//            ),
+//            'Discussion' => array(
+//                'id' => $discussionId
+//            ),
+//            'Reply' => array(
+//                'comment' => $comment
+//            )
+//        );
         $data = array(
-            'AppUser' => array(
-                'id' => $userId
-            ),
-            'Discussion' => array(
-                'id' => $discussionId
-            ),
-            'Reply' => array(
-                'comment' => $comment
-            )
+            'user_id' => $userId,
+            'discussion_id' => $discussionId,
+            'comment' => $comment
         );
 
-        return $this->saveAssociated($data);
+//        return $this->saveAssociated($data);
+        return $this->save($data);
+
     }
 
+    /**
+     * Delete a given reply by Id
+     * @param $replyId
+     * @param $userId
+     * @return bool
+     */
     public function deleteReply($replyId, $userId) {
         $reply = $this->findById($replyId);
 
@@ -82,52 +104,107 @@ class Reply extends AppModel {
         }
     }
 
+    /**
+     * Post-processing of reply data for use in the front end
+     * @param $data
+     * @param $userId
+     * @return mixed
+     */
     public function processReplies($data, $userId) {
         for ($i = 0; $i < count($data); $i++) {
-            $hasVoted = $this->Discussion->hasVoted('Reply', $data[$i]['Reply']['id'], $userId);
-            $isOwner = ($data[$i]['Reply']['user_id'] == $userId);
-
-            if ($hasVoted || $isOwner) {
-                $data[$i]['Reply']['showGamification'] = true;
-            } else {
-                unset($data[$i]['Reply']['real_praise']);
-                unset($data[$i]['Reply']['cu']);
-                unset($data[$i]['Reply']['in']);
-                unset($data[$i]['Reply']['co']);
-                unset($data[$i]['Reply']['en']);
-                unset($data[$i]['Reply']['ed']);
-                $data[$i]['Reply']['showGamification'] = false;
-            }
-            
-            if($hasVoted) {
-                $data[$i]['allowGamificationvote'] = true;
-            } else {
-                $data[$i]['allowGamificationvote'] = false;
-            }
+            $data[$i]['Reply'] = $this->Discussion->setShowGamification('Reply', $data[$i]['Reply'], $userId);
             $data[$i]['Gamificationvote'] = $this->Discussion->convertGamificationVoteArray($data[$i]['Gamificationvote']);
         }
-
         return $data;
     }
 
-    public function setMoreRepliesFlag($page, $discussionId){
-
-        $params = array(
+    /**
+     * Indicator if more replies are present
+     * to be used for lazy loaded pagination of replies for a given discussion
+     * @param $page
+     * @param $discussionId
+     * @return bool
+     */
+    public function setMoreRepliesFlag($page, $discussionId) {
+        $data = $this->Discussion->find('first', array(
+            'fields' => array(
+                'reply_count'
+            ),
             'conditions' => array(
-                'discussion_id' => $discussionId
-            )
-        );
+                'id' => $discussionId
+            ),
+            'recursive' => -1
+        ));
 
-        $count = count($this->find('all',$params));
-        $left = $count - ($page * 5);
+        $count = $data['Discussion']['reply_count'];
+        $remaining = $count - ($page * self::MAX_REPLIES);
 
-        if($left>0){
+        if ($remaining > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
-
     }
 
+    /**
+     * Return Replies of a discussion, paginated
+     * @param $discussionId
+     * @param $page
+     * @param bool $onlylatest
+     * @return array
+     */
+    public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
 
+        $offset = self::MAX_REPLIES * ($page - 1);
+
+        $contain = array(
+            'Gamificationvote' => array(
+                'AppUser' => array(
+                    'fields' => array(
+                        'fname',
+                        'lname'
+                    )
+                )
+            ),
+            'AppUser' => array(
+                'fields' => array(
+                    'fname',
+                    'lname',
+                    'profile_img'
+                )
+            ),
+        );
+
+        $options = array(
+            'contain' => $contain,
+            'conditions' => array(
+                'discussion_id' => $discussionId
+            ),
+            'order' => array(
+                'created' => 'desc'
+            ),
+            'offset' => $offset,
+            'limit' => self::MAX_REPLIES,
+        );
+
+        if ($onlylatest) {
+            $options['limit'] = 1;
+            unset($options['offset']);
+        }
+
+        $data = $this->find('all', $options);
+        return $data;
+    }
+
+    public function getReplyById($id){
+        $options = array(
+          'conditions' => array(
+              'Reply.id' => $id
+          )
+        );
+
+        $data = $this->find('first',$options);
+
+        return $data;
+    }
 }

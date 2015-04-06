@@ -1,0 +1,11 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper reports">
+    <div class="topbuttons" ng-if="haveAccess">
+      <a ui-sref="app.rooms.reports.main.view" class="follow" ui-sref-active="active">View Reports</a>
+      <a ui-sref="app.rooms.reports.main.create" class="follow" ui-sref-active="active">Create/Edit Reports</a>
+      <a ui-sref="app.rooms.reports.main.takeAttendance" href="" class="follow" ui-sref-active="active">Take
+        Attendence</a>
+    </div>
+    <div ui-view></div>
+  </div>
+</section>

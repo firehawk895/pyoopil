@@ -1,0 +1,100 @@
+<!--popup-->
+<div id="create-assign" class="create-popup ">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Create Classroom</span>
+      <a class="close-link hand" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <form name="formClassroom" class="form-data create-popup">
+        <div class="left-pop">
+          <label>Name of the classroom<span class="mandatory"> *</span></label>
+          <input type="text" class="pop-input" ng-model="classroom.Classroom.title" ng-required="true" tabindex=1>
+          <label>University Association<span class="mandatory"> *</span></label>
+          <select class="chosen-select select_option" ng-required="true"
+                  ui-jq="chosen"
+                  ng-model="classroom.Classroom.campus_id"
+                  ng-options="key as campus for (key,campus) in campuses" tabindex=2>
+          </select>
+          <label>Department<span class="mandatory"> *</span></label>
+          <select class="chosen-select select_option" ng-required="true"
+                  ui-jq="chosen"
+                  ng-model="classroom.Classroom.department_id"
+                  ng-options="key as department for (key,department) in departments">
+
+          </select>
+          <label>Year</label>
+
+          <div class="year-dd">
+            <select class="chosen-select" ui-jq="chosen">
+              <option>I</option>
+              <option>II</option>
+              <option>III</option>
+              <option>IV</option>
+            </select>
+          </div>
+
+          <label>Duration of the course<span class="mandatory"> *</span></label>
+
+          <div class="calender create-date">
+            <input type="text" class="pop-dura date_popup hand"
+                   ui-jq="datepicker"
+                   ui-options="{showOn: 'both', buttonImage: 'images/classroom/pop-cal.png', buttonImageOnly: true}"
+                   ng-model="classroom.Classroom.duration_start_date" ng-required="true">
+          </div>
+          <div class="calender create-date">
+            <input type="text" class="pop-dura date_popup hand" ng-model="classroom.Classroom.duration_end_date"
+                   ui-jq="datepicker"
+                   ui-options="{showOn: 'both', buttonImage: 'images/classroom/pop-cal.png', buttonImageOnly: true}"
+                   ng-required="true">
+          </div>
+          <label>Semester</label>
+          <select class="chosen-select select_option" ui-jq="chosen" ng-model="classroom.Classroom.semester">
+            <option value="i">Semester I</option>
+            <option value="ii">Semester II</option>
+            <option value="iii">Semester III</option>
+            <option value="iv">Semester IV</option>
+            <option value="v">Semester V</option>
+            <option value="vi">Semester VI</option>
+            <option value="vii">Semester VII</option>
+            <option value="viii">Semester VIII</option>
+          </select>
+        </div>
+        <div class="right-pop">
+          <label>Course Type<span class="mandatory"> *</span></label>
+
+          <div class="radio-btn">
+            <input id="Public" type="radio" name="course" value="0"
+                   ng-model="classroom.Classroom.is_private">
+            <label for="Public" class="radio-lbl">Public</label>
+            <input id="Private" type="radio" name="course" value="1"
+                   ng-model="classroom.Classroom.is_private">
+            <label for="Private" class="radio-lbl">Private</label>
+          </div>
+          <label>Course Description</label>
+          <textarea class="pop-txtarea" ng-model="classroom.Classroom.description"></textarea>
+          <label>Degree<span class="mandatory"> *</span></label>
+          <select class="chosen-select select_option" ng-required="true"
+                  ui-jq="chosen"
+                  ng-model="classroom.Classroom.degree_id"
+                  ng-options="key as degree for (key,degree) in degrees">
+          </select>
+          <label>You tube video link</label>
+          <input type="text" class="pop-input" ng-model="classroom.Classroom.link">
+          <label>Minimum required attendance<span class="mandatory"> *</span></label>
+          <input type="number" step="any" class="pop-dura"
+                 min="0" max="100" ng-model="classroom.Classroom.minimum_attendance" ng-required="true"> %
+
+        </div>
+        <div class="clear"></div>
+        <div class="submit-btn">
+          <button type="submit" class="sub-btn" value="Create" id="quiz-link" ng-click="createClassroom()"
+                  ng-disabled="formClassroom.$invalid">
+            Create
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<header>
+  <section class="clearfix header">
+    <!-- Logo-->
+    <div class="logo"><a href=""><img src="images/logo.png" class="f-left" alt="logo"></a>
+    </div>
+
+    <div ng-include="'/views/app/top-right-header.html'"></div>
+
+  </section>
+</header>
+<div class="container calen " ng-class="{'show-sub' :showScroll}">
+  <!-- Left Navigation -->
+  <div ng-include="'/views/app/left-navbar.html'"></div>
+
+  <!-- Right side Content  -->
+  <section class="rightwrapper">
+    <div ui-view></div>
+  </section>
+
+</div>

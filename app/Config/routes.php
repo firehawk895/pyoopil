@@ -33,16 +33,16 @@ Router::connect('/feedback', array('controller' => 'pages', 'action' => 'display
 Router::connect('/test', array('controller' => 'classrooms', 'action' => 'test'));
 //-------------------------Inside classroom---------------------------------------------------------------------
 Router::connect(
-        '/Classrooms/:id/:controller', array('action' => 'index'), array(
-    'pass' => array('id'),
-    'id' => '[0-9]+'
-        )
+    '/Classrooms/:id/:action', array('controller' => 'classrooms'), array(
+        'pass' => array('id'),
+        'id' => '[0-9]+'
+    )
 );
 Router::connect(
-        '/Classrooms/:id/:controller/:action', array('action' => 'index'), array(
-    'pass' => array('id'),
-    'id' => '[0-9]+'
-        )
+    '/Classrooms/:id/:controller/:action', array('action' => 'index'), array(
+        'pass' => array('id'),
+        'id' => '[0-9]+'
+    )
 );
 
 //--------------------------------------------------------------------------------------------------------------
@@ -50,10 +50,14 @@ Router::connect('/Announcements/add', array('controller' => 'announcements', 'ac
 Router::connect('/Classrooms/test', array('controller' => 'classrooms', 'action' => 'testmenow'));
 Router::connect('/Classrooms/add', array('controller' => 'classrooms', 'action' => 'add'));
 Router::connect('/Classrooms', array('controller' => 'classrooms', 'action' => 'index'));
+Router::connect('/Classrooms/Reports/academic/student/graph', array('controller' => 'reports', 'action' => 'academicStudentGraph'));
 Router::connect('/register', array('controller' => 'AppUsers', 'action' => 'add'));
+Router::connect('/users/password/new', array('controller' => 'AppUsers', 'action' => 'changePassword'));
+Router::connect('/users/email/change', array('controller' => 'AppUsers', 'action' => 'changeEmail'));
+Router::connect('/users/account', array('controller' => 'AppUsers', 'action' => 'getAccount'));
 //--------------------------------------------------------------------------------------------------------------
 Router::connect(
-        '/Classrooms/:action', array('controller' => 'classrooms'));
+    '/Classrooms/:action', array('controller' => 'classrooms'));
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file

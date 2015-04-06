@@ -32,7 +32,7 @@ class Pollchoice extends AppModel {
         'Pollvote' => array(
             'className' => 'Pollvote',
             'foreignKey' => 'pollchoice_id',
-            'dependent' => false,
+//            'dependent' => false,
             'conditions' => '',
             'fields' => '',
             'order' => '',
@@ -47,6 +47,26 @@ class Pollchoice extends AppModel {
     public function getDiscussionId($pollChoiceId) {
         $choice = $this->findById($pollChoiceId);
         return $choice['Pollchoice']['discussion_id'];
+    }
+
+    /**
+     * given a discussion of type poll return
+     * @param $discussionId
+     * @return array
+     */
+    public function getPollChoiceList($discussionId) {
+        $list = array();
+
+        $list = $this->find('list', array(
+            'contain' => array(
+                'Discussion'
+            ),
+            'conditions' => array(
+                'Discussion.id' => $discussionId
+            )
+        ));
+
+        return $list;
     }
 
 }

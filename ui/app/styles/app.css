@@ -1,0 +1,485 @@
+
+.tooltip {
+  position: absolute;
+  z-index: 1030;
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  visibility: visible;
+  filter: alpha(opacity=0);
+  opacity: 0;
+}
+
+.tooltip.in {
+  filter: alpha(opacity=90);
+  opacity: .9;
+}
+
+.tooltip.top {
+  padding: 5px 0;
+  margin-top: -3px;
+}
+
+.tooltip.right {
+  padding: 0 5px;
+  margin-left: 3px;
+}
+
+.tooltip.bottom {
+  padding: 5px 0;
+  margin-top: 3px;
+}
+
+.tooltip.left {
+  padding: 0 5px;
+  margin-left: -3px;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background-color: #000;
+  border-radius: 4px;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.tooltip.top-left .tooltip-arrow {
+  bottom: 0;
+  left: 5px;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.tooltip.top-right .tooltip-arrow {
+  right: 5px;
+  bottom: 0;
+  border-width: 5px 5px 0;
+  border-top-color: #000;
+}
+
+.tooltip.right .tooltip-arrow {
+  top: 50%;
+  left: 0;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-right-color: #000;
+}
+
+.tooltip.left .tooltip-arrow {
+  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #000;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  top: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}
+
+.tooltip.bottom-left .tooltip-arrow {
+  top: 0;
+  left: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}
+
+.tooltip.bottom-right .tooltip-arrow {
+  top: 0;
+  right: 5px;
+  border-width: 0 5px 5px;
+  border-bottom-color: #000;
+}
+
+/*End of tooltip*/
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+  padding: 0;
+  width: 700px;
+}
+
+.ngdialog.ngdialog-theme-plain {
+  padding-top: 100px;
+}
+
+.ngdialog.ngdialog-theme-plain .ngdialog-content {
+  padding: 30px;
+  width: 95%;
+  background: rgba(0, 0, 0, -0.6);
+}
+
+.ngdialog.ngdialog-theme-plain .ngdialog-close:before {
+  right: -15px;
+  top: -15px;
+}
+
+.select2-drop {
+  z-index: 99900;
+}
+
+.select2-full-width, .select2-container {
+  width: 100%;
+}
+
+.unfollow-footer {
+  background: #ffffff;
+
+}
+
+.unfollow-footer a {
+  border-right: 1px solid #7d7d7d;
+  display: inline-block;
+  padding: 5px 55px;
+}
+
+.select-topic .pop-input {
+  width: 92%;
+  margin-top: 30px;
+  display: block;
+}
+
+.pop-input {
+  height: 37px;
+  width: 254px;
+}
+
+.create-popup .chosen-container-single .chosen-single {
+  height: 37px;
+  width: 254px;
+}
+
+.pop-dura {
+  height: 37px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  border-top-color: #ff992f;
+  border-left-color: #ff992f;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: #ff992f 1px 0 6px 1px;
+  -ms-box-shadow: #ff992f 1px 0 6px 1px;
+  -webkit-box-shadow: #ff992f 1px 0 6px 1px;
+  box-shadow: #ff992f 1px 0 6px 1px;
+}
+
+#loading-bar .bar {
+  background: #ff992f;
+}
+
+.pop-close .sub-btn {
+  width: 180px;
+}
+
+.arr-dd {
+  display: block;
+}
+
+.clk-tt {
+  display: block;
+}
+
+.main-box {
+  display: block;
+}
+
+.sign-txtbx input {
+  height: 38px;
+}
+
+.signup .icon-cross {
+  top: 0px;
+}
+
+.ng-dirty .ng-invalid {
+  border: 1px solid #f67e02;
+}
+
+.hand {
+  cursor: pointer;
+}
+
+.left-pop {
+  width: 50%;
+}
+
+.calender .pop-dura {
+  width: 108%;
+}
+
+.right-pop {
+  width: 50%;
+}
+
+.pop-txtarea {
+  width: 254px;
+  height: 117px;
+}
+
+.create-popup input[type=radio] + .radio-lbl {
+  width: 50px;
+}
+
+.html_display strong {
+  font-weight: bold;
+}
+
+.fullnoti-txt strong, .noti-txt strong {
+  font-weight: bold;
+  color: #f68005;
+}
+
+.html_display em {
+  font-style: italic;
+}
+
+.html_display ul li {
+  list-style-type: disc;
+  list-style-position: inside;
+  background: none;
+}
+
+.html_display ol li {
+  list-style-type: decimal;
+  list-style-position: inside;
+  background: none;
+}
+
+.html_display h1 {
+  font-weight: bold;
+  font-size: 32px;
+}
+
+.html_display h2 {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.html_display h3 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.html_display blockquote {
+  font-style: italic;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+  border-left: 3px solid #ccc;
+}
+
+.html_display img {
+  max-width: 600px;
+  max-height: 600px;
+}
+
+.html_display pre, .noti-txt pre {
+  font-family: monospace;
+}
+
+.hiring a {
+  width: 105px;
+}
+
+.wordwrap {
+  white-space: pre-wrap; /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
+}
+
+.ui-slider-horizontal .ui-slider-handle {
+  margin-left: -1.6em;
+  left: -6%;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  padding: 3px 18px 3px 5px;
+}
+
+.select2-container-multi .select2-search-choice-close {
+  left: inherit;
+  right: 2px;
+}
+
+.dialogLook {
+  width: 800;
+}
+
+div.roomTitle {
+  position: fixed;
+  margin-top: -76px;
+  margin-left: 10px;
+  z-index: 4;
+  font-weight: bold;
+  color: black;
+  font-size: 17px
+}
+
+.arr-dd {
+  display: block;
+}
+
+.pro-txtarea {
+  overflow-y: hidden;
+}
+
+.post-edit-pnl {
+  display: table
+}
+
+.cropArea {
+  overflow: hidden;
+  width: 700px;
+  height: 600px;
+}
+
+button.disabled, button[disabled] {
+  opacity: 0.4;
+  cursor: default !important;
+  pointer-events: none;
+}
+
+.alignMatchColumns {
+  margin-left: 185px;
+}
+
+.submit-answer {
+  display: block;
+}
+
+.hide-block {
+  display: none;
+}
+
+.pop-match {
+  width: 6%;
+  margin: 13px 18px 0px 18px;
+  height: 35px;
+}
+
+.time-style {
+  margin-right: 9px;
+  vertical-align: bottom;
+}
+
+.create-popup .select-class .chosen-container-single .chosen-single {
+  width: 165px !important;
+  height: 16px;
+}
+
+.create-popup .align-center {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.quiz-footer {
+  background-color: #ffffff;
+}
+
+.create-popup .quest-select .chosen-container-single .chosen-single {
+  width: 523px;
+}
+
+.question-input {
+  width: 523px;
+}
+
+.question-lst li a {
+  background-color: #A0A0A0;
+  border-bottom: 2px solid #ffffff;
+}
+
+.arr-dd li a {
+  font-weight: normal;
+  font-size: 11px;
+}
+
+.btn-style {
+  border: none;
+}
+
+.align-left {
+  text-align: left !important;
+}
+
+.align-top {
+  vertical-align: top;
+}
+
+.create-assign .pop-txtarea {
+  height: 80px;
+}
+
+.mandatory {
+  color: #f67e02;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-heading {
+  cursor: default;
+}
+
+.tbl-attendance {
+  padding-left: 275px !important;
+}
+
+.date-picker {
+  width: 90% !important;
+  height: 15px;
+}
+
+.chosen-attndc .chosen-container-single .chosen-single {
+  height: 15px !important;
+  width: 254px;
+  margin-left: 30px;
+}
+
+.chosen-attndc .chosen-container {
+  width: 50% !important;
+}
+
+.chosen-attndc {
+  padding-left: 175px;
+}
+
+.notification_details {
+  display: block;
+}
+
+.dock-bk.lastli {
+  display: block
+}
+
+.settingdiv .post-edit-pnl {
+  top: -36px;
+}

@@ -1,0 +1,47 @@
+<p>The attendance for all students have been marked as present by default. Click on the icon to mark absent</p>
+<div class="academic-title" style="float:left">
+  <p class="aca-heading">Take attendance</p>
+
+  <div class="calender">
+    <input type="text" class="pop-dura date_popup date-picker" ui-jq="datepicker"
+           ui-options="{showOn: 'both', buttonImage: 'images/classroom/pop-cal.png', buttonImageOnly: true,dateFormat:'yy-mm-dd'}"
+           ng-model="vm.attendanceDate" ng-change="viewAttendance()">
+  </div>
+</div>
+<!--<div class="create-popup">-->
+<div class="create-popup chosen-attndc right-pop" style="float:left">
+  <span><p class="aca-heading">Select Date</p></span>
+  <span><select class="chosen-select select_option " chosen
+                ng-model="vm.attendanceDate"
+                ng-options="date as date for date in vm.dates" ng-change="viewAttendance()"
+      >
+    <option value=''>Select a date</option>
+  </select></span>
+</div>
+<div class="submission-tbl" ng-if="vm.showAttendanceList">
+  <table class="enga-tbl">
+    <tr>
+      <th class="etd1">Student Name</th>
+      <th class="etd2">Present/Absent</th>
+    </tr>
+    <tr ng-repeat="student in vm.currentStudents">
+      <td class="etd1 align-left tbl-attendance">
+        <div style="float: left"><img ng-src="{{student.AppUser.profile_img}}" class="assign-img hand"
+                                      alt="img"></div>
+        <div class="name-txt wordwrap">{{student.AppUser.fname}} {{student.AppUser.lname}}
+        </div>
+      </td>
+      <td class="etd2">
+        <div class="pres-chk"><input id="pre{{$index}}" type="checkbox" name="pre{{$index}}"
+                                     ng-checked="student.Attendance.is_present"
+                                     ng-model="student.Attendance.is_present"><label for="pre{{$index}}"
+                                                                                     class="check-lbl"></label>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <div class="submit-btn">
+    <input id="sub-nxt" class="sub-btn close-link" type="button" value="Save" ng-click="addAttendance()">
+  </div>
+</div>
+<div class="clear"></div>

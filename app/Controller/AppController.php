@@ -27,22 +27,23 @@ App::uses('Controller', 'Controller');
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package        app.Controller
+ * @link        http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
 
     public $components = array(
         'Auth' => array(
             'authorize' => array('Controller'),
-            'loginAction' => array(
+            'autoRedirect' => false
+            /*'loginAction' => array(
                 'controller' => 'app_users',
                 'action' => 'login',
             ),
             'logoutRedirect' => array(
                 'controller' => 'pages',
                 'action' => array('display', 'feedback')
-            )
+            )*/
         ),
         'Session',
         'RequestHandler',
@@ -54,11 +55,36 @@ class AppController extends Controller {
 
     public function beforeFilter() {
         parent::beforeFilter();
-//        $this->Auth->allow();
+        AuthComponent::$sessionKey = false;
+        $this->Auth->unauthorizedRedirect = false;
+        $this->Auth->authenticate = array(
+            'Authenticate.Token' => array(
+                'parameter' => '_token',
+                'header' => 'X-AuthTokenHeader',
+                'userModel' => 'AppUser',
+                /*'scope' => array('User.active' => 1),*/
+                'fields' => array(
+                    'email' => 'email',
+                    'password' => 'password',
+                    'token' => 'auth_token',
+                ),
+                'continue' => false,
+                'unauthorized' => 'ForbiddenException'
+            )
+        );
+
+        $this->response->header('Access-Control-Allow-Origin', '*');
+        $this->response->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+        $this->response->header('Access-Control-Allow-Headers', 'X-AuthTokenHeader, X-Auth-Token,Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since');
+        //$this->response->header('Access-Control-Allow-Headers', 'Content-Type,x-xsrf-token');
     }
 
     public function isAuthorized($user) {
-        return $this->Auth->loggedIn();
+        $this->loadModel('AppUser');
+        if ($user) {
+            return !$this->AppUser->checkIdleTimeout($user);
+        } else {
+            return false;
+        }
     }
-
 }

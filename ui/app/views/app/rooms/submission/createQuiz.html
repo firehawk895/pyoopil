@@ -1,0 +1,149 @@
+<!--quiz popup-->
+<div class="quizdia create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Quiz Topic</span>
+      <a class="close-link" href="" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content">
+      <div class="quest-popup">
+        <form class="form-data create-popup">
+          <div class="addques-here">
+            <!-- Single Select -->
+            <div class="ques-num" ng-repeat="questionChoice in vm.questionChoices" ng-init="questionIndex=$index">
+              <div class="quest-title clearfix">
+                <p class="left-title">Question {{$index+1}}</p>
+
+                <div class="ryt-title">Max. Marks
+                  <input class="pop-dura" type="text" value="" pattern="[0-9]{0,3}" maxlength="3"
+                         ng-model="questionChoice.maxMarks" ng-blur="calculateTotalMarks()">
+                </div>
+              </div>
+              <div class="quest-lst-box">
+                <label>Question type</label>
+
+                <div class="quest-select">
+                  <select class="chosen-select select_option" ui-jq="chosen" ng-model="questionChoice.questionType">
+                    <option value="single-select">Multiple choice single select</option>
+                    <option value="multi-select">Multiple choice multi select</option>
+                    <option value="true-false">True /False</option>
+                    <option value="match-columns">Match the following</option>
+                  </select>
+                </div>
+                <div class="ans-choice" ng-if="questionChoice.questionType=='single-select'">
+                  <label>Question text</label>
+                  <input type="text" class="pop-input question-input" ng-model="questionChoice.questionText">
+
+                  <p class="correct-txt">Correct Answer</p>
+
+                  <div class="add-ans-single">
+                    <div class="ans-lst clearfix" ng-repeat="answerChoice in questionChoice.answerChoices">
+                      <input type="text" class="pop-input" ng-model="answerChoice.choice"
+                             placeholder="Answer choice {{$index+1}}">
+
+                      <div class="ans-radio">
+                        <input id="ans{{$parent.$index}}{{$index}}" type="radio" name="answer{{$parent.$index}}"
+                               value="{{$index}}"
+                               ng-model="questionChoice.answerValue">
+                        <label for="ans{{$parent.$index}}{{$index}}" class="radio-lbl"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="" class="follow add-single-link" ng-click="addNewAnswerChoice(questionIndex)">Add Answer
+                    Choice</a>
+
+                </div>
+                <div class="ans-choice" ng-if="questionChoice.questionType=='multi-select'">
+                  <label>Question text</label>
+                  <input type="text" class="pop-input question-input" ng-model="questionChoice.questionText">
+
+                  <p class="correct-txt">Correct Answer</p>
+
+                  <div class="add-ans-multiple">
+                    <div class="ans-lst clearfix" ng-repeat="answerChoice in questionChoice.answerChoices">
+                      <input type="text" class="pop-input" placeholder="Answer choice {{$index+1}}"
+                             ng-model="answerChoice.choice">
+
+                      <div class="ans-radio">
+                        <input id="mul{{$parent.$index}}{{$index}}" type="checkbox" ng-model="answerChoice.answerValue">
+                        <label for="mul{{$parent.$index}}{{$index}}" class="check-lbl"></label>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="" class="follow add-multiple-link" ng-click="addNewAnswerChoice(questionIndex)">Add Answer
+                    Choice</a>
+                </div>
+                <div class="ans-choice" ng-if="questionChoice.questionType=='true-false'">
+                  <label>Question text</label>
+                  <input type="text" class="pop-input question-input" ng-model="questionChoice.questionText">
+
+                  <p class="correct-txt">Correct Answer</p>
+
+                  <div class="ans-tflst clearfix">
+                    <label>True</label>
+
+                    <div class="ans-radio">
+                      <input id="ans{{$parent.$index}}0" type="radio" name="corr-ans{{$parent.$index}}" value="0"
+                             ng-model="questionChoice.answerValue">
+                      <label for="ans{{$parent.$index}}0" class="radio-lbl"></label>
+                    </div>
+                  </div>
+                  <div class="ans-tflst clearfix">
+                    <label>False</label>
+
+                    <div class="ans-radio">
+                      <input id="ans{{$parent.$index}}1" type="radio" name="corr-ans{{$parent.$index}}" value="1"
+                             ng-model="questionChoice.answerValue">
+                      <label for="ans{{$parent.$index}}1" class="radio-lbl"></label>
+                    </div>
+                  </div>
+                </div>
+                <div class="ans-choice" ng-if="questionChoice.questionType=='match-columns'">
+                  <label>Help text</label>
+                  <input type="text" class="pop-input question-input" ng-model="questionChoice.questionText">
+
+                  <div class="match-opt">
+                    <p class="correct-txt">Correct Answer</p>
+
+                    <div class="m-opt1 clearfix" ng-repeat="answerChoice in questionChoice.answerChoices">
+                      <input class="pop-input" type="text" placeholder="Question{{$index+1}}"
+                             ng-model="answerChoice.choice">
+                      <input class="pop-input alignMatchColumns" type="text" placeholder="Answer choice{{$index+1}}"
+                             ng-model="answerChoice.answerValue">
+                    </div>
+                  </div>
+                  <a href="" class="follow add-match" ng-click="addNewAnswerChoice(questionIndex)">Add Answer Choice</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- New Questions -->
+          <a href="" class="add-ques" ng-click="addNewQuestionChoice()">+ Add Question</a>
+
+          <div class="quest-title clearfix">
+            <div class="ryt-title">Total Marks: {{vm.totalMarks}}
+            </div>
+          </div>
+          <div class="quiz-footer clearfix">
+            <div class="footer-btn">
+              <button class="sub-btn" ng-disabled="vm.areYouSure" ng-click="vm.areYouSure=true">
+                Publish
+              </button>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="align-center" ng-if="vm.areYouSure">
+            <div>
+              <label>Do you really want to Publish?</label>
+            </div>
+            <button class="sub-btn" id="quiz-link" ng-click="createQuizAssignment()">Yes</button>
+            <button class="sub-btn" id="quiz-link" ng-click="vm.areYouSure=false">No</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

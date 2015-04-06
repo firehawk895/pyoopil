@@ -1,0 +1,39 @@
+.logo {
+  margin: 0px;
+  padding: 0px;
+}
+
+.slide-content h1{
+  min-width: 304px;
+}
+.slide-content h2{
+  min-width: 343px;
+}
+.sign-txtbx input {
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 2px solid #F58220 !important;
+  border-radius: 5px;
+  font-family: 'open_sansregular';
+  height: 39px;
+  padding: 5px;
+  width: 233px;
+}
+
+.long-txtbx {
+  width: 485px !important;
+}
+
+input[type=checkbox]:checked + label {
+  background-position: left -23px;
+  font-weight: normal;
+}
+p.sign-txt{
+  margin:0px;
+}
+.checkbox-align{
+  display:none !important;
+    }
+
+input[type=checkbox] + label{
+  font-weight: normal;
+}

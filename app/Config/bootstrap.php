@@ -8,8 +8,8 @@ require_once dirname(__DIR__) . '/Vendor/autoload.php';
 /**
  * Load ENV variables from the .env file
  */
-if(is_file(APP . DS . '.env')) {
-    $vars = json_decode(file_get_contents(APP . DS . '.env'), true);
+if(is_file(APP.'vars.env')) {
+    $vars = json_decode(file_get_contents(APP.'vars.env'), true);
     foreach ($vars as $name => $val) {
         putenv("$name=$val");
     }
@@ -148,3 +148,17 @@ CakePlugin::load('Users', array('routes' => true));
 CakePlugin::load('Uploader');
 
 CakePlugin::load('Utility', array('bootstrap' => true, 'routes' => true));
+
+CakePlugin::load('Authenticate');
+CakePlugin::load('Tools');
+CakePlugin::load('Queue');
+
+/*Attaching event listeners*/
+App::uses('ClassRegistry', 'Utility');
+App::uses('GamificationTally', 'Lib/Custom');
+$Gamificationvote = ClassRegistry::init('Gamificationvote');
+$Gamificationvote->getEventManager()->attach(new GamificationTally());
+
+App::uses('AnnouncementNotifier', 'Listener');
+$Announcement = ClassRegistry::init('Announcement');
+$Announcement->getEventManager()->attach(new AnnouncementNotifier());

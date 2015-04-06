@@ -1,0 +1,16 @@
+<div class="signup edit-profile-popup">
+  <a class="close-link hand" ng-click="closeThisDialog()">
+    <span class="icon-cross"></span></a>
+
+  <div class="signup-content">
+    <div class="cropArea">
+      <img-crop image="vm.image" result-image="vm.croppedImage"></img-crop>
+    </div>
+    <div class="stud-footer">
+      <div class="stud-btn">
+        <a ng-click="uploadPic()" class="sub-btn hand">Upload</a>
+        <a ng-click="closeThisDialog()" class="sub-btn cnl-btn close-link hand">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

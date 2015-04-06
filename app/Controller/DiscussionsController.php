@@ -9,28 +9,43 @@ App::uses('AppController', 'Controller');
 class DiscussionsController extends AppController {
 
     /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * get 1st paginated discussions to inject into view
      * Display Discussions of a classroom
      * @param type $classroomId
      */
-    public function index($classroomId) {
-        $data = $this->Discussion->getPaginatedDiscussions($classroomId, AuthComponent::user('id'), 1);
-        $data = $this->Discussion->processData($data, AuthComponent::user('id'));
-
-        /**
-         * express gamification keys
-         */
-        $gamificationKeys = array(
-            'en' => 'Engagement',
-            'in' => 'Intelligence',
-            'cu' => 'Curious',
-            'co' => 'Contribution',
-            'ed' => 'Endorsement',
-        );
-        $this->set('Classroom.id', $classroomId);
-        $this->set(compact('classroomId', 'gamificationKeys'));
-        $this->set('data', json_encode($data));
-    }
+//    public function index($classroomId) {
+//        $data = $this->Discussion->getPaginatedDiscussions($classroomId, AuthComponent::user('id'), 1);
+//        $data = $this->Discussion->processData($data, AuthComponent::user('id'));
+//
+//        /**
+//         * express gamification keys
+//         */
+//        $gamificationKeys = array(
+//            'en' => 'Engagement',
+//            'in' => 'Intelligence',
+//            'cu' => 'Curious',
+//            'co' => 'Contribution',
+//            'ed' => 'Endorsement',
+//        );
+//        $this->set('Classroom.id', $classroomId);
+//        $this->set(compact('classroomId', 'gamificationKeys'));
+//        $this->set('data', json_encode($data));
+//    }
 
     /**
      * API: get paginated discussions
@@ -47,25 +62,29 @@ class DiscussionsController extends AppController {
         $status = true;
         $message = "";
 
-        if (isset($this->params['url']['folded'])) {
-            $data = $this->Discussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
+        if (isset($this->params['url']['folded']) && $this->params['url']['folded'] == "true") {
+            $data = $this->Discussion->Foldeddiscussion->getPaginatedFoldedDiscussions($classroomId, $userId, $page);
         } else {
             $data = $this->Discussion->getPaginatedDiscussions($classroomId, $userId, $page);
         }
         $data = $this->Discussion->processData($data, $userId);
 
+        $permissions = array(
+            'allowCreate' => $this->Discussion->allowCreate($classroomId, $userId),
+            'allowEndorse' => $this->Discussion->allowEndorse($classroomId, $userId)
+        );
+
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message', 'permissions'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
     /**
      * API: get paginated replies
-     * @param type $classroomId
+     * Getting replies for a discussion
      */
     public function getreplies() {
         $this->response->type('json');
@@ -81,15 +100,14 @@ class DiscussionsController extends AppController {
             if (isset($this->params['url']['discussion_id'])) {
                 $discussionId = $this->params['url']['discussion_id'];
 
-                $data = $this->Discussion->getPaginatedReplies($discussionId, $page);
+                $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, $page);
                 $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
-                $data['moreReplies'] = $this->Discussion->Reply->setMoreRepliesFlag($page,$discussionId);
+                $moreReplies = $this->Discussion->Reply->setMoreRepliesFlag($page, $discussionId);
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('moreReplies', 'status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'moreReplies', 'status', 'message'));
     }
 
     /**
@@ -118,11 +136,10 @@ class DiscussionsController extends AppController {
         if ($status) {
             $message = "{$type} deleted successfully";
         } else {
-            $message = "Could not delete or find the {$type}";
+            $message = "Could not delete {$type}, Already deleted or unauthorized";
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message'));
     }
 
     /**
@@ -139,93 +156,95 @@ class DiscussionsController extends AppController {
 
         if (isset($this->request->data['id'])) {
             $discussionId = $this->request->data['id'];
-            $status = $this->Discussion->toggleFold($discussionId, $userId);
+            $status = !empty($this->Discussion->toggleFold($discussionId, $userId));
             if ($status) {
-                $message = "";
+                $message = "Successfully toggled";
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot'));
-    }
-
-    public function test() {
-        debug($this->webroot);
-        debug(Router::fullBaseUrl());
-        debug(Router::url('/', true));
-        debug($this->base);
-        die();
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message'));
     }
 
     /**
      * API: add.json
      * Posting discussion (question/poll/note)
      */
-    public function add() {
-
+    public function add($classroomId) {
         $this->request->onlyAllow('post');
         $this->response->type('json');
 
         $savedData = $this->request->data;
+        $userId = AuthComponent::user('id');
 
-        $savedData['AppUser'] = array(
-            'id' => AuthComponent::user('id')
+        $savedData['Discussion']['user_id'] = $userId;
+        $savedData['Discussion']['classroom_id'] = $classroomId;
+
+        /* security */
+        $options['fieldList'] = array(
+            'Discussion' => array(
+                'topic', 'body', 'type', 'user_id', 'classroom_id'
+            ),
+            'Pollchoice' => array(
+                'choice'
+            ),
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+            )
         );
-        $this->log($savedData);
 
-        if ($this->Discussion->saveAssociated($savedData)) {
+
+        /* Validation
+           Now ofcourse you can use model->validates
+        */
+
+        /* Platform secret :
+           @ used to suppress warnings from Pyoopilfile beforeUpload callback.
+        */
+        if (@$this->Discussion->saveAssociated($savedData, $options)) {
             $status = true;
             $message = "";
 
-            /**
-             * no check on $savedData['Classroom']['id'],
-             * the code is expecting a valid classroom Id, not tampered in front end
-             * because of the securityComponent
-             */
-            $data = $this->Discussion->getPaginatedDiscussions($savedData['Classroom']['id'], AuthComponent::user('id'), 1, true);
-            $this->log($data);
-            $data = $this->Discussion->processData($data, AuthComponent::user('id'));
-            $this->log($data);
-//            $returnedData = $savedData;
+            $discussionId = $this->Discussion->getLastInsertId();
+            $data = $this->Discussion->getDiscussionById($discussionId);
+            $data = $this->Discussion->processData($data, $userId);
         } else {
             $status = false;
             $message = "The Discussion could not be posted";
             $data = array(); //required for json consistency
         }
-        /**
-         * finalize and set the response for the json view
-         */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+
+        /** _serialize */
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * API: ajax posting a reply for a given discussion
+     */
     public function addReply() {
         $this->request->onlyAllow('post');
         $this->response->type('json');
+        $userId = AuthComponent::user('id');
 
         $data = array();
         $discussionId = $this->request->data['discussion_id'];
         $comment = $this->request->data['comment'];
 
-        if ($this->Discussion->Reply->postReply($discussionId, $comment, AuthComponent::user('id'))) {
+        if ($this->Discussion->Reply->postReply($discussionId, $comment, $userId)) {
             $status = true;
             $message = "";
-            $data = $this->Discussion->getPaginatedReplies($discussionId, 1, true);
-            $data = $this->Discussion->Reply->processReplies($data, AuthComponent::user('id'));
+            $data = $this->Discussion->Reply->getPaginatedReplies($discussionId, 1, true);
+            $data = $this->Discussion->Reply->processReplies($data, $userId);
         } else {
             $status = false;
             $message = "Could not post the reply";
         }
 
-        /**
-         * finalize and set the response for the json view
-         */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        /** _serialize */
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
@@ -244,18 +263,17 @@ class DiscussionsController extends AppController {
             $id = $this->request->data['id'];
             $type = $this->request->data['type'];
             $vote = $this->request->data['vote'];
-            $status = $this->Discussion->setGamificationVote($type, $id, $vote, $userId);
+            $status = $this->Discussion->Gamificationvote->setGamificationVote($type, $id, $vote, $userId);
             if ($status) {
-                $data = $this->Discussion->getGamificationInfo($type, $id);
+                $data = $this->Discussion->Gamificationvote->getGamificationInfo($type, $id);
             }
         }
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'data', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'data', 'webroot'));
+        $this->set(compact('status', 'message', 'data'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
 
     /**
-     * 
+     * API : Voting on a choice of a Poll
      */
     public function setPollVote() {
         $this->request->onlyAllow('post');
@@ -268,14 +286,14 @@ class DiscussionsController extends AppController {
 
         if (isset($this->request->data['pollchoice_id'])) {
             $pollchoiceId = $this->request->data['pollchoice_id'];
-            if ($this->Discussion->setPollVote($userId, $pollchoiceId)) {
+            if ($this->Discussion->Pollchoice->Pollvote->setPollVote($userId, $pollchoiceId)) {
                 $status = true;
                 $discussionId = $this->Discussion->Pollchoice->getDiscussionId($pollchoiceId);
                 $data = $this->Discussion->getDiscussionById($discussionId);
                 $data = $this->Discussion->processData($data, AuthComponent::user('id'));
             } else {
                 $status = false;
-                $message = "Failed to vote on this poll.";
+                $message = "Poll doesn't exist or already voted";
             }
         } else {
             $status = false;
@@ -285,10 +303,9 @@ class DiscussionsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
 }

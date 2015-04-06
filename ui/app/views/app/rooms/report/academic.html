@@ -1,0 +1,91 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper inside-submit">
+    <div class="topbuttons">
+      <a ui-sref="app.rooms.reports.main.view" class="follow">Back to Reports</a>
+    </div>
+    <div class="view-head clearfix">
+      <p class="view-heading stud-headatt">Academic Report</a>
+      </p>
+      <!--<span class="btn-right">-->
+      <!--<a href="" class="report-download"></a>-->
+      <!--</span>-->
+    </div>
+
+    <div class="clear"></div>
+    <!--charts-->
+    <div class="chart-contt" ng-if="academicReport[currentGraphIndex].Submission.subjective_scoring=='marked'">
+      <highchart config="lineChartConfig"></highchart>
+    </div>
+    <div class="chart-contt" ng-if="academicReport[currentGraphIndex].Submission.subjective_scoring=='graded'">
+      <highchart config="columnChartConfig"></highchart>
+    </div>
+    <div class="stud-acedmic clearfix">
+      <div class="aced-left">
+        <table class="enga-tbl stud-engtbl">
+          <tr>
+            <th>Submission Name</th>
+            <th>Score</th>
+            <th>Class Average</th>
+            <th>Percentile</th>
+            <th>Teacher Comments</th>
+          </tr>
+          <tr ng-repeat-start="report in academicReport" ng-if="report.Submission.subjective_scoring=='marked'"
+              ng-class="{'active' :report.showGraph}" class="hand">
+            <td ng-click="displayGraph($index)"><p>{{report.Submission.topic}}</p></td>
+            <td ng-click="displayGraph($index)"><p>
+              {{report.UsersSubmission.marks}}/{{report.Submission.total_marks}}</p></td>
+            <td ng-click="displayGraph($index)"><p>{{report.Submission.average_marks}}</p></td>
+            <td ng-click="displayGraph($index)"><p>{{report.UsersSubmission.percentile}}%</p></td>
+            <td>
+              <a class="view-btn comm-link1" href="" ng-click="displayContent($index)"
+                 ng-if="!report.showContent">View</a>
+              <a class="view-btn comm-link1" href="" ng-click="displayContent($index)"
+                 ng-if="report.showContent">Hide</a>
+            </td>
+          </tr>
+          <tr ng-class="{'comm-hide' : !report.showContent}" ng-repeat-end
+              ng-if="report.Submission.subjective_scoring=='marked'">
+            <td colspan="5">
+              <div class="txtarea-div">
+                <textarea class="comment-txtarea" disabled>{{report.UsersSubmission.grade_comment}}</textarea>
+              </div>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+      <div class="aced-right">
+        <table class="enga-tbl stud-engtbl2">
+          <tr>
+            <th>Submission Name</th>
+            <th>Score</th>
+            <th>Class Frequency</th>
+            <th>Teacher Comments</th>
+          </tr>
+          <tr ng-repeat-start="report in academicReport" ng-if="report.Submission.subjective_scoring=='graded'"
+              ng-class="{'active' :report.showGraph}" class="hand">
+            <td ng-click="displayGraph($index)"><p>{{report.Submission.topic}}</p></td>
+            <td ng-click="displayGraph($index)"><p>{{report.UsersSubmission.grade}}</p></td>
+            <td ng-click="displayGraph($index)"><p>{{report.UsersSubmission.grade_frequency}}</p></td>
+            <td><a class="view-btn  comm-link1" href=""
+                   ng-click="displayContent($index)"
+                   ng-if="!report.showContent">View</a>
+              <a class="view-btn  comm-link1" href="" ng-click="displayContent($index)"
+                 ng-if="report.showContent">Hide</a>
+            </td>
+          </tr>
+          <tr ng-class="{'comm-hide' : !report.showContent}" ng-repeat-end
+              ng-if="report.Submission.subjective_scoring=='graded'">
+            <td colspan="4">
+              <div class="txtarea-div">
+                <textarea class="comment-txtarea" disabled>{{report.UsersSubmission.grade_comment}}</textarea>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+</section>

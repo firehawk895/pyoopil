@@ -1,0 +1,30 @@
+<div class="create-popup">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Restrict Access</span>
+      <a href="" class="close-link" ng-click="closeThisDialog()">
+        <span class="icon-cross"></span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <div class="assign-pop">
+        <form class="form-data create-popup">
+          <p>Choose people to restrict</p>
+
+          <select id="ddlRestrictedIds" ui-select2 multiple ng-model="ids" class="select2-full-width">
+            <option ng-repeat="person in dataTagRestrict" value="{{person.AppUser.id}}">{{person.AppUser.fname}}
+              {{person.AppUser.lname}}
+            </option>
+          </select>
+
+          <p class="assign-txt mb30">Please note that you can unrestrict access anytime you want from people
+            section by click on unrestrict button</p>
+
+          <div class="clear"></div>
+          <div class="submit-btn">
+            <input type="button" class="sub-btn close-link" value="Restrict Access" ng-click="setRestricted()">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

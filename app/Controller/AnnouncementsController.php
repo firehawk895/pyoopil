@@ -2,40 +2,29 @@
 
 App::uses('CakeEmail', 'Network/Email');
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) Pyoopil Education Technologies Pvt. Ltd.
  */
 
 class AnnouncementsController extends AppController {
 
     public $helpers = array('Time');
 
-    public function index($classroomId) {
-
-        $this->set('classroomId', $classroomId);
-        $data = $this->Announcement->getPaginatedAnnouncements($classroomId, 1);
-        $this->set('data', json_encode($data));
+    /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
     }
 
-//    public function getAnnouncements($classroomId) {
-//        $this->response->type('json');
-//        $status = false;
-//        $message = "";
-//        if (isset($this->params['url']['page'])) {
-//            $page = $this->params['url']['page'];
-//            $data = $this->Announcement->getPaginatedAnnouncements($classroomId, $page);
-//        }
-//
-//        if ($data != NULL) {
-//            $status = true;
-//        }
-//
-//        $this->set(compact('status', 'message', 'data'));
-//        $this->set('_serialize', array('status', 'message', 'data'));
-//    }
-
-    public function getannouncements($classroomId) {
+    public function getAnnouncements($classroomId) {
         $this->response->type('json');
         $page = 1;
         $userId = AuthComponent::user('id');
@@ -47,13 +36,15 @@ class AnnouncementsController extends AppController {
         $message = "";
 
         $data = $this->Announcement->getPaginatedAnnouncements($classroomId, $page);
+        $permissions = array(
+            'allowCreate' => $this->Announcement->allowCreate($classroomId, $userId)
+        );
         /**
          * finalize and set the response for the json view
          */
-        $this->set('webroot', $this->webroot);
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message', 'permissions'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
     public function add($classroomId) {
@@ -64,83 +55,19 @@ class AnnouncementsController extends AppController {
         $message = "";
         $userId = AuthComponent::user('id');
 
-//        unset($this->request->data['Announcement']['classroom_id']);
         $data = $this->request->data;
 
         if ($this->Announcement->createAnnouncement($classroomId, $data, $userId)) {
             $data = $this->Announcement->getAnnouncementById($this->Announcement->getLastInsertID());
             $message = "Announcement created";
             $status = true;
-            $this->tasty($classroomId, $data);
+            $this->Announcement->sendEmails($classroomId, $data);
         } else {
             $message = "Could not create announcement";
             $status = false;
         }
-        $this->set('webroot', $this->webroot);
         $this->set('data', $data);
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('_serialize', array('status', 'message', 'webroot', 'data'));
+        $this->set(compact('status', 'message'));
+        $this->set('_serialize', array('status', 'message', 'data'));
     }
-
-//    public function add_($classroomId) {
-//        $this->request->onlyAllow('post');
-//        $this->response->type('json');
-//
-//        $status = false;
-//        $message = "";
-//        $userId = AuthComponent::user('id');
-//
-//        unset($this->request->data['Announcement']['classroom_id']);
-//        $data = $this->request->data;
-//
-//        if ($this->Announcement->createAnnouncement($classroomId, $data, $userId)) {
-//            $data = $this->Announcement->getAnnouncementById($this->Announcement->getLastInsertID());
-//            $message = "Announcement created";
-//            $status = true;
-//            $this->set(compact('status', 'message', 'data'));
-//            $this->set('_serialize', array('status', 'message', 'data'));
-//        } else {
-//            $message = "Could not create announcement";
-//            $status = false;
-//            $this->set(compact('status', 'message'));
-//            $this->set('_serialize', array('status', 'message'));
-//        }
-//    }
-
-    public function tasty($classroomId, $announcement) {
-
-        /**
-         * Get all the users' emails
-         */
-        $options['contain'] = array(
-            'Classroom' => array(
-                'fields' => array('id')
-            ),
-            'AppUser' => array(
-                'fields' => array('id', 'email')
-            )
-        );
-
-        $options['conditions'] = array(
-            'UsersClassroom.classroom_id' => $classroomId
-        );
-        $data = $this->Announcement->Classroom->UsersClassroom->find('all', $options);
-        $emails = Hash::extract($data, '{n}.AppUser.email');
-
-        /**
-         * loop and send emails
-         * TODO: defer emails
-         */
-        $Email = new CakeEmail();
-        $Email->config('mailgun');
-        foreach ($emails as $email) {
-            $Email->from(array('announcements@pyoopil.com' => 'Pyoopil Announcements'));
-            $Email->to($email);
-            $Email->subject($announcement['Announcement']['subject']);
-            $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
-            $Email->send($body);
-        }
-//        $this->log($body);
-    }
-
 }

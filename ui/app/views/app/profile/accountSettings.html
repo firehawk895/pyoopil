@@ -1,0 +1,191 @@
+<section class="pagecontent clearfix">
+  <div class="library-wrapper">
+    <div class="uni-searchresult tabpages">
+      <!--<ul class="topbuttons searchtab accsettingtabs clearfix">-->
+      <!--<li><a href="#accsetting" class="follow active tab">Account Settings</a></li>-->
+      <!--<li><a href="#privacy" class="follow tab">Privacy Settings</a></li>-->
+      <!--<li><a href="#associations" class="follow tab">Associations</a></li>-->
+      <!--<li><a href="#notifications" class="follow tab">Notifications Settings</a></li>-->
+      <!--<li><a href="#smssetting" class="follow tab">SMS <br>Settings</a></li>-->
+      <!--<li><a href="#block" class="follow tab">Block/<br>Unblock</a></li>-->
+      <!--</ul>-->
+      <div class="clearfix accsettingtabsinfo">
+        <div class="tabpage" id="accsetting">
+          <div class="acc-set">
+            <div class="settingdiv">
+              <ul>
+                <li>
+                  <div class="educ-tbl">
+                    <div class="old-data">
+                      <div class="accset-left">
+                        <p>Email ID</p>
+                      </div>
+                      <div class="accset-middle">
+                        <p class="acc-txt">{{vm.email}}</p>
+                      </div>
+                    </div>
+
+                    <a class="click1 edit-click"><span class="edittext hand"><img ng-click="vm.editEmail=true"
+                                                                                  src="images/acc-settings/edit-icon.png"></span>Edit</a>
+
+                    <table class="post-edit-pnl" ng-if="vm.editEmail">
+                      <tr>
+                        <td class="td1">Email ID</td>
+                        <td class="td2">
+                          <input type="email" name="" ng-model="vm.newEmail" class="pro-input"
+                                 tooltip="Enter new Email address">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td1"></td>
+                        <td class="td2">
+                          <p>Please input the email ID you want to use. </p>
+
+                          <p>Please note this will affect the login ID also.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <div class="pro-btn">
+                            <input type="submit" class="sub-btn cnl-btn dialogbox hand" value="Save" title="dialogbox1"
+                                   ng-click="updateEmail()">
+                            <!--popup-->
+
+                            <input type="button" class="sub-btn cnl-btn cnl-edit hand" value="Cancel"
+                                   ng-click="vm.editEmail=false">
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </div>
+                </li>
+                <li>
+                  <div class="educ-tbl">
+                    <div class="old-data">
+                      <div class="accset-left">
+                        <p>Password</p>
+                      </div>
+                      <div class="accset-middle">
+                        <p class="acc-txt"><input type="password" name="" value="****************" class="" readonly>
+                        </p>
+                      </div>
+                    </div>
+
+                    <a class="click1 edit-click"><span class="edittext hand"><img ng-click="vm.editPassword=true"
+                                                                                  src="images/acc-settings/edit-icon.png"></span>Edit</a>
+
+                    <table class="post-edit-pnl pwd-tbl" ng-if="vm.editPassword">
+                      <tr>
+                        <td class="td1">Current Password</td>
+                        <td class="td2">
+                          <input type="password" ng-model="vm.currentPassword" class="pro-input"
+                                 placeholder="Enter current Password">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td1">New Password</td>
+                        <td class="td2">
+                          <input type="password" ng-model="vm.password" class="pro-input tooltip-pass"
+                                 ui-jq="passStrengthify"
+                                 placeholder="Enter new Password">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td1">Re-type Password</td>
+                        <td class="td2">
+                          <input type="password" ng-model="vm.confirmPassword" class="pro-input"
+                                 placeholder="Confirm Password">
+                          <img src="images/landing/wrong.png" class="conf-pass" alt=""
+                               ng-if="vm.password!==vm.confirmPassword">
+                          <img src="images/landing/ryt.png" class="conf-pass" alt=""
+                               ng-if="vm.password==vm.confirmPassword">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <div class="pro-btn">
+                            <input type="button" class="sub-btn cnl-btn dialogbox" value="Save"
+                                   ng-click="updatePassword()">
+
+                            <input type="button" class="sub-btn cnl-btn cnl-edit" value="Cancel"
+                                   ng-click="cancelPasswordChange()">
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </li>
+                <!--<li>-->
+                <!--<div class="educ-tbl">-->
+                <!--<div class="old-data">-->
+                <!--<div class="accset-left">-->
+                <!--<p>Time Zone</p>-->
+                <!--</div>-->
+                <!--<div class="accset-middle">-->
+                <!--<p class="acc-txt">New Delhi, India</p>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--<a href="#" class="click1 edit-click"><span class="edittext"><img-->
+                <!--src="images/acc-settings/edit-icon.png"></span>Edit</a>-->
+
+                <!--<table class="post-edit-pnl">-->
+                <!--<tr>-->
+                <!--<td class="td1">Time Zone</td>-->
+                <!--<td class="td2">-->
+                <!--<div class="time-dd">-->
+                <!--<select class="chosen-select">-->
+                <!--<option>New Delhi, India</option>-->
+                <!--<option>New Delhi, India</option>-->
+                <!--<option>New Delhi, India</option>-->
+                <!--<option>New Delhi, India</option>-->
+                <!--</select>-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                <!--<td colspan="2">-->
+                <!--<div class="pro-btn">-->
+                <!--<input type="button" class="sub-btn cnl-btn dialogbox" value="Save" title="dialogbox3">-->
+                <!--<!--popup-->
+                <!--<div id="dialogbox3" class="create-popup doc-popup">-->
+                <!--<div class="pop-wind clearfix">-->
+                <!--<div class="pop-head clearfix">-->
+                <!--<span>Time Zone changed</span>-->
+                <!--<a href="#" class="close-link cnl-edit"><span class="icon-cross">-->
+                <!--</span></a>-->
+                <!--</div>-->
+                <!--<div class="pop-content clearfix">-->
+                <!--<p class="acc-poptxt">Your time zone is successfully changed</p>-->
+
+                <!--<div class="submit-btn">-->
+                <!--<input type="submit" class="sub-btn close-link" value="Close">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<input type="button" class="sub-btn cnl-btn cnl-edit" value="Cancel">-->
+                <!--</div>-->
+                <!--</td>-->
+                <!--</tr>-->
+                <!--</table>-->
+                <!--</div>-->
+                <!--</li>-->
+              </ul>
+            </div>
+            <!--social buttons-->
+            <!--<div class="connectaccount clearfix">-->
+            <!--<p class="connect-title">Connect Accounts</p>-->
+            <!--<ul>-->
+            <!--<li><a href="#"><img src="images/acc-settings/twitter-icon.png" alt="Twitter"></a></li>-->
+            <!--<li><a href="#"><img src="images/acc-settings/linkedin-icon.png" alt="LinkedIn"></a></li>-->
+            <!--<li><a href="#"><img src="images/acc-settings/gplus-icon.png" alt="G+"></a></li>-->
+            <!--</ul>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

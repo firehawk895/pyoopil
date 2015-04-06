@@ -1,140 +1,95 @@
 <?php
-
 /**
  * (c) Pyoopil EduTech 2014
  */
 App::uses('AppController', 'Controller');
 App::uses('DateConvertor', 'Lib/Custom');
 
-/**
- * Killer Notes, TODO:
- * use View::set() to set menu buttons to active
- * http://book.cakephp.org/2.0/en/views.html#view-api
- */
 /*
  * Description of ClassroomsController
- *
- * @author useruser
+ * @author Pyoopil
  */
 class ClassroomsController extends AppController {
 
-    public $components = array('Paginator');
+    /**
+     * Controller authorize
+     * user determined from token
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user) {
+        if (parent::isAuthorized($user)) {
+            //do role processing here
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    public function index() {
-        $this->set('data', json_encode($this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), '1')));
+    /**
+     * TODO: Make getList APIs ajax dropdowns
+     */
+    /**
+     * get Campus List for Create Classroom Form
+     */
+    public function getCampusesList() {
+        $this->request->onlyAllow('get');
+        $data = $this->Classroom->Campus->find('list');
+        $status = true;
+        $message = "";
+
         /**
-         * TODO: 
-         * move to model and return campuses, depts, and degrees
-         * that are associated to the user creating the classroom
+         * finalize and set the response for the json view
          */
-        $campuses = $this->Classroom->Campus->find('list');
-        $departments = $this->Classroom->Department->find('list');
-        $degrees = $this->Classroom->Degree->find('list');
-
-        $this->set(compact('campuses', 'departments', 'degrees'));
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
-//    public function index() {
-//
-//        $this->Classroom->getLatestTile(AuthComponent::user('id'));
-//
-//        App::uses('CakeNumber', 'Utility');
-//        $userId = AuthComponent::user('id');
-//
-//        $this->Paginator->settings = array(
-//            'contain' => array(
-//                'UsersClassroom' => array(
-//                    'conditions' => array(
-//                        'user_id' => $userId
-//                    ),
-//                    'order' => array(
-//                        'UsersClassroom.created' => 'desc'
-//                    )
-//                ),
-//                'Campus' => array(
-//                    'fields' => array(
-//                        'id','name'
-//                    )
-//                )
-//            ),
-//            'limit' => 5,
-//            'fields' => array(
-//                'id', 'campus_id', 'is_private', 'title', 'users_classroom_count'
-//            )
-//        );
-//
-//        $data = $this->Paginator->paginate('Classroom');
-//
-//        foreach($data as $d){
-//            $teacher = $this->Classroom->getEducatorName($d['Classroom']['id']);
-//            $data = Hash::insert($data,'{n}.Classroom.teacher',$teacher);
-//        }
-//
-//        $jsonData = json_encode($data);
-//        return $jsonData;
-//    }
-
     /**
-     * Render a view for a particular classroom
-     * @param type $classroomId
+     * get Campus List for Create Classroom Form
      */
-    public function view($classroomId) {
+    public function getDepartmentsList() {
+        $this->request->onlyAllow('get');
         /**
-         * Redirect to classrooms/discussions at route level
+         * TODO: get departments based on campus input
          */
+        $data = $this->Classroom->Department->find('list');
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
-     * Route : /classrooms/:id-:slug -> redirect to classroom's discussions
-     * decide if this method is needed
-     * @param type $classroomId
+     * get Campus List for Create Classroom Form
      */
-    public function display($classroomId) {
-//Check Authorized for classroomId
-//of logged in user with $classroomId
-//redirect to Classroom's Discussions
+    public function getDegreesList() {
+        $this->request->onlyAllow('get');
+        /**
+         * TODO: get degrees based on campus input
+         */
+        $data = $this->Classroom->Degree->find('list');
+        $status = true;
+        $message = "";
+
+        /**
+         * finalize and set the response for the json view
+         */
+        $this->set(compact('status', 'message'));
+        $this->set('data', $data);
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
     /**
-     * Route : /classrooms/:id-:slug/create
+     * API: Create a new classroom form
      */
-//    public function add() {
-//        //shit don't work
-////        $this->request->allowMethod('ajax','post');
-////        $this->autoRender(false);
-////        $this->layout = 'myajax';
-//        
-//        if ($this->request->is('post')) {
-//            $this->request->data['Classroom']['duration_start_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_start_date']);
-//            $this->request->data['Classroom']['duration_end_date'] = DateConvertor::convert($this->request->data['Classroom']['duration_end_date']);
-////            $this->request->data['Classroom']['is_private'] = true;
-//
-//            if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
-//                $this->Session->setFlash('Classroom sucessfully created');
-//                
-//                $this->Classroom->id = $this->Classroom->getLastInsertID();
-//                
-//                $classroomName = $this->Classroom->field('title');
-//                $passCode = $this->Classroom->field('access_code');
-////                debug($classroomName);
-////                debug($passCode);
-////                die();
-//                
-//                $this->set($classroomName);
-//                $this->set($passCode);
-//                
-//            } else {
-//                $this->Session->setFlash('One or more processes failed');
-//                echo "badbad";
-//            }
-//
-//            //populate hidden div with succeful creation
-//            //redirect to classroom successfully created popup
-//            //whatever
-//        }
-//    }
     public function add() {
-//        $this->autoRender = false;
         $this->request->onlyAllow('post');
         $data = array();
 
@@ -144,52 +99,29 @@ class ClassroomsController extends AppController {
         if ($this->Classroom->add(AuthComponent::user('id'), $this->request->data)) {
             $status = true;
             $message = "Successfully created classroom";
-//            $the_great_id = $this->Classroom->getLastInsertId();
-            $this->log('getting latest tile');
             $data = $this->Classroom->getLatestTile(AuthComponent::user('id'));
         } else {
             $status = true;
             $message = "Successfully created classroom";
         }
-        $webroot = $this->webroot;
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
-//    public function add() {
-//        $this->autoRender = false;
-//
-//        $test = array(
-//            'classroomName' => 'test',
-//            'classroomCode' => 'test2'
-//        );
-//        echo json_encode($test);
-//    }
-
     /**
-     * Route : /classrooms/:id-:slug/create
+     * API stud: invite users to classroom
      */
     public function invite() {
-        if ($this->request->is('post')) {
-
-
-//redirect to index or requests?
-        }
-//show invite form
     }
 
     /**
-     * Join a classroom provided access code
+     * Join a classroom provided access code form
      */
     public function join() {
-
         $this->request->onlyAllow('post'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
         $this->response->type('json');
 
-        /**
-         * initialization : make sure json response is atleast empty
-         */
         $status = false;
         $message = "";
         $data = array();
@@ -211,12 +143,14 @@ class ClassroomsController extends AppController {
         /**
          * finalize and set the response for the json view
          */
-        $webroot = $this->webroot;
-        $this->set(compact('status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
         $this->set('data', $data);
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set('_serialize', array('data', 'status', 'message'));
     }
 
+    /**
+     * API : get classroom of a user in paginated form
+     */
     public function getclassrooms() {
         $this->response->type('json');
         $page = 1;
@@ -227,10 +161,94 @@ class ClassroomsController extends AppController {
         $status = true;
         $message = "";
 
-        $webroot = $this->webroot;
-        $this->set(compact('status', 'message', 'webroot'));
-        $this->set('data', $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page));
-        $this->set('_serialize', array('data', 'status', 'message', 'webroot'));
+        $this->set(compact('status', 'message'));
+
+        $data = $this->Classroom->getPaginatedClassrooms(AuthComponent::user('id'), $page);
+        $permissions = array(
+            'allowCreate' => $this->Classroom->allowCreate(AuthComponent::user('id'))
+        );
+        /**
+         * Setting data for json view.
+         * this code repeats
+         * two steps, set and then _serialize
+         */
+        $this->set('data', $data);
+        $this->set(compact('status', 'message', 'permissions'));
+        $this->set('_serialize', array('data', 'status', 'message', 'permissions'));
     }
 
+    /**
+     * API : Reset the access code of a classroom
+     * @param $classroomId
+     */
+    public function resetCode($classroomId) {
+        $this->request->onlyAllow('post'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
+        $this->response->type('json');
+
+        $response = $this->Classroom->resetCode($classroomId);
+        $data = array();
+
+        if ($response) {
+            $status = true;
+            $message = "Access code successfully reset";
+            $data = $response;
+        } else {
+            $status = false;
+            $message = "Access code could not be reset";
+        }
+        /**
+         * Setting data for json view.
+         * this code repeats
+         * two steps, set and then _serialize
+         */
+        $this->set(compact('data', 'status', 'message'));
+        $this->set('_serialize', array('data', 'status', 'message'));
+    }
+
+    public function info($classroomId) {
+        $this->request->onlyAllow('get'); // No direct access via browser URL - Note for Cake2.5: allowMethod()
+        $this->response->type('json');
+
+        $data = array();
+        $status = true;
+        $message = "";
+
+        $options['contain'] = array(
+            'Campus' => array(
+                'id', 'name'
+            ),
+            'Degree' => array(
+                'id', 'name'
+            ),
+            'Department' => array(
+                'id', 'name'
+            ),
+        );
+
+        $options['fields'] = array(
+            'title',
+            'campus_id',
+            'department_id',
+            'degree_id',
+            'year',
+            'duration_start_date',
+            'duration_end_date',
+            'semester',
+            'is_private',
+            'description',
+            'link',
+            'minimum_attendance_percentage'
+        );
+
+        $options['conditions'] = array(
+            'Classroom.id' => $classroomId
+        );
+
+        $data = $this->Classroom->find('first', $options);
+        $permissions['role'] = $this->Classroom->UsersClassroom->getRole(AuthComponent::user('id'), $classroomId);
+
+        /*_serialize */
+        $this->set(compact('data', 'status', 'permissions', 'message'));
+        $this->set('_serialize', array('data', 'permissions', 'status', 'message'));
+    }
 }

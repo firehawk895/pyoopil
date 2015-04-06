@@ -1,0 +1,147 @@
+<!--popup-->
+<div id="create-assign" class="create-popup ">
+  <div class="pop-wind clearfix">
+    <div class="pop-head clearfix">
+      <span>Create New Assignment</span>
+      <a class="close-link" ng-click="closeThisDialog()">
+                <span class="icon-cross">
+                </span></a>
+    </div>
+    <div class="pop-content clearfix">
+      <div class="create-assign">
+        <form class="form-data  create-popup" name="formAssignment">
+          <p>Please select type of assignment you want to create</p>
+
+          <div class="tabpages">
+            <ul class="upload-tab">
+              <li><a class="tab hand" ng-click="makeTypeSubjective(true)"
+                     ng-class="{'active' :vm.typeIsSubjective}">Subjective</a>
+              </li>
+              <li><a class="tab hand" ng-click="makeTypeSubjective(false)"
+                     ng-class="{'active' :!vm.typeIsSubjective}">Quiz</a>
+              </li>
+            </ul>
+            <div id="sub" class="tab-contt" ng-if="vm.typeIsSubjective">
+              <div class="clearfix">
+                <div class="left-pop">
+                  <label>Topic of the assignment<span class="mandatory"> *</span></label>
+                  <input type="text" class="pop-input" ng-model="vm.topic" tooltip="Min. 8 characters">
+
+                  <label>Description<span class="mandatory"> *</span></label>
+                  <textarea class="pop-txtarea" ng-model="vm.description" tooltip="Min. 8 characters"></textarea>
+                  <label>Grading Policy</label>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
+                  <label>Grading Type<span class="mandatory"> *</span></label>
+
+                  <div class="radio-btn">
+                    <input id="Marks" type="radio" name="course" value="marked" ng-model="vm.gradingType">
+                    <label for="Marks" class="radio-lbl">Marked</label>
+                    <input id="Grades" type="radio" name="course" value="graded" ng-model="vm.gradingType">
+                    <label for="Grades" class="radio-lbl">Graded</label>
+                  </div>
+                  <div class="marks-input" ng-if="vm.gradingType=='marked'">
+                    <label>Enter Maximum Marks</label>
+                    <input type="number" class="pop-input" value="" pattern="[0-9]{0,3}" maxlength="3" min="0"
+                           ng-maxlength="3"
+                           tooltip="Should be numbers.Max 3 numbers" ng-model="vm.totalMarks">
+                  </div>
+                  <label>Attachments</label>
+
+                  <!--<div class="custom-upload" id="test0">-->
+                  <input type="file" id="fileUploadSubjective" name="files[]" accept="{{getMimeTypes()}}">
+                  <!--<div class="file-upload">-->
+                  <!--<span class="file-txt">Select</span>-->
+                  <!--<input disabled="disabled" value="No File Chosen">-->
+                  <!--</div>-->
+                  <!--</div>-->
+                </div>
+                <div class="right-pop">
+                  <div class="time-bx">
+                    <div class="time-check">
+                      <label>Due Date and Due time<span class="mandatory"> *</span></label>
+                    </div>
+                    <input type="datetime-local" ng-model="vm.dueDate" tooltip="Date should be in future">
+
+                    <p>Please enter the due date and time for the assignment
+                      <br><br>
+                      e.g.
+                      <br>
+                      mm-dd-yyyy hh:mm (24hr format)
+                      <br>
+                      or
+                      <br>
+                      mm-dd-yyyy hh:mm am/pm</p>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-btn">
+                <button class="sub-btn" ng-disabled="vm.areYouSure"
+                        ng-click="vm.areYouSure=true">Publish
+                </button>
+              </div>
+            </div>
+            <div class="align-center" ng-if="vm.areYouSure"><label>Do you really want to Publish?</label>
+              <button class="sub-btn" id="quiz-link" ng-click="createSubjectiveAssignment()">Yes</button>
+              <button class="sub-btn" id="quiz-link" ng-click="vm.areYouSure=false">No</button>
+            </div>
+            <div id="quiz" class="tab-contt" ng-if="!vm.typeIsSubjective">
+              <div class="clearfix">
+                <div class="left-pop">
+                  <label>Topic of the quiz<span class="mandatory"> *</span></label>
+                  <input type="text" class="pop-input" ng-model="vm.topic" required ng-minlength="8"
+                         tooltip="Min. 8 characters">
+                  <label>Quiz Description<span class="mandatory"> *</span></label>
+                  <textarea class="pop-txtarea" ng-model="vm.description" required ng-minlength="8"
+                            tooltip="Min. 8 characters"></textarea>
+                  <label>Grading Policy</label>
+                  <textarea class="pop-txtarea" ng-model="vm.gradingPolicy"></textarea>
+                  <label>Total Time<span class="mandatory"> *</span></label>
+
+                  <input type="number" min="0" max="5" class="pop-dura" ng-model="vm.hours" required>
+
+                  Hours
+                  <input type="number" min="0" max="60" class="pop-dura" ng-model="vm.minutes" required>
+                  Minutes
+                  <label>Attachments</label>
+
+                  <!--<div class="custom-upload" id="test0">-->
+                  <input type="file" id="fileUploadQuiz" name="files[]"
+                         onchange="angular.element(this).scope().addFile()" accept="{{getMimeTypes()}}">
+
+                  <!--<div class="file-upload">-->
+                  <!--<span class="file-txt">Select</span>-->
+                  <!--<input disabled="disabled" value="No File Chosen">-->
+                  <!--</div>-->
+                  <!--</div>-->
+                </div>
+                <div class="right-pop">
+                  <div class="time-bx">
+                    <div class="time-check">
+                      <label>Due Date and Due Time<span class="mandatory"> *</span></label>
+                    </div>
+                    <input type="datetime-local" ng-model="vm.dueDate" required tooltip="Date should be in future">
+
+                    <p>Please enter the due date and time for the assignment
+                      <br><br>
+                      e.g.
+                      <br>
+                      mm-dd-yyyy hh:mm (24hr format)
+                      <br>
+                      or
+                      <br>
+                      mm-dd-yyyy hh:mm am/pm</p>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-btn">
+                <button class="sub-btn" id="quiz-link"
+                        ng-disabled="formAssignment.$invalid " ng-click="createQuizDialog()"> Create Quiz
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

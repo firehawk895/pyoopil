@@ -1,0 +1,65 @@
+<nav class="navigation-main" ng-controller="leftNavCtrl">
+  <ul class="primary">
+    <!--<li class="pdiscover" ng-mouseover="showScroller()" ng-mouseleave="hideScroller()">-->
+    <!--<a ui-sref="app.roomsDash.myroom" class="lst-a myroom"><span class="icon"></span>-->
+    <!--<span class="label">My Room</span></a>-->
+    <!--</li>-->
+    <li class="pdiscover hassub active" ng-mouseover="showScroller()">
+      <!--ng-mouseleave="hideScroller()"-->
+
+      <a ui-sref="app.roomsDash.myroom" class="lst-a classrooms"><span class="icon"></span>
+        <span class="label">Classrooms</span></a>
+
+    <li class="pdiscover">
+      <a ui-sref="app.profile.my" class="lst-a flname"><span class="icon"><img ng-src="{{profile_img}}"
+                                                                               alt="fname"></span>
+        <span class="label">{{fullName}}</span></a>
+    </li>
+
+    <div class="sub" ng-mouseleave="hideScroller()">
+      <!--Classroom sub nav-->
+      <ul class="menu-coll">
+        <li class="sub-menu pre-contact">
+          <a ui-sref="app.roomsDash.myroom">
+            <p class="submenu-heading">All<br>
+              Classroom</p>
+          </a>
+          <!--Classroom Vertical Scroller-->
+          <div class="clearfix">
+            <div class="arrow_up"><img src="images/arrow-up.png" alt="Up"/></div>
+            <div class="scroll-pane" ui-jq="slider">
+              <div infinite-scroll="updatePage()" style="margin-left: -28px">
+                <div ng-repeat="classroom in classrooms" class="scroll-content-item"><a
+                    ng-click="goToClass(classroom.Classroom.id,classroom.UsersClassroom.is_restricted)">
+                  <div class="classouter">
+                    <div class="doc-list">
+                      <div class="doc-top">
+                        <p class="subject ellipsis">{{classroom.Classroom.title}} </p>
+                        <span>by</span>
+                        <span class="wordwrap">{{classroom.Classroom.Educator}}</span>
+                        <span class="totalstudent">({{classroom.Classroom.users_classroom_count}} Students)</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                </div>
+              </div>
+            </div>
+            <div class="arrow_down"><img src="images/arrow-down.png" alt="Down"/></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    </li>
+    <li>
+      <a ng-click="showLogout=!showLogout" class="logout hand" ng-class="{'active' :showLogout}"><img
+          src="../../images/logout.png" alt=""></a>
+
+      <ul class="logout-lst" ng-if="showLogout">
+        <li class="lastli"><a href="" ng-click="logout()">Logout</a>
+        </li>
+      </ul>
+
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,41 @@
+<div class="roomTitle">{{classInfo.Classroom.title}}<span class="title-arr hand" id="dropDown"
+                                                          ng-click="vm.showInfoPopup=!vm.showInfoPopup"></span>
+
+  <div class="arr-dd" ng-if="vm.showInfoPopup" off-click="vm.showInfoPopup=false" off-click-filter="#dropDown">
+    <ul>
+      <li class="hand" ng-if="vm.role=='Owner'"><a ng-click="resetAccessCode()">Reset Access Code</a>
+      </li>
+      <li class="lastli hand"><a ng-click="showClassInfo()">View Info</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<section class="pagesubnav">
+
+  <div class="clearfix">
+    <ul class="left-subnav clearfix">
+      <li>
+        <a ui-sref="app.rooms.discussions.all" ui-sref-active="active">Discussions</a>
+      </li>
+      <li>
+        <a ui-sref="app.rooms.announcements" ui-sref-active="active">Announcements</a>
+      </li>
+      <li>
+        <a ui-sref="app.rooms.library" ui-sref-active="active">Library</a>
+      </li>
+      <li>
+        <a ui-sref="app.rooms.people" ui-sref-active="active">People</a>
+      </li>
+      <li>
+        <a ui-sref="app.rooms.submissions.main" ui-sref-active="active">Submissions</a>
+      </li>
+      <li>
+        <a ui-sref="app.rooms.reports.main.view" ui-sref-active="active">Reports</a>
+      </li>
+    </ul>
+    <!--<div class="nav-right">-->
+    <!--<a href="#" class="sub-btn" id="dialog-link">Invite</a>-->
+    <!--</div>-->
+  </div>
+</section>
+<div ui-view></div>

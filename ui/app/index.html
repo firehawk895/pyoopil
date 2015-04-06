@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en"> <!--<![endif]-->
+<html class="no-js">
+<head>
+  <!-- Basic Page Needs -->
+  <meta charset="utf-8">
+  <title>Pyoopil</title>
+  <meta name="description" content="Landing page for Pyoopil Education Technologies">
+  <meta name="author" content="Pyoopil Education Technologies">
+
+  <!-- Mobile Specific Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/toastr/toastr.css" />
+  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
+  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
+  <link rel="stylesheet" href="bower_components/select2/select2.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-plain.css">
+  <link rel="stylesheet" href="styles/reset.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/jquery-ui-latest.css">
+  <link rel="stylesheet" href="styles/font-awesome.min.css">
+  <link rel="stylesheet" href="styles/jquery.tagit.css">
+  <link rel="stylesheet" href="styles/prettyPhoto.css">
+  <link rel="stylesheet" href="styles/plugins.css">
+  <link rel="stylesheet" href="styles/app.css">
+
+  <!-- endbuild -->
+</head>
+<body ng-app="uiApp" class="bg-color">
+<div ng-controller="MainController">
+
+
+  <!--[if lt IE 7]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <div ui-view></div>
+
+</div>
+
+<!-- build:js(.) scripts/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
+<script src="bower_components/lodash/dist/lodash.compat.js"></script>
+<script src="bower_components/restangular/dist/restangular.js"></script>
+<script src="bower_components/angular-local-storage/angular-local-storage.js"></script>
+<script src="bower_components/toastr/toastr.js"></script>
+<script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+<script src="bower_components/ngDialog/js/ngDialog.js"></script>
+<script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+<script src="bower_components/select2/select2.js"></script>
+<script src="bower_components/angular-ui-select2/src/select2.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+<script src="bower_components/ng-ckeditor/ng-ckeditor.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-moment/angular-moment.js"></script>
+<script src="bower_components/angular-timer/dist/angular-timer.js"></script>
+<script src="bower_components/satellizer/satellizer.js"></script>
+<script src="bower_components/angular-off-click/offClick.js"></script>
+<script src="bower_components/angular-chosen-localytics/chosen.js"></script>
+<script src="bower_components/firebase/firebase.js"></script>
+<script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
+<script src="bower_components/mockfirebase/dist/mockfirebase.js"></script>
+<script src="bower_components/angularfire/dist/angularfire.min.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<script src="scripts/ckeditor/ckeditor.js"></script>
+
+<!-- build:js({.tmp,app}) scripts/others.js -->
+<script src="scripts/others/jquery-ui-1.10.3.custom.js"></script>
+<script src="scripts/others/jquery.autosize.min.js"></script>
+<script src="scripts/others/jquery.slimscroll.min.js"></script>
+<script src="scripts/others/tooltip.min.js"></script>
+<script src="scripts/others/chosen.jquery.min.js"></script>
+<script src="scripts/others/jquery.mousewheel.min.js"></script>
+<script src="scripts/others/jquery.passstrength.js"></script>
+<script src="scripts/others/vertical.slider.standard.js"></script>
+<script src="scripts/others/jquery.bxslider.min.js"></script>
+<script src="scripts/others/tagIt.js"></script>
+<script src="scripts/others/core.js"></script>
+<script src="scripts/others/jquery.prettyPhoto.js"></script>
+<script src="scripts/others/jquery.gdocsviewer.js"></script>
+<script src="scripts/others/highcharts.js"></script>
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/services/globalservice.js"></script>
+<script src="scripts/services/userservice.js"></script>
+<script src="scripts/services/roomservice.js"></script>
+<script src="scripts/services/toastService.js"></script>
+<script src="scripts/services/notificationService.js"></script>
+<script src="scripts/services/modalService.js"></script>
+<script src="scripts/controllers/public/public.js"></script>
+<script src="scripts/controllers/register.js"></script>
+<script src="scripts/controllers/app/nav/left-nav-ctrl.js"></script>
+<script src="scripts/controllers/app/topRightHeader.js"></script>
+<script src="scripts/controllers/app/notification.js"></script>
+<script src="scripts/controllers/app/rooms/room.js"></script>
+<script src="scripts/controllers/app/rooms/discussion.js"></script>
+<script src="scripts/controllers/app/rooms/discussion/allDiscussion.js"></script>
+<script src="scripts/controllers/app/rooms/discussion/foldedDiscussion.js"></script>
+<script src="scripts/controllers/app/rooms/announcement.js"></script>
+<script src="scripts/controllers/app/rooms/library.js"></script>
+<script src="scripts/controllers/app/rooms/people.js"></script>
+<script src="scripts/controllers/app/rooms/submission/submission.js"></script>
+<script src="scripts/controllers/app/rooms/submission/grading.js"></script>
+<script src="scripts/controllers/app/rooms/report/report.js"></script>
+<script src="scripts/controllers/app/rooms/report/takeAttendance.js"></script>
+<script src="scripts/controllers/app/rooms/report/engagement.js"></script>
+<script src="scripts/controllers/app/rooms/report/academic.js"></script>
+<script src="scripts/controllers/app/rooms/report/attendance.js"></script>
+<script src="scripts/controllers/app/roomsDash/myrooms.js"></script>
+<script src="scripts/controllers/app/profile/profile.js"></script>
+<script src="scripts/controllers/app/profile/accountSettings.js"></script>
+
+<!-- endbuild -->
+
+</body>
+</html>

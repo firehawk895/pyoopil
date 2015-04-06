@@ -29,7 +29,7 @@ class Library extends AppModel {
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
-                //Dynamically add 'accesskey','secretKey','bucket'
+                    //Dynamically add 'accesskey','secretKey','bucket'
                 ),
                 'metaColumns' => array(
 //                  'ext' => 'extension',
@@ -114,26 +114,30 @@ class Library extends AppModel {
      */
     public function editTopic($topicId, $topicText) {
 
+        //sanity check
+        //if topic exists
+        $conditions = array(
+            'id' => $topicId
+        );
+        if (!$this->Topic->hasAny($conditions)) {
+            return false;
+        }
+
         $data = array(
             'Topic' => array(
                 'id' => $topicId,
                 'name' => $topicText
             )
         );
-        
-        return $this->Topic->save($data);
 
-//        $data = array(
-//            'name' => $topicText
-//        );
-//
-//        $conditions = array(
-//            'Topic.id' => $topicId
-//        );
-//
-//        return $this->Topic->updateAll($data, $conditions);
+        return $this->Topic->save($data);
     }
 
+    /**
+     * get libraryId from classroomId
+     * @param $classroomId
+     * @return mixed
+     */
     public function getLibraryId($classroomId) {
 
         $params['conditions'] = array(
@@ -147,19 +151,13 @@ class Library extends AppModel {
         return $data['Library']['id'];
     }
 
+    /**
+     * delete topic based on TopicId
+     * @param $topicId
+     * @return bool true for success
+     */
     public function deleteTopic($topicId) {
         return $this->Topic->delete($topicId);
-    }
-
-    public function createTopic($libraryId, $topicText) {
-        $data = array(
-            'Library' => array(
-                'id' => $libraryId
-            ),
-            'Topic' => array(
-                'name' => $topicText
-            )
-        );
     }
 
     public function getPaginatedTopics($libraryId, $page = 1) {
@@ -185,22 +183,57 @@ class Library extends AppModel {
         return $topics = $this->Topic->find('all', $params);
     }
 
+    /**
+     * get a topic based on topicId
+     * @param $topicId
+     * @return array
+     */
+    public function getTopic($topicId) {
+        $options = array(
+            'conditions' => array(
+                'Topic.id' => $topicId
+            ),
+            'contain' => array(
+                'Link',
+                'Pyoopilfile'
+            )
+        );
+        return $this->Topic->find('first', $options);
+    }
+
+    /**
+     * delete an item (File or Link) from the topic
+     * @param $type File or Link
+     * @param $id
+     * @return bool
+     */
     public function deleteItem($type, $id) {
 
         if ($type == 'File') {
+            $this->log("Deleting a File");
             return @$this->Topic->Pyoopilfile->delete($id);
         } elseif ($type == 'Link') {
+            $this->log("Deleting a link");
             return @$this->Topic->Link->delete($id);
         }
     }
 
+    /**
+     * parse links and determine if they are videos
+     * (only youtube supported)
+     * @param $data Link associative array
+     * @return mixed
+     */
     public function parseVideoLinks($data) {
         //ultimate youtube regex
         //http://stackoverflow.com/a/10315969/1881812
         $pattern = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Video'] = array();
-            for ($j = 0; $j < count($data[$i]['Link']); $j++) {
+
+            //crucial line because the array is being modified during iteration!
+            $totalLinks = count($data[$i]['Link']);
+            for ($j = 0; $j < $totalLinks; $j++) {
                 $linkText = $data[$i]['Link'][$j]['linktext'];
                 if (preg_match($pattern, $linkText)) {
                     $youtubeLink = array(
@@ -210,6 +243,8 @@ class Library extends AppModel {
                         'created' => $data[$i]['Link'][$j]['created']
                     );
                     array_push($data[$i]['Video'], $youtubeLink);
+
+                    //Very very risky maneuver to unset while iterating!
                     unset($data[$i]['Link'][$j]);
                 }
             }
@@ -219,6 +254,12 @@ class Library extends AppModel {
         return $data;
     }
 
+    /**
+     * Parse Pyoopilfile based on mimeTypes
+     * and categories Documents, Links, Videos, Presentations, Pictures
+     * @param $data Pyoopilfile associative array
+     * @return mixed
+     */
     public function parsePyoopilfiles($data) {
 
         /* MIME types supported
@@ -226,7 +267,6 @@ class Library extends AppModel {
          * documents: application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, application/msword, text/plain, application/pdf, application/x-pdf, application/x-bzpdf, application/x-gzpdf
          * presentations: application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation
          */
-
 
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['Documents'] = array();
@@ -275,8 +315,24 @@ class Library extends AppModel {
             }
             unset($data[$i]['Pyoopilfile']);
         }
-
         return $data;
     }
 
+    /**
+     * determine if user of $userID has permission to perform CUD (Create, Update, Delete)
+     * in a given classroom of $classroomId
+     * @param $classroomId
+     * @param $userId
+     * @return bool
+     */
+    public function allowCUD($classroomId, $userId) {
+        $isModerator = $this->Classroom->isModerator($userId, $classroomId);
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+
+        if ($isModerator || $isOwner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

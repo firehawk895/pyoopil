@@ -1,0 +1,62 @@
+<!--Edit name Dialog-->
+<div class="signup edit-profile-popup">
+  <div class="pop-wind clearfix">
+    <a class="close-link hand" ng-click="closeThisDialog()">
+      <span class="icon-cross"></span></a>
+
+    <div class="signup-content">
+      <table>
+        <tr>
+          <td colspan="2">
+            <p class="skill-set">Personal Detail</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="td1">First Name</td>
+          <td class="td2">
+            <input type="text" class="pro-input" ng-model="vm.fname">
+          </td>
+        </tr>
+        <tr>
+          <td class="td1">Last Name</td>
+          <td class="td2">
+            <input type="text" class="pro-input" ng-model="vm.lname">
+          </td>
+        </tr>
+        <tr>
+          <td class="td1">Gender</td>
+          <td class="td2">
+            <div class="radio-btn">
+              <input id="Male" type="radio" name="gender" value="Male" ng-model="vm.gender"
+                     ng-class="{'checked' :vm.gender=='Male'}">
+              <label for="Male" class="radio-lbl">Male</label>
+              <input id="Female" type="radio" name="gender" value="Female" ng-model="vm.gender"
+                     ng-class="{'checked' :vm.gender=='Female'}">
+              <label for="Female" class="radio-lbl">Female</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="td1">Date of birth</td>
+          <td class="td2">
+            <div class="calender create-date">
+              <input type="date" ng-model="vm.dob">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="td1">Location</td>
+          <td class="td2">
+            <input type="text" class="pro-input" ng-model="vm.location">
+          </td>
+        </tr>
+      </table>
+      <div class="stud-footer">
+        <div class="stud-btn">
+          <a ng-click="saveMinProfile()" class="sub-btn hand">Save</a>
+          <a ng-click="closeThisDialog()" class="sub-btn cnl-btn close-link hand">Cancel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

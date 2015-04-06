@@ -17,6 +17,7 @@ Plugin/
 app/Config/aws.php
 vendor/
 app/webroot/files/
+app/webroot/js/vendors
 
 # Composer Files #
 ######################

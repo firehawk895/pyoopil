@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppModel', 'Model');
+App::uses('AttachmentBehavior', 'Uploader.Model/Behavior');
 
 /**
  * Discussion Model
@@ -21,57 +22,53 @@ class Discussion extends AppModel {
     /**
      * max no. of replies to retrieve per discussion
      */
-    const MAX_REPLIES = 5;
+    const MAX_REPLIES = 2;
 
     /**
      * TODO : room wise, and filters
      * Common Authorization Framework:
      * Check if user is participant of room (classRoom | institutionRoom | staffRoom | groupRoom)
-     * check if user is follower of myRoom's user 
+     * check if user is follower of myRoom's user
      * ENUM('cu','in','co','en','ed')
      */
 
     /**
      * db notes:
-     * ON DELETE CASCADE set for all related Discussion models except Classroom 
+     * ON DELETE CASCADE set for all related Discussion models except Classroom
      */
-    const CU = 1;
-    const IN = 2;
-    const CO = 3;
-    const EN = 4;
-    const ED = 5;
-    const limit = 15;
 
-    public $enum = array(
-        'vote' => array(
-            self::CU => 'cu',
-            self::IN => 'in',
-            self::CO => 'co',
-            self::EN => 'en',
-            self::ED => 'ed'
-        )
-    );
-
-    /**
-     * Easily switch between enum string text and integer
-     * easy hack to select required databaseField
-     * @var type 
-     */
-    public $enumMap = array(
-        self::CU => 'cu',
-        self::IN => 'in',
-        self::CO => 'co',
-        self::EN => 'en',
-        self::ED => 'ed',
-        'cu' => self::CU,
-        'in' => self::IN,
-        'co' => self::CO,
-        'en' => self::EN,
-        'ed' => self::ED
-    );
     public $actsAs = array(
         'Utility.Enumerable',
-        'Containable'
+        'Containable',
+        'Uploader.Attachment' => array(
+            'file_path' => array(
+                'overwrite' => true,
+                'transport' => array(
+                    'class' => AttachmentBehavior::S3,
+                    'region' => Aws\Common\Enum\Region::SINGAPORE,
+//                    'folder' => 'announcements/',
+                    'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
+                    'secretKey' => '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',
+                    'bucket' => 'pyoopil-files',
+                    //Dynamically add 'accesskey','secretKey','bucket'
+                ),
+                'metaColumns' => array(
+//                  'ext' => 'extension',
+//                  'type' => 'mimeType',
+                    'size' => 'filesize',
+                    'name' => 'filename'
+//                  'exif.model' => 'camera'
+                )
+            )
+        ),
+//        'Uploader.FileValidation' => array(
+//            'file_path' => array(
+////                'type' => 'image',
+////                'mimeType' => array('image/gif'),
+//                'filesize' => 2097152,
+//                'required' => false
+//            )
+//        )
     );
 
     /**
@@ -87,11 +84,15 @@ class Discussion extends AppModel {
             'order' => ''
         ),
         'AppUser' => array(
-            'className' => 'User',
+            'className' => 'AppUser',
             'foreignKey' => 'user_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
+        ),
+        'Pyoopilfile' => array(
+            'className' => 'Pyoopilfile',
+            'foreignKey' => 'pyoopilfile_id',
         )
     );
 
@@ -151,46 +152,14 @@ class Discussion extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
+        ),
     );
 
     /**
-     * Discussions containable
-     * @var type array()
+     * Get single discussion by id
+     * @param int $discussion_id
+     * @return array
      */
-    private $containing = array(
-        'Reply' => array(
-            'Gamificationvote' => array(
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                )
-            ),
-            'AppUser' => array(
-                'fields' => array(
-                    'fname',
-                    'lname'
-                )
-            )
-        ),
-        'Pollchoice' => array(
-            'Pollvote'
-        ),
-        'Gamificationvote' => array(
-            'AppUser' => array(
-                'fields' => array(
-                    'fname',
-                    'lname'
-                )
-            )
-        ),
-        'AppUser' => array(
-            'fields' => array('fname', 'lname')
-        )
-    );
-
     public function getDiscussionById($discussion_id) {
 
         $contain = array(
@@ -199,14 +168,15 @@ class Discussion extends AppModel {
                     'AppUser' => array(
                         'fields' => array(
                             'fname',
-                            'lname'
+                            'lname',
                         )
                     )
                 ),
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
+                        'profile_img'
                     )
                 ),
                 'limit' => self::MAX_REPLIES,
@@ -221,22 +191,17 @@ class Discussion extends AppModel {
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
                     )
                 )
             ),
             'AppUser' => array(
-                'fields' => array('fname', 'lname')
+                'fields' => array('fname', 'lname', 'profile_img')
             ),
-            'Foldeddiscussion'
-        );
-
-        $options = array(
-            'contain' => $contain,
-            'conditions' => array(
-                'Discussion.id' => $discussion_id
-            ),
-            'limit' => 1
+            'Foldeddiscussion',
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
+            )
         );
 
         $discussion = $this->find('all', array(
@@ -256,79 +221,111 @@ class Discussion extends AppModel {
      * @return mixed
      */
     public function processData($data, $userId) {
-//        $this->log($data);
-
         for ($i = 0; $i < count($data); $i++) {
-            /* Removing Gamification information if required */
-            $hasVoted = ($this->hasVoted('Discussion', $data[$i]['Discussion']['id'], $userId));
-
-//            $this->log($hasVoted);
-//            $this->log($data[$i]['Discussion']['id']);
-
-            $isOwner = ($data[$i]['Discussion']['user_id'] == $userId);
-            if ($hasVoted || $isOwner) {
-                $data[$i]['Discussion']['showGamification'] = true;
-            } else {
-                unset($data[$i]['Discussion']['real_praise']);
-//            unset($data[$i]['Discussion']['display_praise']);
-                unset($data[$i]['Discussion']['cu']);
-                unset($data[$i]['Discussion']['in']);
-                unset($data[$i]['Discussion']['co']);
-                unset($data[$i]['Discussion']['en']);
-                unset($data[$i]['Discussion']['ed']);
-                $data[$i]['Discussion']['showGamification'] = false;
-            }
-
-            /* Converting Gamification information to friendly form */
+            // Remove gamification information if required
+            $data[$i]['Discussion'] = $this->setShowGamification('Discussion', $data[$i]['Discussion'], $userId);
+            // Converting Gamification information to friendly form
             $data[$i]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Gamificationvote']);
 
-            /* Decide to show votes of a poll */
+            // Decide to show votes of a poll
             if ($data[$i]['Discussion']['type'] == 'poll') {
-                $this->log($data[$i]);
-                $data[$i]['Pollchoice']['showPollVote'] = false;
-                if ($isOwner) {
-                    $data[$i]['Pollchoice']['showPollVote'] = true;
-                } else {
-                    for ($k = 0; $k < count($data[$i]['Pollchoice']) - 1; $k++) {
-                        if ($this->Pollchoice->Pollvote->hasVoted($data[$i]['Pollchoice'][$k]['id'], $userId)) {
-                            $data[$i]['Pollchoice']['showPollVote'] = true;
-                            break;
-                        }
-                    }
-                }
+                $data[$i]['Discussion'] = $this->_setShowPollVote($data[$i]['Discussion'], $userId);
             }
-            /* Remove Key if not folded by current user */
-            if ($data[$i]['Foldeddiscussion'] == NULL) {
-                $data[$i]['Discussion']['isFolded'] = false;
-            } else {
-                $data[$i]['Discussion']['isFolded'] = true;
-            }
-            unset($data[$i]['Foldeddiscussion']);
 
-            /* Removing Gamification information for Reply */
+            // Remove Key if not folded by current user
+            $data[$i] = $this->_setIsFolded($data[$i]);
+
+            $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1, $data[$i]['Discussion']['id']);
+
+            // Removing Gamification information for Reply
             for ($j = 0; $j < count($data[$i]['Reply']); $j++) {
-                $hasVoted = ($this->hasVoted('Reply', $data[$i]['Reply'][$j]['id'], $userId));
-                $isOwner = ($data[$i]['Reply'][$j]['user_id'] == $userId);
+                /**
+                 * careful with this state changer
+                 */
+                $data[$i]['Reply'][$j] = $this->setShowGamification('Reply', $data[$i]['Reply'][$j], $userId);
 
-                if ($isOwner || $hasVoted) {
-                    $data[$i]['Reply'][$j]['showGamification'] = true;
-                } else {
-                    unset($data[$i]['Reply'][$j]['real_praise']);
-//                unset($data[$i]['Reply'][$j]['display_praise']);
-                    unset($data[$i]['Reply'][$j]['cu']);
-                    unset($data[$i]['Reply'][$j]['in']);
-                    unset($data[$i]['Reply'][$j]['co']);
-                    unset($data[$i]['Reply'][$j]['en']);
-                    unset($data[$i]['Reply'][$j]['ed']);
-                    $data[$i]['Reply'][$j]['showGamification'] = false;
-                }
-                /* Converting Gamification information to friendly form */
-                $data[$i]['Reply'][$j]['Gamificationvote'] = $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']);
+                /**
+                 * Maintaining consistency for data format like getReplies()
+                 * this code is just not beautiful
+                 * this is technical debt, do not mix this portion with anything above
+                 */
+                $onlyReplyArray = $data[$i]['Reply'][$j];
+                $restOfReplyArray = array(
+                    'AppUser' => $onlyReplyArray['AppUser'],
+                    'Gamificationvote' => $this->convertGamificationVoteArray($data[$i]['Reply'][$j]['Gamificationvote']),
+                );
+                unset($onlyReplyArray['AppUser']);
+                unset($onlyReplyArray['Gamificationvote']);
+
+                $newReplyArray = array(
+                    'Reply' => $onlyReplyArray
+                );
+
+                $newReplyArray = $newReplyArray + $restOfReplyArray;
+                $data[$i]['Replies'][$j] = $newReplyArray;
             }
-
-            $data[$i]['moreReplies'] = $this->Reply->setMoreRepliesFlag(1,$data[$i]['Discussion']['id']);
+            unset($data[$i]['Reply']);
         }
         return $data;
+    }
+
+    /**
+     * Takes a discussion or reply, removing the gamification votes if required
+     * and setting required flag (showGamification)
+     * @param $type String 'Discussion' or 'Reply'
+     * @param $data mixed Discussion or Reply array
+     * @param $userId int
+     * @return mixed
+     */
+    public function setShowGamification($type, $data, $userId) {
+        unset($data['real_praise']);
+        $hasVoted = $this->Gamificationvote->hasVoted($type, $data['id'], $userId);
+        $isOwner = ($data['user_id'] == $userId);
+        if ($hasVoted || $isOwner) {
+            $data['showGamification'] = true;
+        } else {
+            $data['showGamification'] = false;
+            unset($data['cu']);
+            unset($data['in']);
+            unset($data['co']);
+            unset($data['en']);
+            unset($data['ed']);
+        }
+        return $data;
+    }
+
+
+    /**
+     * takes a Discussion of type 'Poll', determines to show/remove info
+     * of votes of the Poll.
+     * sets flag 'showPollVote'
+     * @param $discussion
+     * @param $userId
+     * @return mixed
+     */
+    private function _setShowPollVote($discussion, $userId) {
+        $isOwner = ($discussion['user_id'] == $userId);
+        $hasVotedOnPoll = $this->Pollchoice->Pollvote->hasVotedOnPoll($discussion['id'], $userId);
+        if ($isOwner || $hasVotedOnPoll) {
+            $discussion['showPollVote'] = true;
+        } else {
+            $discussion['showPollVote'] = false;
+        }
+        return $discussion;
+    }
+
+    /**
+     * @param $discussion
+     * @return mixed
+     */
+    private function _setIsFolded($discussion) {
+        if ($discussion['Foldeddiscussion'] == NULL) {
+            $discussion['Discussion']['isFolded'] = false;
+        } else {
+            $discussion['Discussion']['isFolded'] = true;
+        }
+        unset($discussion['Foldeddiscussion']);
+        return $discussion;
     }
 
     /**
@@ -350,35 +347,35 @@ class Discussion extends AppModel {
             $name = $gamificationVote[$k]['AppUser']['fname'] . ' ' . $gamificationVote[$k]['AppUser']['lname'];
 
             switch ($vote) {
-                case 'en': array_push($data['en'], $name);
+                case 'en':
+                    array_push($data['en'], $name);
                     break;
-                case 'in': array_push($data['in'], $name);
+                case 'in':
+                    array_push($data['in'], $name);
                     break;
-                case 'cu': array_push($data['cu'], $name);
+                case 'cu':
+                    array_push($data['cu'], $name);
                     break;
-                case 'co': array_push($data['co'], $name);
+                case 'co':
+                    array_push($data['co'], $name);
                     break;
-                case 'ed': array_push($data['ed'], $name);
+                case 'ed':
+                    array_push($data['ed'], $name);
                     break;
             }
         }
         return $data;
     }
 
-    public function getClassroom($discussionId) {
-        
-    }
-
     /**
      * Return Discussions of a room, paginated
-     * @param type $roomId - room id(pk)
-     * @param type $userId - user id for context information (discussion folded or not)
-     * @param type $page - page number to retrieve
-     * @param type $onlylatest - if true, then returns only latest discussion
-     * @return type
+     * @param int $roomId - room id(pk)
+     * @param int $userId - user id for context information (discussion folded or not)
+     * @param int $page - page number to retrieve
+     * @param bool $onlylatest - if true, then returns only latest discussion
+     * @return array
      */
     public function getPaginatedDiscussions($roomId, $userId, $page, $onlylatest = false) {
-
         $offset = self::PAGINATION_LIMIT * ($page - 1);
 
         $contain = array(
@@ -387,14 +384,15 @@ class Discussion extends AppModel {
                     'AppUser' => array(
                         'fields' => array(
                             'fname',
-                            'lname'
+                            'lname',
                         )
                     )
                 ),
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
+                        'profile_img'
                     )
                 ),
                 'limit' => self::MAX_REPLIES,
@@ -409,17 +407,20 @@ class Discussion extends AppModel {
                 'AppUser' => array(
                     'fields' => array(
                         'fname',
-                        'lname'
+                        'lname',
                     )
                 )
             ),
             'AppUser' => array(
-                'fields' => array('fname', 'lname')
+                'fields' => array('fname', 'lname', 'profile_img')
             ),
             'Foldeddiscussion' => array(
                 'conditions' => array(
                     'user_id' => $userId
                 )
+            ),
+            'Pyoopilfile' => array(
+                'file_path', 'filename', 'filesize', 'mime_type', 'thumbnail_path'
             )
         );
 
@@ -444,52 +445,19 @@ class Discussion extends AppModel {
         return $data;
     }
 
-    public function getPaginatedReplies($discussionId, $page, $onlylatest = false) {
-
-        $offset = self::MAX_REPLIES * ($page - 1 );
-
-        $contain = array(
-            'Gamificationvote' => array(
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                )
-            ),
-            'AppUser' => array(
-                'fields' => array(
-                    'fname',
-                    'lname'
-                )
-            ),
-        );
-
-        $options = array(
-            'contain' => $contain,
-            'conditions' => array(
-                'discussion_id' => $discussionId
-            ),
-            'order' => array(
-                'created' => 'desc'
-            ),
-            'offset' => $offset,
-            'limit' => self::MAX_REPLIES,
-        );
-
-        if ($onlylatest) {
-            $options['limit'] = 1;
-            unset($options['offset']);
-        }
-
-        $data = $this->Reply->find('all', $options);
-        return $data;
-    }
-
+    /**
+     * Delete discussion by id by owner
+     * @param int $discussionId
+     * @param int $userId
+     * @return bool
+     */
     public function deleteDiscussion($discussionId, $userId) {
         //Ensure ON DELETE CASCADE in Discussion table
         $discussion = $this->findById($discussionId);
-        if (($discussion != null ) && $discussion['Discussion']['user_id'] == $userId) {
+        /**
+         * TODO: move this logic to authorization layer
+         */
+        if (($discussion != null) && $discussion['Discussion']['user_id'] == $userId) {
             return $this->delete($discussionId);
         } else {
             return false;
@@ -497,156 +465,10 @@ class Discussion extends AppModel {
     }
 
     /**
-     * Checks if a user has voted on a reply or discussion
-     * @param $type (Discussion,Reply)
-     * @param $id
-     * @param $userId
-     * @return boolean
-     */
-    public function hasVoted($type, $id, $userId) {
-        $conditions = array(
-            'user_id' => $userId
-        );
-
-        if ($type == 'Discussion') {
-            $conditions['discussion_id'] = $id;
-        } elseif ($type == 'Reply') {
-            $conditions['reply_id'] = $id;
-        }
-
-        if ($this->Gamificationvote->hasAny($conditions)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Vote on a particular Discussion or Reply
-     * @param $type
-     * @param $id
-     * @param $vote
-     * @param $userId
-     * @return boolean
-     */
-    public function setGamificationVote($type, $id, $vote, $userId) {
-
-        $params = array(
-            'contain' => array(
-                'Gamificationvote'
-            ),
-            'conditions' => array(
-                'id' => $id
-            ),
-        );
-
-        $voteTypes = Hash::combine($this->enum, 'vote.{n}');
-        $validVote = array_key_exists($vote, $voteTypes);
-
-        if ($type == 'Discussion') {
-            $this->id = $id;
-            $data = $this->find('first', $params);
-        } elseif ($type == 'Reply') {
-            $this->Reply->id = $id;
-            $data = $this->Reply->find('first', $params);
-        }
-
-        /* Check if the discussion/reply exists */
-        if (!$data) {
-            return false;
-        }
-        /* Ensuring no self vote */
-        if ($data[$type]['user_id'] != $userId) {
-            /* Ensuring no duplicate voting and valid voting */
-            if (!$this->hasVoted($type, $id, $userId) && $validVote) {
-
-                $displayPraise = $data[$type]['display_praise'] + 1;
-
-                if ($vote == $this->enumMap[self::ED]) {
-                    $realPraise = $data[$type]['real_praise'] + 10;
-                } else {
-                    $realPraise = $data[$type]['real_praise'] + 1;
-                }
-
-                $voteValue = $data[$type][$vote] + 1;
-
-                $record = array(
-                    $type => array(
-                        'id' => $id,
-                        'display_praise' => $displayPraise,
-                        'real_praise' => $realPraise,
-                        $vote => $voteValue
-                    ),
-                    'Gamificationvote' => array(
-                        'vote' => $vote,
-                        'user_id' => $userId
-                    )
-                );
-
-                return $this->Gamificationvote->saveAssociated($record);
-            } else {
-                /* duplicate vote error message */
-                return false;
-            }
-        } else {
-            /* voting on own discussion/reply */
-            return false;
-        }
-    }
-
-    /**
-     * Retrieve Gamification information and engagers for a Discussion or Reply
-     * @param $type
-     * @param $id
-     * @param int $page
-     * @return array
-     */
-    public function getGamificationInfo($type, $id, $page = 1) {
-        $offset = $this->PAGINATION_LIMIT * ($page - 1 );
-
-        $params = array(
-            'contain' => array(
-                'Gamificationvote' => array(
-                    'AppUser' => array(
-                        'fields' => array(
-                            'fname',
-                            'lname'
-                        )
-                    )
-                )
-            ),
-            'fields' => array(
-                'id',
-                'display_praise',
-                $this->enumMap[self::CU],
-                $this->enumMap[self::IN],
-                $this->enumMap[self::CO],
-                $this->enumMap[self::EN],
-                $this->enumMap[self::ED]
-            ),
-            'conditions' => array(
-                'id' => $id
-            ),
-            'offset' => $offset,
-            'limit' => $this->PAGINATION_LIMIT
-        );
-
-        if ($type == 'Discussion') {
-            $data = $this->find('first', $params);
-        } elseif ($type == 'Reply') {
-            $data = $this->Reply->find('first', $params);
-        }
-        $data['Gamificationvote'] = $this->convertGamificationVoteArray($data['Gamificationvote']);
-
-        return $data;
-    }
-
-    /**
      * Toggle fold on discussion
      * @param $discussionId
      * @param $userId
-     * @param bool $fold
-     * @return bool|mixed
+     * @return bool
      */
     public function toggleFold($discussionId, $userId) {
 
@@ -659,147 +481,44 @@ class Discussion extends AppModel {
             'discussion_id' => $discussionId
         );
 
+        //cool model style notation such as AppUser.id not working
         $data = array(
-            'User' => array(
-                'id' => $userId
-            ),
-            'Discussion' => array(
-                'id' => $discussionId
-            )
+            'user_id' => $userId,
+            'discussion_id' => $discussionId
         );
 
         if ($this->Foldeddiscussion->hasAny($conditions)) {
-            $Foldeddiscussion = $this->Foldeddiscussion->find('first', array(
+            $foldeddiscussion = $this->Foldeddiscussion->find('first', array(
                 'conditions' => $conditions,
                 'recursive' => -1
             ));
 
-            $id = $Foldeddiscussion['Foldeddiscussion']['id'];
-
+            $id = $foldeddiscussion['Foldeddiscussion']['id'];
             return $this->Foldeddiscussion->delete($id);
         } else {
             $this->Foldeddiscussion->create();
-            return $this->Foldeddiscussion->saveAssociated($data);
+            return $this->Foldeddiscussion->save($data);
         }
     }
 
     /**
-     * User votes on a pollChoice for a poll type Discussion
-     * @param type $userId Voter's user ID
-     * @param type $discussionid discussion_id (pk) of the poll type discussion
-     * @param type $pollChoiceId pollchoice_id of the choice on poll voted for
+     * permission for allowing "Create" privilege for discussions
+     * @param $classroomId
+     * @param $userId
+     * @return bool
      */
-    public function setPollVote($userId, $pollChoiceId) {
-
-        $conditions = array(
-            'user_id' => $userId,
-            'pollchoice_id' => $pollChoiceId
-        );
-
-        //check if its a valid poll choice
-        if (!$this->Pollchoice->findById($pollChoiceId)) {
-            return false;
-        }
-
-        //does not check if already voted
-        if (!$this->Pollchoice->Pollvote->hasAny($conditions)) {
-            $this->Pollchoice->id = $pollChoiceId;
-            $newVotes = $this->Pollchoice->field('votes') + 1;
-//            $this->Pollchoice->id = $pollChoiceId;
-//            $this->Pollchoice->saveField('votes' , $newVotes);
-
-            $data = array(
-                'User' => array(
-                    'id' => $userId
-                ),
-                'Pollchoice' => array(
-                    'id' => $pollChoiceId,
-                    'votes' => $newVotes
-                )
-            );
-            $this->Pollchoice->Pollvote->create();
-            if ($this->Pollchoice->Pollvote->saveAssociated($data)) {
-                return true;
-            }
-        }
-        return false;
+    public function allowCreate($classroomId, $userId) {
+        return true;
     }
 
-    public function getPaginatedFoldedDiscussions($roomId, $userId, $page = 1) {
-
-        /**
-         * SELECT *
-         * FROM discussions AS d
-         * INNER JOIN foldeddiscussions AS f ON d.id = f.discussion_id
-         * WHERE f.user_id =1
-         * AND d.classroom_id =1
-         */
-        $offset = self::PAGINATION_LIMIT * ($page - 1);
-
-        $options['joins'] = array(
-            array('table' => 'foldeddiscussions',
-                'alias' => 'Foldeddiscussion',
-                'type' => 'inner',
-                'conditions' => array(
-                    'Discussion.id = Foldeddiscussion.discussion_id'
-                )
-            ),
-        );
-
-        $options['conditions'] = array(
-            'Discussion.classroom_id' => $roomId,
-            'Foldeddiscussion.user_id' => $userId
-        );
-
-        $options['offset'] = $offset;
-        $options['limit'] = self::PAGINATION_LIMIT;
-
-        $contain = array(
-            'Reply' => array(
-                'Gamificationvote' => array(
-                    'AppUser' => array(
-                        'fields' => array(
-                            'fname',
-                            'lname'
-                        )
-                    )
-                ),
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                ),
-                'limit' => self::MAX_REPLIES,
-                'order' => array(
-                    'created' => 'desc'
-                )
-            ),
-            'Pollchoice' => array(
-                'Pollvote'
-            ),
-            'Gamificationvote' => array(
-                'AppUser' => array(
-                    'fields' => array(
-                        'fname',
-                        'lname'
-                    )
-                )
-            ),
-            'AppUser' => array(
-                'fields' => array('fname', 'lname')
-            ),
-            'Foldeddiscussion' => array(
-                'conditions' => array(
-                    'user_id' => $userId
-                )
-            )
-        );
-
-        $options['contain'] = $contain;
-
-        $data = $this->find('all', $options);
-        return $data;
+    /**
+     * permission for allowing "Endorsement" type gamification vote for discussions
+     * @param $classroomId
+     * @param $userId
+     * @return bool
+     */
+    public function allowEndorse($classroomId, $userId) {
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+        return $isOwner;
     }
-
 }

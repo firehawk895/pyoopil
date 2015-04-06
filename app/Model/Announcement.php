@@ -37,7 +37,7 @@ class Announcement extends AppModel {
                     'accessKey' => 'AKIAJSFESXV3YYXGWI4Q',
                     'secretKey' => '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',
                     'bucket' => 'pyoopil-files',
-                //Dynamically add 'accesskey','secretKey','bucket'
+                    //Dynamically add 'accesskey','secretKey','bucket'
                 ),
                 'metaColumns' => array(
 //                  'ext' => 'extension',
@@ -87,35 +87,15 @@ class Announcement extends AppModel {
     );
 
     /**
-     * hasAndBelongsToMany associations
-     * @var array
-     */
-//    public $hasAndBelongsToMany = array(
-//        'User' => array(
-//            'className' => 'User',
-//            'joinTable' => 'users_announcements',
-//            'foreignKey' => 'announcement_id',
-//            'associationForeignKey' => 'user_id',
-//            'unique' => 'keepExisting',
-//            'conditions' => '',
-//            'fields' => '',
-//            'order' => '',
-//            'limit' => '',
-//            'offset' => '',
-//            'finderQuery' => '',
-//        )
-//    );
-
-    /**
      * Get announcement by ID
-     * @param $announcementId
+     * @param int $announcementId
      * @return array
      */
     public function getAnnouncementById($announcementId) {
         $params = array(
             'contain' => array(
                 'AppUser' => array(
-                    'fields' => array('fname', 'lname')
+                    'fields' => array('fname', 'lname', 'profile_img')
                 )
             ),
             'conditions' => array(
@@ -128,8 +108,9 @@ class Announcement extends AppModel {
 
     /**
      * Retrieve paginated announcements
-     * @param $classroomId
+     * @param int $classroomId
      * @param int $page
+     * @param bool $onlylatest
      * @return array
      */
     public function getPaginatedAnnouncements($classroomId, $page = 1, $onlylatest = false) {
@@ -144,7 +125,7 @@ class Announcement extends AppModel {
         $options = array(
             'contain' => array(
                 'AppUser' => array(
-                    'fields' => array('fname', 'lname')
+                    'fields' => array('fname', 'lname', 'profile_img')
                 )
             ),
             'conditions' => array(
@@ -179,6 +160,14 @@ class Announcement extends AppModel {
         $data['Announcement']['user_id'] = $userId;
 
         if ($this->save($data)) {
+            $announcementId = $this->getLastInsertID();
+            $event = new CakeEvent('Announcement.created', $this, array(
+                    'classroomId' => $classroomId,
+                    'announcementId' => $announcementId
+                )
+            );
+            $this->getEventManager()->dispatch($event);
+
             return true;
         } else {
             return false;
@@ -187,7 +176,7 @@ class Announcement extends AppModel {
 
     /**
      * Dispatch sms for an announcement
-     * TODO:
+     * TODO: the actual sms api
      * Defferred sms sending + testing of services
      * @param type $room_type
      * @param type $room_id
@@ -210,7 +199,7 @@ class Announcement extends AppModel {
 
 
         $friendlyTime = CakeTime::format(
-                        'd-m-Y h:i A', $data['Announcement']['creation_date']
+            'd-m-Y h:i A', $data['Announcement']['creation_date']
         );
 
         $rawString = 'Announcement in classroom Phy-101, from teacher_name about Sex on the beach sent at 14-03-2014 12:48 PM';
@@ -218,11 +207,11 @@ class Announcement extends AppModel {
         $usableLength = $SMS_LIMIT - $rawLength;
 
         $smsString = String::insert('Announcement in :room :roomName, from :name about :subject sent at :timestamp', array(
-                    'name' => 'teacher_name',
-                    'room' => $room,
-                    'roomName' => $roomName,
-                    'subject' => $data['Announcement']['subject'],
-                    'timestamp' => $friendlyTime
+            'name' => 'teacher_name',
+            'room' => $room,
+            'roomName' => $roomName,
+            'subject' => $data['Announcement']['subject'],
+            'timestamp' => $friendlyTime
         ));
 
         debug($smsString);
@@ -232,10 +221,50 @@ class Announcement extends AppModel {
     }
 
     /**
-     * Deffered email sending.
+     * Sends defferred emails
+     * @param $classroomId
+     * @param $announcement
+     * @return bool
      */
-    public function sendEmails() {
-        
+    public function sendEmails($classroomId, $announcement) {
+
+        $options['contain'] = array(
+            'Classroom' => array(
+                'fields' => array('id')
+            ),
+            'AppUser' => array(
+                'fields' => array('id', 'email')
+            )
+        );
+
+        $options['conditions'] = array(
+            'UsersClassroom.classroom_id' => $classroomId
+        );
+        $data = $this->Classroom->UsersClassroom->find('all', $options);
+        $emails = Hash::extract($data, '{n}.AppUser.email');
+
+        App::uses('EmailLib', 'Tools.Lib');
+
+        $Email = new EmailLib();
+        $Email->to($emails);
+        $Email->subject($announcement['Announcement']['subject']);
+        $body = $announcement['Announcement']['body'] . PHP_EOL . PHP_EOL . Router::url('/', true) . 'Classrooms/' . $classroomId . '/Announcements';
+        $result = $Email->send($body);
+
+        $command = APP . "Console/cake Queue.Queue runworker > /dev/null 2>&1 &";
+        exec($command);
+
+        return $result;
     }
 
+    public function allowCreate($classroomId, $userId) {
+        $isModerator = $this->Classroom->isModerator($userId, $classroomId);
+        $isOwner = $this->Classroom->isOwner($userId, $classroomId);
+
+        if ($isModerator || $isOwner) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
